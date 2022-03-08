@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.appt.precheck.page.Login;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -36,12 +37,12 @@ public class AppointmentPrecheckLogin extends ApptPrecheckMainPage {
 		super(driver, url);
 	}
 
-	CommonMethods commonMethods = new CommonMethods(driver);
+	CommonMethods commonMethods = new CommonMethods();
 
 	public ApptPrecheckConfiguration login(String username, String pass) throws InterruptedException {
-		commonMethods.highlightElement(inputUserName);
+		jse.executeScript("arguments[0].setAttribute('style','border: solid 6px red');", inputUserName);
 		inputUserName.sendKeys(username);
-		commonMethods.highlightElement(inputPassword);
+		jse.executeScript("arguments[0].setAttribute('style','border: solid 6px red');", inputUserName);
 		inputPassword.sendKeys(pass);
 		buttonLogin.click();
 		return PageFactory.initElements(driver, ApptPrecheckConfiguration.class);

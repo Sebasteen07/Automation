@@ -444,7 +444,307 @@ locals {
       google_chrome_version = "96.0.4664.110-1"
       chrome_driver_version = "95.0.4638.17"
       cron_shedule          = "cron(0 2 ? * 1 *)"
-    }   
+    }
+
+    "prod-practiceportal-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "prod"
+      suite_xml             = "referrals-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.110-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(15 0 ? * 1 *)"
+    } 
+
+    "prod-sitegen-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "sitegen-automation"
+      test_environment      = "prod"
+      suite_xml             = "sitegen-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.110-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(30 0 ? * 1 *)"
+    }
+
+    "demo-ng-integration-pf-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "ng-integration"
+      test_environment      = "demo"
+      suite_xml             = "ngintegration-platform-acceptance-SmokeSuite(SinglePractice).xml"
+      pxp_application       = "Platform"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.71-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 17 * * ? *)"
+    }
+
+    "demo-ng-int-pf-acceptance-index" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "ng-integration"
+      test_environment      = "demo"
+      suite_xml             = "ngintegration-platform-acceptance-Inbox.xml"
+      pxp_application       = "Platform"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.71-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 14 * * ? *)"
+    }
+
+    "demo-ng-int-pf-acceptance-payment" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "ng-integration"
+      test_environment      = "demo"
+      suite_xml             = "ngintegration-platform-acceptance-PP139Payment.xml"
+      pxp_application       = "Platform"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.71-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 23 * * ? *)"
+    }
+
+    "demo-ng-int-pf-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "ng-integration"
+      test_environment      = "demo"
+      suite_xml             = "ngintegration-platform-acceptance-patientEnrollment(MultiPractice).xml"
+      pxp_application       = "Platform"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.71-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 21 ? * 2 *)"
+    }
+
+    "demo-practiceportal-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "demo"
+      suite_xml             = "practice-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(40 1 ? * 4 *)"
+    }
+
+    "demo-practiceportal-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "demo"
+      suite_xml             = "referrals-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 3 ? * 4 *)"
+    }
+
+    "demo-sitegen-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "sitegen-automation"
+      test_environment      = "demo"
+      suite_xml             = "sitegen-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 3 ? * 4 *)"
+    }
+
+    "demo-pss-at-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pss/pss2patientui-automation"
+      test_environment      = "demo"
+      suite_xml             = "pss-at-tc.xml"
+      pxp_application       = "PatientSelfScheduling"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(10 6 ? * 3 *)"
+    }
+
+    "demo-pss-ge-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pss/pss2patientui-automation"
+      test_environment      = "demo"
+      suite_xml             = "pss-ge-tc.xml"
+      pxp_application       = "PatientSelfScheduling"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(10 6 ? * 3 *)"
+    }
+
+    "demo-pss-geadapter-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pss/pss2patientui-automation"
+      test_environment      = "demo"
+      suite_xml             = "pss-ge-adpter-acceptancetest.xml"
+      pxp_application       = "PatientSelfScheduling"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+    }
+
+    "demo-pss-gw-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pss/pss2patientui-automation"
+      test_environment      = "demo"
+      suite_xml             = "pss-gw-tc.xml"
+      pxp_application       = "PatientSelfScheduling"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(10 6 ? * 3 *)"
+    }
+
+    "demo-pss-ng-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pss/pss2patientui-automation"
+      test_environment      = "demo"
+      suite_xml             = "pss-ng-tc.xml"
+      pxp_application       = "PatientSelfScheduling"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(10 6 ? * 3 *)"
+    }
+
+    "demo-pss-ngadapter-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pss/pss2patientui-automation"
+      test_environment      = "demo"
+      suite_xml             = "pss-ng-adpter-acceptancetest.xml"
+      pxp_application       = "PatientSelfScheduling"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+    }
+
+    "demo-payreporting-e2e-element" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automationE2E"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-element-e2e.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 0 ? * 2 *)"
+    }
+
+    "demo-payreporting-e2e-paypal" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automationE2E"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-paypal-e2e.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(5 0 ? * 2 *)"
+    }
+
+    "demo-payreporting-e2e-qbms" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automationE2E"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-qbms-e2e.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(10 0 ? * 2 *)"
+    }
+
+    "demo-payreporting-payments" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automation"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-payments-acceptance-tests.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(15 0 ? * 2 *)"
+    }
+
+    "demo-payreporting-smoke" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automation"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-smoketest.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(20 0 ? * * *)"
+    }
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)

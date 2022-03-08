@@ -178,5 +178,15 @@ public class AppointmentPage extends PSS2MainPage {
 		log("no matching appointment found ");
 		return null;
 	}
-
+	
+	public boolean verifyApptTypePresent(String appointmentType) {		
+		if (appointmentTypeList.contains(appointmentType)) {
+			log("Appointment type present");
+			return true;			
+		}
+		else {
+			log("Appointment type not present");
+			return false;
+		}
+	}
 }

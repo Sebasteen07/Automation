@@ -171,19 +171,12 @@ public class PhrEmergencyContactPage extends BasePageObject {
 		sel.selectByVisibleText(relation);
 	}
 
-	/**
-	 * @Descripton:Click Save Changes Button
-	 */
 	public void clickSaveChanges() {
 		PhrUtil.PrintMethodName();
 		btnSaveChanges.click();
 
 	}
 
-
-	/**
-	 * @Descripton:Set Emergency Contact Fields
-	 */
 	public void setEmergencyContactFields() {
 		setFirstName(IHGUtil.pickRandomString(PhrConstants.ArrayofFirstName));
 		setLastName(IHGUtil.pickRandomString(PhrConstants.ArrayofLastName));

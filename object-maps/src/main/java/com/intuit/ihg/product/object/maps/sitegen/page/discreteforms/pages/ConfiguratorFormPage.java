@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
 import org.openqa.selenium.By;
@@ -12,9 +13,6 @@ import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFor
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.medfusion.common.utils.IHGUtil;
 
-/**
- * @author Adam Warzel @ Date 29/10.2014.
- */
 public class ConfiguratorFormPage extends BasePageObject {
 
 
@@ -60,11 +58,6 @@ public class ConfiguratorFormPage extends BasePageObject {
 		super(driver);
 		jse = (JavascriptExecutor) driver;
 	}
-
-	/*
-	 * In case the screen is scrolled down it is possible that save button and back link are not visible when that happens we can use the floating panel with save
-	 * and back buttons
-	 */
 
 	public DiscreteFormsList clickBackToTheList() throws InterruptedException {
 		scrollAndWait(0, 0, 5000);
@@ -320,12 +313,6 @@ public class ConfiguratorFormPage extends BasePageObject {
 			hideSectionInput.click();
 	}
 
-	/**
-	 * Set the name of the form
-	 * 
-	 * @param newFormName - the name for the form
-	 * @throws InterruptedException
-	 */
 	public void setFormName(String newFormName) throws InterruptedException {
 		formNameField.clear();
 		formNameField.sendKeys(newFormName);

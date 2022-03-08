@@ -1,7 +1,11 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.onlinebillpay;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -159,9 +163,24 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	@FindBy(xpath = "//td[label[text()='Adjusted Amount']]/following-sibling::td/span")
 	private WebElement adjustedAmount;
 
-	/**
-	 * @Description:Set First name
-	 */
+	@FindBy(name = "searchParams:0:input:Date Begin:month")
+	private WebElement enrolmentdateMonth;
+
+	@FindBy(name = "searchParams:0:input:Date Begin:day")
+	private WebElement enrolmentdateDay;
+
+	@FindBy(name = "searchParams:0:input:Date Begin:year")
+	private WebElement enrolmentdateYear;
+
+	@FindBy(name = "searchParams:0:input:Date End:month")
+	private WebElement enrolmentEndDateMonth;
+
+	@FindBy(name = "searchParams:0:input:Date End:day")
+	private WebElement enrolmentEndDateDay;
+
+	@FindBy(name = "searchParams:0:input:Date End:year")
+	private WebElement enrolmentEndDateYear;
+
 	public void setFirstName() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -169,9 +188,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		firstName.sendKeys(PracticeConstants.PATIENT_FIRST_NAME);
 	}
 
-	/**
-	 * @Description:Set Last Name
-	 */
 	public void setLastName() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -179,9 +195,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		lastName.sendKeys(PracticeConstants.PATIENT_LAST_NAME);
 	}
 
-	/**
-	 * @Description:Set Location
-	 */
 	public void setLocation() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -207,10 +220,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 
 	}
 
-	/**
-	 * @Description:Choose the provider name from Drop Down
-	 * @param pProvider
-	 */
 	public void chooseProvider(String pProvider) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -221,10 +230,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		wait.until(ExpectedConditions.elementToBeSelected(By.xpath(providerXpath)));
 	}
 
-	/**
-	 * @Description:Set Account Number
-	 * @param accountNumber
-	 */
 	public void setPatientAccountNumber(String accountNumber) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -232,10 +237,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		patientAccountNumber.sendKeys(accountNumber);
 	}
 
-	/**
-	 * @Description:Set Payment Amount
-	 * @param amount
-	 */
 	public void setPaymentAmount(String amount) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -243,10 +244,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		paymentAmount.sendKeys(amount);
 	}
 
-	/**
-	 * @Description:Set Payment Comment
-	 * @param comment
-	 */
 	public void setPaymentComment(String comment) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -254,10 +251,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		paymentComment.sendKeys(comment);
 	}
 
-	/**
-	 * @Description:Set Don't Save Transaction radio button
-	 * @throws Exception
-	 */
 	public void clickDonotSaveTransaction() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -266,10 +259,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		Thread.sleep(4000);
 	}
 
-	/**
-	 * @Description:Set Card Holder Name
-	 * @throws Exception
-	 */
 	public void setCardholderName() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -277,13 +266,8 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		cardHolder.clear();
 		cardHolder.sendKeys(PracticeConstants.CARD_HOLDER_NAME);
 		Thread.sleep(4000);
-
 	}
 
-	/**
-	 * @Description:Set Card Number
-	 * @throws Exception
-	 */
 	public void setCardNumber() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -291,27 +275,16 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		cardNumber.clear();
 		cardNumber.sendKeys(PracticeConstants.CARD_NUMBER);
 		Thread.sleep(4000);
-
 	}
 
-	/**
-	 * @Description:Set Credit Card Type
-	 */
 	public void setCardType() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(cardType);
 		sel.selectByVisibleText(PracticeConstants.CARD_TYPE_VISA);
-
 	}
 
-	/**
-	 * @throws Exception
-	 * @Description:Set Expiration date
-	 */
-	public void setExpirationDate() throws Exception
-
-	{
+	public void setExpirationDate() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(expirationMonth);
@@ -327,42 +300,25 @@ public class PayMyBillOnlinePage extends BasePageObject {
 			if (yearInString.equals(drop_down_values)) {
 				sele.selectByVisibleText(yearInString);
 				log("The" + yearInString + "and" + drop_down_values + " Matched");
-			}
-
-			else {
-
+			} else {
 				log("The" + yearInString + "and" + drop_down_values + "didnt Matched");
-
 			}
 		}
 	}
 
-	/**
-	 * @Description:Set CCV Code
-	 */
 	public void setCCVCode() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		cvvCode.clear();
 		cvvCode.sendKeys(PracticeConstants.CVV);
-
 	}
 
-	/**
-	 * @Description:Set Zip Code
-	 */
 	public void setZipCode() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		zipCode.clear();
 		zipCode.sendKeys(PracticeConstants.ZIP_CODE);
-
 	}
-
-	/**
-	 * @Description:Search For Patient
-	 * @throws Exception
-	 */
 
 	public void searchForPatient() throws Exception {
 		IHGUtil.PrintMethodName();
@@ -374,10 +330,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		Thread.sleep(10000);
 	}
 
-	/**
-	 * @Description:Set Patient Transaction Fields
-	 * @throws Exception
-	 */
 	public void setPatientTransactionFields() throws Exception {
 		IHGUtil.PrintMethodName();
 		setLocation();
@@ -407,7 +359,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		payBillButton.click();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		submitPaymentButton.click();
-
 	}
 
 	public void searchForPatient(String fName, String lName) throws Exception {
@@ -424,7 +375,36 @@ public class PayMyBillOnlinePage extends BasePageObject {
 				"//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(),'" + lName + ", " + fName + "')]"))
 				.click();
 		Thread.sleep(8000);
+	}
 
+	public void setTheEnrollmentDate() {
+		IHGUtil.PrintMethodName();
+		Select sec;
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("d/MMMM/yyyy");
+		String strDate = formatter.format(date);
+		formatter = new SimpleDateFormat("d-MMMM-yyyy");
+		strDate = formatter.format(date);
+		System.out.println("Date Format with dd MM yyyy : " + strDate);
+		String dateParts[] = strDate.split("-");
+		String day = dateParts[0];
+		String month = dateParts[1];
+		String year = dateParts[2];
+		sec = new Select(enrolmentdateMonth);
+		sec.selectByVisibleText(month.substring(0, 3));
+		sec = new Select(enrolmentdateDay);
+		sec.selectByVisibleText(day);
+		sec = new Select(enrolmentdateYear);
+		sec.selectByVisibleText(year);
+
+		sec = new Select(enrolmentEndDateMonth);
+		sec.selectByVisibleText(month.substring(0, 3));
+		sec = new Select(enrolmentEndDateDay);
+		sec.selectByVisibleText(day);
+		sec = new Select(enrolmentEndDateYear);
+		sec.selectByVisibleText(year);
 	}
 
 	public void setTransactionsForOnlineBillPayProcess(String location, String provider, String acctNum, String amount,
@@ -489,7 +469,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		submitPaymentButton.click();
 		Thread.sleep(5000);
-
 	}
 
 	public void voidPayment(String voidComment) throws Exception {
@@ -527,7 +506,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 			return transactionsList.getText().contains("Void") && transactionsList.getText().contains("$0.00");
 		} else
 			return false;
-
 	}
 
 	public boolean isRefundTransactionPresent() {
@@ -538,7 +516,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 			return transactionsList.getText().contains("Refund") && transactionsList.getText().contains("$10.00");
 		} else
 			return false;
-
 	}
 
 	public void setTransactionsForBudgetPaymentPlan(String location, String provider, String acctNum, String amount,
@@ -605,7 +582,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		chooseProvider(provider);
 		payBillButton.click();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
-
 	}
 
 	public void setPrePaymentAmount(String prepayamount) {
@@ -678,8 +654,9 @@ public class PayMyBillOnlinePage extends BasePageObject {
 //				.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//td[span[contains(text(),'" + lName
 //						+ ", " + fName + "')]]/preceding-sibling::td"));
 		WebElement searchOption = driver
-				.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//td/span[contains(text(),'" + lName + ", " + fName + "')]/../preceding-sibling::td//a"));
-		
+				.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//td/span[contains(text(),'" + lName
+						+ ", " + fName + "')]/../preceding-sibling::td//a"));
+
 		IHGUtil.waitForElement(driver, 30, searchOption);
 		searchOption.click();
 		Thread.sleep(10000);
@@ -724,9 +701,9 @@ public class PayMyBillOnlinePage extends BasePageObject {
 			log("No previous card is displayed");
 		}
 	}
-	
+
 	public void setTransactionsForOnlineBillPayProcess(String location, String provider, String acctNum, String amount,
-			String cardHolderName, String cardNum, String cardTyp,String PaymentComment) throws Exception {
+			String cardHolderName, String cardNum, String cardTyp, String PaymentComment) throws Exception {
 		IHGUtil.PrintMethodName();
 		setLocation(location);
 		setPatientAccountNumber(acctNum);
@@ -744,11 +721,11 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, cardHolder);
 		cardHolder.clear();
 		cardHolder.sendKeys(cardHolderName);
-		
+
 		IHGUtil.waitForElement(driver, 40, cardNumber);
 		cardNumber.clear();
 		cardNumber.sendKeys(cardNum);
-		
+
 		IHGUtil.waitForElement(driver, 40, cardType);
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(cardType);
@@ -783,7 +760,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		chooseProvider(provider);
 		payBillButton.click();
-		
+
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		submitPaymentButton.click();
 	}

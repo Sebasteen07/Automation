@@ -532,7 +532,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		assertEquals(bookid_actual, bookid, "Book id is not matching with expected id");
-		assertEquals(displayname, propertyData.getProperty("displayname.book.pm.ng"), "Display name is wrong");
+		assertEquals(displayname, propertyData.getProperty("displayname01.book.pm.ng"), "Display name is wrong");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1068,6 +1068,15 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 	public void testResellerGET() throws IOException {
 		String patientId = propertyData.getProperty("patientid.pm.ng");
 		Response response = postAPIRequest.reseller(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid,
+				"/reseller/", patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testResellerSpanishGET() throws IOException {
+		String patientId = propertyData.getProperty("patientid.pm.ng");
+		Response response = postAPIRequest.reseller(baseurl, headerConfig.HeaderwithTokenES(accessToken), practiceid,
 				"/reseller/", patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);

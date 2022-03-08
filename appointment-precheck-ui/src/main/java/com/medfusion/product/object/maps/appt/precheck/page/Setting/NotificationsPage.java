@@ -35,7 +35,7 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@class='mf-body-header mf-appointments-header']/h1[text()='Notifications']")
 	private WebElement notificationTitle;
 
-	@FindBy(how = How.CSS, using = "div.notification-features-checkbox > div:nth-child(1) > input")
+	@FindBy(how = How.XPATH, using = "(//*[@class='features-checkbox'])[1]")
 	private WebElement broadcastMessagingCheckbox;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='off']")
@@ -590,17 +590,26 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.CSS, using = "div:nth-child(2) > div.gap > div > div:nth-child(3)")
 	private WebElement minutesTimeUnitTextForSMS;
 
-	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])")
-	private WebElement selectAllCheckinAppt;
-
 	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Check-In')]")
 	private WebElement checkinButton;
 
 	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
 	private WebElement selectOnePatient;
 
-	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
-	public List<WebElement> allAppointment;
+	@FindBy(how = How.XPATH, using = "(//input[@class='mf-notification-checkbox'])[2]")
+	private WebElement curbsideCheckinRemCheckbox;
+	
+	@FindBy(how = How.XPATH, using = "//*[text()='Appointment Method']")
+	private WebElement apptMethodtextInEmail;
+	
+	@FindBy(how = How.XPATH, using = "//textarea[@class='mf-form__input--text-area']")
+	private WebElement arrivalInstTextbox;
+	
+	@FindBy(how = How.XPATH, using = "//label[@class='number-of-characters']")
+	private WebElement numOfCharacter;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='language-tab']")
+	private WebElement arrivalConfirmMsg;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -1998,9 +2007,10 @@ public class NotificationsPage extends BasePageObject {
 	public void enterTimingAndTimingUnit(int pathIndex, String timing, String timingUnit) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		log("Select timing and timing unit for: " + timing);
-		driver.findElement(By.xpath("(//div[@class=' css-1hwfws3'])[" + pathIndex + "]")).click();
+		jse.executeScript("arguments[0].click();",
+				driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]")));
 		Actions action = new Actions(driver);
-		action.sendKeys(driver.findElement(By.xpath("(//div[@class=' css-1uccc91-singleValue'])[" + pathIndex + "]")),
+		action.sendKeys(driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]")),
 				timing).sendKeys(Keys.ENTER).build().perform();
 		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]")).clear();
 		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]"))
@@ -2153,12 +2163,6 @@ public class NotificationsPage extends BasePageObject {
 		return minutesTimeUnitTextForSMS.getText();
 	}
 
-	public void selectAllAppointment() throws InterruptedException {
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 5, selectAllCheckinAppt);
-		selectAllCheckinAppt.click();
-	}
-
 	public void checkingCheckinButton() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, checkinButton);
@@ -2184,41 +2188,172 @@ public class NotificationsPage extends BasePageObject {
 		return checkinButton.getText();
 	}
 
-	public int countOfCurbsideCheckinPatient() {
-		IHGUtil.PrintMethodName();
-		int patientSize = allAppointment.size();
-		log("Size of checkin Appointments " + patientSize);
-		return patientSize - 1;
-	}
-
-	public void selectTwoPatient() throws InterruptedException {
-		driver.navigate().refresh();
-		Thread.sleep(10000);
-		IHGUtil.PrintMethodName();
-		int patientSize = allAppointment.size();
-		for (int i = 1; i <= patientSize - 9; i++) {
-			WebElement twoPatient = allAppointment.get(i);
-			twoPatient.click();
-		}
-	}
-	
 	public String enterDays() {
 		Random random = new Random();
 		int randamNo = random.nextInt(400);
 		return Appointment.days = String.valueOf(randamNo);
 	}
-	
+
 	public String enterHours() {
 		Random random = new Random();
 		int randamNo = random.nextInt(23);
 		return Appointment.hours = String.valueOf(randamNo);
-		
 	}
-	
+
 	public String enterMinutes() {
 		Random random = new Random();
-		int randamNo = random.nextInt(59);
+		int randamNo = random.nextInt(49) + 10;
 		return Appointment.minutes = String.valueOf(randamNo);
+	}
+
+	public void disableCurbsideCheckinRemCheckbox() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, curbsideCheckinRemCheckbox);
+		boolean selected = curbsideCheckinRemCheckbox.isSelected();
+		if (selected) {
+			curbsideCheckinRemCheckbox.click();
+			log("Curbside checkin reminder checkbox disabled");
+		} else if (!selected) {
+			log("Curbside checkin reminder checkbox is already Enabled");
+		}
+		Thread.sleep(10000);
+	}
+
+	public void enableCurbsideCheckinRemCheckbox() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, curbsideCheckinRemCheckbox);
+		boolean selected = curbsideCheckinRemCheckbox.isSelected();
+		if (selected) {
+			log("Curbside checkin reminder checkbox is already Enabled");
+		} else if (!selected) {
+			curbsideCheckinRemCheckbox.click();
+			log("Curbside checkin reminder checkbox Enabled");
+		}
+		Thread.sleep(10000);
+	}
+
+	public void braodcastMessagingCheckbox() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, broadcastMessagingCheckbox);
+		boolean selected = broadcastMessagingCheckbox.isSelected();
+		if (selected) {
+			log("Broadcast Messaging checkbox already Enabled");
+		} else if (!selected) {
+			broadcastMessagingCheckbox.click();
+			log("Broadcast Messaging checkbox is Enabled");
+		}
+		Thread.sleep(10000);
+	}
+
+	public boolean visibilityOfTiming(int pathIndex) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+		visibility=driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]")).isDisplayed();
+			log("Timing is displayed");
+			return visibility;
+		} catch (NoSuchElementException e) {
+			log("Timing is displayed is not displayed");
+			return visibility;
+		}
+	}
+
+	public boolean visibilityOfTimingUnit(int pathIndex) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+		visibility=driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]")).isDisplayed();
+			log("Timing is displayed");
+			return visibility;
+		} catch (NoSuchElementException e) {
+			log("Timing is displayed is not displayed");
+			return visibility;
+		}
+	}
+
+	public String getTextTiming(int pathIndex) {
+		IHGUtil.PrintMethodName();
+		return driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]"))
+				.getText();
+	}
+
+	public String getTimingUnit(int pathIndex) {
+		IHGUtil.PrintMethodName();
+		return driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]"))
+				.getAttribute("value");
+	}
+
+	public String enterUnlimitedDays() {
+		Random random = new Random();
+		int randamNo = random.nextInt(1000000000);
+		return Appointment.days = String.valueOf(randamNo);
+	}
+	
+	public void clearArrivalInstTextbox() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, arrivalInstTextbox);
+		arrivalInstTextbox.sendKeys(Keys.chord(Keys.CONTROL,"a"));
+		arrivalInstTextbox.sendKeys(Keys.BACK_SPACE);
+	}
+	public void enterTextInArrivalInstTextbox(String message) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, arrivalInstTextbox);
+		arrivalInstTextbox.sendKeys(message);
+	}
+
+	public boolean visibilityOfAddButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 60, addButtonInEdit);
+		boolean visibility = false;
+		try {
+			visibility=addButtonInEdit.isDisplayed();
+			log("Add button is displayed");
+		} catch (NoSuchElementException e) {
+			log("Add button is not displayed");
+		}
+		return visibility;
+	}
+	
+	public String getApptReminderTextInEmail() {
+		IHGUtil.waitForElement(driver, 10, apptReminderInPreviewPage);
+		apptReminderInPreviewPage.isDisplayed();
+		log("Appointment reminder text is displayed.");
+		return apptReminderInPreviewPage.getText();
+	}
+	
+	public String getApptMtdTextInEmail() {
+		IHGUtil.waitForElement(driver, 10, apptReminderInPreviewPage);
+		apptReminderInPreviewPage.isDisplayed();
+		log("Appointment reminder text is displayed.");
+		return apptMethodtextInEmail.getText();
+	}
+	public String getMaxLengthChar() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, numOfCharacter);
+		return numOfCharacter.getText();
+	}
+	
+	public boolean visibilityOfArrivalInstTextBox() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+		visibility=additionalArrivalInstructionsTextBoxText.isDisplayed();
+			log("Additional Arrival Instructions TextBox is displayed");
+			return visibility;
+		} catch (NoSuchElementException e) {
+			log("Additional Arrival Instructions TextBox is not displayed");
+			return visibility;
+		}
+	}
+	
+	public boolean visibilityOfArrivalConfirmMsg() {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		IHGUtil.waitForElement(driver, 5, arrivalConfirmMsg);
+		visibility=arrivalConfirmMsg.isDisplayed();
+			log("Arrival confirmation message is displayed");
+			return visibility;
 		
 	}
+
 }

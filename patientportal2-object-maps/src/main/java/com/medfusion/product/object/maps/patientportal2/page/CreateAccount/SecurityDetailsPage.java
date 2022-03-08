@@ -1,8 +1,6 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
-import com.medfusion.pojos.Patient;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.pojos.Patient;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
@@ -78,6 +77,15 @@ public class SecurityDetailsPage extends MedfusionPage {
 		@FindBy(how = How.XPATH, using = "//span[@id = 'userid_error_invalid'][contains(text(),'The user name you entered is already taken. Enter another user name.')]")
 		private WebElement usernameTakenError;
 		
+		@FindBy(how = How.XPATH, using = "//*[@id='agree_terms']//a[2]")
+		private WebElement termsOfServiceLink;
+		
+		@FindBy(how = How.XPATH, using = "//div[@id='viewModalContentNPPTOS']")
+		private WebElement termsOfServicePopup;
+		
+		@FindBy(how = How.XPATH, using = "//button[@type='button']")
+		private WebElement popupCloseBtn;
+		
 	    public SecurityDetailsPage(WebDriver driver) {
 				super(driver);
 		}
@@ -102,6 +110,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber,
 				int statementPreference) throws InterruptedException {
+			Thread.sleep(5000);
 				IHGUtil.PrintMethodName();
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
 				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
@@ -109,6 +118,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 				log("Clicking finish btn");
 				buttonFinishStep.click();
 				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
+				Thread.sleep(10000);
 				handleWeNeedToConfirmSomethingModal();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
@@ -120,14 +130,14 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		private void fillAccountDetails(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber, int statementPreference) throws InterruptedException {
 				log("Setting User Name and Password as " + userId + "/" + password);
+				Thread.sleep(1000);
 				inputUserId.sendKeys(userId);
 				inputPassword.sendKeys(password);
-
+				IHGUtil.waitForElement(driver, 3, selectSecretQuestion);
 				selectSecretQuestion.sendKeys(secretQuestion);
-
 				inputSecretAnswer.sendKeys(secretAnswer);
-				Thread.sleep(3000);//To hold the execution for few sec
 				scrollAndWait(0,300,2000);
+				IHGUtil.waitForElement(driver, 3, inputPhone1);
 				inputPhone1.sendKeys(phoneNumber.substring(0, 3));
 				inputPhone2.sendKeys(phoneNumber.substring(3, 6));
 				inputPhone3.sendKeys(phoneNumber.substring(6, 10));
@@ -182,4 +192,24 @@ public class SecurityDetailsPage extends MedfusionPage {
 				}
 				return false;
 		}
+
+		public boolean isTermsOfServicePopupDisplayed() throws InterruptedException {
+			Thread.sleep(3000);//To hold the execution for few sec
+			scrollAndWait(0, 1500, 2000);
+			log("Clicking on Terms Of Service link");
+			termsOfServiceLink.click();
+			IHGUtil.waitForElement(driver, 60, termsOfServicePopup);
+			if(termsOfServicePopup.isDisplayed())
+			{
+				log(" Terms of Service popup is displayed");
+				popupCloseBtn.click();
+				return true;
+			}
+			else
+			{
+				log(" Terms of Service popup is not displayed");
+				return false;
+			}
+					
 		}
+	}

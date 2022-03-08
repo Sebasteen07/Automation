@@ -1,12 +1,16 @@
 package com.medfusion.product.object.maps.appt.precheck.page.CurbsideCheckIn;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -14,6 +18,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 
 public class CurbsideCheckInPage extends BasePageObject {
 
@@ -136,6 +141,56 @@ public class CurbsideCheckInPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//*[@class='react-datepicker__year-select']")
 	private WebElement years;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])")
+	private WebElement selectAllCheckinAppt;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
+	public List<WebElement> allAppointment;
+	 
+	@FindBy(how = How.XPATH, using = "//*[@class=\"mf-arrivals-input-text\"]")
+	public WebElement otherMessageTextbox;
+	
+	@FindBy(how = How.XPATH, using = "//input[@class='mf-arrivals-input-text']")
+	public WebElement sendButtonForOtherTextMsg;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
+	private WebElement curbsideCheckinLocationDropDown;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text() ,'River Oaks Main')]")
+	private WebElement selectLocationinDropDown;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='navbar-right-arrivals-number']")
+	private WebElement notificationCount;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(), 'River Oaks Main')]")
+	private WebElement selectLocationL1inDropDown;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
+	private WebElement clearLocationTextbox;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[3]")
+	private WebElement clearProviderTextbox;
+	
+	CommonMethods commonMethods = new CommonMethods();
+
+	@FindBy(how=How.XPATH, using ="//div[contains(text(), 'USA')]")
+	private WebElement selectLocationL2inDropDown;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
+	private WebElement removeIconforLocationInCurbsidecheckin;
+	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[2]")
+	private WebElement selectPatientscheckbox;
+	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[3]")
+	private WebElement selectPatientscheckbox2;
+	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[4]")
+	private WebElement selectPatientscheckbox3;
+	
+	@FindAll({ @FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::div")})
+	public List<WebElement> selectPatients;
 	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
@@ -662,4 +717,237 @@ public class CurbsideCheckInPage extends BasePageObject {
 	    
 	}
 	
+	public int countOfCurbsideCheckinPatient() {
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		log("Size of checkin Appointments " + patientSize);
+		return patientSize - 1;
+	}
+
+	public void selectTwoPatient() throws InterruptedException {
+		driver.navigate().refresh();
+		Thread.sleep(10000);
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		for (int i = 1; i <= patientSize - 9; i++) {
+			WebElement twoPatient = allAppointment.get(i);
+			twoPatient.click();
+		}
+	}
+	
+	public void selectAllAppointment() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, selectAllCheckinAppt);
+		selectAllCheckinAppt.click();
+	}
+	
+	public void deselectAllAppointment() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, selectAllCheckinAppt);
+		selectAllCheckinAppt.click();
+	}
+	
+	public void selectMultiplePatients(int selectPatients) throws InterruptedException {
+		driver.navigate().refresh();
+		Thread.sleep(10000);
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		log("Total patient size: "+patientSize);
+		for (int i = 1; i <= patientSize - selectPatients; i++) {
+			WebElement patients = allAppointment.get(i);
+			patients.click();
+		}
+	}
+	
+	public boolean getVisibilityOfMultiplePatient(int deselectPatients) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		boolean visibility = false;
+		log("Total patient size: "+patientSize);
+		for (int i = 1; i <= patientSize - deselectPatients; i++) {
+			WebElement patients = allAppointment.get(i);
+			visibility = patients.isSelected();
+		}
+		return visibility;
+	}
+	
+	public boolean getVisibilityOfAllCheckbox() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectAllCheckinAppt);
+		boolean visibility = false;
+		visibility = selectAllCheckinAppt.isSelected();
+		return visibility;
+	}
+
+	
+	public void selectMessageFromDropdown(String patientId,String message) {
+		IHGUtil.PrintMethodName();
+		WebElement selectedPatientDropdown = driver.findElement(By.xpath("//select[@id='" + patientId + "']"));
+		Select selectedDropdown = new Select(selectedPatientDropdown);
+		selectedDropdown.selectByVisibleText(message);
+	}
+	
+	public void clickOnSendButtonOfSelectedPatient(String patientId) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		WebElement selectedPatientSendButton= driver.findElement(By.xpath("//select[@id='"+ patientId +"']/following-sibling::button"));
+		selectedPatientSendButton.click();
+		Thread.sleep(5000);
+	}
+	
+	public String getSentMessageSelectedPatient(String patientId){
+		IHGUtil.PrintMethodName();
+		WebElement getSentMessage= driver.findElement(By.xpath("//select[@id='"+ patientId +"']/following-sibling::div/p"));
+		return getSentMessage.getText();
+	}
+	
+	public void clickOnCheckInButton(){
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, checkInButton);
+		jse.executeScript("arguments[0].click();", checkInButton);
+	}
+	
+	public void selectOtherOptionFromDropdown(String patientId,String other) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		WebElement message = driver.findElement(By.xpath("//select[@id='"+patientId+"']"));
+		IHGUtil.waitForElement(driver, 10, message);
+		log("Select message from drodown");
+		Select selectMessage = new Select(message);
+		selectMessage.selectByVisibleText(other);
+	}
+		public String sendCustomizedMessage(String patientId,String CustomizedMsg) throws InterruptedException {
+		log("Click on send button");
+		otherMessageTextbox.sendKeys(CustomizedMsg);
+		driver.findElement(By.xpath("//select[@id='" + patientId + "']/following-sibling::button[text()='Send']")).click();
+		Thread.sleep(5000);
+		WebElement lastSendMessage= driver.findElement(By.xpath("//select[@id='" + patientId + "']/following-sibling::div/p"));
+		return lastSendMessage.getText();
+	}
+	
+		public void selectLocationinDropDown() {
+			IHGUtil.waitForElement(driver, 5, selectLocationinDropDown);
+			selectLocationinDropDown.click();
+	}
+		public void clickOncurbsideCheckinLocationDropDown() {
+			IHGUtil.waitForElement(driver, 5, curbsideCheckinLocationDropDown);
+			curbsideCheckinLocationDropDown.click();
+	}
+		
+		public void selectLocationL1inDropDown() {
+			IHGUtil.waitForElement(driver, 5, selectLocationL1inDropDown);
+			selectLocationL1inDropDown.click();
+	}
+		
+		public void enterLocationName(String locationName) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, locationFilter);
+			Actions action = new Actions(driver);
+			commonMethods.highlightElement(locationFilter);
+			action.sendKeys(locationFilter, locationName).sendKeys(Keys.ENTER).build().perform();
+			Thread.sleep(10000);
+		}
+		
+		public int getPatientsCount() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			int patientSize = allAppointment.size();
+			return patientSize-1;
+		}
+		
+		public void clearLocationFilterTextbox() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, clearLocationTextbox);
+			clearLocationTextbox.click();
+			driver.navigate().refresh();
+			Thread.sleep(5000);
+		}
+		
+		public void enterProviderName(String providerName) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, providerField);
+			Actions action = new Actions(driver);
+			commonMethods.highlightElement(providerField);
+			action.sendKeys(providerField, providerName).sendKeys(Keys.ENTER).build().perform();
+			Thread.sleep(5000);
+		}
+		
+		public void clearProviderFilterTextbox() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, clearProviderTextbox);
+			jse.executeScript("arguments[0].click();", clearProviderTextbox);
+			driver.navigate().refresh();
+			Thread.sleep(5000);
+		}
+	
+		public void selectLocationL2inDropDown() {
+			IHGUtil.waitForElement(driver, 5, selectLocationL2inDropDown);
+			selectLocationL2inDropDown.click();
+			
+	}
+		
+		public void removeIconforLocationInCurbsidecheckin() {
+			IHGUtil.waitForElement(driver, 5, removeIconforLocationInCurbsidecheckin);
+			jse.executeScript("arguments[0].click();", removeIconforLocationInCurbsidecheckin);
+			
+	}
+		
+		public void selectPatientscheckbox() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox);
+			selectPatientscheckbox.click();
+		}
+		
+		public void selectPatientscheckboxwithTimerOn() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox);
+			selectPatientscheckbox.click();
+			
+		}
+		
+		public boolean visibilityofselectPatientscheckbox() {
+			IHGUtil.waitForElement(driver, 10, selectPatientscheckbox);
+			if (selectPatientscheckbox.isSelected()) {
+				log("patient is selected");
+				return true;
+			} else {
+				log("patient is not selected");
+				return false;
+			}
+		}
+		
+		public void selectPatientscheckbox2() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox2);
+			selectPatientscheckbox2.click();
+		}
+		
+		public void selectPatientscheckbox3() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox3);
+			selectPatientscheckbox3.click();
+		}
+		
+		public boolean visibilityofselectPatientscheckbox2() {
+			IHGUtil.waitForElement(driver, 10, selectPatientscheckbox2);
+			if (selectPatientscheckbox.isSelected()) {
+				log("patient 2 is selected");
+				return true;
+			} else {
+				log("patient 2 is not selected");
+				return false;
+			}
+		}
+		
+		public boolean visibilityofselectPatientscheckbox3() {
+			IHGUtil.waitForElement(driver, 10, selectPatientscheckbox3);
+			if (selectPatientscheckbox.isSelected()) {
+				log("patient 3 is selected");
+				return true;
+			} else {
+				log("patient 3 is not selected");
+				return false;
+			}
+		}
+		
+		public String getPatientsFromCurbside(String patientId, String apptId, int patientNo) {
+			IHGUtil.PrintMethodName();
+			WebElement patient = selectPatients.get(patientNo);
+			String getPatient = patient.getText();
+			return getPatient;
+		}
+		
 }

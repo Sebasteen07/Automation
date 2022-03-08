@@ -1,4 +1,4 @@
-//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page;
 
 import org.openqa.selenium.WebDriver;
@@ -73,7 +73,7 @@ public class PracticeHomePage extends BasePageObject {
 
 	@FindBy(xpath = ".//a[contains(@href, 'home.vcs')]")
 	private WebElement virtualCardSwiper;
-	
+
 	@FindBy(linkText = "Patient Search")
 	private WebElement patientSearchLinkText;
 
@@ -82,7 +82,7 @@ public class PracticeHomePage extends BasePageObject {
 
 	@FindBy(linkText = "Quick Send")
 	private WebElement quickSendLinkText;
-	
+
 	@FindBy(linkText = "Build a Message")
 	private WebElement buildaMessageLinkText;
 
@@ -108,11 +108,6 @@ public class PracticeHomePage extends BasePageObject {
 		super(driver);
 	}
 
-	/**
-	 * Gives indication of whether expected elements are found on the home page.
-	 * 
-	 * @return true or false
-	 */
 	public boolean isHomePageLoaded() {
 		IHGUtil.PrintMethodName();
 
@@ -126,12 +121,6 @@ public class PracticeHomePage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Will logout the staff member.
-	 * 
-	 * @return the practice login page
-	 * @see PracticeLoginPage
-	 */
 	public PracticeLoginPage logOut() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setDefaultFrame(driver);
@@ -140,15 +129,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, PracticeLoginPage.class);
 	}
 
-	/**
-	 * Will take the staff member to the Ask A Staff search page where the staff
-	 * member can search questions that need processing.
-	 * 
-	 * @return the Ask A Staff search page
-	 * @see AskAStaffSearchPage
-	 * 
-	 * @throws Exception
-	 */
 	public AskAStaffSearchPage clickAskAStaffTab() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, askAStaffTab);
@@ -166,15 +146,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, AskAStaffSearchPage.class);
 	}
 
-	/**
-	 * Will take the staff member to the Online Bill Pay search page where the staff
-	 * member can search payments that need processing.
-	 * 
-	 * @return the Online Bill Pay search page
-	 * @see OnlineBillPaySearchPage
-	 * 
-	 * @throws Exception
-	 */
 	public OnlineBillPaySearchPage clickOnlineBillPayTab() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, onlineBillPay);
@@ -192,15 +163,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, OnlineBillPaySearchPage.class);
 	}
 
-	/**
-	 * Will take the staff member to the Online Bill Pay search page where the staff
-	 * member can search payments that need processing.
-	 * 
-	 * @return the Online Bill Pay search page
-	 * @see OnlineBillPaySearchPage
-	 * 
-	 * @throws Exception
-	 */
 	public PatientActivationPage clickPatientactivationTab() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, patientactivation);
@@ -218,15 +180,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, PatientActivationPage.class);
 	}
 
-	/**
-	 * Will take the staff member to the Online Bill Pay search page where the staff
-	 * member can search payments that need processing.
-	 * 
-	 * @return the Online Bill Pay search page
-	 * @see OnlineBillPaySearchPage
-	 * 
-	 * @throws Exception
-	 */
 	public VirtualCardSwiperPage clickVirtualCardSwiperTab() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, virtualCardSwiperTab);
@@ -243,15 +196,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, VirtualCardSwiperPage.class);
 	}
 
-	/**
-	 * Will take the staff member to the Online Bill Pay search page where the staff
-	 * member can search payments that need processing.
-	 * 
-	 * @return the Online Bill Pay search page
-	 * @see OnlineBillPaySearchPage
-	 * 
-	 * @throws Exception
-	 */
 	public PatientActivationPage clickFileSharingTab() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, fileSharingTab);
@@ -267,15 +211,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, PatientActivationPage.class);
 	}
 
-	/**
-	 * Will take the staff member to the Rx Renewal Pay search page where the staff
-	 * member can search rx removals that need processing.
-	 * 
-	 * @return the Online Bill Pay search page
-	 * @see OnlineBillPaySearchPage
-	 * 
-	 * @throws Exception
-	 */
 	public RxRenewalSearchPage clickonRxRenewal() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, rxRenewal);
@@ -293,15 +228,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, RxRenewalSearchPage.class);
 	}
 
-	/**
-	 * Will taky the staff member to the Referrals page where the staff member can
-	 * work with referrals
-	 * 
-	 * @return the Referrals page
-	 * @see referrals
-	 * 
-	 * @throws Exception
-	 */
 	public ReferralsPage clickOnReferrals() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElementInDefaultFrame(driver, 30, referralsTab);
@@ -309,14 +235,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, ReferralsPage.class);
 	}
 
-	/**
-	 * Will take the staff member to the Appt Request search page where the staff
-	 * member can search questions that need processing.
-	 * 
-	 * @return the Appt Request search page
-	 * 
-	 * @throws Exception
-	 */
 	public ApptRequestSearchPage clickApptRequestTab() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, apptRequestTab);
@@ -387,11 +305,6 @@ public class PracticeHomePage extends BasePageObject {
 
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Desc : To Navigate to Manage Treatment Plan Page.
-	 * @return
-	 */
 	public TreatmentPlansPage clickOnManageTreatmentPlan() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElementInDefaultFrame(driver, 30, treatmentPlanTab);
@@ -399,11 +312,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, TreatmentPlansPage.class);
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Desc : To Navigate to Virtual Card Swiper Page.
-	 * @return
-	 */
 	public VirtualCardSwiperPage clickOnVirtualCardSwiper() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, virtualCardSwiper);
@@ -411,10 +319,6 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, VirtualCardSwiperPage.class);
 	}
 
-	/**
-	 * @Description:Click Patient Search Link
-	 * @return
-	 */
 	public PatientSearchPage clickPatientSearchLink() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElementInDefaultFrame(driver, 20, patientSearchLinkText);
@@ -423,10 +327,6 @@ public class PracticeHomePage extends BasePageObject {
 
 	}
 
-	/**
-	 * @Description:Click Patient Messaging Tab
-	 * @return
-	 */
 	public PatientMessagingPage clickPatientMessagingTab() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElementInDefaultFrame(driver, 20, patientMessaging);
@@ -434,12 +334,8 @@ public class PracticeHomePage extends BasePageObject {
 		IHGUtil.waitForElementInDefaultFrame(driver, 10, quickSendLinkText);
 		quickSendLinkText.click();
 		return PageFactory.initElements(driver, PatientMessagingPage.class);
-
 	}
-	/**
-	 * @Description:Click Patient Messaging Tab And BuildMessage Link
-	 * @return
-	 */
+
 	public PatientMessagingPage clickPatienBuildtMessagingTab() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElementInDefaultFrame(driver, 20, patientMessaging);
@@ -447,13 +343,8 @@ public class PracticeHomePage extends BasePageObject {
 		IHGUtil.waitForElementInDefaultFrame(driver, 10, buildaMessageLinkText);
 		buildaMessageLinkText.click();
 		return PageFactory.initElements(driver, PatientMessagingPage.class);
-
 	}
 
-	/**
-	 * @Description:Click Make Payment For Patient
-	 * @return
-	 */
 	public PayMyBillOnlinePage clickMakePaymentForPatient() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElementInDefaultFrame(driver, 20, onlineBillPay);
@@ -461,7 +352,6 @@ public class PracticeHomePage extends BasePageObject {
 		IHGUtil.waitForElementInDefaultFrame(driver, 10, makePaymentForPatient);
 		makePaymentForPatient.click();
 		return PageFactory.initElements(driver, PayMyBillOnlinePage.class);
-
 	}
 
 	public AgeOutReportPage clickFamilyManagementTab() {
@@ -469,7 +359,6 @@ public class PracticeHomePage extends BasePageObject {
 		IHGUtil.waitForElementInDefaultFrame(driver, 20, familyManagement);
 		familyManagement.click();
 		return PageFactory.initElements(driver, AgeOutReportPage.class);
-
 	}
 
 	public void budgetPaymentPlanSearch() {

@@ -19,7 +19,7 @@ public class PSSNewPatient {
 		appointment.setPrimaryNumber(randomNumbers(10));
 		appointment.setZipCode(PSSConstants.ZIP);
 		appointment.setFirstName("firstName" + timeStamp);
-		String email = firstName + timeStamp + "@mailinator.com";
+		String email = firstName + timeStamp + "@yopmail.com";
 		appointment.setEmail(email);
 		return appointment;
 	}

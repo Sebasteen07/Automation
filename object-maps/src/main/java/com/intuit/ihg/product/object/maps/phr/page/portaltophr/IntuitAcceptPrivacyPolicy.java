@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page.portaltophr;
 
 import org.openqa.selenium.WebDriver;
@@ -8,8 +9,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
-
-
 
 public class IntuitAcceptPrivacyPolicy extends BasePageObject {
 
@@ -22,14 +21,8 @@ public class IntuitAcceptPrivacyPolicy extends BasePageObject {
 
 	public IntuitAcceptPrivacyPolicy(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * Accept the terms and condition from phr side
-	 * 
-	 * @return
-	 */
 	public PhrHomePage acceptIntuitTermsAndCondition() {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();

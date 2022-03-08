@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.home;
 
 import java.util.List;
@@ -12,12 +13,6 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 6/10/2013
- * @Description :- Page Object for SiteGen AdminHomePage
- * @Note :if you log in as a super user, you will land on this page
- */
 public class SiteGenAdminHomePage extends BasePageObject {
 
 	@FindBy(id = "grpName")
@@ -26,22 +21,11 @@ public class SiteGenAdminHomePage extends BasePageObject {
 	@FindBy(xpath = "//input[@value='Search']")
 	private WebElement searchButton;
 
-
-	/**
-	 * constructor for this Page
-	 * 
-	 * @param driver
-	 */
 	public SiteGenAdminHomePage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Desc : Search and navigate to the Practice(searchItem)
-	 * @param searchItem : Exact name of the practise
-	 */
 	public SiteGenPracticeHomePage NavigateToPracticeViaSearch(String searchItem) throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElementInDefaultFrame(driver, 30, searchField);

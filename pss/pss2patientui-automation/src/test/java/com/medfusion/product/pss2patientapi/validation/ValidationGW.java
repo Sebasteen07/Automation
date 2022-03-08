@@ -53,7 +53,7 @@ public class ValidationGW extends BaseTestNG {
 		propertyData = new PSSPropertyFileLoader();
 		apiVerification.responseTimeValidation(response);
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Required String parameter 'patientId' is not present",
+		assertEquals(jsonPath.get("message"), "Required request parameter 'patientId' for method parameter type String is not present",
 				"Incorrect Patient id");
 
 	}

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
 import java.util.ArrayList;
@@ -11,10 +12,6 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
-/**
- * 
- * @author Jan Tomasek ordinal numbers are indexes of elements on the page, numbered from 1
- */
 public class CustomFormPageSection extends BasePageObject {
 
 	private String sectionOrdinalString;
@@ -23,11 +20,6 @@ public class CustomFormPageSection extends BasePageObject {
 	private static final String ITEM_IDENTIFIER = SECTION_IDENTIFIER + "/ul/li[%d]";
 	private static final String METADATA_PATH = "/fieldset/div[@class='metadata']/ul/li";
 
-	/**
-	 * 
-	 * @param driver
-	 * @param sectionOrdinalString one of: 'first'/'second'/'third'
-	 */
 	public CustomFormPageSection(WebDriver driver, String sectionOrdinalString) {
 		super(driver);
 		this.sectionOrdinalString = sectionOrdinalString;
@@ -165,13 +157,6 @@ public class CustomFormPageSection extends BasePageObject {
 				.size();
 	}
 
-	/**
-	 * returns count of FUPs attached to specific answer
-	 * 
-	 * @param itemOrdinalNumber
-	 * @param answerOrdinalNumber
-	 * @return
-	 */
 	public int getCountOfFUPsOfAnswer(int itemOrdinalNumber, int answerOrdinalNumber) {
 		return driver
 				.findElements(
@@ -179,13 +164,6 @@ public class CustomFormPageSection extends BasePageObject {
 				.size();
 	}
 
-	/**
-	 * minimizes/maximizes FUP (by default they are maximized)
-	 * 
-	 * @param itemOrdinalNumber
-	 * @param answerOrdinalNumber
-	 * @throws InterruptedException
-	 */
 	public void toogleFUPs(int itemOrdinalNumber, int answerOrdinalNumber) throws InterruptedException {
 		driver.findElement(By.xpath(String.format(ITEM_IDENTIFIER, sectionOrdinalString, itemOrdinalNumber) + METADATA_PATH + "[" + answerOrdinalNumber
 				+ "]/img[contains(@class,'followUpAnswerToggle')]")).click();

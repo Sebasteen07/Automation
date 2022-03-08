@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.mu2.utils;
 
 import static org.testng.Assert.assertTrue;
@@ -41,14 +41,7 @@ import com.medfusion.common.utils.IHGUtil;
 public class UtilityFunctions {
 
 	public static List<String> eventList = new ArrayList<String>();
-
-	/**
-	 * Sends HTTP Get request and writes response into response.xml
-	 * 
-	 * @param strUrl
-	 * @param xmlFilePath
-	 * @throws IOException
-	 */
+	
 	public static void setupHttpGetRequest(String strUrl, String xmlFilePath) throws IOException {
 		IHGUtil.PrintMethodName();
 		String response = "";
@@ -89,12 +82,6 @@ public class UtilityFunctions {
 
 	}
 
-	/**
-	 * Reads the contents from an InputStream and captures them in a String
-	 * 
-	 * @param is InputStream object
-	 * @return String that contains the content read from InputStream
-	 */
 	public static String readResponse(InputStream is) {
 		IHGUtil.PrintMethodName();
 		StringBuilder response = new StringBuilder();
@@ -110,17 +97,6 @@ public class UtilityFunctions {
 		return response.toString();
 	}
 
-
-
-	/**
-	 * Get http response in xml format and check for VDT events in response xml
-	 * 
-	 * @param xmlFileName
-	 * @param event
-	 * @param resourceType
-	 * @param action
-	 * @return
-	 */
 	public static String FindEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID) {
 		IHGUtil.PrintMethodName();
 
@@ -161,7 +137,6 @@ public class UtilityFunctions {
 			ex.printStackTrace();
 		}
 		return ActionTimestamp;
-
 	}
 
 	private static String getValue(String tag, Element element) {
@@ -169,54 +144,23 @@ public class UtilityFunctions {
 		Node node = (Node) nodes.item(0);
 		return node.getNodeValue();
 	}
-
-
-
-	/**
-	 * Get the URL (the common part of it for all messages) switches from testcase and return the constructed URL
-	 * 
-	 * @return String that represents the URL
-	 */
+	
 	public static String getURL(String protocol, String host, String port, String apipath) {
 		IHGUtil.PrintMethodName();
 		return protocol + "://" + host + ":" + port + "/" + apipath;
 	}
 
-
-
-	/**
-	 * Get the URL (the common part of it for all messages) switches from testcase and return the constructed URL
-	 * 
-	 * @return String that represents the URL
-	 */
 	public static String getURL(String protocol, String host, String port, String apipath, String subject) {
 		IHGUtil.PrintMethodName();
 		return protocol + "://" + host + ":" + port + "/" + apipath + ":" + subject;
 	}
 
-
-	/**
-	 * Check for 200 response in Push API response.
-	 * 
-	 * @param response
-	 * @return
-	 */
-
 	public static boolean isSuccessfulResponse(HttpResponse response, String expectedResponse) {
-
 		if (response.getStatusLine().toString().equalsIgnoreCase(expectedResponse))
 			return true;
 		else
 			return false;
-
 	}
-
-
-	/**
-	 * Oauth Setup
-	 * 
-	 * @throws Exception
-	 */
 
 	public static void oauthSetup(String oAuthKeySStorePath, String oAuthProperty, String responsePath) throws Exception {
 		IHGUtil.PrintMethodName();
@@ -238,17 +182,6 @@ public class UtilityFunctions {
 			e.printStackTrace();
 		}
 	}
-
-
-	/**
-	 * 
-	 * @param xmlFileName
-	 * @param patientFirstName
-	 * @param patientLastName
-	 * @param action
-	 * @return
-	 * 
-	 */
 
 	public static boolean findPushEventsInResonseXML(String xmlFileName, String patientFirstName, String patientLastName, String action) {
 		boolean isEventPresent = false;
@@ -281,15 +214,6 @@ public class UtilityFunctions {
 		return isEventPresent;
 
 	}
-
-
-	/**
-	 * Generate Portal event time [GMT to EST]
-	 * 
-	 * @param actualTimeStamp
-	 * @throws ParseException
-	 * 
-	 */
 
 	public static String generateDate(String actualTimeStamp) throws ParseException {
 		long EventRecordedTimestamp = Long.parseLong(actualTimeStamp);

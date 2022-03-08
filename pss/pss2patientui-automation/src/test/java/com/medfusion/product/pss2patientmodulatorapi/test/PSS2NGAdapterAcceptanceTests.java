@@ -384,7 +384,6 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "id");
 		aPIVerification.responseKeyValidation(response, "name");
-		aPIVerification.responseKeyValidation(response, "displayName");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)

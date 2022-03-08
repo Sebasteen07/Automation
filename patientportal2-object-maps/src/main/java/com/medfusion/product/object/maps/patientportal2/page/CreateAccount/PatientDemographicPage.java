@@ -103,6 +103,18 @@ public class PatientDemographicPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//span[text()='Accounts for patients under 20 must be activated by the practice.']")
 	private WebElement hawaiiErrorMessage;
+	
+	@FindBy(how = How.ID, using = "phone1")
+	private WebElement lblPhone1;
+
+	@FindBy(how = How.ID, using = "phone1_exchange")
+	private WebElement lblPhone2;
+
+	@FindBy(how = How.ID, using = "phone1_number")
+	private WebElement lblPhone3;
+	
+	@FindBy(how = How.ID, using = "verifyPhoneButton")
+	private WebElement btnContinue;
 
 	public PatientDemographicPage(WebDriver driver) {
 		super(driver);
@@ -325,5 +337,13 @@ public class PatientDemographicPage extends MedfusionPage {
 		} else if (state.equals("Hawaii")) {
 			setStateHawaii.click();
 		}
+	}
+	
+	public void tryToVerifyPhonenumber(String phoneNumber) throws InterruptedException {
+		IHGUtil.waitForElement(driver, 60, lblPhone1);
+		lblPhone1.sendKeys(phoneNumber.substring(0, 3));
+		lblPhone2.sendKeys(phoneNumber.substring(3, 6));
+		lblPhone3.sendKeys(phoneNumber.substring(6, 10));
+		btnContinue.click();
 	}
 }

@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.rxrenewal;
 
 import static org.testng.Assert.assertEquals;
@@ -162,9 +162,6 @@ public class RxRenewalSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, RxRenewalDetailPage.class);
 	}
 
-	/**
-	 * @Description:Set The RxRenewal Fields
-	 */
 	public void setRxRenewalFields() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -175,7 +172,6 @@ public class RxRenewalSearchPage extends BasePageObject {
 		subject = createdTs + PracticeConstants.MESSAGE_SUBJECT;
 		setSubject.sendKeys(subject);
 		setSubjectBody.sendKeys(PracticeConstants.MESSAGE_BODY);
-
 	}
 
 	public void setRxRenewalFields(String user) {
@@ -188,13 +184,8 @@ public class RxRenewalSearchPage extends BasePageObject {
 		subject = createdTs + PracticeConstants.MESSAGE_SUBJECT + user;
 		setSubject.sendKeys(subject);
 		setSubjectBody.sendKeys(PracticeConstants.MESSAGE_BODY);
-
 	}
 
-	/**
-	 * @throws InterruptedException
-	 * @Description:Click on Process RxRenewal Button
-	 */
 	public void clickProcessRxRenewal() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -202,9 +193,6 @@ public class RxRenewalSearchPage extends BasePageObject {
 		Thread.sleep(2000);
 	}
 
-	/**
-	 * Verify Prescription Confirmation Section
-	 */
 	public void verifyPrescriptionConfirmationSection(String subject) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -215,12 +203,8 @@ public class RxRenewalSearchPage extends BasePageObject {
 		assertEquals(frequency.getText(), PracticeConstants.FREQUENCY);
 		assertEquals(subjectMessage.getText(), subject);
 		assertEquals(bodyMessage.getText(), PracticeConstants.MESSAGE_BODY);
-
 	}
 
-	/**
-	 * Set The Action Radio Button
-	 */
 	public void setActionRadioButton() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -229,20 +213,12 @@ public class RxRenewalSearchPage extends BasePageObject {
 		continueButton.click();
 	}
 
-	/**
-	 * Verify for Process Completed
-	 */
 	public void verifyProcessCompleted() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 		assertEquals(processingCompletedtxt.getText(), PracticeConstants.PROCESSING_COMPLETED_TEXT);
 	}
 
-	/**
-	 * 
-	 * @param value
-	 * @throws InterruptedException
-	 */
 	public void searchForRxRenewalToday(int value) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);

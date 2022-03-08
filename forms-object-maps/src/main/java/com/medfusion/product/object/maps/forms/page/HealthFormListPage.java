@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page;
 
 import java.io.IOException;
@@ -118,11 +118,6 @@ public class HealthFormListPage extends BasePageObject {
 		javascriptClick(logout);
 	}
 
-	/**
-	 * 
-	 * @param formName
-	 * @return string in format "x/y" which means x of y pages completed
-	 */
 	public String getInfoAboutFormCompletion(String formName) {
 		Pattern pattern = Pattern.compile(".+ completed (\\d) of (\\d) .+");
 		Matcher matcher = pattern.matcher(getFormInfo(formName));

@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.home;
 
 import java.util.concurrent.TimeUnit;
@@ -25,18 +25,11 @@ import com.intuit.ihg.product.object.maps.sitegen.page.permissionsAndPersonnelTy
 import com.intuit.ihg.product.object.maps.sitegen.page.personnel.ManageYourPersonnelPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.ManageYourPharmacies;
 import com.intuit.ihg.product.object.maps.sitegen.page.physicians.ManageYourPhysiciansPage;
-import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuti.ihg.product.object.maps.sitegen.page.medfusionadmin.PracticeInfoPage;
 import com.intuti.ihg.product.object.maps.sitegen.page.onlineBillPay.EstatementPage;
 import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 6/10/2013
- * @Description :- Page Object for SiteGen Practice HomePage
- * @Note :This is home page for practice
- */
 public class SiteGenPracticeHomePage extends BasePageObject {
 
 	@FindBy(how = How.CSS, using = "a.logoutlink > span")
@@ -83,32 +76,21 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	@FindBy(linkText = "Pharmacies")
 	private WebElement pharmacyLink;
-	
+
 	@FindBy(linkText = "Online Bill Pay")
 	private WebElement onlineBillPay;
-	
+
 	@FindBy(linkText = "eStatements")
 	private WebElement eStatementsLink;
-	
+
 	@FindBy(linkText = "Online Solutions")
 	private WebElement lnkOnlineSolutions;
 
-
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public SiteGenPracticeHomePage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 		IHGUtil.PrintMethodName();
 
@@ -122,27 +104,12 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Log out from site gen
-	 * @return SiteGenLoginPage
-	 * @throws InterruptedException
-	 * 
-	 */
-
 	public SiteGenLoginPage clicklogout() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, lnklogout);
 		return (clickLogout(driver, lnklogout));
 	}
-
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click on Link Locations
-	 * @return ManageYourLocationsPage
-	 * @throws InterruptedException
-	 */
-
+	
 	public ManageYourLocationsPage clickLnkLocations() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, lnkLocations);
@@ -150,13 +117,6 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, ManageYourLocationsPage.class);
 
 	}
-
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click on Link Physicians
-	 * @return ManageYourPhysiciansPage
-	 * @throws InterruptedException
-	 */
 
 	public ManageYourPhysiciansPage clickLnkPhysicians() throws InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -167,30 +127,23 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 			lnkPhysicians.click();
 		}
 		return PageFactory.initElements(driver, ManageYourPhysiciansPage.class);
-
 	}
-
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click on Link Permissions
-	 * @return ManageYourGroupPersonnelTypesPage
-	 * @throws InterruptedException
-	 */
+	
+	public PracticeInfoPage clickPracticeInformation() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, practiceInfoLink);		
+		practiceInfoLink.click();
+		return PageFactory.initElements(driver, PracticeInfoPage.class);
+	
+	}
 
 	public ManageYourGroupPersonnelTypesPage clickLnkPermissions() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, lnkPermissions);
 		lnkPermissions.click();
 		return PageFactory.initElements(driver, ManageYourGroupPersonnelTypesPage.class);
-
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click on Link InterfaceSetup
-	 * @return InterfaceAdministrationPage
-	 * @throws InterruptedException
-	 */
 	public InterfaceAdministrationPage clickLnkInterfaceSetup() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, lnkInterfaceSetup);
@@ -199,29 +152,12 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click on Link IntegrationEngine
-	 * @return ViewIntegrationsPage
-	 * @throws InterruptedException
-	 */
 	public ViewIntegrationsPage clickLnkIntegrationEngine() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, lnkIntegrationEngine);
 		lnkIntegrationEngine.click();
 		return PageFactory.initElements(driver, ViewIntegrationsPage.class);
-
 	}
-
-
-	/**
-	 * * @author Shanthala
-	 * 
-	 * @Desc:- click on Link Custom Form
-	 * @return ViewIntegrationsPage
-	 * @throws InterruptedException
-	 * 
-	 */
 
 	public CreateCustomForms clickCustomForms() throws Exception {
 
@@ -247,15 +183,8 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		}
 
 		return PageFactory.initElements(driver, CreateCustomForms.class);
-
 	}
 
-	/**
-	 * @author:bbinisha
-	 * @Desc: Navigating to Merchant Account List Page
-	 * @throws Exception
-	 * 
-	 */
 	public MerchantAccountPage clickOnMerchantAccountLink() throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(5000);
@@ -264,25 +193,13 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, MerchantAccountPage.class);
 	}
 
-
-
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click on Link IntegrationEngine
-	 * @return ViewIntegrationsPage
-	 * @throws InterruptedException
-	 */
 	public ManageYourPersonnelPage clickLnkPersonnelNonPhysicians() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, lnkPersonnelNonPhysicians);
 		lnkPersonnelNonPhysicians.click();
 		return PageFactory.initElements(driver, ManageYourPersonnelPage.class);
-
 	}
 
-	/**
-	 * @author bkrishnankutty Description : Navigate to DiscreteFormPage
-	 */
 	public DiscreteFormsList clickOnDiscreteForms() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, discreteFormsLink);
@@ -290,17 +207,6 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, DiscreteFormsList.class);
 	}
 
-
-	/**
-	 * * @author Shanthala
-	 * 
-	 * @Desc:- click on Link Custom Form
-	 * @return ViewIntegrationsPage
-	 * @throws InterruptedException
-	 * 
-	 */
-
-	// public DiscreteFormConfigurationUtilityPage clickLnkDiscreteForms() throws Exception {
 	public DiscreteFormsList clickLnkDiscreteForms() throws Exception {
 
 		log("Clicking on Discrete forms");
@@ -323,7 +229,6 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		}
 
 		return PageFactory.initElements(driver, DiscreteFormsList.class);
-
 	}
 
 	public String getPatientPortalUrl() {
@@ -331,15 +236,6 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		return patientPortalUrl.getAttribute("href");
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Generic method for logging out from site gen
-	 * @return SiteGenLoginPage
-	 * @param driver
-	 * @param logout
-	 * @return
-	 * @throws InterruptedException
-	 */
 	public SiteGenLoginPage clickLogout(WebDriver driver, WebElement logout) throws InterruptedException {
 
 		IHGUtil.PrintMethodName();
@@ -374,16 +270,15 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		pharmacyLink.click();
 		return PageFactory.initElements(driver, ManageYourPharmacies.class);
 	}
-	
+
 	public EstatementPage clickOnOnlineBillPay() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, onlineBillPay);
 		onlineBillPay.click();
 		eStatementsLink.click();
 		return PageFactory.initElements(driver, EstatementPage.class);
-		
 	}
-	
+
 	public ManageSolutionsPage clickOnOnlineSolutions() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, lnkOnlineSolutions);

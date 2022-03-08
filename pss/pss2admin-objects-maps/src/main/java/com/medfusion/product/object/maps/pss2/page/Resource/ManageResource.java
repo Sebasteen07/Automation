@@ -491,4 +491,10 @@ public class ManageResource extends PSS2MenuPage {
 		return selectedValue;
 	}
 
+	public void setLeadDay(String leadtimeDay) {
+		leadDay.clear();
+		leadDay.sendKeys(leadtimeDay);
+		appointmenttypeSave.click();
+
+	}
 }

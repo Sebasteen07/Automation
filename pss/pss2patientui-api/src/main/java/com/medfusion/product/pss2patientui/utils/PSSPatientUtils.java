@@ -2170,4 +2170,43 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		long diffDays = diff / (24 * 60 * 60 * 1000);
 		return diffDays;
 	}
+	
+	// This method will give you new time after time addition
+	public String addToTime(String myTime, int mintime) throws ParseException {
+
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+
+		Date d = df.parse(myTime);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(d);
+		cal.add(Calendar.MINUTE, mintime);
+		String newTime = df.format(cal.getTime());
+		return newTime;
+	}
+
+	public int ageCurrentmonths(String date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy");
+		LocalDate pdate = LocalDate.parse(date, formatter);
+		LocalDate now = LocalDate.now();
+		Period diff = Period.between(pdate, now);
+		int yearmonth = diff.getYears() * 12;
+		int month = yearmonth + diff.getMonths();
+		log("Total Month of patient from date of Birth is  " + month);
+		return month;
+
+	}
+
+	public long timeDifferance(Appointment testData,String endTimeBusinessHours) throws ParseException {
+		log("Bussiness Hour Endtime is  "+endTimeBusinessHours );
+		Calendar now = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		now.setTimeZone(time_zone);
+		String currenttime = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		Date time1 = format.parse(currenttime);
+		Date time2 = format.parse(endTimeBusinessHours);
+		long difference = time2.getTime() - time1.getTime();
+		log("Time Differnce is  " + difference);
+		return difference;
+	}
 }

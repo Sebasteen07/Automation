@@ -1,11 +1,10 @@
-// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2016-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.patientSearch;
 
 import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
-import org.apache.tools.ant.taskdefs.Sleep;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,10 +14,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.familyManagement.PatientTrustedRepresentativePage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
@@ -42,7 +39,7 @@ public class PatientSearchPage extends BasePageObject {
 
 	@FindBy(xpath = "//table[@class='searchForm']//input[@id='search_now']")
 	private WebElement searchForPatient;
-	
+
 	@FindBy(linkText = "Patient Search")
 	private WebElement patientSearchLinkText;
 
@@ -72,22 +69,22 @@ public class PatientSearchPage extends BasePageObject {
 
 	@FindBy(name = "submitted")
 	private WebElement updateEmail;
-	
+
 	@FindBy(xpath = "//input[@name='firstName']")
 	private WebElement editFirstName;
-	
+
 	@FindBy(xpath = "//input[@name='lastName']")
 	private WebElement editLastName;
-	
+
 	@FindBy(xpath = "//input[@checked]")
 	private WebElement checkedGender;
-	
+
 	@FindBy(xpath = "//input[@value = 1]")
 	private WebElement radioFemale;
-	
+
 	@FindBy(xpath = "//input[@value = 2]")
 	private WebElement radioMale;
-	
+
 	@FindBy(xpath = "//input[@name='member_zip']")
 	private WebElement inputZip;
 
@@ -119,37 +116,34 @@ public class PatientSearchPage extends BasePageObject {
 
 	@FindBy(xpath = "//*[@id='dashboard']/fieldset[1]/table/tbody/tr[7]/td[2]/a")
 	private WebElement editPatientID;
-	
+
 	@FindBy(xpath = "//input[@type='submit']")
 	private WebElement emailPasswordReset;
-	
+
 	@FindBy(linkText = "Invite New")
 	private WebElement lnkInviteNewTrustedRepresentative;
 
 	@FindBy(linkText = "Edit Access")
 	private WebElement lnkEditAccess;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'A trusted representative invitation has been sent')]")
 	private WebElement msgInviteTrustedRepresentative;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Trusted representative access has been updated')]")
 	private WebElement msgUpdateTrustedRepresentative;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),\"Duplicate Patient ID\")]")
 	private WebElement msgDuplicatePatientID;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),\"A not activated patient with the same Patient ID already exists. Please click\")]")
 	private WebElement msgErrorPatientCreation;
 
 	@FindBy(name = "patientid")
 	private WebElement txtPatientID;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'No Records were found')]")
 	private WebElement msgNoRecordsFound;
-	
-	/**
-	 * @Description:Set Patient First Name
-	 */
+
 	public void setFirstName() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, firstName);
@@ -157,9 +151,6 @@ public class PatientSearchPage extends BasePageObject {
 		firstName.sendKeys(PracticeConstants.PATIENT_FIRST_NAME);
 	}
 
-	/**
-	 * @Description:Set Patient Last Name
-	 */
 	public void setLastName() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, lastName);
@@ -167,9 +158,6 @@ public class PatientSearchPage extends BasePageObject {
 		lastName.sendKeys(PracticeConstants.PATIENT_LAST_NAME);
 	}
 
-	/**
-	 * @Description:Set Email
-	 */
 	public void setEmail() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, email);
@@ -177,9 +165,6 @@ public class PatientSearchPage extends BasePageObject {
 		email.sendKeys(PracticeConstants.PATIENT_EMAIL);
 	}
 
-	/**
-	 * @Description:Set Patient Search Fields
-	 */
 	public void setPatientSearchFields() {
 		IHGUtil.PrintMethodName();
 		setFirstName();
@@ -212,8 +197,9 @@ public class PatientSearchPage extends BasePageObject {
 		lastName.sendKeys(lName);
 		searchForPatient.click();
 	}
-	
-	public PatientDashboardPage modifiedPatientSearch(String fName, String lName, String uFName, String uLName ) throws InterruptedException {
+
+	public PatientDashboardPage modifiedPatientSearch(String fName, String lName, String uFName, String uLName)
+			throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		firstName.clear();
 		firstName.sendKeys(fName);
@@ -239,9 +225,9 @@ public class PatientSearchPage extends BasePageObject {
 			IHGUtil.waitForElement(driver, 30, patient);
 			patient.click();
 			return PageFactory.initElements(driver, PatientDashboardPage.class);
-			
+
 		}
-		
+
 	}
 
 	public void searchForPatientInPatientSearch(String email) {
@@ -284,7 +270,7 @@ public class PatientSearchPage extends BasePageObject {
 		emailUserName.click();
 		return PageFactory.initElements(driver, PatientDashboardPage.class);
 	}
-	
+
 	public PatientDashboardPage sendPasswordResetEmail() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, emailPasswordReset);
@@ -312,64 +298,62 @@ public class PatientSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, PatientDashboardPage.class);
 
 	}
-	
+
 	public String changeName(String fName, String lName, String uFName, String uLName) throws InterruptedException {
-		
+
 		IHGUtil.waitForElement(driver, 10, editFirstName);
-	    String currentFirstName = editFirstName.getAttribute("value");
-	    log(currentFirstName);
-	    if(currentFirstName.equals(fName)) {
-	    	editFirstName.clear();
-			Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
+		String currentFirstName = editFirstName.getAttribute("value");
+		log(currentFirstName);
+		if (currentFirstName.equals(fName)) {
+			editFirstName.clear();
+			Thread.sleep(1000); // Adding sleep, so that two actions doesn't overlap
 			editFirstName.sendKeys(uFName);
 			editLastName.clear();
-			Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
+			Thread.sleep(1000); // Adding sleep, so that two actions doesn't overlap
 			editLastName.sendKeys(uLName);
 			updateEmail.click();
 			return (uFName);
-	    }
-	    else {
-	    	editFirstName.clear();
-			Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
+		} else {
+			editFirstName.clear();
+			Thread.sleep(1000); // Adding sleep, so that two actions doesn't overlap
 			editFirstName.sendKeys(fName);
 			editLastName.clear();
 			Thread.sleep(1000);
 			editLastName.sendKeys(lName);
 			updateEmail.click();
-		    return(fName);
-	    }
-	
+			return (fName);
+		}
+
 	}
-	
+
 	public String changeGender() throws InterruptedException {
 		String val = checkedGender.getAttribute("Value");
 		IHGUtil.waitForElement(driver, 15, checkedGender);
-		if(Integer.parseInt(val) == 2) 
-		{
+		if (Integer.parseInt(val) == 2) {
 			radioFemale.click();
 			updateEmail.click();
-			return "Female" ;
-			
-		}else {
-				radioMale.click();
-				updateEmail.click();
-				return "Male";
+			return "Female";
+
+		} else {
+			radioMale.click();
+			updateEmail.click();
+			return "Male";
 		}
-		
+
 	}
-	
+
 	public String changeZip() throws InterruptedException {
 		String curZip = inputZip.getAttribute("value");
-		int updatedZip1=Integer.parseInt(curZip)+1;
+		int updatedZip1 = Integer.parseInt(curZip) + 1;
 		String updatedZip = Integer.toString(updatedZip1);
 
 		IHGUtil.waitForElement(driver, 15, inputZip);
 		inputZip.clear();
-		Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
+		Thread.sleep(1000); // Adding sleep, so that two actions doesn't overlap
 		inputZip.sendKeys(updatedZip);
 		updateEmail.click();
 		return updatedZip;
-		
+
 	}
 
 	public PatientDashboardPage changeEmailWithoutModify(String baseEmail) {
@@ -483,8 +467,7 @@ public class PatientSearchPage extends BasePageObject {
 		lnkEditAccess.click();
 		return PageFactory.initElements(driver, PatientTrustedRepresentativePage.class);
 	}
-	
-	
+
 	public boolean wasInviteTrustedRepresentativeSuccessful() {
 
 		try {
@@ -495,16 +478,16 @@ public class PatientSearchPage extends BasePageObject {
 			log("Invite TrustedRepresentative was unsuccessful");
 			return false;
 		}
-		
+
 	}
-	
+
 	public void searchForPatientWithPatientID(String id) {
 		IHGUtil.PrintMethodName();
 		firstName.clear();
 		this.txtPatientID.sendKeys(id);
 		searchForPatient.click();
 	}
-	
+
 	public boolean isNoRecordsFoundMsgDisplayed() {
 
 		try {
@@ -515,7 +498,7 @@ public class PatientSearchPage extends BasePageObject {
 			log("No records were found message is not displayed");
 			return false;
 		}
-		
+
 	}
 
 	public boolean isDuplicatePatientIDErrorDisplayed() {
@@ -529,7 +512,7 @@ public class PatientSearchPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 	public boolean isPatientCreationErrorDisplayed() {
 
 		try {
@@ -541,5 +524,5 @@ public class PatientSearchPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 }

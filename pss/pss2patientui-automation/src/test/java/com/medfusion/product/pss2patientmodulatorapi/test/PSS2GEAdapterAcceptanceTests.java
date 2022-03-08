@@ -280,8 +280,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
 		String msg = js.getString("message");
-		assertEquals(msg, "Required String parameter 'startDateTime' is not present");
-
+		assertTrue(msg.contains("Required"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -295,7 +294,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
 		String msg = js.getString("message");
-		assertEquals(msg, "Required String parameter 'patientId' is not present");
+		assertEquals(msg, "Required request parameter 'appointmentId' for method parameter type String is not present");
 
 	}
 
@@ -310,7 +309,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
 		String msg = js.getString("message");
-		assertEquals(msg, "Required String parameter 'appointmentId' is not present");
+		assertEquals(msg, "Required request parameter 'appointmentId' for method parameter type String is not present");
 
 	}
 	
