@@ -431,6 +431,15 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
 	public List<WebElement> allAppointment;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='title-text']")
+	private WebElement reminderLogsPopupTitle;
+	
+	@FindBy(how = How.XPATH, using = "//tbody/tr/td[2]")
+	private WebElement priorTypeEntry;
+	
+	@FindBy(how = How.XPATH, using = "//button[@id='closeReminderStatusesModal']")
+	private WebElement reminderLogsCloseBtn;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -746,6 +755,7 @@ public class AppointmentsPage extends BasePageObject {
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", jumpToNextPage);
 		log("Click on jump to page and move to second page");
 		jse.executeScript("arguments[0].click();", jumpToNextPage);
+		Thread.sleep(10000);
 		String pageNo = jumpToPage.getAttribute("value");
 		log("Scroll up");
 		jse.executeScript("arguments[0].scrollIntoView(true);", appointmentsTab);
@@ -1773,5 +1783,41 @@ public class AppointmentsPage extends BasePageObject {
 		log("patient id entered in patientid field");
 		Thread.sleep(2000);
 	}
+	
+	public void clickOnExpandForSelectedPatient(String patientId,String apptId) throws InterruptedException{
+		IHGUtil.PrintMethodName();
+		driver.navigate().refresh();
+		Thread.sleep(5000);
+        WebElement expandButton= driver.findElement(By.xpath(" //input[@id='select-"+patientId+"-"+apptId+"']/following::div[@class='expand-test']"));
+        expandButton.click();
+    }
+	
+	public String getPriorEntryTextForSelectedPatient(String patientId,String apptId,int indexPath) throws InterruptedException{
+    	IHGUtil.PrintMethodName();
+        WebElement viewAll= driver.findElement(By.xpath("(//input[@id='select-"+patientId+"-"+apptId+"']/following::div/a[text()='View all'])["+indexPath+"]"));
+        viewAll.click();
+        scrollAndWait(2000, -1000, 6000);
+        jse.executeScript("arguments[0].scrollIntoView(true);", reminderLogsPopupTitle);
+        return priorTypeEntry.getText();
+    }
+	
+	 public String  selectedPatientGetPriorEntryForEmail(String patientId,String apptId,int index) throws InterruptedException{
+			IHGUtil.PrintMethodName();
+	        WebElement none= driver.findElement(By.xpath("(//input[@id='select-"+patientId+"-"+apptId+"']/following::div[text()='None'])["+index+"]"));
+	        return none.getText();
+	}
+	 
+	 public void  clickOnReminderLogsCloseBtn() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, reminderLogsCloseBtn);
+			reminderLogsCloseBtn.click();
+	}
+	 
+	 public String  selectedPatientGetPriorEntryForText(String patientId,String apptId,int index) throws InterruptedException{
+			IHGUtil.PrintMethodName();
+	        WebElement none= driver.findElement(By.xpath("(//input[@id='select-"+patientId+"-"+apptId+"']/following::div[text()='None'])["+index+"]"));
+	        return none.getText();
+	}
+
 
 }

@@ -4219,7 +4219,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	
 	@When("I select timing days and enter timing unit for {string}")
 	public void i_select_timing_days_and_enter_timing_unit_for(String deliveriMethod) throws InterruptedException {
-		scrollAndWait(0, 500, 5000);
+		scrollAndWait(0, 200, 5000);
 		assertEquals(notifPage.getDeliveryMethod(), deliveriMethod, "Delivery method was not match");
 		log("Delivery Method:" + notifPage.getDeliveryMethod());
 		notifPage.checkingFourthTimingIfPresent();
@@ -4354,8 +4354,160 @@ public class ApptPrecheckSteps extends BaseTest {
 	    
 	}
 
+    @When("from setting in notifications I click on curbside checkin tab")
+	public void from_setting_in_notifications_i_click_on_curbside_checkin_tab() {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+	}
 
+	@When("I schedule an appointment and perform checkin action")
+	public void i_schedule_an_appointment_and_perform_checkin_action() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+		
+		Response checkInResponse = aptPrecheckPost.getCheckinActions(propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				aptPrecheckPayload.getCheckinActionsPayload(Appointment.apptId,Appointment.patientId,
+						propertyData.getProperty("apt.precheck.practice.id")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()));
+		assertEquals(checkInResponse.getStatusCode(), 200);
+	}
 	
+	@When("I click on setting tab and ON notification setting")
+	public void i_click_on_setting_tab_and_on_notification_setting() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.onNotification();
+		notifPage.saveNotification();
+	}
+	
+	@When("I switch on appointment dashboard and send broadcast message for curbside check in patient")
+	public void i_switch_on_appointment_dashboard_and_send_broadcast_message_for_curbside_check_in_patient() throws Exception {
+		mainPage.switchOnAppointmentsTab();
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+	}
+	
+	@Then("I verify system should not show day prior entry in reminder section")
+	public void i_verify_system_should_not_show_day_prior_entry_in_reminder_section() throws InterruptedException {
+		scrollAndWait(0, 2000, 60000);
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		assertNotEquals(apptPage.selectedPatientGetPriorEntryForEmail(Appointment.patientId, Appointment.apptId,1),"days prior","Email statuse was not match");
+		assertNotEquals(apptPage.selectedPatientGetPriorEntryForText(Appointment.patientId, Appointment.apptId,2),"days prior","Text statuse was not match");
+	}
+	
+	@Then("I verify user is able to edit {string} cadence template from cadence editor page")
+	public void i_verify_user_is_able_to_edit_cadence_template_from_cadence_editor_page(String deliveryMethod) throws InterruptedException {
+		scrollAndWait(0, 500, 5000);
+		assertEquals(notifPage.getDeliveryMethod(), deliveryMethod, "Delivery method was not match");
+		assertEquals(notifPage.getApptReminderTextInEmail(),"Appointment Reminder","Appointment Reminder text was not match");
+		assertEquals(notifPage.getNotificationTypeText(),"Notification Type :","Notification Type text was not match");
+		assertEquals(notifPage.getApptMtdTextInEmail(),"Appointment Method:","Appointment Method text was not match");
+		assertEquals(notifPage.visibilityOfInOfficeText(),"In Office","In Office text was not match");
+		log("Delivery Method:" + notifPage.getDeliveryMethod());
+		notifPage.checkingFourthTimingIfPresent();
+		assertTrue(notifPage.visibilityOfTiming(1));
+		assertTrue(notifPage.visibilityOfTiming(2));
+		assertTrue(notifPage.visibilityOfTiming(3));
+		assertTrue(notifPage.visibilityOfTimingUnit(1));
+		assertTrue(notifPage.visibilityOfTimingUnit(2));
+		assertTrue(notifPage.visibilityOfTimingUnit(3));
+		assertTrue(notifPage.visibilityOfAddButton());
+		notifPage.addFourthTimingAndTimingUnit();
+		assertFalse(notifPage.visibilityOfAddButton());
+		notifPage.checkingFourthTimingIfPresent();
+		Appointment.day1 = notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(1, "Days", Appointment.day1);
+		Appointment.day2 = notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(2, "Days", Appointment.day2);
+		Appointment.day3 = notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(3, "Days", Appointment.day3);
+		assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		scrollAndWait(0, -500, 5000);
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+	
+	@When("from setting in notifications user click on curbside checkin tab")
+	public void from_setting_in_notifications_user_click_on_curbside_checkin_tab() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+		scrollAndWait(0, 500, 3000);
+	}
+	
+	@Then("I verify if additional arrival message text box is present and max size limit for additional arrival message for custom fields for English and Spanish")
+	public void i_verify_if_additional_arrival_message_text_box_is_present_and_max_size_limit_for_additional_arrival_message_for_custom_fields_for_english_and_spanish() throws InterruptedException {
+		notifPage.clickOnEnglishButton();
+		assertTrue(notifPage.visibilityOfArrivalInstTextBox());
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("more.than.size.of.arrival.conf.inst"));
+		notifPage.saveNotification();
+		assertEquals(notifPage.getMaxLengthChar(),"(500/500 characters)","Character count was not same");
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.en"));
+		notifPage.saveNotification();
+		scrollAndWait(0, 500, 3000);
+		
+		notifPage.clickOnSpanishButton();
+		assertTrue(notifPage.visibilityOfArrivalInstTextBox());
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("more.than.size.of.arrival.conf.inst"));
+		notifPage.saveNotification();
+		assertEquals(notifPage.getMaxLengthChar(),"(500/500 characters)","Character count was not same");
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.es"));
+		notifPage.saveNotification();
+	}
+
+	@Then("I verify user is able see default arrival confirmation message in english and Spanish in text box")
+	public void i_verify_user_is_able_see_default_arrival_confirmation_message_in_english_and_spanish_in_text_box() {
+		notifPage.clickOnEnglishButton();
+		assertTrue(notifPage.visibilityOfArrivalConfirmMsg());
+		notifPage.clickOnSpanishButton();
+		assertTrue(notifPage.visibilityOfArrivalConfirmMsg());
+}
+
 }
 
 
