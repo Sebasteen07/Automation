@@ -4523,8 +4523,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	
 	@When("I schedule {int} appointments who have confirmed their arrival")
-	public void i_schedule_appointments_who_have_confirmed_their_arrival(Integer int1) throws NullPointerException, IOException {
-			for (int i = 0; i < 10; i++) {
+	public void i_schedule_appointments_who_have_confirmed_their_arrival(int appts) throws NullPointerException, IOException {
+			for (int i = 0; i < appts; i++) {
 			Appointment.patientId = commonMethod.generateRandomNum();
 			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
@@ -4559,11 +4559,11 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("I go to curbside check-in tab select the top checkbox")
 	public void i_go_to_curbside_check_in_tab_select_the_top_checkbox() throws InterruptedException {
 	   mainPage.clickOnCurbsideTab();
-	   curbsidePage.SelectAllCheckbox();
+	   curbsidePage.selectAllAppointment();
 	}
 	@When("I later deselect top checkbox in the curbside check-in tab")
 	public void i_later_deselect_top_checkbox_in_the_curbside_check_in_tab() throws InterruptedException {
-		curbsidePage.deselectAllCheckbox();
+		curbsidePage.deselectAllAppointment();
 	}
 	@Then("I verify all the patients should be selected and deselected on the curbside tab")
 	public void i_verify_all_the_patients_should_be_selected_and_deselected_on_the_curbside_tab() {
