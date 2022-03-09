@@ -148,6 +148,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.ID, using = "feature_ccdList")
 	private WebElement healthrecord;
+	
+	@FindBy(how = How.XPATH, using = "//p[contains(@class,'broadcastMessage')]")
+    private WebElement broadCastMessage;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -645,4 +648,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 			return false;
 		}
 	}
+	
+	public String readBroadcast() {
+        
+        return broadCastMessage.getText();
+        
+    }
 }
