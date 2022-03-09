@@ -4465,6 +4465,110 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
 		log("user on notification page");
 	}
+	
+	@When("from setting in notifications user click on curbside checkin tab")
+	public void from_setting_in_notifications_user_click_on_curbside_checkin_tab() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+		scrollAndWait(0, 500, 3000);
+	}
+	
+	@Then("I verify if additional arrival message text box is present and max size limit for additional arrival message for custom fields for English and Spanish")
+	public void i_verify_if_additional_arrival_message_text_box_is_present_and_max_size_limit_for_additional_arrival_message_for_custom_fields_for_english_and_spanish() throws InterruptedException {
+		notifPage.clickOnEnglishButton();
+		assertTrue(notifPage.visibilityOfArrivalInstTextBox());
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("more.than.size.of.arrival.conf.inst"));
+		notifPage.saveNotification();
+		assertEquals(notifPage.getMaxLengthChar(),"(500/500 characters)","Character count was not same");
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.en"));
+		notifPage.saveNotification();
+		scrollAndWait(0, 500, 3000);
+		
+		notifPage.clickOnSpanishButton();
+		assertTrue(notifPage.visibilityOfArrivalInstTextBox());
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("more.than.size.of.arrival.conf.inst"));
+		notifPage.saveNotification();
+		assertEquals(notifPage.getMaxLengthChar(),"(500/500 characters)","Character count was not same");
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.es"));
+		notifPage.saveNotification();
+	}
+
+	@Then("I verify user is able see default arrival confirmation message in english and Spanish in text box")
+	public void i_verify_user_is_able_see_default_arrival_confirmation_message_in_english_and_spanish_in_text_box() {
+		notifPage.clickOnEnglishButton();
+		assertTrue(notifPage.visibilityOfArrivalConfirmMsg());
+		notifPage.clickOnSpanishButton();
+		assertTrue(notifPage.visibilityOfArrivalConfirmMsg());
+		
+	}
+	
+	@When("in curbside check-in filtration is done for location L1")
+	public void in_curbside_check_in_filtration_is_done_for_location_l1() throws InterruptedException {
+	    mainPage.clickOnCurbsideTab();
+	    curbsidePage.clickOncurbsideCheckinLocationDropDown();
+	    curbsidePage.selectLocationinDropDown();
+	    
+	}
+	@Then("I verify notification count get updated after arrival entry in curbside dashboard without refresh")
+	public void i_verify_notification_count_get_updated_after_arrival_entry_in_curbside_dashboard_without_refresh() {
+	   assertTrue(curbsidePage.visibilityOfNotifIcon());
+	   assertEquals(curbsidePage.getNotificationCount(),"1","Notification count is not match");
+	}
+	
+	@When("I schedule {int} appointments who have confirmed their arrival")
+	public void i_schedule_appointments_who_have_confirmed_their_arrival(int appts) throws NullPointerException, IOException {
+			for (int i = 0; i < appts; i++) {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+					propertyData.getProperty("mf.apt.scheduler.email")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+
+			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+					propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(actionResponse.getStatusCode(), 200);
+
+			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+					propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+					propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(arrivalResponse.getStatusCode(), 200);
+		}
+	}
+			
+	@When("I go to curbside check-in tab select the top checkbox")
+	public void i_go_to_curbside_check_in_tab_select_the_top_checkbox() throws InterruptedException {
+	   mainPage.clickOnCurbsideTab();
+	   curbsidePage.selectAllAppointment();
+	}
+	@When("I later deselect top checkbox in the curbside check-in tab")
+	public void i_later_deselect_top_checkbox_in_the_curbside_check_in_tab() throws InterruptedException {
+		curbsidePage.deselectAllAppointment();
+	}
+	@Then("I verify all the patients should be selected and deselected on the curbside tab")
+	public void i_verify_all_the_patients_should_be_selected_and_deselected_on_the_curbside_tab() {
+	   assertTrue(curbsidePage.visibilityOfSelectAllCheckbox());
+	}
 
 }
 
