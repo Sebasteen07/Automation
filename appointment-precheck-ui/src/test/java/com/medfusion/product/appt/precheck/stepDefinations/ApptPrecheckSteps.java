@@ -4627,6 +4627,57 @@ public class ApptPrecheckSteps extends BaseTest {
 					Appointment.apptId);
 			assertEquals(arrivalResponse.getStatusCode(), 200);
 		}
+		
+	}
+	
+	@When("in curbside check-in filtration is done for location L1")
+	public void in_curbside_check_in_filtration_is_done_for_location_l1() throws InterruptedException {
+	    mainPage.clickOnCurbsideTab();
+	    curbsidePage.clickOncurbsideCheckinLocationDropDown();
+	    curbsidePage.selectLocationinDropDown();
+	    
+	}
+	@Then("I verify notification count get updated after arrival entry in curbside dashboard without refresh")
+	public void i_verify_notification_count_get_updated_after_arrival_entry_in_curbside_dashboard_without_refresh() {
+	   assertTrue(curbsidePage.visibilityOfNotifIcon());
+	   assertEquals(curbsidePage.getNotificationCount(),"1","Notification count is not match");
+	}
+	
+	@When("I schedule {int} appointments who have confirmed their arrival")
+	public void i_schedule_appointments_who_have_confirmed_their_arrival(int appts) throws NullPointerException, IOException {
+			for (int i = 0; i < appts; i++) {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+
+			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(actionResponse.getStatusCode(), 200);
+			
+			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(arrivalResponse.getStatusCode(), 200);
+		}
 	}
 	@Then("I verify notification count will get updated and entry will be seen in arrival grid for location L1 and provider A1")
 	public void i_verify_notification_count_will_get_updated_and_entry_will_be_seen_in_arrival_grid_for_location_l1_and_provider_a1() {
@@ -4770,7 +4821,20 @@ public class ApptPrecheckSteps extends BaseTest {
 	    assertTrue(curbsidePage.visibilityOfNotifIcon());
 	    assertEquals(curbsidePage.getNotificationCount(),"1","Notification count is not match");
 	}
-
+			
+	@When("I go to curbside check-in tab select the top checkbox")
+	public void i_go_to_curbside_check_in_tab_select_the_top_checkbox() throws InterruptedException {
+	   mainPage.clickOnCurbsideTab();
+	   curbsidePage.selectAllAppointment();
+	}
+	@When("I later deselect top checkbox in the curbside check-in tab")
+	public void i_later_deselect_top_checkbox_in_the_curbside_check_in_tab() throws InterruptedException {
+		curbsidePage.deselectAllAppointment();
+	}
+	@Then("I verify all the patients should be selected and deselected on the curbside tab")
+	public void i_verify_all_the_patients_should_be_selected_and_deselected_on_the_curbside_tab() {
+	   assertTrue(curbsidePage.visibilityOfSelectAllCheckbox());
+	}
 
 }
 

@@ -38,6 +38,9 @@ public class Provider extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "providerserach")
 	private WebElement searchForProvider;
+	
+	@FindBy(how = How.ID, using = "//h5[@class='announcementmessages']/div")
+	private WebElement careTeamAnn;
 
 	@FindAll({ @FindBy(css = ".providerImage-width") })
 	private List<WebElement> providerImages;
@@ -192,6 +195,28 @@ public class Provider extends PSS2MainPage {
 		searchForProvider.sendKeys(providerName);
 		log("providerList = " + providerList.size());
 		Thread.sleep(1000);
+		return providerList.size();
+	}
+	
+	public ArrayList<String> getBookList() throws InterruptedException {
+
+		ArrayList<String> providerName = new ArrayList<String>();
+
+		for (int i = 0; i < providerList1.size(); i++) {
+			providerName.add(providerList1.get(i).getText());
+		}
+		log("providerList = " + providerName);
+		return providerName;
+	}
+	
+	public String getCareTeamAnn() {
+		String message=careTeamAnn.getText();
+		log("Care Team Announcement Message- "+message);
+		return message;
+	}
+	
+	public int getNumberOfBook() throws InterruptedException {
+		log("providerList = " + providerList.size());
 		return providerList.size();
 	}
 
