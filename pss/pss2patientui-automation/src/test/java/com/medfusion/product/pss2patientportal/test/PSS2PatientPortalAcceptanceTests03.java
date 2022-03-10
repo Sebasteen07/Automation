@@ -1192,15 +1192,14 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 				payloadAM01.turnONOFFShowProvider(false));
 		aPIVerification.responseCodeValidation(responseShowOff, 200);
 				
-//		String name = propertyData.getProperty("prerequisite.appointmenttype.name.at");
-//		String extAppID = propertyData.getProperty("prerequisite.appointmenttype.extapp.id.at");
-//		String catId = propertyData.getProperty("prerequisite.appointmenttype.cat.id.at");
-//		String catName = propertyData.getProperty("prerequisite.appointmenttype.cat.name.at");
-//		String preReqAppId = propertyData.getProperty("appointment.id.prerequisite.at");
-//
-//		response =postAPIRequestAM.preRequisiteAppointmenttypes(practiceId, preReqAppId, payloadAM.preRequisiteAppointmentTypesDefualtNG(name, extAppID, catId, catName));
-//		aPIVerification.responseCodeValidation(response, 200);
-//
+		String name = propertyData.getProperty("prerequisite.appointmenttype.name.at");
+		String extAppId = propertyData.getProperty("prerequisite.appointmenttype.extapp.id.at");
+		String preReqAppId = propertyData.getProperty("appointment.id.prerequisite.at");
+		int preReqId = Integer.parseInt(propertyData.getProperty("prerequisite.id.at"));
+
+		response =postAPIRequestAM.preRequisiteAppointmenttypes(practiceId, preReqAppId, payloadAM.preRequisiteAppointmentTypesDefualtAT(name, preReqId,extAppId));
+		aPIVerification.responseCodeValidation(response, 200);
+
 		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientMatchAt());
 		aPIVerification.responseCodeValidation(response, 200);
 
@@ -1208,12 +1207,15 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		String lastNamePreReq = propertyData.getProperty("lastname.prereqpast.at");
 		String genderPreReq = propertyData.getProperty("gender.prereqpast.at");
 		String dobPreReq = propertyData.getProperty("dob.prereqpast.at");
+		String email = propertyData.getProperty("email.prereqpast.at");
+
+		
 
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNamePreReq, lastNamePreReq, dobPreReq, "", genderPreReq, "", "");
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNamePreReq, lastNamePreReq, dobPreReq, email, genderPreReq, "", "");
 		homePage.btnStartSchedClick();
 		logStep("Clicked on the Start Button ");
 		String appName = propertyData.getProperty("appointmenttypefor.prereqname.at");
@@ -1226,19 +1228,19 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		log("Actual Appointment Type " + appTypeName);
 		assertEquals(appTypeName, appName);
 
-//		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
-//		aPIVerification.responseCodeValidation(response, 200);
-//		JSONArray arr1 = new JSONArray(response.body().asString());
-//		int l1 = arr1.length();
-//		int id = 0;
-//		log("Length is- " + l1);
-//		for (int i = 0; i < l1; i++) {
-//			id = arr1.getJSONObject(i).getInt("id");
-//		}
-//		String s = Integer.toString(id);
-//		log("preRequisiteApp Id is for Delete " + s);
-//		response = postAPIRequestAM.preRequisiteAppDeleteById(practiceId, s);
-//		aPIVerification.responseCodeValidation(response, 200);
+		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
+		aPIVerification.responseCodeValidation(response, 200);
+		JSONArray arr1 = new JSONArray(response.body().asString());
+		int l1 = arr1.length();
+		int id = 0;
+		log("Length is- " + l1);
+		for (int i = 0; i < l1; i++) {
+			id = arr1.getJSONObject(i).getInt("id");
+		}
+		String s = Integer.toString(id);
+		log("preRequisiteApp Id is for Delete " + s);
+		response = postAPIRequestAM.preRequisiteAppDeleteById(practiceId, s);
+		aPIVerification.responseCodeValidation(response, 200);
 
 	}
 	
