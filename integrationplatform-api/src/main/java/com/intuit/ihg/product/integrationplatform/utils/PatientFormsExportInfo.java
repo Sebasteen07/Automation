@@ -85,6 +85,8 @@ public class PatientFormsExportInfo
 		public String day="";
 		public String downloadFileLocation="";
 		public String preCheckURL="";
+		public String precheckAppointmentPayload = "";
+		public String basicAccessToken = "";
 		public String preCheckPatientExternalID="";
 		public String appointmentRestUrl="";
 		public String preCheckZip="";

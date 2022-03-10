@@ -86,7 +86,7 @@ public class sendPatientInvitePayloadV3 {
 				Long timestamp = System.currentTimeMillis();
 				firstName = "Name" + timestamp;
 				lastName = "TestPatient" + timestamp;
-				email = firstName + "@mailinator.com";
+				email = firstName + "@yopmail.com";
 				firstNameGroup.add(firstName);
 				lastNameGroup.add(lastName);
 				emailGroup.add(email);

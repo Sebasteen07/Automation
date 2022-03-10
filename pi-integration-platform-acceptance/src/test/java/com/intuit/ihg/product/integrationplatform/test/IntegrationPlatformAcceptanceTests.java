@@ -20,7 +20,7 @@ import com.intuit.ihg.product.integrationplatform.utils.BalancePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.CancelInvitePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
-import com.intuit.ihg.product.integrationplatform.utils.MailinatorUtils;
+import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
 import com.intuit.ihg.product.integrationplatform.utils.Medication;
 import com.intuit.ihg.product.integrationplatform.utils.MedicationPayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.MedicationTestData;
@@ -120,7 +120,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Checking for the activation link inside the patient mailinator inbox");
 		// Searching for the link for patient activation in the mailinator Inbox
 
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 
@@ -251,7 +251,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 6: Check secure message in patient gmail inbox");
 		// String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(),
 		// testData.getGmailPassword(), testData.getSender3(), 3, "Portal 2.0");
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
@@ -456,7 +456,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		log("Step 12: Check secure message in patient mailinator inbox");
 
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 10);
@@ -595,7 +595,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(90000);
 
 		log("Step 13: Check secure message in patient gmail inbox");
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from " + OLBPData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		assertTrue(mail.isMessageInInbox(OLBPData.getUserName(), subject, messageLink, 5));
@@ -1208,7 +1208,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Checking for the activation link inside the patient mailinator inbox");
 		// Searching for the link for patient activation in the mailinator Inbox
 
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 

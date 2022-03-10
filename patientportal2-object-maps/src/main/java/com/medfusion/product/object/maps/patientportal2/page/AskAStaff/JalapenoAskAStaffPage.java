@@ -73,9 +73,9 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 	private WebElement cvv;
 	@FindBy(how = How.ID, using = "removeCardOkButton")
 	private WebElement removeCardOkButton;
-    @FindBy(how = How.XPATH, using = "//*[@class='notification-message']")
+	@FindBy(how = How.XPATH, using = "//*[@class='notification-message'] | //*[contains(text(), 'Thank you for submitting your question')]")
 	private WebElement successMessage;
-    @FindBy(how=How.XPATH, using = "//*[@class=\"attachmentName\"]")
+	@FindBy(how = How.XPATH, using = "//*[@class=\"attachmentName\"]")
 	private WebElement attachmentNameText;
 
 	private long createdTS;
@@ -182,9 +182,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		continueButton.click();
 		IHGUtil.waitForElement(driver, 2, continueButton);
 		continueButton.click();
-		IHGUtil.waitForElement(driver, 5, successMessage);
-
-		//new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Thank you for submitting your question')]")));
+		IHGUtil.waitForElement(driver, 50, successMessage);
 		return attachmentName;
 	}
 	

@@ -180,7 +180,7 @@ public class PatientRegistrationUtils {
 			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 			assertTrue(completed, "Message processing was not completed in time");
 
-			MailinatorUtils mail = new MailinatorUtils(driver);
+			YopMailUtils mail = new YopMailUtils(driver);
 
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
@@ -228,7 +228,7 @@ public class PatientRegistrationUtils {
 			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 			assertTrue(completed, "Message processing was not completed in time");
 
-			MailinatorUtils mail = new MailinatorUtils(driver);
+			YopMailUtils mail = new YopMailUtils(driver);
 
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
@@ -314,7 +314,7 @@ public class PatientRegistrationUtils {
 		Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 		assertTrue(completed, "Message processing was not completed in time");
 
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 
 		for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 			Thread.sleep(15000);

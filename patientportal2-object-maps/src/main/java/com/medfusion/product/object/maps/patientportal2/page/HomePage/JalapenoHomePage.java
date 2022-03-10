@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
 import static org.testng.Assert.assertTrue;
@@ -156,18 +156,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoMessagesPage showMessages(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		IHGUtil.waitForElement(driver, 60, messages);
 		messages.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
 	public JalapenoMessagesPage showMessagesSent(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		WebDriverWait wait = new WebDriverWait(driver, 20);
-		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		IHGUtil.waitForElement(driver, 60, messages);
 		messages.click();
-		wait.until(ExpectedConditions.elementToBeClickable(sentFolder));
+		IHGUtil.waitForElement(driver, 60, sentFolder);
 		sentFolder.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
@@ -203,7 +201,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public JalapenoPayBillsMakePaymentPage clickOnNewPayBills(WebDriver driver) {
-
+		IHGUtil.waitForElement(driver, 50, payments);
 		log("Clicking on Payments button");
 		payments.click();
 
