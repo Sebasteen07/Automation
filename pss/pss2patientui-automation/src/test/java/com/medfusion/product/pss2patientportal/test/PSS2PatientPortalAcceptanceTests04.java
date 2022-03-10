@@ -918,8 +918,8 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		log("date- " + date);
 		String time = aptDateTime.getfirsttime().substring(0, 5);
 		log("Appointment Time is " + time);
-		slotSize = 5 * 2;
-		String expectedTime = pssPatientUtils.addToTimeUI(time, slotSize);
+		int slotValueExpected = slotSize * 2;
+		String expectedTime = pssPatientUtils.addToTimeUI(time, slotValueExpected);
 		log("expectedTime Time Is ..... " + expectedTime);
 		pssPatientUtils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
 

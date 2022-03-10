@@ -307,7 +307,7 @@ public class ManageResource extends PSS2MenuPage {
 		appointmenttypeSave.click();
 	}
 
-	public void notreserve() {
+	public void notReserve() {
 		Select objSelect = new Select(reservefor);
 		objSelect.selectByVisibleText("Not Reserved");
 		reservefor.click();
@@ -330,7 +330,7 @@ public class ManageResource extends PSS2MenuPage {
 		return bool;
 	}
 
-	public void clickacceptsameday() {
+	public void clickAcceptSameDay() {
 		acceptToggleclick.click();
 		appointmenttypeSave.click();
 		log("clicked on accceptfor sameday");

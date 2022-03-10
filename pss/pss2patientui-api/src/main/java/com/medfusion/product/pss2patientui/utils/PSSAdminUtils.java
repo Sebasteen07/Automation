@@ -478,14 +478,14 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
 		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
-		manageResource.notreserve();
+		manageResource.notReserve();
 		manageResource.setLeadDay(leadTimeValue);
 		Log4jUtil.log("Status for AcceptFor Same day is" + manageResource.acceptforStatus());
 		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
 		Log4jUtil.log("Status for AcceptFor Same day is" + appointment.isAccepttoggleStatus());
 
 		if (appointment.isAccepttoggleStatus() == false) {
-			manageResource.clickacceptsameday();
+			manageResource.clickAcceptSameDay();
 		} else {
 			log("Alredy ON Accept Same Day");
 		}
@@ -598,11 +598,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
 		appointment.setLeadtimeMinute(manageResource.getMinut());
 		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
-		manageResource.notreserve();
+		manageResource.notReserve();
 		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
 		Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
 		if (appointment.isAccepttoggleStatus() == true) {
-			manageResource.clickacceptsameday();
+			manageResource.clickAcceptSameDay();
 			appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
 			Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
 		}
@@ -1196,21 +1196,21 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	
 	public void preventBackToBackEnable(WebDriver driver, AdminUser adminuser, Appointment appointment,String leadTimeValue) throws Exception {
 
-		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
-		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
-		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
-		ManageResource manageResource = psspracticeConfig.gotoResource();
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
 		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
-		manageResource.notreserve();
+		manageResource.notReserve();
 		manageResource.setLeadDay(leadTimeValue);
 		Log4jUtil.log("Status for AcceptFor Same day is" + manageResource.acceptforStatus());
 		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
 		Log4jUtil.log("Status for AcceptFor Same day is" + appointment.isAccepttoggleStatus());
 
 		if (appointment.isAccepttoggleStatus() == false) {
-			manageResource.clickacceptsameday();
+			manageResource.clickAcceptSameDay();
 		} else {
 			log("Alredy ON Accept Same Day");
 		}
@@ -1223,6 +1223,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			log("Prevent Back To Back Already On");
 		}
 
-		patientflow.logout();
+		patientFlow.logout();
 	}
 }
