@@ -50,6 +50,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 	public static String baseUrl;
 	public PSSPatientUtils pssPatientUtils;
 	public PSS2PatientModulatorrAcceptanceNGTests pmng;
+	public PSS2PatientPortalAcceptanceTests05 portal05;
 
 	public static PayloadAdapterModulator payloadAM;
 	public static PayloadAM02 payloadAM02;
@@ -66,11 +67,58 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		postAPIRequestAM = new PostAPIRequestAdapterModulator();
 		headerConfig = new HeaderConfig();
 		practiceId = practiceId1;
+		portal05 =new PSS2PatientPortalAcceptanceTests05();
 		log("BASE URL AM -" + propertyData.getProperty("base.url.am"));
 		openToken = postAPIRequestAM.openToken(propertyData.getProperty("base.url.am"), practiceId,
 				payloadAM02.openTokenPayload(practiceId, userID));
 		postAPIRequestAM.setupRequestSpecBuilder(propertyData.getProperty("base.url.am"),
 				headerConfig.HeaderwithToken(openToken));
+	}
+	
+	public void addRule(String r1, String r2) throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		JSONArray arr;
+		String rule1 = r1.replaceAll("[^a-zA-Z0-9]", "");
+		log("Rule 1 - " + r1);
+		String rule2 = r2.replaceAll("[^a-zA-Z0-9]", "");
+		log("Rule 2 - " + r2);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload(rule1, r1));
+		apv.responseCodeValidation(response, 200);
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload(rule2, r2));
+		apv.responseCodeValidation(response, 200);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test01TestAddRuleNG() throws Exception {
+		
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		
+		portal05.addRule("S,L,B,T", "S,T,L,B");
+		
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
