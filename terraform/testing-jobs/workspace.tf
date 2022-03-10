@@ -10,7 +10,6 @@ locals {
     prod-patientportal-regression3     = "prod-patientportal-regression3"
     prod-patientportal-regression4     = "prod-patientportal-regression4"
     git-taf-prod-precheck              = "git-taf-prod-precheck"
-    git-taf-prod-precheck-rsdk-patient = "git-taf-prod-precheck-rsdk-patient"
     prod-forms-regression1             = "prod-forms-regression1"
     prod-forms-regression2             = "prod-forms-regression2"
     prod-integrations2-acceptance      = "prod-integrations2-acceptance"

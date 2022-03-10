@@ -146,21 +146,6 @@ locals {
       pxp_application       = "PatientSelfScheduling"
     }
 
-    "git-taf-prod-precheck-rsdk-patient" = {
-      codecommit_branch     = "development"
-      PollForSourceChanges  = false
-      execution_folder      = "pi-integration-platform-acceptance"
-      test_environment      = "prod"
-      suite_xml             = "integration-platform-regression-preCheckAppointment.xml"
-      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
-      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
-      maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(45 0 ? * 1 *)"
-      pxp_application       = "Portal"
-    }
-
     "prod-forms-regression1" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
