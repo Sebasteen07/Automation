@@ -471,10 +471,10 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 	public void leadTimenotReserve(WebDriver driver, AdminUser adminuser, Appointment appointment,String leadTimeValue) throws Exception {
 
-		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
-		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
-		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
-		ManageResource manageResource = psspracticeConfig.gotoResource();
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
 		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
@@ -498,7 +498,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			log("Prevent Back To Back Already Off");
 		}
 
-		patientflow.logout();
+		patientFlow.logout();
 	}
 
 	public void reserveforDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
