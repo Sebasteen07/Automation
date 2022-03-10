@@ -15,9 +15,6 @@
         		<include name="testAMDCRegression" />
         		<include name="testHealthKeyPatientUpdate" />
         		<include name="testHealthKeyPatientLoginAndOnDemandProvision" /> 
-        		<include name="testHealthKeyPatientAddInsurance" />
-        		<include name="testHealthKeyPatientUpdateInsurance" />
-				<include name="testStatementPreference" />				
       		</methods>
 	</classes>
 </test>
