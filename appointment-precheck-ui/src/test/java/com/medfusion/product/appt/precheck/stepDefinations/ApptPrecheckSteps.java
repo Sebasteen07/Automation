@@ -4547,8 +4547,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	    mainPage.clickOnCurbsideTab();
 	    curbsidePage.clickOncurbsideCheckinLocationDropDown();
 	    curbsidePage.selectLocationL1inDropDown();
-	    curbsidePage.clickOnproviderNamedropdown();
-		curbsidePage.selectProvidername();
+	    curbsidePage.clickProviderdropdown();
+		curbsidePage.selectProviderA1inDropdown();
 
 	}
 	@When("I schedule {int} appointments for location L1 and provider A2")
@@ -4689,8 +4689,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		mainPage.clickOnCurbsideTab();
 	    curbsidePage.clickOncurbsideCheckinLocationDropDown();
 	    curbsidePage.selectLocationL1inDropDown();
-	    curbsidePage.clickOnproviderNamedropdown();
-		curbsidePage.selectProvidername();
+	    curbsidePage.clickProviderdropdown();		
+	    curbsidePage.selectProviderA1inDropdown();
 
 	}
 	@When("I schedule {int} appointments for location L2 and provider A1")
@@ -4814,7 +4814,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	    mainPage.clickOnCurbsideTab();
 	    curbsidePage.clickOncurbsideCheckinLocationDropDown();
 	    curbsidePage.selectLocationL1inDropDown();
-	    curbsidePage.selectPatientId(Appointment.patientId);	    
+	    curbsidePage.clickpatientNamedropdown();
+	    curbsidePage.selectPatientP1();
 	}
 	@Then("I verify notification count should get updated and entries will be seen in arrival grid for for location L1 and patient P1")
 	public void i_verify_notification_count_should_get_updated_and_entries_will_be_seen_in_arrival_grid_for_for_location_l1_and_patient_p1() {

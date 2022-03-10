@@ -193,16 +193,16 @@ public class CurbsideCheckInPage extends BasePageObject {
 	public List<WebElement> selectPatients;
 	
 	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[4]")
-	private WebElement clickOnproviderNamedropdown;
+	private WebElement clickProviderdropdown;
 	
 	@FindBy(how=How.XPATH, using ="//div[text()='Brown, Jennifer']")
-	private WebElement selectProvidername;
+	private WebElement selectProviderA1inDropdown;
 	
-	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[2]")
-	private WebElement clickOnpatientNamedropdown;
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[3]")
+	private WebElement clickpatientNamedropdown;
 	
-	@FindBy(how=How.XPATH, using ="//div[@class=' css-qc6sy-singleValue']")
-	private WebElement selectPatientname;
+	@FindBy(how=How.XPATH, using ="//div[text()='AppScheduler One']")
+	private WebElement selectPatientP1;
 
 	
 	public CurbsideCheckInPage(WebDriver driver) {
@@ -963,34 +963,28 @@ public class CurbsideCheckInPage extends BasePageObject {
 			return getPatient;
 		}
 		
-		public void clickOnproviderNamedropdown() {
+		public void clickProviderdropdown() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, clickOnproviderNamedropdown);
-			jse.executeScript("arguments[0].click();", clickOnproviderNamedropdown);
+			IHGUtil.waitForElement(driver, 10, clickProviderdropdown);
+			jse.executeScript("arguments[0].click();", clickProviderdropdown);
 		}
 		
-		public void selectProvidername() {
+		public void selectProviderA1inDropdown() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, selectProvidername);
-			jse.executeScript("arguments[0].click();", selectProvidername);
+			IHGUtil.waitForElement(driver, 10, selectProviderA1inDropdown);
+			jse.executeScript("arguments[0].click();", selectProviderA1inDropdown);
 		}
 		
-		public void clickOnpatientNamedropdown() {
+		public void clickpatientNamedropdown() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, clickOnpatientNamedropdown);
-			jse.executeScript("arguments[0].click();", clickOnpatientNamedropdown);
+			IHGUtil.waitForElement(driver, 10, clickpatientNamedropdown);
+			jse.executeScript("arguments[0].click();", clickpatientNamedropdown);
 		}
 		
-		public void selectPatientname() {
+		public void selectPatientP1() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, selectPatientname);
-			jse.executeScript("arguments[0].click();", selectPatientname);
-		}
-
-		public void selectPatientId(String patientId) {
-			WebElement selectPatientId = driver
-					.findElement(By.xpath("//input[@id='filter-patient-id']"));
-			selectPatientId.sendKeys(patientId);
+			IHGUtil.waitForElement(driver, 10, selectPatientP1);
+			jse.executeScript("arguments[0].click();", selectPatientP1);
 		}
 
 		
