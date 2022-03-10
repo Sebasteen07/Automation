@@ -63,5 +63,5 @@ public class PIDC {
 	public String Restv1Url = "";
 	public String Restv2Url = "";
 	public String Restv3Url = "";
-
+	public String CancelInviteRestUrl = "";
 }

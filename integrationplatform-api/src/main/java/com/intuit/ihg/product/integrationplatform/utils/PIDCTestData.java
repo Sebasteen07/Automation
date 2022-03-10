@@ -241,6 +241,10 @@ public class PIDCTestData {
 		return PidcObj.Address1SC;
 	}
 
+	public String getCancelInviteRestUrl() {
+		return PidcObj.CancelInviteRestUrl;
+	}
+
 	public String getGenderIdentityValues() {
 		return PidcObj.GI;
 	}
