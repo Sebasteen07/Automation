@@ -1252,6 +1252,51 @@ Feature: Test fuctionality of Appointment precheck
     When from setting in notifications user click on curbside checkin tab
     Then I verify user is able see default arrival confirmation message in english and Spanish in text box
     And logout from practice provisioning portal
+    
+  Scenario: verify notification count after multiple filter applied for location L1 and provider A1
+    And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And in curbside check-in filtration is done for location L1 and provider A1
+    And I schedule 2 appointments for location L1 and provider A2
+    Then I verify notification count will get updated but entry will not come in arrival grid for location L1 and provider A2
+    And logout from practice provisioning portal
+     
+  Scenario: verify notification count after filter applied for location L1 and provider A1
+    And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And in curbside check-in filtration is done for location L1 and provider A1
+    And I schedule 2 appointments for location L1 and provider A1
+    Then I verify notification count will get updated and entry will be seen in arrival grid for location L1 and provider A1
+    And logout from practice provisioning portal
+      
+  Scenario: verify notification count after multiple filter applied for location L1 and provider A1
+    And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And from curbside check-in filtration is done for location L1 and provider A1
+    And I schedule 2 appointments for location L2 and provider A1
+    Then I verify notification count should not get updated and no entries will be seen in arrival grid for location L2 and provider A1
+    And logout from practice provisioning portal
+  
+  Scenario: verify notification count after the filter is applied for location L1 and provider A1
+    And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And from curbside check-in filtration is done for location L1 and provider A1
+    And I schedule 2 appointments for location L2 and provider A2
+    Then I verify notification count should not get updated and no entries will be seen in arrival grid for location L2 and provider A2
+    And logout from practice provisioning portal
+   
+  Scenario: verify notification count after the filter is applied for location L1 and patient P1
+    And I schedule an appointment for location L1 and patient P1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And from curbside check-in filtration is done for location L1 and patient P1
+    And I schedule an appointment for location L1 and patient P1
+    Then I verify notification count should get updated and entries will be seen in arrival grid for for location L1 and patient P1
+    And logout from practice provisioning portal
       
   Scenario: verify notification count after filteration for location L1 if new arrival entry comes for Location L1 after user confirmation for arrival
     When from setting in notifications curbside check-in reminder checkbox is check
