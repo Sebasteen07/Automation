@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 import java.io.IOException;
@@ -34,6 +34,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.gw"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.gw"));
 		appointValues.setTimeMarkValue(property.getProperty("timemark.value.gw"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.name.gw"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("agerule.firstparameter.gw"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("agerule.secondparameter.gw"));
 		appointValues.setLinkProvider(property.getProperty("link.provider.gw"));
@@ -170,6 +171,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.at"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.at"));
 		appointValues.setTimeMarkValue(property.getProperty("time.mark.value.at"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.name.at"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("age.rule.month.first.parameter.at"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("age.rule.month.second.parameter.at"));
 		appointValues.setLinkProvider(property.getProperty("link.provider.at"));
@@ -245,6 +247,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.ge"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.ge"));
 		appointValues.setTimeMarkValue(property.getProperty("time.mark.value.ge"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.display.name.ge"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("age.rule.month.first.parameter.ge"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("age.rule.month.second.parameter.ge"));
 		appointValues.setLinkProvider(property.getProperty("link.provider.ge"));
@@ -327,6 +330,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("anonymous.url.ng"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setPracticeDisplayName(property.getProperty("practice.name.am"));
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.ng"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.ng"));
 		appointValues.setTimeMarkValue(property.getProperty("timeMarkValue.NG"));

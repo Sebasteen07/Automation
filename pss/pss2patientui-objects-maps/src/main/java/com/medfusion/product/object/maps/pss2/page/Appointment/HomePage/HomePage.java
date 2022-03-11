@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
 
 import static org.testng.Assert.assertEquals;
@@ -166,11 +166,23 @@ public class HomePage extends PSS2MainPage {
 	@FindAll({ @FindBy(xpath = "//*[@id='upcomingevents']/h1/span") })
 	private List<WebElement> upcomingAptList;
 	
+	@FindAll({ @FindBy(xpath = "//*[@id='upcomingappoitment']/div/div/div[2]/div[1]") })
+	private List<WebElement> upcomingAptLocationText;
+	
+	@FindAll({ @FindBy(xpath = "//*[@id='upcomingappoitment']/div/div/div[2]/div[2]") })
+	private List<WebElement> upcomingAptPracticeText;
+	
 	@FindAll({ @FindBy(xpath = "//*[@id='pastappointmentevent']/h1/span") })
 	private List<WebElement> pastAptList;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='pastappointmentevent']/h1/span")
 	private WebElement pastAptLabel;
+	
+	@FindAll({ @FindBy(xpath = "//*[@id='pastappointment']/div/div/div[2]/div[1]") })
+	private List<WebElement> pastAptLocationText;
+	
+	@FindAll({ @FindBy(xpath = "//*[@id='pastappointment']/div/div/div[2]/div[2]") })
+	private List<WebElement> pastAptPracticeText;
 	
 	@FindBy(how = How.ID, using = "startScheduling")
 	private WebElement btnstartScheduling;
@@ -374,6 +386,38 @@ public class HomePage extends PSS2MainPage {
 
 	public int getPastAppointmentListSize() {
 		return selectPastApptList.size();
+	}
+	
+	public String getFutureAppointmentLocationText() {
+		for( WebElement locationName : upcomingAptLocationText){
+			String location= locationName.getText();
+			return location;
+		}
+		return null;
+	}
+
+	public String getFutureAppointmentPracticeText() {
+		for( WebElement practiceName : upcomingAptPracticeText){
+			String practice= practiceName.getText();
+			return practice;
+		}
+		return null;
+	}
+	
+	public String getPastAppointmentLocationText() {
+		for( WebElement locationName : pastAptLocationText){
+			String location= locationName.getText();
+			return location;
+		}
+		return null;
+	}
+
+	public String getPastAppointmentPracticeText() {
+		for( WebElement practiceName : pastAptPracticeText){
+			String practice= practiceName.getText();
+			return practice;
+		}
+		return null;
 	}
 	
 	public boolean isCancelAppointmentListPresent() {
