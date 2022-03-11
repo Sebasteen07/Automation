@@ -161,8 +161,11 @@ public class Appointment {
 	private boolean startPointPresent = false;
 	private boolean resourcetoggleStatus = false;
 	private boolean accepttoggleStatus = false;
+	private boolean preventBacktoBackToggleStatus = false;
+
 
 	private boolean showCancellationRescheduleReason = false;
+	
 	private boolean showCancellationReasonPM = false;
 	private boolean isFutureApt = false;
 	private boolean pcptoggleState = false;
@@ -264,6 +267,14 @@ public class Appointment {
 		this.datetime = datetimeConfig;
 		this.appointmenttype = appointmentConfig;
 		this.speciality = specialityConfig;
+	}
+
+	public boolean isPreventBacktoBackToggleStatus() {
+		return preventBacktoBackToggleStatus;
+	}
+
+	public void setPreventBacktoBackToggleStatus(boolean preventBacktoBackToggleStatus) {
+		this.preventBacktoBackToggleStatus = preventBacktoBackToggleStatus;
 	}
 
 	public int getPreSchedDays() {
