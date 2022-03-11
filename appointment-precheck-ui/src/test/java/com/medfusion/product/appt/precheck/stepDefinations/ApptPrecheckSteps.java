@@ -4529,6 +4529,127 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.jumpToPreviousPage();
 		apptPage.jumpToPreviousPage();
 		assertEquals(apptPage.getPageNo(), "1", "Page number was not correct");
+}
+	
+	@When("I schedule an appointment for location L1 and provider A1")
+	public void i_schedule_an_appointment_for_location_l1_and_provider_a1() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+		
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
+	@When("in curbside check-in filtration is done for location L1 and provider A1")
+	public void in_curbside_check_in_filtration_is_done_for_location_l1_and_provider_A1() throws InterruptedException {
+	    mainPage.clickOnCurbsideTab();
+	    curbsidePage.clickOncurbsideCheckinLocationDropDown();
+	    curbsidePage.selectLocationL1inDropDown();
+	    curbsidePage.clickProviderdropdown();
+		curbsidePage.selectProviderA1inDropdown();
+
+	}
+	@When("I schedule {int} appointments for location L1 and provider A2")
+	public void i_schedule_appointments_for_location_l1_and_provider_a2(int appts) throws NullPointerException, IOException {
+		for(int i=0 ; i < appts ; i++) {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayloadwithdifferentProvider(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+		
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
+	}
+	@Then("I verify notification count will get updated but entry will not come in arrival grid for location L1 and provider A2")
+	public void i_verify_notification_count_will_get_updated_but_entry_will_not_come_in_arrival_grid_for_location_l1_and_provider_a2() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+	    assertEquals(curbsidePage.getNotificationCount(),"2","Notification count is not match");
+	}
+	@When("I schedule {int} appointments for location L1 and provider A1")
+	public void i_schedule_appointments_for_location_l1_and_provider_a1(int appts) throws NullPointerException, IOException {
+		for(int i=0 ; i < appts ; i++) {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+
+			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(actionResponse.getStatusCode(), 200);
+			
+			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(arrivalResponse.getStatusCode(), 200);
+		}
 		
 	}
 	
@@ -4555,28 +4676,174 @@ public class ApptPrecheckSteps extends BaseTest {
 			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 					propertyData.getProperty("apt.precheck.practice.id"),
 					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-					propertyData.getProperty("mf.apt.scheduler.email")),
+							propertyData.getProperty("mf.apt.scheduler.email")),
 					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 					Appointment.apptId);
 
 			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
-					propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
 					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 					Appointment.apptId);
 			assertEquals(actionResponse.getStatusCode(), 200);
-
+			
 			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
-					propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
 					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 					Appointment.apptId);
 			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
 
 			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
-					propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
 					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 					Appointment.apptId);
 			assertEquals(arrivalResponse.getStatusCode(), 200);
 		}
+	}
+	@Then("I verify notification count will get updated and entry will be seen in arrival grid for location L1 and provider A1")
+	public void i_verify_notification_count_will_get_updated_and_entry_will_be_seen_in_arrival_grid_for_location_l1_and_provider_a1() {
+		 assertTrue(curbsidePage.visibilityOfNotifIcon());
+		 assertEquals(curbsidePage.getNotificationCount(),"2","Notification count is not match");
+	}
+	@When("from curbside check-in filtration is done for location L1 and provider A1")
+	public void from_curbside_check_in_filtration_is_done_for_location_l1_and_provider_a1() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+	    curbsidePage.clickOncurbsideCheckinLocationDropDown();
+	    curbsidePage.selectLocationL1inDropDown();
+	    curbsidePage.clickProviderdropdown();		
+	    curbsidePage.selectProviderA1inDropdown();
+
+	}
+	@When("I schedule {int} appointments for location L2 and provider A1")
+	public void i_schedule_appointments_for_location_l2_and_provider_a1(int appts) throws NullPointerException, IOException {
+		for(int i=0; i<appts; i++) {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putApptPayloadwithDifferentlocationandProvider(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+		
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
+	}
+	@Then("I verify notification count should not get updated and no entries will be seen in arrival grid for location L2 and provider A1")
+	public void i_verify_notification_count_should_not_get_updated_and_no_entries_will_be_seen_in_arrival_grid_for_location_l2_and_provider_a1() {
+		 assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+	@When("I schedule {int} appointments for location L2 and provider A2")
+	public void i_schedule_appointments_for_location_l2_and_provider_a2(int appts) throws NullPointerException, IOException {
+		for(int i=0; i < appts; i++) {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayloadwithDifferentlocation(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+
+			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(actionResponse.getStatusCode(), 200);
+			
+			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(arrivalResponse.getStatusCode(), 200);
+		}
+	   
+	}
+	
+	@Then("I verify notification count should not get updated and no entries will be seen in arrival grid for location L2 and provider A2")
+	public void i_verify_notification_count_should_not_get_updated_and_no_entries_will_be_seen_in_arrival_grid_for_location_l2_and_provider_a2() {
+		 assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+	@When("I schedule an appointment for location L1 and patient P1")
+	public void i_schedule_an_appointment_for_location_l1_and_patient_p1() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+				propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+		
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
+	@When("from curbside check-in filtration is done for location L1 and patient P1")
+	public void from_curbside_check_in_filtration_is_done_for_location_l1_and_patient_p1() throws InterruptedException {
+	    mainPage.clickOnCurbsideTab();
+	    curbsidePage.clickOncurbsideCheckinLocationDropDown();
+	    curbsidePage.selectLocationL1inDropDown();
+	    curbsidePage.clickpatientNamedropdown();
+	    curbsidePage.selectPatientP1();
+	}
+	@Then("I verify notification count should get updated and entries will be seen in arrival grid for for location L1 and patient P1")
+	public void i_verify_notification_count_should_get_updated_and_entries_will_be_seen_in_arrival_grid_for_for_location_l1_and_patient_p1() {
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	    assertEquals(curbsidePage.getNotificationCount(),"1","Notification count is not match");
 	}
 			
 	@When("I go to curbside check-in tab select the top checkbox")
