@@ -610,6 +610,150 @@ public class NotificationsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//div[@class='language-tab']")
 	private WebElement arrivalConfirmMsg;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='heading d-flex-row']")
+	private WebElement editPageTemplate;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='version'])[5]")
+	private WebElement versionTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='version-value'])[5]")
+	private WebElement versionV2TextInEditPage;
+
+	@FindBy(how=How.XPATH, using ="//img[@class='cadence-img']")
+	private WebElement logoInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='template-heading']")
+	private WebElement appointmentReminderTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//button[@id='submitNotifications']")
+	private WebElement confirmAppointmentButtonInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='template-sub-heading']")
+	private WebElement startPrecheckLinkInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[text()='[Patient Name], your appointment is coming up.']")
+	private WebElement patientTextComingUpInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='bold-heading'])[1]")
+	private WebElement dateAndTimeTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Day of the week at 00:00 AM/PM')]")
+	private WebElement dayOfTheWeekTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Month DD, YYYY')]")
+	private WebElement monthDDYYYYFormatTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='bold-heading'])[2]")
+	private WebElement locationTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Location Name')]")
+	private WebElement locationNameTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Location Address1')]")
+	private WebElement locationAddress1TextInEditPage;
+
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Location Address2')]")
+	private WebElement locationAddress2TextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'City State, Zip')]")
+	private WebElement cityStateZipTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'(XXX) XXX-XXXX')]")
+	private WebElement numberTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Pin on Map')]")
+	private WebElement pinOnMapLinkTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='bold-heading'])[3]")
+	private WebElement providerTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Provider Name')]")
+	private WebElement providerNameTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Reschedule or Cancel')]")
+	private WebElement rescheduleOrCancelLinkTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='heading d-flex-row']")
+	private WebElement editPageTemplateForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='version'])[5]")
+	private WebElement versionTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='version-value'])[5]")
+	private WebElement defaultTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[1]")
+	private WebElement patientTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[2]")
+	private WebElement confirmTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[3]")
+	private WebElement rescheduleCancelTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[4]")
+	private WebElement directionsTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[5]")
+	private WebElement stopToUnsubscribeTextInEditPageForText;
+	
+	@FindBy(how = How.XPATH, using = "//li[text()='Settings']")
+	private WebElement settingTabunderDesignsection;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Notification Type')]")
+	private WebElement notificationTypetextUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment Reminder')]")
+	private WebElement appointmentReminderstextUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Version Name')]")
+	private WebElement versionTextunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='version-value'])[2]")
+	private WebElement v2TextunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='version'])[3]")
+	private WebElement apointmentMethodTextunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='version-value'])[3]")
+	private WebElement inOfficeTextunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='version'])[4]")
+	private WebElement deliveryMethodTextunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[1]")
+	private WebElement timingtextUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='1']")
+	private WebElement timingUnitstextUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[2]")
+	private WebElement defaultTimingtextUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='3']")
+	private WebElement defaultTimingUnitstUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[3]")
+	private WebElement defaultTimingstextUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='5']")
+	private WebElement defaultTimingUnitstextUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "//button[text()='+ Add']")
+	private WebElement ClickonAddbutton;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-tlfecz-indicatorContainer'])[4]")
+	private WebElement clickOntimingdropdownunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[2]")
+	private WebElement selectDaydropdownunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[4]")
+	private WebElement enterTimingunitUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-icon mf-icon__cadence-setting-remove mf-icon-pointer'])[4]")
+	private WebElement deleteTimingunitUnderdesignTab;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -2355,5 +2499,368 @@ public class NotificationsPage extends BasePageObject {
 			return visibility;
 		
 	}
+	
+	public boolean visibilityOfeditPageTemplate() {
+		IHGUtil.waitForElement(driver, 10, editPageTemplate);
+		if( editPageTemplate.isDisplayed()) {
+			log("text="+editPageTemplate.getText());
+		return true;
+		}
+		else
+		return false;
+		}
+	
+	public String visibilityOfversionTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,versionTextInEditPage);
+		return versionTextInEditPage.getText();
+		}
+	
+	public String visibilityOfversionV2TextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,versionV2TextInEditPage);
+		return versionV2TextInEditPage.getText();
+		}
+	
+	public boolean visibilityOflogoInEditPage() {
+		IHGUtil.waitForElement(driver, 10,logoInEditPage);
+		if( logoInEditPage.isDisplayed()) {
+			log("logo is displayed");
+		return true;
+		}
+		else
+		return false;
+	}
+	
+	public String visibilityOfappointmentReminderTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,appointmentReminderTextInEditPage);
+		return appointmentReminderTextInEditPage.getText();
+	}
+	
+	public String visibilityOfconfirmAppointmentButtonInEditPage() {
+		IHGUtil.waitForElement(driver, 10,confirmAppointmentButtonInEditPage);
+		return confirmAppointmentButtonInEditPage.getText();
+	}
+	
+	public String visibilityOfstartPrecheckLinkInEditPage() {
+		IHGUtil.waitForElement(driver, 10,startPrecheckLinkInEditPage);
+		return startPrecheckLinkInEditPage.getText();
+	}
+	
+	public String visibilityOfpatientTextComingUpInEditPage() {
+		IHGUtil.waitForElement(driver, 10,patientTextComingUpInEditPage);
+		return patientTextComingUpInEditPage.getText();
+		}
+	
+	public String visibilityOfdateAndTimeTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,dateAndTimeTextInEditPage);
+		return dateAndTimeTextInEditPage.getText();
+		}
+	
+	public String visibilityOfdayOfTheWeekTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,dayOfTheWeekTextInEditPage);
+		return dayOfTheWeekTextInEditPage.getText();
+		}
+	
+	public String visibilityOfmonthDDYYYYFormatTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,monthDDYYYYFormatTextInEditPage);
+		return monthDDYYYYFormatTextInEditPage.getText();
+		}
+	
+	public String visibilityOflocationTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,locationTextInEditPage);
+		return locationTextInEditPage.getText();
+		}
+	
+	public String visibilityOflocationNameTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,locationNameTextInEditPage);
+		return locationNameTextInEditPage.getText();
+		}
+	
+	public String visibilityOflocationAddress1TextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,locationAddress1TextInEditPage);
+		return locationAddress1TextInEditPage.getText();
+		}
+	
+	public String visibilityOflocationAddress2TextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,locationAddress2TextInEditPage);
+		return locationAddress2TextInEditPage.getText();
+		}
+	
+	public String visibilityOfcityStateZipTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,cityStateZipTextInEditPage);
+		return cityStateZipTextInEditPage.getText();
+		}
+	
+	public String visibilityOfnumberTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,numberTextInEditPage);
+		return numberTextInEditPage.getText();
+		}
+	
+	public String visibilityOfpinOnMapLinkTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,pinOnMapLinkTextInEditPage);
+		return pinOnMapLinkTextInEditPage.getText();
+		}
+	
+	public String visibilityOfproviderTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,providerTextInEditPage);
+		return providerTextInEditPage.getText();
+		}
+	
+	public String visibilityOfproviderNameTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,providerNameTextInEditPage);
+		return providerNameTextInEditPage.getText();
+		}
+	
+	public String visibilityOfrescheduleOrCancelLinkTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,rescheduleOrCancelLinkTextInEditPage);
+		return rescheduleOrCancelLinkTextInEditPage.getText();
+		}
+	
+	public boolean visibilityOfeditPageTemplateForText() {
+		IHGUtil.waitForElement(driver, 10, editPageTemplateForText);
+		if( editPageTemplateForText.isDisplayed()) {
+			log("text="+editPageTemplateForText.getText());
+		return true;
+		}
+		else
+		return false;
+		}
+	
+	public String visibilityOfversionTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,versionTextInEditPageForText);
+		return versionTextInEditPageForText.getText();
+		}
+	
+	public String visibilityOfdefaultTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,defaultTextInEditPageForText);
+		return defaultTextInEditPageForText.getText();
+		}
+	
+	public Boolean visibilityOfpatientTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,patientTextInEditPageForText);
+		if(patientTextInEditPageForText.isDisplayed()) {
+			log("text="+patientTextInEditPageForText.getText());
+		
+		return true;
+		}
+		else
+			return false;
+		}
+	
+	public Boolean visibilityOfconfirmTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,confirmTextInEditPageForText);
+		if(confirmTextInEditPageForText.isDisplayed()) {
+			log("text="+confirmTextInEditPageForText.getText());
+		
+		return true;
+		}
+		else
+			return false;
+		}
+	
+	public Boolean visibilityOfrescheduleCancelTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,rescheduleCancelTextInEditPageForText);
+		if(rescheduleCancelTextInEditPageForText.isDisplayed()) {
+			log("text="+rescheduleCancelTextInEditPageForText.getText());
+		
+		return true;
+		}
+		else
+			return false;
+		}
+	
+	public Boolean visibilityOfdirectionsTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,directionsTextInEditPageForText);
+		if(directionsTextInEditPageForText.isDisplayed()) {
+			log("text="+directionsTextInEditPageForText.getText());
+		
+		return true;
+		}
+		else
+			return false;
+		}
+	
+	public String visibilityOfstopToUnsubscribeTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,stopToUnsubscribeTextInEditPageForText);
+		return stopToUnsubscribeTextInEditPageForText.getText();
+		}
+	
+	public boolean visibilityOfsettingTabunderDesignsection() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, settingTabunderDesignsection);
+		if(settingTabunderDesignsection.isDisplayed()) {
+			log("settings tab is displayed under design tab");
+			return true;
+		}
+		else {
+			log("settings tab is not displayed under design tab");
+			return false;
+		}
+	}
+	
+	public String visibilityOfnotificationTypetextUnderdesignTab() {
+		IHGUtil.waitForElement(driver, 10, notificationTypetextUnderdesignTab);
+		return notificationTypetextUnderdesignTab.getText();
+	}
+	
+	public String visibilityOfappointmentReminderstextUnderdesignTab() {
+		IHGUtil.waitForElement(driver, 10, appointmentReminderstextUnderdesignTab);
+		return appointmentReminderstextUnderdesignTab.getText();
+	}
+	
+	public String visibilityOfversionTextunderDesigntab() {
+		IHGUtil.waitForElement(driver, 10, versionTextunderDesigntab);
+		return versionTextunderDesigntab.getText();
+	}
+	
+	public String visibilityOfv2TextunderDesigntab() {
+		IHGUtil.waitForElement(driver, 10, v2TextunderDesigntab);
+		return v2TextunderDesigntab.getText();
+	}
+	
+	public String visibilityOfappointmentMethodTextunderDesigntab() {
+		IHGUtil.waitForElement(driver, 10, apointmentMethodTextunderDesigntab);
+		return apointmentMethodTextunderDesigntab.getText();
+	}
+	
+	public String visibilityOfinOfficeTextunderDesigntab() {
+		IHGUtil.waitForElement(driver, 10, inOfficeTextunderDesigntab);
+		return inOfficeTextunderDesigntab.getText();
+	}
+	
+	public String visibilityOfdeliveryMethodTextunderDesigntab() {
+		IHGUtil.waitForElement(driver, 10, deliveryMethodTextunderDesigntab);
+		return deliveryMethodTextunderDesigntab.getText();
+	}
+	
+	public String visibilityOftimingtextUnderdesignTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, timingtextUnderdesignTab);
+		return timingtextUnderdesignTab.getText();
+	}
+	
+	public boolean visibilityOftimingUnitstextUnderdesignTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, timingUnitstextUnderdesignTab);
+		if(timingUnitstextUnderdesignTab.isDisplayed()) {
+		log("1st day is displayed");
+		return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public String visibilityOfdefaultTimingtextUnderdesignTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTimingtextUnderdesignTab);
+		return defaultTimingtextUnderdesignTab.getText();
+	}
+	
+	public boolean visibilityOfdefaultTimingUnitstUnderdesignTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTimingUnitstUnderdesignTab);
+		if(defaultTimingUnitstUnderdesignTab.isDisplayed())
+		{
+			log("3rd day is displayed");
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
+	public String visibilityOfdefaultTimingstextUnderdesignTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTimingstextUnderdesignTab);
+		return defaultTimingstextUnderdesignTab.getText();
+	}
+	
+	public boolean visibilityOfdefaultTimingUnitstextUnderdesignTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10,defaultTimingUnitstextUnderdesignTab );
+		if(defaultTimingUnitstextUnderdesignTab.isDisplayed())
+		{
+			log("5th day is displayed");
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
+	public void ClickonAddbutton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, ClickonAddbutton);
+		jse.executeScript("arguments[0].click();", ClickonAddbutton);
+
+	}
+	
+	public void clickOntimingdropdownunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, clickOntimingdropdownunderDesigntab);
+		jse.executeScript("arguments[0].click();", clickOntimingdropdownunderDesigntab);
+
+	}
+	
+	public void selectDaydropdownunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, selectDaydropdownunderDesigntab);
+		jse.executeScript("arguments[0].click();", selectDaydropdownunderDesigntab);
+
+	}
+	
+	public void enterTimingunitUnderdesignTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, enterTimingunitUnderdesignTab);
+		enterTimingunitUnderdesignTab.clear();
+		enterTimingunitUnderdesignTab.sendKeys("2");
+
+	}
+	
+	public boolean visibilityOfClickonAddbutton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, ClickonAddbutton);
+		if(ClickonAddbutton.isEnabled())
+		{
+			log("add button is displayed");
+			return true;
+		}
+		else {
+			
+			log("add button is not displayed");
+			return false;
+		}
+		
+	}
+	
+	public void deleteTimingunitUnderdesignTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, deleteTimingunitUnderdesignTab);
+		jse.executeScript("arguments[0].click();", deleteTimingunitUnderdesignTab);
+
+	}
+
+	public void saveChangesButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, saveChangesButton);
+		jse.executeScript("arguments[0].click();", saveChangesButton);
+		
+	}
+	
+	public boolean visibilityOfnotificationsTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, notificationTab);
+		if(notificationTab.isDisplayed()) {
+		log("notification tab is displayed");
+		return true;
+		}
+		else {
+			log("notification tab is not displayed");
+			return false;
+		}
+	}
+	
 
 }
