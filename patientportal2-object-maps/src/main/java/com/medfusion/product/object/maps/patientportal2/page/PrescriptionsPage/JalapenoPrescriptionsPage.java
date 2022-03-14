@@ -203,6 +203,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 				log("Selecting provider");
 				providerDropdown.click();
 				providerDropdown.sendKeys(selectedProvider.getText());
+
 			}
 		} catch (Exception ex) {
 			log("Provider field is not available" + ex);
@@ -627,34 +628,28 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 		}
 
-		public String getPracticeProvider(WebDriver driver) {
-			IHGUtil.PrintMethodName();
-			String env = IHGUtil.getEnvironmentType().toString();
-			try {
-				if (iframeBody.isDisplayed() || env.equals("DEV3") || env.equals("DEMO")) {
-					driver.switchTo().defaultContent();
-					driver.switchTo().frame("iframebody");
-				}
-			} catch (Exception e) {
-				log(e.getMessage());
-			}
-
-			String PracticeProvider = selectedProvider.getText();
-			return PracticeProvider;
+	public String getPracticeProvider(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		String env = IHGUtil.getEnvironmentType().toString();
+		if (env.equals("DEV3") || env.equals("DEMO")) {
+			driver.switchTo().defaultContent();
+			driver.switchTo().frame("iframebody");
+		} else {
+			log("getting Practice Provider");
 		}
+		String PracticeProvider = practiceProvider.getText();
+		return PracticeProvider;
+	}
 
-		public String getPracticeLocation(WebDriver driver) {
-			IHGUtil.PrintMethodName();
-			String env = IHGUtil.getEnvironmentType().toString();
-			try {
-				if (iframeBody.isDisplayed() || env.equals("DEV3") || env.equals("DEMO")) {
-					driver.switchTo().defaultContent();
-					driver.switchTo().frame("iframebody");
-				}
-			} catch (Exception e) {
-				log(e.getMessage());
-			}
-			String PracticeLocation = selectedLocation.getText();
-			return PracticeLocation;
+	public String getPracticeLocation(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		String env = IHGUtil.getEnvironmentType().toString();
+		if (env.equals("DEV3") || env.equals("DEMO")) {
+			driver.switchTo().frame("iframebody");
+		} else {
+			log("getting Practice Location");
 		}
+		String ProviderLocation = providerLocation.getText();
+		return ProviderLocation;
+	}
 }

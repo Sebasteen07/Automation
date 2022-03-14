@@ -110,7 +110,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	private void makeLogin(String username, String password) {
 		log("Trying to login with Credentials: [" + username + "] [" + password + "]");
-		IHGUtil.waitForElement(driver, 60, inputUserName);
+		IHGUtil.waitForElement(driver, 70, inputUserName);
 		updateWebElement(inputUserName, username);
 		updateWebElement(inputPassword, password);
 		clickOnElement(buttonSignIn);

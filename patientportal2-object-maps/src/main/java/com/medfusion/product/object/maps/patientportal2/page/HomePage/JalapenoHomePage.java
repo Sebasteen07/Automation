@@ -182,6 +182,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAppointmentRequestPage clickOnAppointment(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, appointments);
 		appointments.click();
 		log("click");
 		return PageFactory.initElements(driver, JalapenoAppointmentRequestPage.class);
@@ -505,6 +506,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAskAStaffPage clickOnAskADoc(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, askAQuestion);
 		askAQuestion.click();
 		askADocButtonOnPopup.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);

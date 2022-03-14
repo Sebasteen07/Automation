@@ -182,7 +182,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		continueButton.click();
 		IHGUtil.waitForElement(driver, 2, continueButton);
 		continueButton.click();
-		IHGUtil.waitForElement(driver, 50, successMessage);
+		IHGUtil.waitForElement(driver, 60, successMessage);
 		return attachmentName;
 	}
 	
