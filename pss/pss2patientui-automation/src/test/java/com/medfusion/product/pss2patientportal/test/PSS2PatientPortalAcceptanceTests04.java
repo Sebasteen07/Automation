@@ -944,5 +944,53 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		log("Actual Time   " + ActualTime);
 		assertEquals(ActualTime, expectedTime);
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentStacking() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+//		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+//		Response response;
+//		logStep("Setting Rule By Using Adapter Modulator Api Call");
+//		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+//		apv.responseCodeValidation(response, 200);
+//		JSONArray arr = new JSONArray(response.body().asString());
+//		int l = arr.length();
+//		log("Length is- " + l);
+//		for (int i = 0; i < l; i++) {
+//			int ruleId = arr.getJSONObject(i).getInt("id");
+//			log("Object No." + i + "- " + ruleId);
+//			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+//			apv.responseCodeValidation(responseForDeleteRule, 200);
+//		}
+//		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+//				payloadAM.rulePayload("LTB", "L,T,B"));
+//		apv.responseCodeValidation(responseRulePost, 200);
+//
+//		Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+//				payloadAM.rulePayload("TBL", "T,B,L"));
+//		apv.responseCodeValidation(responseRulePostTL, 200);
+//		logStep("Show Provider On Using AM ");
+//		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+//				payloadAM01.turnONOFFShowProvider(true));
+//		apv.responseCodeValidation(responseShowOff, 200);
+//
+//		logStep("Patient Matching By Using Adapter Modulator");
+//		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+//		apv.responseCodeValidation(response, 200);
+
+		String appType="Insomnia";
+		String providerName="Ng3 Pss [PSS,NG3]";
+		String locationName="PSS WLA";
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.appointmentStacking(driver, adminuser, testData,appType,providerName);
+
+		
+	}
 
 }

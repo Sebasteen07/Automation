@@ -162,7 +162,7 @@ public class Appointment {
 	private boolean resourcetoggleStatus = false;
 	private boolean accepttoggleStatus = false;
 	private boolean preventBacktoBackToggleStatus = false;
-
+	private boolean appointmentStacking= false;
 
 	private boolean showCancellationRescheduleReason = false;
 	
@@ -267,6 +267,14 @@ public class Appointment {
 		this.datetime = datetimeConfig;
 		this.appointmenttype = appointmentConfig;
 		this.speciality = specialityConfig;
+	}
+
+	public boolean isAppointmentStacking() {
+		return appointmentStacking;
+	}
+
+	public void setAppointmentStacking(boolean appointmentStacking) {
+		this.appointmentStacking = appointmentStacking;
 	}
 
 	public boolean isPreventBacktoBackToggleStatus() {
