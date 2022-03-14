@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 import static org.testng.Assert.assertEquals;
@@ -362,6 +362,26 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		}
 		log("Test Case Passed");
 	}
+	
+	public void flowForProviderOn(HomePage homePage, Appointment testData, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
+	}
+
 
 	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
 			throws Exception {
@@ -1047,6 +1067,23 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Test Case Passed");
 	}
 
+	public void LTFlowSet1(HomePage homepage1, Appointment testData, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homepage1.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
+	}
+	
 	public Boolean deleteFile(String fileName) {
 		Boolean isFileDeleted = false;
 		log("filePath= " + fileName);

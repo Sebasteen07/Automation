@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 import java.io.IOException;
@@ -247,6 +247,17 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Logging out of PSS 2.0 admin UI");
 		patientflow.logout();
 	}
+	
+	public void setRuleWithoutSpecialitySet2(WebDriver driver, AdminUser adminuser) throws Exception {
+		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
+		patientflow.removeAllRules();
+		Thread.sleep(2000);
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		Log4jUtil.log("Logging out of PSS 2.0 admin UI");
+		patientflow.logout();
+	}
 
 	public void setRulesNoSpecialitySet1(PatientFlow patientflow) throws InterruptedException {
 		patientflow.removeAllRules();
@@ -355,6 +366,36 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientflow.saveRule();
 		Thread.sleep(1000);
 		log("--------------------------------WAIT FOR RULE LTB TO BE ADDED--------------------------------");
+	}
+	
+	public void setRulesNoProviderSet2(PatientFlow patientflow) throws InterruptedException {
+		patientflow.removeAllRules();
+		log("-----------------------------------------------------------------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Location");
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(5000);
+		log("--------------------------------WAIT FOR RULE LT TO BE ADDED--------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("AppointmentType");
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(1000);
+		log("--------------------------------WAIT FOR RULE TL TO BE ADDED--------------------------------");
+	}
+	
+	public void setRuleWithoutProvider(WebDriver driver, AdminUser adminuser) throws Exception {
+		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
+		patientflow.removeAllRules();
+		Thread.sleep(2000);
+		patientflow.turnOffProvider();
+		setRulesNoProviderSet2(patientflow);
+		Log4jUtil.log("Logging out of PSS 2.0 admin UI");
+		patientflow.logout();
 	}
 
 	public void setInsuranceState(WebDriver driver, AdminUser adminuser) throws Exception {
