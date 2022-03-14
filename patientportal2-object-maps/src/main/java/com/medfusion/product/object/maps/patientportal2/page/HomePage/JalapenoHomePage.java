@@ -17,7 +17,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
@@ -36,7 +35,6 @@ import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.Med
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
-import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.patientportal2.page.ScheduleAppoinment.JalapenoAppoinmentSchedulingPage;
 import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
 
@@ -219,12 +217,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 
-	public JalapenoPrescriptionsPage clickOnPrescriptions(WebDriver driver) {
-		log("Clicking on Prescriptions button on dashboard");
-		this.clickOnMedications(driver);
-		prescriptions.click();
-		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
-	}
 
 	public MedicationsHomePage clickOnMedications(WebDriver driver) {
 		IHGUtil.PrintMethodName();
