@@ -1318,7 +1318,6 @@ Feature: Test fuctionality of Appointment precheck
   	And I later deselect top checkbox in the curbside check-in tab
   	Then I verify all the patients should be selected and deselected on the curbside tab
   	And logout from practice provisioning portal
-<<<<<<< HEAD
   
   Scenario: verify notification count after multiple filter applied with provider A1
     And I schedule an appointment for location L1 and provider A1
