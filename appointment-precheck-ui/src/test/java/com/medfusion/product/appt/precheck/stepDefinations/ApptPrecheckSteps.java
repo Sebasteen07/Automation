@@ -4506,6 +4506,29 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(notifPage.visibilityOfArrivalConfirmMsg());
 		notifPage.clickOnSpanishButton();
 		assertTrue(notifPage.visibilityOfArrivalConfirmMsg());
+
+}
+	
+	@When("I select start date and time")
+	public void i_select_start_date_and_time() throws InterruptedException {
+		apptPage.selectStartDate(8);
+	}
+
+	@And("I am able to navigate from first page to second page and third page")
+	public void i_am_able_to_navigate_from_first_page_to_second_page_and_third_page() throws InterruptedException {
+		scrollAndWait(0, 3000, 5000);
+		assertEquals(apptPage.getPageNo(), "1", "Page number was not correct");
+		assertEquals(apptPage.jumpToNextPage(), "2", "Not navigate to next page");
+		assertEquals(apptPage.jumpToNextPage(), "3", "Not navigate to next page");
+	}
+
+	@Then("I verify after clicking on refresh button user on third page and able to navigate on first page")
+	public void i_verify_after_clicking_on_refresh_button_user_on_third_page_and_able_to_navigate_on_first_page() throws InterruptedException {
+		apptPage.clickOnRefreshTab();
+		assertEquals(apptPage.getPageNo(), "3", "Page number was not correct");
+		apptPage.jumpToPreviousPage();
+		apptPage.jumpToPreviousPage();
+		assertEquals(apptPage.getPageNo(), "1", "Page number was not correct");
 }
 	
 	@When("I schedule an appointment for location L1 and provider A1")
@@ -4835,6 +4858,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify all the patients should be selected and deselected on the curbside tab")
 	public void i_verify_all_the_patients_should_be_selected_and_deselected_on_the_curbside_tab() {
 	   assertTrue(curbsidePage.visibilityOfSelectAllCheckbox());
+
 	}
 
 }

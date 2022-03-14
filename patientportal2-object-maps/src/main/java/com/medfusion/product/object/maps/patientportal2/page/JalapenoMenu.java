@@ -16,7 +16,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -28,7 +27,6 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
-import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 
 /**
  * Contains menu elements that are on every page after login
@@ -164,12 +162,6 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
 	}
 
-	public JalapenoPrescriptionsPage clickOnMenuPrescriptions() {
-		openMenuIfClosed();
-		log("Clicking on Prescriptions menu button");
-		prescriptionsMenu.click();
-		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
-	}
 
 	public JalapenoPayBillsMakePaymentPage clickOnMenuPayBills() {
 		openMenuIfClosed();
