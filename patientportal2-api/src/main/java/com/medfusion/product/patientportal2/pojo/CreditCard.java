@@ -11,7 +11,7 @@ public class CreditCard {
 	public enum CardType { Visa, Mastercard, Discover, Amex}
 	//https://www.paypalobjects.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm
 	private String[] visaNumbers = {"4111111111111111", "4111111111111111"};
-	private String[] mastercardNumbers = {"5555555555554444", "5105105105105100"};
+	private String[] mastercardNumbers = {"5105105105105100", "5105105105105100"};
 	private String[] discoverNumbers = {"6011111111111117", "6011000990139424"};
 	private String[] amexNumbers = {"378282246310005", "371449635398431"};
 

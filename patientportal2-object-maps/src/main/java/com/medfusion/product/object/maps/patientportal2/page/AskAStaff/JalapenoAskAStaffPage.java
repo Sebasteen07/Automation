@@ -40,6 +40,9 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "cardSubmitButton")
 	private WebElement cardSubmitButton;
 
+	@FindBy(how = How.XPATH, using = "//*[contains(text(), 'Thank you for submitting your question')]")
+	private WebElement thankyouForSubmitting;
+
 	@FindBy(how = How.ID, using = "subject")
 	private WebElement subject;
 	@FindBy(how = How.ID, using = "question")
@@ -141,9 +144,8 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		continueButton.click();
 		IHGUtil.waitForElement(driver, 2, continueButton);
 		continueButton.click();
-		// submitQuestionBut.click();
-		new WebDriverWait(driver, 20)
-				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Thank you for submitting your question')]")));
+
+		IHGUtil.waitForElement(driver, 50, thankyouForSubmitting);
 		}
 		return true;
 	}

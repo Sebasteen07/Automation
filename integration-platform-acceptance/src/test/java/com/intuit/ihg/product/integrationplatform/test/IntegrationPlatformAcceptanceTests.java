@@ -581,9 +581,17 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Long timestamp = System.currentTimeMillis();
 		String accountNumber = IHGUtil.createRandomNumericString();
 		String amount = "100.00";
-		String CCType = "Visa";
 		String name = "TestPatient CreditCard";
-		CreditCard creditCard = new CreditCard(CardType.Visa, name);
+		CreditCard creditCard;
+		String CCType;
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+			CCType = "Visa";
+			creditCard = new CreditCard(CardType.Visa, name);
+		} else {
+			CCType = "MasterCard";
+			creditCard = new CreditCard(CardType.Mastercard, name);
+		}
+
 		String CCLastDig = creditCard.getLastFourDigits();
 		String reply_Subject = "Test Message " + IHGUtil.createRandomNumericString();
 		String messageThreadID;

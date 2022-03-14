@@ -89,7 +89,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")
 	private WebElement balanceDueDate;
 
-	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[1]")
+	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[contains(.,'Your Confirmation Number is ')]")
 	private WebElement confirmationNumberMsg;
 
 	@FindBy(how = How.XPATH, using = "(//table[@class='table table-condensed']/tbody/tr/td/a)[1]")
@@ -289,6 +289,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
 	public String readConfirmationNumber() {
 		IHGUtil.waitForElement(driver, 50, confirmationNumberMsg);
+
 		String confirmationNumberMsgstring = confirmationNumberMsg.getText();
 		String confirmationNumber = confirmationNumberMsgstring.substring(28, 40);
 		return confirmationNumber;
