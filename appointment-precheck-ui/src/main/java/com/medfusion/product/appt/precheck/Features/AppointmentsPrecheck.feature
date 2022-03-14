@@ -1252,6 +1252,12 @@ Feature: Test fuctionality of Appointment precheck
     When from setting in notifications user click on curbside checkin tab
     Then I verify user is able see default arrival confirmation message in english and Spanish in text box
     And logout from practice provisioning portal
+
+  Scenario: Verify after clicking on refresh button user is able to redirect on same page and navigate to next page and previous page
+    When I select start date and time
+    And I select all patients
+    And I am able to navigate from first page to second page and third page
+    Then I verify after clicking on refresh button user on third page and able to navigate on first page
     
   Scenario: verify notification count after multiple filter applied for location L1 and provider A1
     And I schedule an appointment for location L1 and provider A1
@@ -1312,3 +1318,4 @@ Feature: Test fuctionality of Appointment precheck
   	And I later deselect top checkbox in the curbside check-in tab
   	Then I verify all the patients should be selected and deselected on the curbside tab
   	And logout from practice provisioning portal
+
