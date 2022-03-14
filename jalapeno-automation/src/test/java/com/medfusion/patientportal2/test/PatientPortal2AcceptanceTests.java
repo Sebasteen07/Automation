@@ -1,7 +1,11 @@
 //  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.test;
 
-import static org.testng.Assert.*;
+import static com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.AddPharmacyPage.pharmacyName;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
@@ -9,14 +13,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ihg.common.utils.PatientFactory;
-import com.medfusion.pojos.Patient;
-import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountDevicesPage;
-import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
-import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
-import com.medfusion.product.patientportal2.utils.JalapenoConstants;
-import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
@@ -24,22 +20,25 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.pojo.ExpectedEmail;
+import com.intuit.ihg.common.utils.PatientFactory;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.patientportalbroadcast.PatientPortalBroadcastPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.AddPharmacyPage;
-import static com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.AddPharmacyPage.pharmacyName;
 import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.ManageYourPharmacies;
 import com.intuti.ihg.product.object.maps.sitegen.page.onlineBillPay.EstatementPage;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.common.utils.YopMail;
+import com.medfusion.pojos.Patient;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -66,16 +65,18 @@ import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHo
 import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.LocationAndProviderPage;
 import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.MedicationsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.MedicationsHomePage;
-import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.SelectMedicationsPage;
 import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.PrescriptionFeePage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.SelectMedicationsPage;
 import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.SelectPharmacyPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountDevicesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountSecurityPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsStatementPdfPage;
-import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
 import com.medfusion.product.object.maps.patientportal2.page.ScheduleAppoinment.JalapenoAppoinmentSchedulingPage;
 import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
 import com.medfusion.product.object.maps.patientportal2.page.util.CreatePatient;
@@ -96,6 +97,8 @@ import com.medfusion.product.object.maps.practice.page.patientactivation.Patient
 import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.tests.AppoitmentRequest;
@@ -932,62 +935,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Looking for appointment approval from doctor");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
-	}
-
-	@Test(enabled = true, groups = { "acceptance-solutions", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPrescriptionRenewal() throws Exception {
-		createCommonPatient();
-		logStep("Load login page");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
-
-		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
-		Thread.sleep(10000);
-
-		homePage = prescriptionsPage.fillThePrescription(driver, "XANAX", "21", 10);
-
-		homePage.clickOnLogout();
-
-		logStep("Login to Practice Portal");
-
-		// Now start login with practice data
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
-		logStep("Click On RxRenewal in Practice Portal");
-		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
-
-		logStep("Search for Today's RxRenewal in Practice Portal");
-		rxRenewalSearchPage.searchForRxRenewalToday();
-
-		logStep("Get the RxRenewal Details in Practice Portal");
-		rxRenewalSearchPage.getRxRenewalDetails();
-
-		logStep("Set the RxRenewal Fields in Practice Portal");
-		rxRenewalSearchPage.setRxRenewalFields();
-
-		logStep("Click On Process RxRenewal Button in Practice Portal");
-		rxRenewalSearchPage.clickProcessRxRenewal();
-		String subject = rxRenewalSearchPage.getSubject();
-		logStep("Verify Prescription Confirmation in Practice Portal");
-		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
-
-		logStep("Set Action Radio Button in Practice Portal");
-		rxRenewalSearchPage.setActionRadioButton();
-
-		logStep("Verify Process Completed Text in Practice Portal");
-		rxRenewalSearchPage.verifyProcessCompleted();
-
-		logStep("Logout of Practice Portal");
-		practiceHome.logOut();
-
-		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
-
-		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-
-		logStep("Looking for appointment approval from doctor");
-		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2624,116 +2571,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 	}
 
-	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPrescriptionGuardian() throws Exception {
-
-		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
-		String patientLastName = patientLogin.replace("login", "last");
-		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
-
-		logStep("Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("pres.doc.username"),
-				testData.getProperty("pres.doc.password"));
-
-		logStep("Click on Search");
-		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
-
-		logStep("Click on Add new Patient");
-		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
-
-		logStep("Register Guardian - Enter all the details and click on Register");
-		String patientUrl = patientActivationPage.setInitialDetailsAllFields("Guardian", patientLastName, "F",
-				patientLastName + "G", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
-				testData.getDOBDay(), testData.getDOBYear(), "address1", "address2", "city", "Alabama",
-				testData.getZipCode());
-
-		logStep("Register Dependent - Enter all the details and click on Register");
-		String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "M",
-				patientLastName + "D", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
-				testData.getDOBDay(), testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama",
-				testData.getZipCode());
-		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
-
-		logStep("Finishing of patient activation: step 1 - verifying identity");
-		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
-		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
-				testData.getProperty("zip.code"), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear());
-
-		logStep("Finishing of patient activation: step 2 - filling patient data");
-		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
-				testData.getPassword(), testData);
-
-		log("Login username of Guardian is " + patientLogin);
-
-		logStep("Detecting if Home Page is opened");
-
-		logStep("Identify Dependent without logging out the patient");
-		patientVerificationPage.getToThisPage(guardianUrl);
-		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
-				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
-
-		logStep("Continue registration - check dependent info and fill login credentials");
-		log("Login username of Guardian is " + patientLogin);
-		linkAccountPage.checkDependentInfo("Dependent", patientLastName, patientEmail);
-		jalapenoHomePage = linkAccountPage.linkPatientToCreateGuardian(patientLogin, testData.getPassword(), "Parent");
-
-		logStep("Logout, login and change patient");
-		JalapenoLoginEnrollment loginPage = jalapenoHomePage.clickOnLogoutEnrollment();
-		jalapenoHomePage = loginPage.login(patientLogin, testData.getPassword());
-
-		logStep("Guardian requesting Prescription Renewal for self");
-		JalapenoPrescriptionsPage prescriptionsPage = jalapenoHomePage.clickOnPrescriptions(driver);
-		Thread.sleep(10000);
-		prescriptionsPage.prescriptionPayment();
-		jalapenoHomePage = prescriptionsPage.fillThePrescription(driver, "XANAX", "21", 10);
-
-		jalapenoHomePage.clickOnLogoutEnrollment();
-
-		logStep("Login to Practice Portal");
-
-		// Now start login with practice data
-		PracticeLoginPage practiceLogin1 = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome1 = practiceLogin1.login(testData.getProperty("pres.doc.username"),
-				testData.getProperty("pres.doc.password"));
-
-		logStep("Click On RxRenewal in Practice Portal");
-		RxRenewalSearchPage rxRenewalSearchPage = practiceHome1.clickonRxRenewal();
-
-		logStep("Search for Today's RxRenewal in Practice Portal");
-		rxRenewalSearchPage.searchForRxRenewalToday();
-
-		logStep("Get the RxRenewal Details in Practice Portal");
-		rxRenewalSearchPage.getRxRenewalDetails();
-
-		logStep("Set the RxRenewal Fields in Practice Portal");
-		rxRenewalSearchPage.setRxRenewalFields("Guardian");
-
-		logStep("Click On Process RxRenewal Button in Practice Portal");
-		rxRenewalSearchPage.clickProcessRxRenewal();
-		String subject = rxRenewalSearchPage.getSubject();
-		logStep("Verify Prescription Confirmation in Practice Portal");
-		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
-
-		logStep("Set Action Radio Button in Practice Portal");
-		rxRenewalSearchPage.setActionRadioButton();
-
-		logStep("Verify Process Completed Text in Practice Portal");
-		rxRenewalSearchPage.verifyProcessCompleted();
-
-		logStep("Logout of Practice Portal");
-		practiceHome1.logOut();
-
-		JalapenoLoginEnrollment loginPage2 = new JalapenoLoginEnrollment(driver,
-				testData.getProperty("pres.portal.url"));
-		JalapenoHomePage homePage2 = loginPage2.login(patientLogin, testData.getPassword());
-
-		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
-
-		logStep("Looking for appointment approval from doctor");
-		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
-	}
-
 	/**
 	 * Updating appointment request while processing them with the following
 	 * appointment statuses -Process Externaly.
@@ -2880,110 +2717,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPrescriptionDependent() throws Exception {
-
-		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
-		String patientLastName = patientLogin.replace("login", "last");
-		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
-
-		logStep("Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("pres.doc.username"),
-				testData.getProperty("pres.doc.password"));
-
-		logStep("Click on Search");
-		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
-
-		logStep("Click on Add new Patient");
-		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
-
-		logStep("Register Guardian - Enter all the details and click on Register");
-		String patientUrl = patientActivationPage.setInitialDetailsAllFields("Guardian", patientLastName, "F",
-				patientLastName + "G", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
-				testData.getDOBDay(), testData.getDOBYear(), "address1", "address2", "city", "Alabama",
-				testData.getZipCode());
-
-		logStep("Register Dependent - Enter all the details and click on Register");
-		String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "M",
-				patientLastName + "D", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
-				testData.getDOBDay(), testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama",
-				testData.getZipCode());
-		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
-
-		logStep("Finishing of patient activation: step 1 - verifying identity");
-		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
-		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
-				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear());
-
-		logStep("Finishing of patient activation: step 2 - filling patient data");
-		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
-				testData.getPassword(), testData);
-
-		logStep("Identify Dependent without logging out the patient");
-		patientVerificationPage.getToThisPage(guardianUrl);
-		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
-				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
-
-		logStep("Continue registration - check dependent info and fill login credentials");
-		log("Login username of Guardian is " + patientLogin);
-		linkAccountPage.checkDependentInfo("Dependent", patientLastName, patientEmail);
-		jalapenoHomePage = linkAccountPage.linkPatientToCreateGuardian(patientLogin, testData.getPassword(), "Parent");
-
-		logStep("Guardian requesting Prescription Renewal for his dependent");
-		JalapenoPrescriptionsPage dPrescriptionsPage = jalapenoHomePage.clickOnPrescriptions(driver);
-		Thread.sleep(10000);
-		dPrescriptionsPage.prescriptionPayment();
-		jalapenoHomePage = dPrescriptionsPage.fillThePrescription(driver, "XANAX", "21", 10);
-		jalapenoHomePage.clickOnLogoutEnrollment();
-
-		logStep("Login to Practice Portal");
-		// Now start login with practice data
-		PracticeLoginPage dPracticeLogin1 = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage dPracticeHome11 = dPracticeLogin1.login(testData.getProperty("pres.doc.username"),
-				testData.getProperty("pres.doc.password"));
-
-		logStep("Click On RxRenewal in Practice Portal");
-		RxRenewalSearchPage dRxRenewalSearchPage = dPracticeHome11.clickonRxRenewal();
-
-		logStep("Search for Today's RxRenewal in Practice Portal");
-		dRxRenewalSearchPage.searchForRxRenewalToday();
-
-		logStep("Get the RxRenewal Details in Practice Portal");
-		dRxRenewalSearchPage.getRxRenewalDetails();
-
-		logStep("Set the RxRenewal Fields in Practice Portal");
-		dRxRenewalSearchPage.setRxRenewalFields("Dependent");
-
-		logStep("Click On Process RxRenewal Button in Practice Portal");
-		dRxRenewalSearchPage.clickProcessRxRenewal();
-		String dependentSubject = dRxRenewalSearchPage.getSubject();
-		logStep("Verify Prescription Confirmation in Practice Portal");
-		dRxRenewalSearchPage.verifyPrescriptionConfirmationSection(dependentSubject);
-
-		logStep("Set Action Radio Button in Practice Portal");
-		dRxRenewalSearchPage.setActionRadioButton();
-
-		logStep("Verify Process Completed Text in Practice Portal");
-		dRxRenewalSearchPage.verifyProcessCompleted();
-
-		logStep("Logout of Practice Portal");
-		dPracticeHome11.logOut();
-
-		JalapenoLoginEnrollment dLoginPage2 = new JalapenoLoginEnrollment(driver,
-				testData.getProperty("pres.portal.url"));
-		JalapenoHomePage dHomePage2 = dLoginPage2.login(patientLogin, testData.getPassword());
-
-		logStep("Switch to dependent");
-		jalapenoHomePage.faChangePatient();
-
-		JalapenoMessagesPage dMessagesPage = dHomePage2.showMessages(driver);
-
-		logStep("Looking for Prescription approval from doctor");
-		assertTrue(dMessagesPage.isMessageDisplayed(driver, "RxRenewalSubjectDependent"));
-
-	}
-
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientEducationKnownIssue() throws InterruptedException {
 		logStep("Load login page");
@@ -3061,7 +2794,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String notificationEmailSubject = "Payment Receipt";
 		String mailAddress = patient.getEmail();
 //		assertTrue(mail.getEmailContentText(mailAddress, notificationEmailSubject, "************", 10));
-
 
 	}
 
@@ -6380,7 +6112,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver);
 		assertTrue(loginPage.checkResetPasswordError(resetUrl));
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testTermsOfServicePopUp() throws Exception {
 
@@ -6398,40 +6130,40 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Validate presence of Terms of Service popup in Security Details Page");
 		assertTrue(accountDetailsPage.isTermsOfServicePopupDisplayed());
-		
+
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testBanner() throws Exception {
-        String message=IHGUtil.createRandomNumericString(8);
-        
-        logStep("Login to sitegen as Admin user");
-        SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-        SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("sitegen.admin.user"),
-                testData.getProperty("sitegen.password.user"));
-        logStep("Navigate to SiteGen PracticeHomePage");
-        SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
-        logStep("Check if SiteGen Practice Homepage elements are present ");
-        assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
-                "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-        
-        pSiteGenPracticeHomePage.clickOnPatientBroadcast();
+	public void testBanner() throws Exception {
+		String message = IHGUtil.createRandomNumericString(8);
 
-         PatientPortalBroadcastPage PatientPortalBroadcast = new PatientPortalBroadcastPage(driver);
-         PatientPortalBroadcast.deleteBroadCast();
-        PatientPortalBroadcast.addBroadCast(testData.getProperty("broadcast.title"),message);
+		logStep("Login to sitegen as Admin user");
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("sitegen.admin.user"),
+				testData.getProperty("sitegen.password.user"));
+		logStep("Navigate to SiteGen PracticeHomePage");
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Check if SiteGen Practice Homepage elements are present ");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
-        logStep("Load login page and login");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
-        String actual=loginPage.readBroadcastMessage();
-        assertEquals(actual, message, "broadcast Message is matching");
-        JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
-                testData.getProperty("med.wf.password"));
-        
-        String actualBroadcastmessage=homePage.readBroadcast();
-        assertEquals(actualBroadcastmessage, message);
+		pSiteGenPracticeHomePage.clickOnPatientBroadcast();
 
-        homePage.clickOnLogout();
-    }
-	
+		PatientPortalBroadcastPage PatientPortalBroadcast = new PatientPortalBroadcastPage(driver);
+		PatientPortalBroadcast.deleteBroadCast();
+		PatientPortalBroadcast.addBroadCast(testData.getProperty("broadcast.title"), message);
+
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		String actual = loginPage.readBroadcastMessage();
+		assertEquals(actual, message, "broadcast Message is matching");
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
+				testData.getProperty("med.wf.password"));
+
+		String actualBroadcastmessage = homePage.readBroadcast();
+		assertEquals(actualBroadcastmessage, message);
+
+		homePage.clickOnLogout();
+	}
+
 }
