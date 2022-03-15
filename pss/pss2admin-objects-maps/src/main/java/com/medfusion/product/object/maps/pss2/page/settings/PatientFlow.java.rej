@@ -1,7 +1,0 @@
-diff a/pss/pss2admin-objects-maps/src/main/java/com/medfusion/product/object/maps/pss2/page/settings/PatientFlow.java b/pss/pss2admin-objects-maps/src/main/java/com/medfusion/product/object/maps/pss2/page/settings/PatientFlow.java	(rejected hunks)
-@@ -1,4 +0,4 @@
--// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
-+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
- package com.medfusion.product.object.maps.pss2.page.settings;
- 
- import java.util.List;
