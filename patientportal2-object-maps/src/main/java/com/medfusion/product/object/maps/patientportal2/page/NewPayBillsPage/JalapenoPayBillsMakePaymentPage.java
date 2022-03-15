@@ -288,7 +288,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	}
 
 	public String readConfirmationNumber() {
-		IHGUtil.waitForElement(driver, 50, confirmationNumberMsg);
+		IHGUtil.waitForElement(driver, 60, confirmationNumberMsg);
 
 		String confirmationNumberMsgstring = confirmationNumberMsg.getText();
 		String confirmationNumber = confirmationNumberMsgstring.substring(28, 40);

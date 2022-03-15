@@ -269,7 +269,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public boolean isTextDisplayed(String text) {
 		log("Looking for notification: " + text);
-
+		IHGUtil.waitForElement(driver, 50, continueRegistrationButton);
 		try {
 			return driver.findElement(By.xpath("//p[contains(text(),'" + text + "')]")).getText().contains(text);
 		} catch (Exception e) {
