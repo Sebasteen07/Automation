@@ -233,7 +233,8 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, null, null, null);
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
 		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location name is shown in Upcoming appointment details");
@@ -331,7 +332,8 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, null, null, null);
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
 		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location is shown in Upcoming appointment details");
@@ -432,7 +434,8 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, null, null, null);
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
 		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location is shown in Upcoming appointment details");
@@ -485,7 +488,8 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, null, null, null);
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
 		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location is shown in Upcoming appointment details");

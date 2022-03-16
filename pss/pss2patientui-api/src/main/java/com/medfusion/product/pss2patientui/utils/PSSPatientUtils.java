@@ -370,13 +370,13 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homePage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		logStep("Verify Location Page and location =" + testData.getLocation());
-		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+		logStep("Verify Location Page and location =" + location1);
+		AppointmentPage appointment = location.selectAppointment(location1);
+		logStep("Verify Appointment Page and appointment to be selected = " + appointmentType);
+		Provider provider = appointment.selectTypeOfProvider(appointmentType,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		logStep("Verify Provider Page and Provider = " + testData.getProvider());
-		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		logStep("Verify Provider Page and Provider = " + book);
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(book);
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		log("Test Case Passed");
