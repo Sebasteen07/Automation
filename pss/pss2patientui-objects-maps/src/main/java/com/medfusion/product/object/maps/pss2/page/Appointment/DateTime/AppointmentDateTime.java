@@ -308,6 +308,15 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	}
 	
+	public String getFirstTimeWithHHMM() {
+		String time = "";
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			time = appointmentTimeList.get(0).getText();
+		}
+		return time.substring(0,5);
+	}
+
+	
 	public void logout() throws InterruptedException {
 		settingBtn.click();
 		logoutBtn.click();
