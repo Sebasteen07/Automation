@@ -1,111 +1,104 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
-import com.medfusion.common.utils.ExcelSheetReader;
+import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PaymentTestData {
 
-	private Payment paymentObj = null;
-	private ExcelSheetReader excelReader = null;
+	private Properties property = new Properties();
 
-	public PaymentTestData(Payment sheetName) throws Exception {
-		// which enviroment data need to picked
-		String temp = IHGUtil.getEnvironmentType().toString();
-		// file name
-		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
-		// reading the entire file
-		excelReader = new ExcelSheetReader(url.getFile());
-		// filtering the entire file
-		paymentObj = (Payment) excelReader.getSingleExcelRow(sheetName, temp);
+	public PaymentTestData() throws IOException {
+		String env = IHGUtil.getEnvironmentType().toString();
+		String propertyFileNameString = env + ".properties";
+
+		URL url = ClassLoader.getSystemResource("data-driven/" + propertyFileNameString);
+		FileReader inputStream = new FileReader(url.getFile());
+		property.load(inputStream);
 	}
 
 	public String getUrl() {
-		return paymentObj.Url;
+		return property.getProperty("patient.portal.url.payment");
 	}
 
 	public String getUserName() {
-		return paymentObj.UserName;
+		return property.getProperty("patient.portal.username.payment");
 	}
 
 	public String getPassword() {
-		return paymentObj.Password;
+		return EncryptionUtils.decrypt(property.getProperty("patient.portal.password.payment"));
 	}
 
 	public String getRestUrl() {
-		return paymentObj.RestUrl;
+		return property.getProperty("rest.url.payment");
 	}
 
 	public String getResponsePath() {
-		return paymentObj.ResponsePath;
+		return property.getProperty("response.path");
 	}
 
 	public String getOAuthProperty() {
-		return paymentObj.OAuthProperty;
+		return property.getProperty("oauth.property");
 	}
 
 	public String getOAuthKeyStore() {
-		return paymentObj.OAuthKeyStore;
+		return property.getProperty("oauth.keystore");
 	}
 
 	public String getOAuthAppToken() {
-		return paymentObj.OAuthAppToken;
+		return property.getProperty("oauth.app.token");
 	}
 
 	public String getOAuthUsername() {
-		return paymentObj.OAuthUsername;
+		return property.getProperty("oauth.username");
 	}
 
 	public String getOAuthPassword() {
-		return paymentObj.OAuthPassword;
+		return EncryptionUtils.decrypt(property.getProperty("oauth.password"));
 	}
 
 	public String getFrom() {
-		return paymentObj.From;
+		return property.getProperty("from");
 	}
 
 	public String getcommunicationXML() {
-		return paymentObj.communicationXML;
+		return property.getProperty("communication.xml");
 	}
 
 	public String getPaymentPath() {
-		return paymentObj.PaymentPath;
+		return property.getProperty("payment.path");
 	}
 
 	public String getCommRestUrl() {
-		return paymentObj.CommRestUrl;
+		return property.getProperty("payment.admin.rest.url");
 	}
 
 	public String getPracticeURL() {
-		return paymentObj.PracticeURL;
+		return property.getProperty("practice.url");
 	}
 
 	public String getPracticeUserName() {
-		return paymentObj.PracticeUserName;
+		return property.getProperty("practice.username");
 	}
 
 	public String getPracticePassword() {
-		return paymentObj.PracticePassword;
-	}
-
-	public String getGmailUserName() {
-		return paymentObj.GmailUserName;
-	}
-
-	public String getGmailPassword() {
-		return paymentObj.GmailPassword;
+		return EncryptionUtils.decrypt(property.getProperty("practice.password"));
 	}
 
 	public String getPracticeName() {
-		return paymentObj.PracticeName;
+		return property.getProperty("practice.name");
 	}
 	
 	public String getRestV3Url() {
-		return paymentObj.RestV3Url;
+		return property.getProperty("restv3.url.payment");
 	}
 	
 	public String getPaymentPathV3() {
-		return paymentObj.PaymentPathV3;
+		return property.getProperty("paymentv3.path");
 	}
 }

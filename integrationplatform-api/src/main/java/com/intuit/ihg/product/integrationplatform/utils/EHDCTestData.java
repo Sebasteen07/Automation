@@ -1,86 +1,68 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
-import com.medfusion.common.utils.ExcelSheetReader;
+import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 
 public class EHDCTestData {
 
-	private EHDC EhdcObj = null;
+	private Properties property = new Properties();
 
-	public EHDCTestData(EHDC sheetName) throws Exception {
-		// which enviroment data need to picked
-		String temp = IHGUtil.getEnvironmentType().toString();
-		// file name
-		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
-		// reading the entire file
-		ExcelSheetReader excelReader = new ExcelSheetReader(url.getFile());
-		// filtering the entire file
-		EhdcObj = (EHDC) excelReader.getSingleExcelRow(sheetName, temp);
+	public EHDCTestData() throws IOException {
+		String env = IHGUtil.getEnvironmentType().toString();
+		String propertyFileNameString = env + ".properties";
+
+		URL url = ClassLoader.getSystemResource("data-driven/" + propertyFileNameString);
+		FileReader inputStream = new FileReader(url.getFile());
+		property.load(inputStream);
 	}
 
-
-	public String getPHR_URL() {
-		return EhdcObj.PHR_URL;
-	}
-
-	public String getURL() {
-		return EhdcObj.URL;
+	public String getUrl() {
+		return property.getProperty("patient.portal.url.ehdc");
 	}
 
 	public String getUserName() {
-		return EhdcObj.UserName;
+		return property.getProperty("patient.portal.username.ehdc");
 	}
 
 	public String getPassword() {
-		return EhdcObj.Password;
+		return EncryptionUtils.decrypt(property.getProperty("patient.portal.password.ehdc"));
 	}
 
-
 	public String getRestUrl() {
-		return EhdcObj.RestUrl;
+		return property.getProperty("rest.url.ehdc");
 	}
 
 	public String getCCDPath() {
-		return EhdcObj.CCDPath;
+		return property.getProperty("ccd.path.ehdc");
 	}
 
 	public String getResponsePath() {
-		return EhdcObj.ResponsePath;
+		return property.getProperty("response.path");
 	}
 
-
 	public String getOAuthProperty() {
-		return EhdcObj.OAuthProperty;
+		return property.getProperty("oauth.property");
 	}
 
 	public String getOAuthKeyStore() {
-		return EhdcObj.OAuthKeyStore;
+		return property.getProperty("oauth.keystore");
 	}
 
 	public String getOAuthAppToken() {
-		return EhdcObj.OAuthAppToken;
+		return property.getProperty("oauth.app.token");
 	}
 
 	public String getOAuthUsername() {
-		return EhdcObj.OAuthUsername;
+		return property.getProperty("oauth.username");
 	}
 
 	public String getOAuthPassword() {
-		return EhdcObj.OAuthPassword;
+		return EncryptionUtils.decrypt(property.getProperty("oauth.password"));
 	}
-
-	public String getGmailUserName() {
-		return EhdcObj.GmailUserName;
-	}
-
-	public String getGmailPassword() {
-		return EhdcObj.GmailPassword;
-	}
-
-	public String getPracticeName() {
-		return EhdcObj.PracticeName;
-	}
-
 }

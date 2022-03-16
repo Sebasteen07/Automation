@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.api.test;
 
 import java.io.IOException;
@@ -9,6 +9,7 @@ import static org.testng.Assert.*;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.patientportal2.api.utils.Validations;
 import com.medfusion.patientportal2.api.helpers.ApiConstructor;
@@ -119,7 +120,8 @@ public class IdentityTests extends ApiConstructor {
 		logStep("Execute create user profile");
 		Response response = postNewUserV5(token, testData.getProperty("identity.new.email"),
 				testData.getProperty("identity.new.username") + timestamp.getTime(),
-				testData.getProperty("identity.new.password"), testData.getProperty("identity.new.challenge.answer"),
+				EncryptionUtils.decrypt(testData.getProperty("identity.new.password")),
+				testData.getProperty("identity.new.challenge.answer"),
 				testData.getProperty("identity.new.challenge.phrase"), testData.getProperty("identity.new.source"));
 
 		logStep("Verifying the response");
@@ -134,7 +136,8 @@ public class IdentityTests extends ApiConstructor {
 
 		logStep("Execute create user profile");
 		Response response = postNewUserV5(token, testData.getProperty("identity.new.email"),
-				testData.getProperty("api.username"), testData.getProperty("identity.new.password"),
+				testData.getProperty("api.username"),
+				EncryptionUtils.decrypt(testData.getProperty("identity.new.password")),
 				testData.getProperty("identity.new.challenge.answer"),
 				testData.getProperty("identity.new.challenge.phrase"), testData.getProperty("identity.new.source"));
 
@@ -153,7 +156,8 @@ public class IdentityTests extends ApiConstructor {
 		Response response = updateUserProfile(token, testData.getProperty("identity.update.auth.id"),
 				testData.getProperty("identity.new.email"),
 				testData.getProperty("identity.new.username") + timestamp.getTime() + "update",
-				testData.getProperty("identity.new.password"), testData.getProperty("identity.new.source"));
+				EncryptionUtils.decrypt(testData.getProperty("identity.new.password")),
+				testData.getProperty("identity.new.source"));
 
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -169,7 +173,8 @@ public class IdentityTests extends ApiConstructor {
 		Response response = updateUserProfile(token, testData.getProperty("api.invalid.auth.id"),
 				testData.getProperty("identity.new.email"),
 				testData.getProperty("identity.new.username") + timestamp.getTime() + "update",
-				testData.getProperty("identity.new.password"), testData.getProperty("identity.new.source"));
+				EncryptionUtils.decrypt(testData.getProperty("identity.new.password")),
+				testData.getProperty("identity.new.source"));
 
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 400);
@@ -181,7 +186,8 @@ public class IdentityTests extends ApiConstructor {
 		Response response = updateUserProfile("", testData.getProperty("identity.update.auth.id"),
 				testData.getProperty("identity.new.email"),
 				testData.getProperty("identity.new.username") + timestamp.getTime() + "update",
-				testData.getProperty("identity.new.password"), testData.getProperty("identity.new.source"));
+				EncryptionUtils.decrypt(testData.getProperty("identity.new.password")),
+				testData.getProperty("identity.new.source"));
 
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 401);

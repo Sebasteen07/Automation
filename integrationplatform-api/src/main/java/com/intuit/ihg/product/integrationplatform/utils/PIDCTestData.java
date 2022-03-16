@@ -1,272 +1,176 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.net.URL;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
-import com.medfusion.common.utils.ExcelSheetReader;
+import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PIDCTestData {
+	
+	public final String GENDERIDENTITY = "Male,Female,Decline to answer";
+	
+	private static Properties property = new Properties();
 
-	private PIDC PidcObj = null;
-	private ExcelSheetReader excelReader = null;
-
-	public PIDCTestData(PIDC sheetName) throws Exception {
-		// which enviroment data need to picked
-		String temp = IHGUtil.getEnvironmentType().toString();
-		// file name
-		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
-		// reading the entire file
-		excelReader = new ExcelSheetReader(url.getFile());
-		// filtering the entire file
-		PidcObj = (PIDC) excelReader.getSingleExcelRow(sheetName, temp);
+	public PIDCTestData() throws IOException {
+		String env = IHGUtil.getEnvironmentType().toString();
+		String propertyFileNameString = env + ".properties";
+		InputStream url = ClassLoader.getSystemResourceAsStream("data-driven/" + propertyFileNameString);
+		property.load(url);
 	}
 
 	public String getUrl() {
-		return PidcObj.Url;
+		return property.getProperty("patient.portal.url.pidc");
 	}
 
 	public String getUserName() {
-		return PidcObj.UserName;
+		return property.getProperty("patient.portal.username.pidc");
 	}
 
 	public String getPassword() {
-		return PidcObj.Password;
+		return EncryptionUtils.decrypt(property.getProperty("patient.portal.password.pidc"));
 	}
 
 	public String getRestUrl() {
-		return PidcObj.RestUrl;
+		return property.getProperty("rest.url");
 	}
 
 	public String getPatientPath() {
-		return PidcObj.PatientPath;
+		return property.getProperty("patient.path");
 	}
 
 	public String getResponsePath() {
-		return PidcObj.ResponsePath;
+		return property.getProperty("response.path");
 	}
 
 	public String getOAuthProperty() {
-		return PidcObj.OAuthProperty;
+		return property.getProperty("oauth.property");
 	}
 
 	public String getOAuthKeyStore() {
-		return PidcObj.OAuthKeyStore;
+		return property.getProperty("oauth.keystore");
 	}
 
 	public String getOAuthAppToken() {
-		return PidcObj.OAuthAppToken;
+		return property.getProperty("oauth.app.token");
 	}
 
 	public String getOAuthUsername() {
-		return PidcObj.OAuthUsername;
+		return property.getProperty("oauth.username");
 	}
 
 	public String getOAuthPassword() {
-		return PidcObj.OAuthPassword;
-	}
-
-	public String getGmailUsername() {
-		return PidcObj.GmailUsername;
-	}
-
-	public String getGmailPassword() {
-		return PidcObj.GmailPassword;
+		return EncryptionUtils.decrypt(property.getProperty("oauth.password"));
 	}
 
 	public String getBirthDay() {
-		return PidcObj.BirthDay;
+		return property.getProperty("patient.birthday");
 	}
 
 	public String getZipCode() {
-		return PidcObj.ZipCode;
-	}
-
-	public String getSSN() {
-		return PidcObj.SSN;
+		return property.getProperty("patient.zip.code");
 	}
 
 	public String getEmail() {
-		return PidcObj.Email;
+		return property.getProperty("patient.email");
 	}
 
 	public String getPatientPassword() {
-		return PidcObj.PatientPassword;
+		return EncryptionUtils.decrypt(property.getProperty("patient.password"));
 	}
 
 	public String getSecretQuestion() {
-		return PidcObj.SecretQuestion;
+		return property.getProperty("secret.question");
 	}
 
 	public String getSecretAnswer() {
-		return PidcObj.SecretAnswer;
+		return property.getProperty("secret.answer");
 	}
 
 	public String getPracticeURL() {
-		return PidcObj.PracticeURL;
+		return property.getProperty("practice.url");
 	}
 
 	public String getPracticeUserName() {
-		return PidcObj.PracticeUserName;
+		return property.getProperty("practice.username");
 	}
 
 	public String getPracticePassword() {
-		return PidcObj.PracticePassword;
+		return EncryptionUtils.decrypt(property.getProperty("practice.password"));
 	}
 
 	public String getLastName() {
-		return PidcObj.LastName;
+		return property.getProperty("last.name");
 	}
 
 	public String getCity() {
-		return PidcObj.City;
+		return property.getProperty("city");
 	}
 
 	public String getState() {
-		return PidcObj.State;
+		return property.getProperty("state");
 	}
 
 	public String getAddress1() {
-		return PidcObj.Address1;
+		return property.getProperty("address1");
 	}
 
 	public String getAddress2() {
-		return PidcObj.Address2;
+		return property.getProperty("address2");
 	}
 
 	public String getHomePhoneNo() {
-		return PidcObj.HomePhoneNo;
-	}
-
-	public String getInsurance_Type() {
-		return PidcObj.Insurance_Type;
-	}
-
-	public String getInsurance_Name() {
-		return PidcObj.Insurance_Name;
-	}
-
-	public String getRelation() {
-		return PidcObj.Relation;
-	}
-
-	public String getPreferredLanguage() {
-		return PidcObj.PreferredLanguage;
+		return property.getProperty("phone.number");
 	}
 
 	public String getRace() {
-		return PidcObj.Race;
+		return property.getProperty("race");
 	}
 
 	public String getEthnicity() {
-		return PidcObj.Ethnicity;
-	}
-
-	public String getMaritalStatus() {
-		return PidcObj.MaritalStatus;
+		return property.getProperty("ethnicity");
 	}
 
 	public String getChooseCommunication() {
-		return PidcObj.ChooseCommunication;
-	}
-
-	public String getBatch_PatientPath() {
-		return PidcObj.Batch_PatientPath;
+		return property.getProperty("choose.communication");
 	}
 
 	public String getPortalURL() {
-		return PidcObj.PortalURL;
+		return property.getProperty("patient.portal.url.pidc");
 	}
 
 	public String getPortalRestUrl() {
-		return PidcObj.PortalRestUrl;
+		return property.getProperty("portal.rest.url.pidc");
 	}
 
 	public String getHealthKeyPatientUserName() {
-		return PidcObj.HealthKeyPatientUserName;
+		return property.getProperty("health.key.patient.username");
 	}
 
 	public String getHealthKeyPatientPath() {
-		return PidcObj.HealthKeyPatientPath;
-	}
-
-	public String getInsuranceHealthKeyPatientUserName() {
-		return PidcObj.InsuranceHealthKeyPatientUserName;
-	}
-
-	public String getInsurancePortalURL() {
-		return PidcObj.InsurancePortalURL;
-	}
-
-	public String getInsurancePortalRestURL() {
-		return PidcObj.InsurancePortalRestURL;
-	}
-
-	public String getInsurancePatientID() {
-		return PidcObj.InsurancePatientID;
-	}
-
-	public String getInsuranceHealthKeyPatientUserName1() {
-		return PidcObj.InsuranceHealthKeyPatientUserName1;
-	}
-
-	public String getInsurancePatientID1() {
-		return PidcObj.InsurancePatientID1;
-	}
-
-	public String getSecondInsuranceName() {
-		return PidcObj.SecondInsuranceName;
-	}
-
-	public String getTestPatientIDUserName() {
-		return PidcObj.TestPatientIDUserName;
-	}
-
-	public String getFnameSC() {
-		return PidcObj.FnameSC;
-	}
-
-	public String getMnameSC() {
-		return PidcObj.MnameSC;
-	}
-
-	public String getLnameSC() {
-		return PidcObj.LnameSC;
-	}
-
-	public String getAddress1SC() {
-		return PidcObj.Address1SC;
-	}
-
-	public String getAddress2SC() {
-		return PidcObj.Address1SC;
+		return property.getProperty("health.key.patient.path");
 	}
 	
 	public String getCancelInviteRestUrl() {
-		return PidcObj.CancelInviteRestUrl;
-	}
-	
-	public String getGenderIdentityValues() {
-		return PidcObj.GI;
-	}
-	
-	public String getSexualOrientationValues() {
-		return PidcObj.SO;
+		return property.getProperty("cancel.invite.rest.url.pidc");
 	}
 	
 	public String getNewPatientPassword() {
-		return PidcObj.NewPassword;
+		return EncryptionUtils.decrypt(property.getProperty("new.password"));
 	}
 
 	public String getRestv1Url() {
-		return PidcObj.Restv1Url;
+		return property.getProperty("restv1.url");
 	}
 
 	public String getRestv2Url() {
-		return PidcObj.Restv2Url;
+		return property.getProperty("restv2.url");
 	}
 
 	public String getRestv3Url() {
-		return PidcObj.Restv3Url;
+		return property.getProperty("restv3.url");
 	}
 	
 }

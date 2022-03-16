@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.funding.qa.rest;
 
 import java.io.File;
@@ -59,7 +59,7 @@ public class FundingRestClient {
             LOGGER.info("No funding date provided, using today");
             fundingDate = LocalDate.now().format(DATETIME_FORMATTER);
         }
-        MultivaluedMap<String, String> headers = new MultivaluedMapImpl<>();
+        MultivaluedMap<String, String> headers = new MultivaluedMapImpl<String, String>();
         headers.put("content-disposition", Arrays.asList("filename=\"" + fileName + "\""));
         MultipartFormDataOutput output = new MultipartFormDataOutput();
         output.addFormData("emaf", new FileInputStream(file), MediaType.MULTIPART_FORM_DATA_TYPE);

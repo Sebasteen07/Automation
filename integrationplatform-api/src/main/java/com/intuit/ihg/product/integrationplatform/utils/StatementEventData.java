@@ -41,7 +41,7 @@ public class StatementEventData {
 	public String RestURLPIDC;
 	public String PracticeName;
 	public String StatementType;
-	public String portalURL;
+	public String PracticeURL;
 	public String practiceUserName;
 	public String practicePassword;
 	public String emailSubject;

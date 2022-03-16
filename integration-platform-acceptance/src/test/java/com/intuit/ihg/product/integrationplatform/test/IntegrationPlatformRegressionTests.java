@@ -1,6 +1,5 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
-
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -14,10 +13,7 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
-import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
@@ -34,66 +30,26 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDash
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
-/**
- * @author Vasudeo P
- * @Date 29/Oct/2013
- * @Description :-
- * @Note :
- */
-
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	public static final String newPassword = "P@ssw0rd";
 
-	private PIDCTestData loadDataFromExcel() throws Exception {
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Step 1: Get Data from Excel");
-		PIDC PIDCData = new PIDC();
-		PIDCTestData testData = new PIDCTestData(PIDCData);
-
-		log("Url: " + testData.getUrl());
-		log("User Name: " + testData.getUserName());
-		log("Password: " + testData.getPassword());
-		log("Rest Url: " + testData.getRestUrl());
-		log("Patient XML Path: " + testData.getPatientPath());
-		log("Response Path: " + testData.getResponsePath());
-		log("OAuthProperty: " + testData.getOAuthProperty());
-		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-		log("OAuthAppToken: " + testData.getOAuthAppToken());
-		log("OAuthUsername: " + testData.getOAuthUsername());
-		log("OAuthPassword: " + testData.getOAuthPassword());
-		log("BirthDay: " + testData.getBirthDay());
-		log("ZipCode: " + testData.getZipCode());
-		log("SSN: " + testData.getSSN());
-		log("Email: " + testData.getEmail());
-		log("PatientPassword: " + testData.getPatientPassword());
-		log("SecretQuestion: " + testData.getSecretQuestion());
-		log("SecretAnswer: " + testData.getSecretAnswer());
-
-		return testData;
+	@DataProvider(name = "channelVersion")
+	 public Object[][] channelVersionPIDC() {
+		Object[][] obj = new Object[][] {{"v1"}, {"v2"}, {"v3"}};
+			return obj;
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCRegression() throws Exception {
-
-		log("Test Case: AMDC Ask Question Regression");
-
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Step 1: Get Data from Excel");
-		AMDC AMDCData = new AMDC();
-		AMDCTestData testData = new AMDCTestData(AMDCData);
-
-
+		logStep("Get Test Data");
+		AMDCTestData testData = new AMDCTestData();
 		log("Url: " + testData.getUrl());
 		log("User Name: " + testData.getUserName());
 		log("Password: " + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
 		log("Response Path: " + testData.getResponsePath());
-		log("From: " + testData.getFrom());
+		log("From: " + testData.getFrom1());
 		log("SecureMessagePath: " + testData.getSecureMessage_AskaStaffXML());
 		log("OAuthProperty: " + testData.getOAuthProperty());
 		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
@@ -101,55 +57,49 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
 
-
-		log("Step 2: LogIn");
+		logStep("LogIn");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
-		log("Step 3: Click Ask Ur Doc");
+		logStep("Click Ask Ur Doc");
 		JalapenoAskAStaffPage askStaff1 = homePage.clickOnAskADoc(driver);
-
 		Thread.sleep(8000);
-		log("Step 4: fill and complete the of Ask A Staff");
+		
+		logStep("Fill and complete the of Ask A Staff");
 		askStaff1.fillAndSubmitAskyourDocUnpaid(driver);
 
-
-		log("Step 6: Validate entry is on Ask A Staff History page");
+		logStep("Validate entry is on Ask A Staff History page");
 		homePage.clickOnAskADoc(driver);
 		askStaff1.checkHistory(driver);
 		Thread.sleep(7000);
 
-		log("Step 7: Logout of Patient Portal");
+		logStep("Logout of Patient Portal");
 		homePage.clickOnLogout();
 
-		log("Step 8: Setup Oauth client");
+		logStep("Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
 				testData.getOAuthPassword());
 
-		log("Step 9: Get AMDC Rest call");
+		logStep("Get AMDC Rest call");
 		// get only messages from last hour in epoch time to avoid transferring lot of data
 		Long since = askStaff1.getCreatedTimeStamp() / 1000L - 60 * 60 * 24;
-
 		log("Getting messages since timestamp: " + since);
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 
-		log("Step 10: Checking validity of the response xml");
+		logStep("Checking validity of the response xml");
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
-
 		String messageThreadID = RestUtils.gnMessageThreadID;
 		log("Message Thread ID :" + messageThreadID);
-
 		String reply_Subject = "Test" + IHGUtil.createRandomNumericString();
 		String message =
-				RestUtils.prepareSecureMessage(testData.getSecureMessage_AskaStaffXML(), testData.getFrom(), testData.getUserName(), reply_Subject, messageThreadID);
-
+				RestUtils.prepareSecureMessage(testData.getSecureMessage_AskaStaffXML(), testData.getFrom1(), testData.getUserName(), reply_Subject, messageThreadID);
 		String messageID = RestUtils.newMessageID();
 		log("Partner Message ID:" + messageID);
 
-		log("Step 11: Do Message Post Request");
+		logStep("Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), message, testData.getResponsePath());
 
-		log("Step 12: Get processing status until it is completed");
+		logStep("Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -162,52 +112,39 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 
-		log("Step 13: Login to Patient Portal");
+		logStep("Login to Patient Portal");
 		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePageP = loginPage1.login(testData.getUserName(), testData.getPassword());
 
 
-		log("Step 14: Go to Inbox");
+		logStep("Go to Inbox");
 		JalapenoMessagesPage inboxPage = homePageP.showMessages(driver);
 		assertTrue(inboxPage.isMessageDisplayed(driver, reply_Subject));
-
 		Thread.sleep(12000);
-		log("Step 16: Reply to the message");
+		
+		logStep("Reply to the message");
 		inboxPage.replyToMessage(driver);
-
-		log("Step 17: Wait 60 seconds, so the message can be processed");
+		log("Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 
-		log("Step 18: Do a GET and get the message");
+		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 
-		log("Step 19: Validate message reply");
+		logStep("Validate message reply");
 		RestUtils.isReplyPresent(testData.getResponsePath(), reply_Subject);
-	}
-
-	@DataProvider(name = "channelVersion")
-	 public Object[][] channelVersionPIDC() {
-		Object[][] obj = new Object[][] {{"v1"}, {"v2"}, {"v3"}};
-			return obj;
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCBatch() throws Exception {
-		log("Test Case: Regression Test for Post AMDC (batch size of 3 secure messages)");
-
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Step 1: Get Data from Excel");
-		AMDC AMDCData = new AMDC();
-		AMDCTestData testData = new AMDCTestData(AMDCData);
+		logStep("Get Test Data");
+		AMDCTestData testData = new AMDCTestData();
 
 		List<String> newData = new ArrayList<String>();
-		newData.add(testData.getFrom());
+		newData.add(testData.getFrom1());
 		newData.add(testData.getUserName());
 		newData.add("Test" + IHGUtil.createRandomNumericString());
 		newData.add("This is auto-generated message" + IHGUtil.createRandomNumericString());
-		newData.add(testData.getFrom1());
+		newData.add(testData.getFrom2());
 		newData.add(testData.getUserName1());
 		newData.add("Test" + IHGUtil.createRandomNumericString());
 		newData.add("This is auto-generated message" + IHGUtil.createRandomNumericString());
@@ -279,14 +216,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testHealthKeyPatientLoginAndOnDemandProvision() throws Exception {
-		log("Test Case: Patient logs in first time as healthkey patient in NEW practice");
-
-		PIDCTestData testData = loadDataFromExcel();
+		logStep("Get Test Data");
+		PIDCTestData testData = new PIDCTestData();
 		Long timestamp = System.currentTimeMillis();
 		Long since = timestamp / 1000;
 		String FirstName = "MFPatient" + IHGUtil.createRandomNumericString();
 		String email = PortalUtil2.createRandomEmailAddress(testData.getEmail());
-		String[] GI = testData.getGenderIdentityValues().split(",");
+		String[] GI = testData.GENDERIDENTITY.split(",");
 		String zip = testData.getZipCode();
 		String date = testData.getBirthDay();
 		String dt = date.substring(0, 2);
@@ -390,9 +326,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testHealthKeyPatientUpdate() throws Exception {
-		log("Test Case: Healthkey Patient updates demographics details in Practice 1 from Patient Portal");
-
-		PIDCTestData testData = loadDataFromExcel();
+		logStep("Get Test Data");
+		PIDCTestData testData = new PIDCTestData();
 		Long timestamp = System.currentTimeMillis();
 		boolean found = false;
 

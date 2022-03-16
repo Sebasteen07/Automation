@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.forms.test;
 
 import static org.testng.Assert.assertFalse;
@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import com.google.common.base.Charsets;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.medfusion.common.utils.EncryptionUtils;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.BasicInformationAboutYouPage;
@@ -40,7 +41,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		public void formsConfigSmokeTest() throws Exception {
 				SiteGenSteps sgSteps = new SiteGenSteps();
 				DiscreteFormsList formsPage =
-						sgSteps.logInUserToSG(driver, testData.getProperty("sitegen.username1"), testData.getProperty("sitegen.password1")).clickLnkDiscreteForms();
+						sgSteps.logInUserToSG(driver, testData.getProperty("sitegen.username1"), EncryptionUtils.decrypt(testData.getProperty("sitegen.password1"))).clickLnkDiscreteForms();
 				assertTrue(formsPage.isPageLoaded());
 		}
 

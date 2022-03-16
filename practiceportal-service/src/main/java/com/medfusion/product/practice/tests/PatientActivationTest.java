@@ -53,7 +53,7 @@ public class PatientActivationTest extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getPracticeUsername(), practiceTestData.getPracticePassword());
 
 		log("step 2: Click on Patient Activation");
 		PatientActivationPage patientactivation = practiceHome.clickPatientactivationTab();

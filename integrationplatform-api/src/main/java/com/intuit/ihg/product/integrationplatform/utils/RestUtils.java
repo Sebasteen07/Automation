@@ -514,14 +514,6 @@ public class RestUtils {
 		return null;
 	}
 
-	/**
-	 * Sets up OAuth for requests
-	 * 
-	 * @param oAuthKeySStorePath
-	 * @param oAuthProperty
-	 * @param responsePath
-	 * @throws Exception
-	 */
 	public static void oauthSetup(String oAuthKeySStorePath, String oAuthProperty, String appToken, String username,
 			String password) throws Exception {
 		IHGUtil.PrintMethodName();
@@ -536,11 +528,6 @@ public class RestUtils {
 			// TODO Auto-generated catch block
 			hException.getCause().printStackTrace();
 		}
-		// System.out.println("appToken: " +appToken);
-		// System.out.println("username: " +username);
-		// System.out.println("password: " +password);
-
-		// emptyFile(responsePath);
 	}
 
 	public static void emptyFile(String file) throws IOException {
