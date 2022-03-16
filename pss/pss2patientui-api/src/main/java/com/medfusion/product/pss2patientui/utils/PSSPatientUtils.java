@@ -363,8 +363,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Test Case Passed");
 	}
 	
-	public void bookAppointmentWithLTBFlow(HomePage homePage, Appointment testData, WebDriver driver, String book, String appointmentType,  String location)
-			throws Exception {
+	public void bookAppointmentWithLTBFlow(HomePage homePage, Appointment testData, WebDriver driver, 
+			String book, String appointmentType,  String location) throws Exception {
 		log("Select Location for appointment.");
 		Location location1 = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
