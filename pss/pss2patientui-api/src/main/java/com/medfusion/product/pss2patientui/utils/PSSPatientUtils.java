@@ -363,15 +363,15 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Test Case Passed");
 	}
 	
-	public void flowForProviderOn(HomePage homePage, Appointment testData, WebDriver driver)
+	public void bookAppointmentWithLTBFlow(HomePage homePage, Appointment testData, WebDriver driver, String book, String appointmentType,  String location)
 			throws Exception {
 		log("Select Location for appointment.");
-		Location location = null;
+		Location location1 = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homePage.skipInsurance(driver);
-		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		location1 = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verify Location Page and location =" + testData.getLocation());
-		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		AppointmentPage appointment = location1.selectAppointment(testData.getLocation());
 		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
@@ -1067,7 +1067,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Test Case Passed");
 	}
 
-	public void LTFlowSet1(HomePage homepage1, Appointment testData, WebDriver driver)
+	public void bookAppointmentWithLTFlow(HomePage homepage1, Appointment testData, WebDriver driver)
 			throws Exception {
 		log("Select Location for appointment.");
 		Location location = null;

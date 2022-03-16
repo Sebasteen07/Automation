@@ -223,7 +223,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseNG(testData);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		PSSPatientUtils patientUtils = new PSSPatientUtils();
-		adminUtils.setRuleWithoutSpecialitySet2(driver, adminUser);
+		adminUtils.addRuleWithoutSpecialty(driver, adminUser);
 		adminUtils.pageRefresh(driver);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -233,7 +233,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		patientUtils.flowForProviderOn(homePage, testData, driver);
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, null, null, null);
 		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location name is shown in Upcoming appointment details");
@@ -272,7 +272,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseNG(testData);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		PSSPatientUtils patientUtils = new PSSPatientUtils();
-		adminUtils.setRuleWithoutProvider(driver, adminUser);
+		adminUtils.addRuleWithoutBook(driver, adminUser);
 		adminUtils.pageRefresh(driver);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -282,7 +282,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
-		patientUtils.LTFlowSet1(homepage, testData, driver);;
+		patientUtils.bookAppointmentWithLTFlow(homepage, testData, driver);;
 		if(homepage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location name is shown in Upcoming appointment details");
@@ -321,7 +321,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseAT(testData);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		PSSPatientUtils patientUtils = new PSSPatientUtils();
-		adminUtils.setRuleWithoutSpecialitySet2(driver, adminUser);
+		adminUtils.addRuleWithoutSpecialty(driver, adminUser);
 		adminUtils.pageRefresh(driver);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -331,7 +331,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		patientUtils.flowForProviderOn(homePage, testData, driver);
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, null, null, null);
 		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location is shown in Upcoming appointment details");
@@ -370,7 +370,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseAT(testData);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		PSSPatientUtils patientUtils = new PSSPatientUtils();
-		adminUtils.setRuleWithoutProvider(driver, adminUser);
+		adminUtils.addRuleWithoutBook(driver, adminUser);
 		adminUtils.pageRefresh(driver);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -380,7 +380,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
-		patientUtils.LTFlowSet1(homepage, testData, driver);;
+		patientUtils.bookAppointmentWithLTFlow(homepage, testData, driver);;
 		if(homepage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location name is shown in Upcoming appointment details");
@@ -432,7 +432,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		patientUtils.flowForProviderOn(homePage, testData, driver);
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, null, null, null);
 		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location is shown in Upcoming appointment details");
@@ -485,7 +485,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		patientUtils.flowForProviderOn(homePage, testData, driver);
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, null, null, null);
 		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
 			Assert.assertTrue(true);
 			log("Location is shown in Upcoming appointment details");

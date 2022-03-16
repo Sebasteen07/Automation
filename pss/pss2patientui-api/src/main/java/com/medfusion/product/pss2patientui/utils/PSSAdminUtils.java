@@ -248,7 +248,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientflow.logout();
 	}
 	
-	public void setRuleWithoutSpecialitySet2(WebDriver driver, AdminUser adminuser) throws Exception {
+	public void addRuleWithoutSpecialty(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
 		patientflow.removeAllRules();
@@ -387,7 +387,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("--------------------------------WAIT FOR RULE TL TO BE ADDED--------------------------------");
 	}
 	
-	public void setRuleWithoutProvider(WebDriver driver, AdminUser adminuser) throws Exception {
+	public void addRuleWithoutBook(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
 		patientflow.removeAllRules();
