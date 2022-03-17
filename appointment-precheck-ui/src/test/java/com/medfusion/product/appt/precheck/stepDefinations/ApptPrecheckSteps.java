@@ -5037,6 +5037,116 @@ public class ApptPrecheckSteps extends BaseTest {
 	  assertTrue(notifPage.visibilityOfnotificationsTab());
 	  
 	}
+	
+	@When("I schedule an appointment in {string}")
+	public void i_schedule_an_appointment_in(String language) throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com", language,
+						propertyData.getProperty("patient.name")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	
+	@Then("verify on appointment dashboard broadcast message and send reminder button not displayed")
+	public void verify_on_appointment_dashboard_broadcast_message_and_send_reminder_button_not_displayed() throws InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		Thread.sleep(5000);
+		apptPage.clickOnActions();
+		log("verify user is not able to see reminder and broadcast message button in actions dropdown");
+		assertFalse(apptPage.sendReminder(), "user is able to see send reminder button");
+		assertFalse(apptPage.broadcastMessage(), "user is able to see broadcast message button");
+		log("Enable notifications");
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.onNotification();
+		notifPage.saveNotification();
+	}
+	
+	@When("I select practice language as {string} from notification in setting")
+	public void i_select_practice_language_as_from_notification_in_setting(String english) throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		scrollAndWait(0, 200, 5000);
+		notifPage.selectPracticeLanguagePreference(english);
+		notifPage.saveNotification();
+	}
+	
+	@When("I switch on appointment dashboard select patient and send broadcast message in english from action button")
+	public void i_switch_on_appointment_dashboard_select_patient_and_send_broadcast_message_in_english_from_action_button() throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		log("Click on Actions tab and select broadcast message");
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.performAction();
+		assertFalse(apptPage.visibilityOfEsTextbox());
+		scrollAndWait(0, -2000, 5000);
+		apptPage.sendBroadcastInEnglish(propertyData.getProperty("broadcast.message.en"));
+		Thread.sleep(10000);
+	}
+	
+	@Then("I verify on while sending broadcast only english language option text box should be seen in broadcast and Email should be recieved in english only")
+	public void i_verify_on_while_sending_broadcast_only_english_language_option_text_box_should_be_seen_in_broadcast_and_email_should_be_recieved_in_english_only() throws NullPointerException, Exception {
+		String practiceName=apptPage.getPracticeName();
+		YopMail yopMail= new YopMail(driver);
+	    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    		"Important Message from"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "
+						+ propertyData.getProperty("broadcast.message.en"), 10));
+	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	    mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		Thread.sleep(5000);
+		notifPage.selectPracticeLanguagePreference("English & Spanish");
+		notifPage.saveNotification();
+	}
+	
+	@When("I switch on appointment dashboard select patient and send broadcast message in english and spanish from action button")
+	public void i_switch_on_appointment_dashboard_select_patient_and_send_broadcast_message_in_english_and_spanish_from_action_button() throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		log("Click on Actions tab and select broadcast message");
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.performAction();
+		assertTrue(apptPage.visibilityOfEnTextbox());
+		assertTrue(apptPage.visibilityOfEsTextbox());
+		scrollAndWait(0, -2000, 5000);
+		apptPage.scrollOnBroadcastMsg();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		Thread.sleep(10000);
+	}
+	
+	@Then("I verify on while sending broadcast in english and spanish language option text box should be seen in broadcast and Email should be recieved in english")
+	public void i_verify_on_while_sending_broadcast_in_english_and_spanish_language_option_text_box_should_be_seen_in_broadcast_and_email_should_be_recieved_in_english() throws NullPointerException, Exception {
+		String practiceName=apptPage.getPracticeName();
+		YopMail yopMail= new YopMail(driver);
+		log("Message should get in english and spanish");
+	    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    		"Important Message from"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "
+						+ propertyData.getProperty("broadcast.message.en"), 10));
+	    
+	    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    		"Un mensaje importantede"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "+ propertyData.getProperty("broadcast.message.en")+" / "+"Lo llamaremos en breve para recopilar la información de su seguro.", 10));
+	    log("Make notification setting ON");
+	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	    mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		Thread.sleep(5000);
+		notifPage.selectPracticeLanguagePreference("English & Spanish");
+		notifPage.saveNotification();
+	}
 
 }
 

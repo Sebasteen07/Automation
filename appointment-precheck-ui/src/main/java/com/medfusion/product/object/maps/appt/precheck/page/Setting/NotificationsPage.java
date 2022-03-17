@@ -754,6 +754,9 @@ public class NotificationsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "(//span[@class='mf-icon mf-icon__cadence-setting-remove mf-icon-pointer'])[4]")
 	private WebElement deleteTimingunitUnderdesignTab;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class=' css-qc6sy-singleValue']")
+	private WebElement prcticeLanguage;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -2862,5 +2865,15 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 	
+	public void selectPracticeLanguagePreference(String language) {
+		IHGUtil.PrintMethodName();
+		Actions ac= new Actions(driver);
+	    if(prcticeLanguage.getText().equals(language)) {
+		log("select language as: "+prcticeLanguage.getText());
+	   } else {
+		   ac.click(prcticeLanguage).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).build().perform();
+		   log("select language as: "+prcticeLanguage.getText());
+	   }
+	}
 
 }
