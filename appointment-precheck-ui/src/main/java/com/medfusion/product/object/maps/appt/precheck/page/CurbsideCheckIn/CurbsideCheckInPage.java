@@ -192,6 +192,19 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindAll({ @FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::div")})
 	public List<WebElement> selectPatients;
 	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[4]")
+	private WebElement clickProviderdropdown;
+	
+	@FindBy(how=How.XPATH, using ="//div[text()='Brown, Jennifer']")
+	private WebElement selectProviderA1inDropdown;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[3]")
+	private WebElement clickpatientNamedropdown;
+	
+	@FindBy(how=How.XPATH, using ="//div[text()='AppScheduler One']")
+	private WebElement selectPatientP1;
+
+	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -829,7 +842,7 @@ public class CurbsideCheckInPage extends BasePageObject {
 	}
 		public void clickOncurbsideCheckinLocationDropDown() {
 			IHGUtil.waitForElement(driver, 5, curbsideCheckinLocationDropDown);
-			curbsideCheckinLocationDropDown.click();
+			jse.executeScript("arguments[0].click();", curbsideCheckinLocationDropDown);
 	}
 		
 		public void selectLocationL1inDropDown() {
@@ -949,5 +962,30 @@ public class CurbsideCheckInPage extends BasePageObject {
 			String getPatient = patient.getText();
 			return getPatient;
 		}
+		
+		public void clickProviderdropdown() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, clickProviderdropdown);
+			jse.executeScript("arguments[0].click();", clickProviderdropdown);
+		}
+		
+		public void selectProviderA1inDropdown() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, selectProviderA1inDropdown);
+			jse.executeScript("arguments[0].click();", selectProviderA1inDropdown);
+		}
+		
+		public void clickpatientNamedropdown() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, clickpatientNamedropdown);
+			jse.executeScript("arguments[0].click();", clickpatientNamedropdown);
+		}
+		
+		public void selectPatientP1() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, selectPatientP1);
+			jse.executeScript("arguments[0].click();", selectPatientP1);
+		}
+
 		
 }

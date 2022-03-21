@@ -362,6 +362,26 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		}
 		log("Test Case Passed");
 	}
+	
+	public void bookAppointmentWithLTBFlow(HomePage homePage, Appointment testData, WebDriver driver, 
+			String book, String appointmentType,  String location1) throws Exception {
+		log("Select Location for appointment.");
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + location1);
+		AppointmentPage appointment = location.selectAppointment(location1);
+		logStep("Verify Appointment Page and appointment to be selected = " + appointmentType);
+		Provider provider = appointment.selectTypeOfProvider(appointmentType,
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + book);
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(book);
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
+	}
+
 
 	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
 			throws Exception {
@@ -1047,6 +1067,23 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Test Case Passed");
 	}
 
+	public void bookAppointmentWithLTFlow(HomePage homepage1, Appointment testData, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homepage1.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
+	}
+	
 	public Boolean deleteFile(String fileName) {
 		Boolean isFileDeleted = false;
 		log("filePath= " + fileName);
@@ -2209,4 +2246,15 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Time Differnce is  " + difference);
 		return difference;
 	}
+	
+	// This method will give you new time after time addition without seconds
+		public String addToTimeUI(String myTime, int mintime) throws ParseException {
+			SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+			Date d = df.parse(myTime);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(d);
+			cal.add(Calendar.MINUTE, mintime);
+			String newTime = df.format(cal.getTime());
+			return newTime;
+		}
 }

@@ -1252,6 +1252,57 @@ Feature: Test fuctionality of Appointment precheck
     When from setting in notifications user click on curbside checkin tab
     Then I verify user is able see default arrival confirmation message in english and Spanish in text box
     And logout from practice provisioning portal
+
+  Scenario: Verify after clicking on refresh button user is able to redirect on same page and navigate to next page and previous page
+    When I select start date and time
+    And I select all patients
+    And I am able to navigate from first page to second page and third page
+    Then I verify after clicking on refresh button user on third page and able to navigate on first page
+    
+  Scenario: verify notification count after multiple filter applied for location L1 and provider A1
+    And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And in curbside check-in filtration is done for location L1 and provider A1
+    And I schedule 2 appointments for location L1 and provider A2
+    Then I verify notification count will get updated but entry will not come in arrival grid for location L1 and provider A2
+    And logout from practice provisioning portal
+     
+  Scenario: verify notification count after filter applied for location L1 and provider A1
+    And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And in curbside check-in filtration is done for location L1 and provider A1
+    And I schedule 2 appointments for location L1 and provider A1
+    Then I verify notification count will get updated and entry will be seen in arrival grid for location L1 and provider A1
+    And logout from practice provisioning portal
+      
+  Scenario: verify notification count after multiple filter applied for location L1 and provider A1
+    And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And from curbside check-in filtration is done for location L1 and provider A1
+    And I schedule 2 appointments for location L2 and provider A1
+    Then I verify notification count should not get updated and no entries will be seen in arrival grid for location L2 and provider A1
+    And logout from practice provisioning portal
+  
+  Scenario: verify notification count after the filter is applied for location L1 and provider A1
+    And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And from curbside check-in filtration is done for location L1 and provider A1
+    And I schedule 2 appointments for location L2 and provider A2
+    Then I verify notification count should not get updated and no entries will be seen in arrival grid for location L2 and provider A2
+    And logout from practice provisioning portal
+   
+  Scenario: verify notification count after the filter is applied for location L1 and patient P1
+    And I schedule an appointment for location L1 and patient P1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And from curbside check-in filtration is done for location L1 and patient P1
+    And I schedule an appointment for location L1 and patient P1
+    Then I verify notification count should get updated and entries will be seen in arrival grid for for location L1 and patient P1
+    And logout from practice provisioning portal
       
   Scenario: verify notification count after filteration for location L1 if new arrival entry comes for Location L1 after user confirmation for arrival
     When from setting in notifications curbside check-in reminder checkbox is check
@@ -1267,3 +1318,78 @@ Feature: Test fuctionality of Appointment precheck
   	And I later deselect top checkbox in the curbside check-in tab
   	Then I verify all the patients should be selected and deselected on the curbside tab
   	And logout from practice provisioning portal
+  
+  Scenario: verify notification count after multiple filter applied with provider A1
+    And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And in curbside check-in filtration is done for location L1 and provider A1
+    And I schedule an appointment for location L1 and provider A2
+    Then I verify notification count will get updated but entry will not come in arrival grid for provider A2
+    And logout from practice provisioning portal
+   
+  Scenario: verify notification count after multiple filter is applied with provider A1
+  	And I schedule an appointment for location L1 and provider A1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And in curbside check-in filtration is done for location L1 and provider A1
+   	And I schedule an appointment for location L1 and provider A1
+    Then I verify notification count will get updated and entry will also be seen in arrival grid for provider A1
+    And logout from practice provisioning portal
+   
+  Scenario: verify on template editor page user is able to see proper template of email
+    When from setting in notifications I click on email hamburgerbutton section of appointment reminder
+    And I hit edit button
+    Then I verify on template editor page all fields are displayed properly of appointment reminder for email
+    And logout from practice provisioning portal
+  
+  Scenario: verify on template editor page user is able to see proper template of text
+    When from setting in notifications I click on text hamburgerbutton section of appointment reminder
+    And I hit edit button
+    Then I verify on template editor page all fields are displayed properly of appointment reminder for text
+    And logout from practice provisioning portal
+     
+  Scenario: verify if user is able to edit text or mail cadence template from cadence editor page
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	Then I verify that design tab is visible under setting tab
+    And logout from practice provisioning portal
+  
+  Scenario: verify if user is able to see all default value on cadence page
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	Then I verify that system should show all default value on cadence page properly
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to see default timing units
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	Then I verify that system should show  default three timing units
+    And logout from practice provisioning portal
+  
+  Scenario: verify if user is able to add timing and timing units and automatically add button disappear
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on add button and add timing and timing unit
+  	Then I verify that system should not show add button after adding fourth timing and timing unit
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to delete timing and timing units and automatically add button appears
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on delete button of timing and timing unit
+  	Then I verify that system should show add button after deleting fourth timing and timing unit
+    And logout from practice provisioning portal
+     
+  Scenario: verify if user is able to add timing in timing and timing units fields
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I add timings in timing and timing unit fields and save changes
+  	Then I verify that system should redirect to the notification tab page after the changes are saved
+    And logout from practice provisioning portal
