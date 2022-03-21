@@ -1,15 +1,19 @@
 //  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.patientportal2.utils;
 
-import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.PropertyFileLoader;
-import org.openqa.selenium.*;
-
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+
 import com.intuit.ihg.common.utils.WebPoster;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 
 public class PortalUtil2 extends IHGUtil {
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -51,9 +55,14 @@ public class PortalUtil2 extends IHGUtil {
 	}
 	
 	public static void acceptAlert(WebDriver driver) {
+		try {
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
-	}
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		}
 	
 	public static void setquestionnarieFrame(WebDriver pDriver) {
 		IHGUtil.PrintMethodName();		
