@@ -204,6 +204,8 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how=How.XPATH, using ="//div[text()='AppScheduler One']")
 	private WebElement selectPatientP1;
 
+	@FindBy(how=How.XPATH, using ="//input[@type='checkbox']")
+	private WebElement clickOnselectAllCheckbox;
 	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
@@ -986,6 +988,114 @@ public class CurbsideCheckInPage extends BasePageObject {
 			IHGUtil.waitForElement(driver, 10, selectPatientP1);
 			jse.executeScript("arguments[0].click();", selectPatientP1);
 		}
+		
+		public String selectOneDayBeforeDateforStartdate(String currentYear,String time) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			log("Select one day before date");
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+			int dd = cal.get(Calendar.DATE) - 1;
+			int yyyy = cal.get(Calendar.YEAR);
+			int mm = cal.get(Calendar.MONTH)+1;
+
+			log("One day before date : " + dd + "-" + mm + "-" + yyyy);
+			startTimeField.click();
+
+			log("Select Month");
+			Select selectMonth = new Select(months);
+			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
+			Thread.sleep(3000);
+
+			log("Select Year");
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			WebElement date = driver.findElement(By.xpath(
+					"//*[@id=\"page-content-container\"]/div/header/div[2]/div[3]//div/div/div[4]/div[text()="
+					+ "'" + dd + "'" +"]"));
+			log("Date : " + dd);
+			date.click();
+			Thread.sleep(10000);
+			return mm+"/"+dd+"/"+currentYear+" "+time;
+		}
+		
+		public String selectEnddate(String currentYear,String time) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			log("Select one day before date");
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+			int dd = cal.get(Calendar.DATE);
+			int yyyy = cal.get(Calendar.YEAR);
+			int mm = cal.get(Calendar.MONTH)+1;
+
+			log("One day before date : " + dd + "-" + mm + "-" + yyyy);
+			endTimeField.click();
+
+			log("Select Month");
+			Select selectMonth = new Select(months);
+			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
+			Thread.sleep(3000);
+
+			log("Select Year");
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			WebElement date = driver.findElement(By.xpath(
+					"(//*[@id=\"page-content-container\"]/div/header/div[2]/div[4]/div[2]/div[2]/div/div/div[2]/div[2]//div[text()="
+							+ "'" + dd + "'" + "])[1]"));
+			log("Date : " + dd);
+			date.click();
+			Thread.sleep(10000);
+			return mm+"/"+dd+"/"+currentYear+" "+time;
+		}
+		
+		public void clickOnselectAllCheckbox() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, clickOnselectAllCheckbox);
+			jse.executeScript("arguments[0].click();", clickOnselectAllCheckbox);
+		}
+		
+		public String selectCurrentdateforStartdate(String currentYear,String time) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			log("Select one day before date");
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+			int dd = cal.get(Calendar.DATE);
+			int yyyy = cal.get(Calendar.YEAR);
+			int mm = cal.get(Calendar.MONTH)+1;
+
+			log("One day before date : " + dd + "-" + mm + "-" + yyyy);
+			startTimeField.click();
+
+			log("Select Month");
+			Select selectMonth = new Select(months);
+			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
+			Thread.sleep(3000);
+
+			log("Select Year");
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			WebElement date = driver.findElement(By.xpath(
+					"//div[@class='react-datepicker__week'][3]/div[text()='16']"));
+			log("Date : " + dd);
+			date.click();
+			Thread.sleep(10000);
+			return mm+"/"+dd+"/"+currentYear+" "+time;
+		}
+
 
 		
 }
