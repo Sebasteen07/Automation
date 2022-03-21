@@ -78,7 +78,6 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 	public void addRule(String r1, String r2) throws Exception {
 
 		logStep("Set up the API authentication");
-		//setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		Response response;
 		JSONArray arr;
 		String rule1 = r1.replaceAll("[^a-zA-Z0-9]", "");
