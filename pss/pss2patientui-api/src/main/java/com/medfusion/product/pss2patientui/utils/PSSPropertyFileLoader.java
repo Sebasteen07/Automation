@@ -33,6 +33,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setStartPointPresent(false);
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.gw"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.gw"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.name.gw"));
 		appointValues.setTimeMarkValue(property.getProperty("timemark.value.gw"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("agerule.firstparameter.gw"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("agerule.secondparameter.gw"));
@@ -169,6 +170,7 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("Loading data for ATHENA appointment related cases..");
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.at"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.at"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.name.at"));
 		appointValues.setTimeMarkValue(property.getProperty("time.mark.value.at"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("age.rule.month.first.parameter.at"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("age.rule.month.second.parameter.at"));
@@ -244,6 +246,7 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.ge"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.ge"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.display.name.ge"));
 		appointValues.setTimeMarkValue(property.getProperty("time.mark.value.ge"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("age.rule.month.first.parameter.ge"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("age.rule.month.second.parameter.ge"));
@@ -327,6 +330,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("anonymous.url.ng"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setPracticeDisplayName(property.getProperty("practice.name.am"));
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.ng"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.ng"));
 		appointValues.setTimeMarkValue(property.getProperty("timeMarkValue.NG"));

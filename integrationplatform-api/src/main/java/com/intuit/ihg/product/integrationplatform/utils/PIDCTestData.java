@@ -154,6 +154,7 @@ public class PIDCTestData {
 	}
 	
 	public String getCancelInviteRestUrl() {
+	
 		return property.getProperty("cancel.invite.rest.url.pidc");
 	}
 	

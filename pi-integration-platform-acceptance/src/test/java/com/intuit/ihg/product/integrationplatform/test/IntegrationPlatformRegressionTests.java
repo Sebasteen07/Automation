@@ -55,7 +55,6 @@ import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
-import com.intuit.ihg.product.integrationplatform.utils.MailinatorUtils;
 import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
 import com.intuit.ihg.product.integrationplatform.utils.PatientFormsExportInfo;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
@@ -69,6 +68,7 @@ import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessageUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementsMessagePayload;
+import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
@@ -252,7 +252,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					3, "Portal 2.0");
 		}
 		if (emailType.contains("mailinator")) {
-			MailinatorUtils mail = new MailinatorUtils(driver);
+			YopMailUtils mail = new YopMailUtils(driver);
 			String subject = "New message from " + testData.Sender3;
 			String messageLink = "Sign in to view this message";
 			link = mail.getLinkFromEmail(testData.GmailUserName, subject, messageLink, 5);
@@ -414,7 +414,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					3, "Portal 2.0");
 		}
 		if (emailType.contains("mailinator")) {
-			MailinatorUtils mail = new MailinatorUtils(driver);
+			YopMailUtils mail = new YopMailUtils(driver);
 			String subject = "New message from " + testData.Sender3;
 			String messageLink = "Sign in to view this message";
 			link = mail.getLinkFromEmail(testData.UserName, subject, messageLink, 5);
@@ -533,7 +533,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		log("checking email for activation UrL link");
 		Thread.sleep(5000);
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
@@ -895,7 +895,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Step 6: Check secure message in patient Email inbox");
 
 			String link = "";
-			MailinatorUtils mail = new MailinatorUtils(driver);
+			YopMailUtils mail = new YopMailUtils(driver);
 			String email = testData.PatientEmailArray[i - 1];
 			String messageLink = "Sign in to view this message";
 			link = mail.getLinkFromEmail(email, subject, messageLink, 20);
@@ -1848,7 +1848,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("checking email for activation UrL link");
 		Thread.sleep(5000);
 		log("Step 3: Check and extract Invite link in patient Email");
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
@@ -1994,7 +1994,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("checking email for activation UrL link");
 		Thread.sleep(5000);
 		log("Step 3: Check and extract Invite link in patient Email");
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
@@ -2671,7 +2671,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Added Pharamacy :- " + addedPharamacy);
 		String env = IHGUtil.getEnvironmentType().toString();
 
-		String pharmacyFirstWord = "testData.PharmacyName";
+		String pharmacyFirstWord = testData.PharmacyName;
 		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFirstWord, env);
 
 	}
@@ -3405,7 +3405,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		// Patient portal validation
 		logStep("Check secure message in patient mailinator inbox");
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from " + testData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
@@ -3529,7 +3529,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			assertTrue(completed, "Message processing was not completed in time");
 		}
 		logStep(" Validate if patient has received the email for the secure message sent");
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from " + AMDCtestData.Sender3;
 		String messageLink = "Sign in to view this message";
 		String link = mail.getLinkFromEmail(AMDCtestData.UserName, subject, messageLink, 10);
@@ -3654,7 +3654,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			logStep("Check secure message in patient Email inbox");
 
 			String link = "";
-			MailinatorUtils mail = new MailinatorUtils(driver);
+			YopMailUtils mail = new YopMailUtils(driver);
 			String email = bulkMessageTestData.PatientEmailArray[i - 1];
 			String messageLink = "Sign in to view this message";
 			link = mail.getLinkFromEmail(email, subject, messageLink, 20);

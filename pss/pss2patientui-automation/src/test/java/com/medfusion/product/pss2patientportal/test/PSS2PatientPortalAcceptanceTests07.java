@@ -3,13 +3,6 @@ package com.medfusion.product.pss2patientportal.test;
 
 import static org.testng.Assert.assertEquals;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -26,9 +19,6 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.Dismiss
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
-import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
-import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
-import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
@@ -219,6 +209,311 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 				testData.getPrimaryNumber(), "");
 		if(homePage.getFutureAppointmentListSize()>0) {
 			Assert.assertTrue(true);
+		}else {
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void impactOnPastAndUpcominApptWithProviderOn_NG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		adminUtils.addRuleWithoutSpecialty(driver, adminUser);
+		adminUtils.pageRefresh(driver);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
+		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getPastAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location name is shown in Past appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getFutureAppointmentPracticeText().equals(testData.getProvider())) {
+			Assert.assertTrue(true);
+			log("Provider name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getPastAppointmentPracticeText().equals(testData.getProvider())) {
+			Assert.assertTrue(true);
+			log("Provider name is shown in Past appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void impactOnPastAndUpcominApptWithoutShowProvider_NG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		adminUtils.addRuleWithoutBook(driver, adminUser);
+		adminUtils.pageRefresh(driver);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation1 = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation1.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		patientUtils.bookAppointmentWithLTFlow(homepage, testData, driver);;
+		if(homepage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homepage.getPastAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location name is shown in Past appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homepage.getFutureAppointmentPracticeText().equals(testData.getPracticeDisplayName())) {
+			Assert.assertTrue(true);
+			log("Practice name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homepage.getPastAppointmentPracticeText().equals(testData.getPracticeDisplayName())) {
+			Assert.assertTrue(true);
+			log("Practice name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void impactOnPastAndUpcominApptWithProviderOn_AT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		adminUtils.addRuleWithoutSpecialty(driver, adminUser);
+		adminUtils.pageRefresh(driver);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
+		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getPastAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location name is shown in Past appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getFutureAppointmentPracticeText().equals(testData.getProvider())) {
+			Assert.assertTrue(true);
+			log("Provider name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getPastAppointmentPracticeText().equals(testData.getProvider())) {
+			Assert.assertTrue(true);
+			log("Provider name is shown in Past appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void impactOnPastAndUpcominApptWithoutShowProvider_AT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		adminUtils.addRuleWithoutBook(driver, adminUser);
+		adminUtils.pageRefresh(driver);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		patientUtils.bookAppointmentWithLTFlow(homepage, testData, driver);;
+		if(homepage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homepage.getPastAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location name is shown in Past appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homepage.getFutureAppointmentPracticeText().equals(testData.getPracticeDisplayName())) {
+			Assert.assertTrue(true);
+			log("Practice name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homepage.getPastAppointmentPracticeText().equals(testData.getPracticeDisplayName())) {
+			Assert.assertTrue(true);
+			log("Practice name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void impactOnPastAndUpcominApptWithProviderOn_GW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		PSS2PracticeConfiguration practiceconfiguration = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		patientflow.logout();
+		adminUtils.pageRefresh(driver);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
+		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getPastAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location name is shown in Past appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getFutureAppointmentPracticeText().equals(testData.getProvider())) {
+			Assert.assertTrue(true);
+			log("Provider name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getPastAppointmentPracticeText().equals(testData.getProvider())) {
+			Assert.assertTrue(true);
+			log("Provider name is shown in Past appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void impactOnPastAndUpcominApptWithProviderOn_GE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		PSS2PracticeConfiguration practiceconfiguration = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		Log4jUtil.log("Logging out of PSS 2.0 admin UI");
+		patientflow.logout();
+		adminUtils.pageRefresh(driver);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		patientUtils.bookAppointmentWithLTBFlow(homePage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
+		if(homePage.getFutureAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getPastAppointmentLocationText().equals(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location name is shown in Past appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getFutureAppointmentPracticeText().equals(testData.getProvider())) {
+			Assert.assertTrue(true);
+			log("Provider name is shown in Upcoming appointment details");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		if(homePage.getPastAppointmentPracticeText().equals(testData.getProvider())) {
+			Assert.assertTrue(true);
+			log("Provider name is shown in Past appointment details");
 		}else {
 			Assert.assertTrue(false);
 		}

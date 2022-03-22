@@ -440,6 +440,9 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//button[@id='closeReminderStatusesModal']")
 	private WebElement reminderLogsCloseBtn;
+	
+	@FindBy(how = How.XPATH, using = "//h2[@class='modal-title']")
+	private WebElement broadcastMsgLogs;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -1818,6 +1821,42 @@ public class AppointmentsPage extends BasePageObject {
 	        WebElement none= driver.findElement(By.xpath("(//input[@id='select-"+patientId+"-"+apptId+"']/following::div[text()='None'])["+index+"]"));
 	        return none.getText();
 	}
+	 
+	 public boolean visibilityOfEsTextbox() {
+			boolean visibility = false;
+			try {
+				visibility = broadcastMessageInEs.isDisplayed();
+				log("Spanish broadcast Message is display");
+				return visibility;
+			} catch (NoSuchElementException e) {
+				log("Spanish broadcast Message is not display");
+				return visibility;
+			}
+		}
 
+		public void scrollOnBroadcastMsg() {
+			log("Scroll On Broadcast Message");
+			jse.executeScript("arguments[0].scrollIntoView(true);", broadcastMsgLogs);
+		}
 
+		public void sendBroadcastInEnglish(String messageEn) throws Exception {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, broadcastMessageInEn);
+			broadcastMessageInEn.sendKeys(messageEn);
+			jse.executeScript("arguments[0].click();", confirmThisMsgCheckbox);
+			jse.executeScript("arguments[0].click();", sendMessageButton);
+		}
+
+		public boolean visibilityOfEnTextbox() {
+			boolean visibility = false;
+			try {
+				visibility = broadcastMessageInEn.isDisplayed();
+				log("English broadcast Message is display");
+				return visibility;
+			} catch (NoSuchElementException e) {
+				log("English broadcast Message is not display");
+				return visibility;
+			}
+		}
+		
 }

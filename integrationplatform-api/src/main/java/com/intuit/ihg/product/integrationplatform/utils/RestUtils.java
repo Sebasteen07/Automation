@@ -492,7 +492,7 @@ public class RestUtils {
 			HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
 			String sResp = EntityUtils.toString(resp.getEntity());
-			Log4jUtil.log("Check opst response: " + sResp);
+			Log4jUtil.log("Check post response: " + sResp);
 
 			Log4jUtil.log("Check for http 200/202 response");
 			assertTrue(
