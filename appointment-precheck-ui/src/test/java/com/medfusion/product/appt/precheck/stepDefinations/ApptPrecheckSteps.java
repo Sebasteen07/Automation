@@ -5186,7 +5186,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_click_on_broadcast_message_options() throws Exception {
 	  apptPage.selectFirstPatient();
 	  apptPage.clickOnActions();
-	  apptPage.clickonbroadcastMessageButton();
+	  apptPage.clickOnBroadcastMessageButton();
 	  apptPage.sendBroadcastMessage("welcome to curbside check-in", "Bienvenida al check-in en la acera");
 	}
 	@Then("I verify now on sending broadcast broadcast banner should get updated at the top right corner")

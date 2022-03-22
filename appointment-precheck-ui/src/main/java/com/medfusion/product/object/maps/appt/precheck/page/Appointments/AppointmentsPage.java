@@ -1927,7 +1927,7 @@ public class AppointmentsPage extends BasePageObject {
 			IHGUtil.waitForElement(driver, 10, providerFilterSelected);
 			jse.executeScript("arguments[0].click();", providerFilterSelected);
 		}
-	 public void clickonbroadcastMessageButton() {
+	 public void clickOnBroadcastMessageButton() {
 			IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
 			jse.executeScript("arguments[0].click();", broadcastMessageButton);
 		}
