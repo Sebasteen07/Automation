@@ -308,6 +308,12 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	}
 	
+	public String chooseAppttypeText(String reasonForAppointment) {
+		WebElement chooseApptTypeText = driver.findElement(By.xpath("//*[text()='"+reasonForAppointment+"']"));
+		String chooseApptText = chooseApptTypeText.getText();
+		return chooseApptText;
+	}
+	
 	public void logout() throws InterruptedException {
 		settingBtn.click();
 		logoutBtn.click();
