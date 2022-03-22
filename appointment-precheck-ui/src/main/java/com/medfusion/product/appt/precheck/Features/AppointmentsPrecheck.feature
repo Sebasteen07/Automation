@@ -1427,7 +1427,7 @@ Feature: Test fuctionality of Appointment precheck
   	Then I verify all records should get deleted after deleting the records on  clicking refresh button previous page 1 records should come on page 1 records
   	And logout from practice provisioning portal
   	
-  Scenario: verfiy now on sending broadcast latest banner is updated for broadcast
+  Scenario: verify on sending broadcast latest banner is updated for broadcast
   	And I select appointment from appointment dashboard
   	And I click on Actions button
   	And I click on Send Reminder option and dont close the banner
@@ -1435,7 +1435,7 @@ Feature: Test fuctionality of Appointment precheck
   	Then I verify now on sending broadcast broadcast banner should get updated at the top right corner
   	And logout from practice provisioning portal
   	
-  Scenario: verify now on removing appointment banner should get updated
+  Scenario: verify on removing appointment banner should get updated
   	And I select appointment from appointment dashboard
   	And I click on Actions button
   	And I click on Send Reminder option and dont close the banner
@@ -1443,7 +1443,7 @@ Feature: Test fuctionality of Appointment precheck
   	Then I verify now on removing appointment the appointment remove count should get updated at the top right corner
   	And logout from practice provisioning portal
   	
-  Scenario: verfiy now on sending broadcast and later removing the appointment banner gets updated
+  Scenario: verify on sending broadcast and later removing the appointment banner gets updated
   	And I select appointment from appointment dashboard
   	And I click on Actions button
   	And I click on broadcast message options
@@ -1471,7 +1471,7 @@ Feature: Test fuctionality of Appointment precheck
     And I switch to appointments tab and again switch to curbside arrival grid and I checkin all patients
     Then I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in all patients then notifictaion count becomes zero
   	And logout from practice provisioning portal
-  	
+  
   Scenario: verify on doing check-in for current date appointment and notification count are coming correctly after check in of two patients in curbside arrival grid
     When I schedule two appointments
     And I apply filter for start date as current date and end date as current date in curbside arrival grid

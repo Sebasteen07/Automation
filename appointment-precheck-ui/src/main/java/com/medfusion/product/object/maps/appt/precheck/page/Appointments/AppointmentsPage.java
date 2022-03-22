@@ -447,12 +447,6 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//span[text()='All selected appointments have successfully been removed.']")
 	private WebElement removeBannerMessage;
 	
-	@FindBy(how = How.XPATH, using = "//button[@id='broadcastMessage']")
-	private WebElement selectBroadcastbutton;
-
-	@FindBy(how = How.XPATH, using = "//span[@class='mf-color__positive']")
-	private WebElement Broadcastbanner;
-	
 	@FindBy(how = How.XPATH, using = "//span[@class='-pageInfo']")
 	private WebElement pageNo;
 	
@@ -460,13 +454,13 @@ public class AppointmentsPage extends BasePageObject {
 	private WebElement locationDropdown;
 	
 	@FindBy(how = How.XPATH, using = "//div[text()='River Oaks Main']")
-	private WebElement locationFilterselected;
+	private WebElement locationFilterSelected;
 	
 	@FindBy(how = How.XPATH, using = "(//div[@class=' css-tlfecz-indicatorContainer'])[2]")
 	private WebElement providerDropdown;
 	
 	@FindBy(how = How.XPATH, using = "//div[text()='Brown, Jennifer']")
-	private WebElement providerFilterselected;
+	private WebElement providerFilterSelected;
 
 
 	public AppointmentsPage(WebDriver driver) {
@@ -1896,64 +1890,8 @@ public class AppointmentsPage extends BasePageObject {
 			}
 
 		}
-		
-		public void selectBroadcastbutton() {
-	    	IHGUtil.PrintMethodName();
-	    	IHGUtil.waitForElement(driver, 5, selectBroadcastbutton);
-	    	jse.executeScript("arguments[0].click();", selectBroadcastbutton);
-		}
-
-		public boolean Broadcastbanner() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 5, Broadcastbanner);
-			if(Broadcastbanner.isDisplayed())
-			{
-				log("broadcast banner is displayed");
-				return true;
-			}
-			else {
-				log("broadcast banner is not displayed");
-				return false;
-			}
-		}
-		
-		public void enterStartTimebackDated() throws InterruptedException {
-			log("Select month and date within month");
-			Calendar cal = Calendar.getInstance();
-			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-			int dd = cal.get(Calendar.DATE) + 1;
-			int yyyy = cal.get(Calendar.YEAR);
-			int mm = cal.get(Calendar.MONTH);
-
-			log("Within One month  date : " + dd + "-" + mm + "-" + yyyy);
-			cal.add(Calendar.MONTH, -1);
-			startTime.click();
-
-			log("Select Month");
-			IHGUtil.waitForElement(driver, 10, months);
-			Select selectMonth = new Select(months);
-			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
-			log("Month : " + (cal.get(Calendar.MONTH) + 1));
-			IHGUtil.waitForElement(driver, 10, years);
-
-			log("Select Year");
-			String year = Integer.toString(yyyy);
-			Select selectYear = new Select(years);
-			selectYear.selectByVisibleText(year);
-			log("Year : " + (cal.get(Calendar.YEAR)));
-
-			log("Select Date");
-			WebElement date = driver.findElement(By.xpath(
-					"//*[@id=\"page-content-container\"]/div/header/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/div/div[text()="
-							+ "'" + dd + "'" + "]"));
-			jse.executeScript("arguments[0].click();", date);
-			Thread.sleep(10000);
-			log("Date : " + dd);
-		}
-
 	 
-	 public boolean visibilityOfpageNo() {
+	 public boolean visibilityOfPageNo() {
 			IHGUtil.PrintMethodName();
 			IHGUtil.waitForElement(driver, 5, pageNo);
 			if (pageNo.isDisplayed()) {
@@ -1972,10 +1910,10 @@ public class AppointmentsPage extends BasePageObject {
 			jse.executeScript("arguments[0].click();", locationDropdown);
 		}
 	 
-	 public void locationFilterselected() {
+	 public void locationFilterSelected() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, locationFilterselected);
-			jse.executeScript("arguments[0].click();", locationFilterselected);
+			IHGUtil.waitForElement(driver, 10, locationFilterSelected);
+			jse.executeScript("arguments[0].click();", locationFilterSelected);
 		}
 	 
 	 public void providerDropdown() {
@@ -1984,9 +1922,13 @@ public class AppointmentsPage extends BasePageObject {
 			jse.executeScript("arguments[0].click();", providerDropdown);
 		}
 	 
-	 public void providerFilterselected() {
+	 public void providerFilterSelected() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, providerFilterselected);
-			jse.executeScript("arguments[0].click();", providerFilterselected);
+			IHGUtil.waitForElement(driver, 10, providerFilterSelected);
+			jse.executeScript("arguments[0].click();", providerFilterSelected);
+		}
+	 public void clickonbroadcastMessageButton() {
+			IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
+			jse.executeScript("arguments[0].click();", broadcastMessageButton);
 		}
 }

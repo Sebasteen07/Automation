@@ -5186,12 +5186,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_click_on_broadcast_message_options() throws Exception {
 	  apptPage.selectFirstPatient();
 	  apptPage.clickOnActions();
-	  apptPage.selectBroadcastbutton();
+	  apptPage.clickonbroadcastMessageButton();
 	  apptPage.sendBroadcastMessage("welcome to curbside check-in", "Bienvenida al check-in en la acera");
 	}
 	@Then("I verify now on sending broadcast broadcast banner should get updated at the top right corner")
 	public void i_verify_now_on_sending_broadcast_broadcast_banner_should_get_updated_at_the_top_right_corner() {
-	   assertTrue(apptPage.Broadcastbanner());
+		assertEquals(apptPage.broadcastMessageStatus(), "Broadcast Message Sent. 0 successful. 1 failed.",
+				"Message was not correct");
 	}
 	@When("I click on remove button options")
 	public void i_click_on_remove_button_options() {
@@ -5252,7 +5253,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_apply_filter_for_start_date_as_current_date_and_end_date_as_current_date_in_curbside_arrival_grid(Integer int1) throws InterruptedException {
 		mainPage.clickOnCurbsideTab();
 		curbsidePage.selectOneDayBeforeDateforStartdate("22", "12.00 AM");
-		curbsidePage.selectEnddate("22", "11.59PM");
+		curbsidePage.selectEndDate("22", "11.59PM");
 	}
 	@When("I switch to appointments tab and again switch to curbside arrival grid and I checkin all patients")
 	public void i_switch_to_appointments_tab_and_again_switch_to_curbside_arrival_grid_and_i_checkin_all_patients() throws InterruptedException {
@@ -5307,7 +5308,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_apply_filter_for_start_date_as_current_date_and_end_date_as_current_date_in_curbside_arrival_grid() throws InterruptedException {
 	   mainPage.clickOnCurbsideTab();
 	   curbsidePage.selectCurrentdateforStartdate("22", "12.00 AM");
-	   curbsidePage.selectEnddate("22", "11.59 PM");
+	   curbsidePage.selectEndDate("22", "11.59 PM");
 	   
 	}
 	@Then("I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in two patients then notifictaion count becomes reduces")
@@ -5319,7 +5320,7 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("I select all {int} records appointments from backdated {int} month")
 	public void i_select_all_records_appointments_from_backdated_month(Integer int1, Integer int2) throws InterruptedException {
-		apptPage.enterStartTimebackDated();
+		apptPage.enterOneMonthBackdatedStartTime();
 		apptPage.selectAllCheckboxes();
 		
 	}
@@ -5334,7 +5335,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@When("I select all {int} records appointments from page {int}")
 	public void i_select_all_records_appointments_from_page(Integer int1, Integer int2) throws InterruptedException {
-		apptPage.enterStartTimebackDated();
+		apptPage.enterOneMonthBackdatedStartTime();
 		apptPage.selectAllCheckboxes();
 	}
 	@When("I delete all {int} records appointments from page {int} and click on refresh button")
@@ -5345,15 +5346,15 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@Then("I verify all {int} records should get deleted and after deleting the records on clicking refresh button next page {int} records should come on page {int} records")
 	public void i_verify_all_records_should_get_deleted_and_after_deleting_the_records_on_clicking_refresh_button_next_page_records_should_come_on_page_records(Integer int1, Integer int2, Integer int3) throws InterruptedException {
-		assertTrue(apptPage.visibilityOfpageNo());
+		assertTrue(apptPage.visibilityOfPageNo());
 	}
 	
 	@When("I apply filter for location and provider on appointment page")
 	public void i_apply_filter_for_location_and_provider_on_appointment_page() {
 		apptPage.locationDropdown();
-		apptPage.locationFilterselected();
+		apptPage.locationFilterSelected();
 		apptPage.providerDropdown();
-		apptPage.providerFilterselected();
+		apptPage.providerFilterSelected();
 	}
 	@When("I select all records from page {int}")
 	public void i_select_all_records_from_page(Integer int1) throws InterruptedException {
@@ -5361,7 +5362,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@Then("I verify all records should get deleted after deleting the records on  clicking refresh button previous page {int} records should come on page {int} records")
 	public void i_verify_all_records_should_get_deleted_after_deleting_the_records_on_clicking_refresh_button_previous_page_records_should_come_on_page_records(Integer int1, Integer int2) {
-		assertTrue(apptPage.visibilityOfpageNo());
+		assertTrue(apptPage.visibilityOfPageNo());
 	}
 
 

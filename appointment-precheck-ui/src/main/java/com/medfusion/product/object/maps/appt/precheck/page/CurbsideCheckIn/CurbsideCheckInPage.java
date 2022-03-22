@@ -203,9 +203,6 @@ public class CurbsideCheckInPage extends BasePageObject {
 	
 	@FindBy(how=How.XPATH, using ="//div[text()='AppScheduler One']")
 	private WebElement selectPatientP1;
-
-	@FindBy(how=How.XPATH, using ="//input[@type='checkbox']")
-	private WebElement clickOnselectAllCheckbox;
 	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
@@ -1023,7 +1020,7 @@ public class CurbsideCheckInPage extends BasePageObject {
 			return mm+"/"+dd+"/"+currentYear+" "+time;
 		}
 		
-		public String selectEnddate(String currentYear,String time) throws InterruptedException {
+		public String  selectEndDate(String currentYear,String time) throws InterruptedException {
 			IHGUtil.PrintMethodName();
 			log("Select one day before date");
 			Calendar cal = Calendar.getInstance();
@@ -1059,8 +1056,8 @@ public class CurbsideCheckInPage extends BasePageObject {
 		
 		public void clickOnselectAllCheckbox() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, clickOnselectAllCheckbox);
-			jse.executeScript("arguments[0].click();", clickOnselectAllCheckbox);
+			IHGUtil.waitForElement(driver, 10, selectAllCheckbox);
+			jse.executeScript("arguments[0].click();", selectAllCheckbox);
 		}
 		
 		public String selectCurrentdateforStartdate(String currentYear,String time) throws InterruptedException {
@@ -1089,7 +1086,8 @@ public class CurbsideCheckInPage extends BasePageObject {
 
 			log("Select Date");
 			WebElement date = driver.findElement(By.xpath(
-					"//div[@class='react-datepicker__week'][3]/div[text()='16']"));
+					"//*[@id=\"page-content-container\"]/div/header/div[2]/div[3]//div/div/div[4]/div[text()="
+					+ "'" + dd + "'" +"]"));
 			log("Date : " + dd);
 			date.click();
 			Thread.sleep(10000);
