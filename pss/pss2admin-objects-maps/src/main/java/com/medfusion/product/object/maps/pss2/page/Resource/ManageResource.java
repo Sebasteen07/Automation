@@ -527,21 +527,17 @@ public class ManageResource extends PSS2MenuPage {
 
 	public boolean overBookingStatus() {
 		boolean bool = overBookingToggle.isSelected();
-		log("Status of Prevent for the Same Day -" + bool);
+		log("Status of OverBooking -" + bool);
 		return bool;
 	}
 
 	public void overBookingClick() {
 		overBookingToggleclick.click();
-		log("Clicked on Ovrbooking for On ");
 		appointmenttypeSave.click();
-		log("....Save.......");
 	}
 	
 	public void overBookingClickGE() {
 		overBookingToggleclickGE.click();
-		log("Clicked on Ovrbooking for On ");
 		appointmenttypeSave.click();
-		log("....Save.......");
 	}
 }
