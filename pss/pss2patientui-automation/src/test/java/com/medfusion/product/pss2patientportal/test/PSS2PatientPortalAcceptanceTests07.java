@@ -534,7 +534,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		PSSPatientUtils patientUtils = new PSSPatientUtils();
 		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.ng");
 		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.ng");
-		adminUtils.decisionTreeSettings(driver, adminUser, testData, testData.getDecisionTreeName(), 
+		adminUtils.decisionTreeSettingsWithProviderOFF(driver, adminUser, testData, testData.getDecisionTreeName(), 
 				testData.getAppointmenttype(), reasonForAppointment);
 		adminUtils.pageRefresh(driver);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");

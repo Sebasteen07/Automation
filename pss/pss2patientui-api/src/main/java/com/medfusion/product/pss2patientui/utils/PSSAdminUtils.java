@@ -950,7 +950,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageAppointmentType.excludeBtnWithTwoValues(firstValue , secondValue);
 	}
 	
-	public void decisionTreeSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+	public void decisionTreeSettingsWithProviderOFF(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
 			String appointmentType, String reasonForAppointment) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();

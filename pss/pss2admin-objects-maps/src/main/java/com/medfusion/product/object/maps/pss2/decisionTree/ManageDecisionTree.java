@@ -163,7 +163,6 @@ public class ManageDecisionTree extends PSS2MainPage {
 		searchByDecisionTreeName(decisionTreeName);
 		log("Decision tree selected is "+decisionTreeName);
 		Thread.sleep(5000);
-//		IHGUtil.waitForElement(driver, 60, deleteDecisionTree);
 		deleteDecisionTree.click();
 		log(" Decision tree Removed");
 	}
