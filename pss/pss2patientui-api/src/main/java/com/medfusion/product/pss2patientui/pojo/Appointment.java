@@ -78,6 +78,8 @@ public class Appointment {
 	private String zipCarePatient;
 	private String careProvider;
 
+	private String decisionTreeName;
+	
 	private Boolean isCancelApt = true;
 	private Boolean isInsuranceEnabled = false;
 
@@ -643,7 +645,15 @@ public class Appointment {
 	public void setZipCarePatient(String zipCarePatient) {
 		this.zipCarePatient = zipCarePatient;
 	}
+	
+	public String getDecisionTreeName() {
+		return decisionTreeName;
+	}
 
+	public void setDecisionTreeName(String decisionTreeName) {
+		this.decisionTreeName = decisionTreeName;
+	}
+	
 	public boolean isPcptoggleState() {
 		return pcptoggleState;
 	}

@@ -443,6 +443,25 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//h2[@class='modal-title']")
 	private WebElement broadcastMsgLogs;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='All selected appointments have successfully been removed.']")
+	private WebElement removeBannerMessage;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='-pageInfo']")
+	private WebElement pageNo;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-tlfecz-indicatorContainer'])[3]")
+	private WebElement locationDropdown;
+	
+	@FindBy(how = How.XPATH, using = "//div[text()='River Oaks Main']")
+	private WebElement locationFilterSelected;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-tlfecz-indicatorContainer'])[2]")
+	private WebElement providerDropdown;
+	
+	@FindBy(how = How.XPATH, using = "//div[text()='Brown, Jennifer']")
+	private WebElement providerFilterSelected;
+
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -1859,4 +1878,57 @@ public class AppointmentsPage extends BasePageObject {
 			}
 		}
 		
+		public boolean removeBannerMessage() throws InterruptedException {
+			IHGUtil.waitForElement(driver, 5, removeBannerMessage);
+			if(removeBannerMessage.isDisplayed())
+			{
+				log("Patients are removed succsessfully");
+				return true;
+			} else{
+				log("Patients are not removed");
+				return false;
+			}
+
+		}
+	 
+	 public boolean visibilityOfPageNo() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, pageNo);
+			if (pageNo.isDisplayed()) {
+				log("page number displayed correctly");
+				return true;
+			}
+			else {
+				log("page number is not displayed correctly");
+				return false;
+			}
+		}
+	 
+	 public void locationDropdown() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, locationDropdown);
+			jse.executeScript("arguments[0].click();", locationDropdown);
+		}
+	 
+	 public void locationFilterSelected() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, locationFilterSelected);
+			jse.executeScript("arguments[0].click();", locationFilterSelected);
+		}
+	 
+	 public void providerDropdown() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, providerDropdown);
+			jse.executeScript("arguments[0].click();", providerDropdown);
+		}
+	 
+	 public void providerFilterSelected() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, providerFilterSelected);
+			jse.executeScript("arguments[0].click();", providerFilterSelected);
+		}
+	 public void clickOnBroadcastMessageButton() {
+			IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
+			jse.executeScript("arguments[0].click();", broadcastMessageButton);
+		}
 }

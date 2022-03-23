@@ -5147,6 +5147,224 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.selectPracticeLanguagePreference("English & Spanish");
 		notifPage.saveNotification();
 	}
+	
+	@When("I click on page {int} from appointment dashboard")
+	public void i_click_on_page_from_appointment_dashboard(Integer int1) throws InterruptedException {
+		apptPage.enterStartTimeWithinMonth();
+		apptPage.jumpToNextPage();
+		
+	}
+	@When("I select all {int} records from page {int}")
+	public void i_select_all_records_from_page(Integer int1, Integer int2) throws InterruptedException {
+		apptPage.selectAllCheckboxes();
+	}
+	@When("I click on remove button from actions dropdown")
+	public void i_click_on_remove_button_from_actions_dropdown() throws InterruptedException {
+	    apptPage.clickOnActions();
+	    apptPage.clickOnRemoveButton();
+	    apptPage.clickOnRefreshTab();
+	    apptPage.jumpToPreviousPage();
+	}
+	@Then("I verify all {int} records should get deleted after deleting the records on  clicking refresh button previous page {int} records should come on page {int} records")
+	public void i_verify_all_records_should_get_deleted_after_deleting_the_records_on_clicking_refresh_button_previous_page_records_should_come_on_page_records(Integer int1, Integer int2, Integer int3) throws InterruptedException {
+	   assertTrue(apptPage.removeBannerMessage());
+	}
+	
+	@When("I select appointment from appointment dashboard")
+	public void i_select_appointment_from_appointment_dashboard() {
+	  apptPage.selectFirstPatient();
+	}
+	@When("I click on Actions button")
+	public void i_click_on_actions_button() {
+	    apptPage.clickOnActions();
+	}
+	@When("I click on Send Reminder option and dont close the banner")
+	public void i_click_on_send_reminder_option_and_dont_close_the_banner() throws InterruptedException {
+	   apptPage.clickOnSendReminder();
+	}
+	@When("I click on broadcast message options")
+	public void i_click_on_broadcast_message_options() throws Exception {
+	  apptPage.selectFirstPatient();
+	  apptPage.clickOnActions();
+	  apptPage.clickOnBroadcastMessageButton();
+	  apptPage.sendBroadcastMessage("welcome to curbside check-in", "Bienvenida al check-in en la acera");
+	}
+	@Then("I verify now on sending broadcast broadcast banner should get updated at the top right corner")
+	public void i_verify_now_on_sending_broadcast_broadcast_banner_should_get_updated_at_the_top_right_corner() {
+		assertEquals(apptPage.broadcastMessageStatus(), "Broadcast Message Sent. 0 successful. 1 failed.",
+				"Message was not correct");
+	}
+	@When("I click on remove button options")
+	public void i_click_on_remove_button_options() {
+		apptPage.selectFirstPatient();
+		apptPage.clickOnActions();
+		apptPage.selectRemoveButton();
+	}
+	@Then("I verify now on removing appointment the appointment remove count  should get updated at the top right corner")
+	public void i_verify_now_on_removing_appointment_the_appointment_remove_count_should_get_updated_at_the_top_right_corner() throws InterruptedException {
+		 assertTrue(apptPage.removeBannerMessage());
+	}
+	@Then("I verify now on removing appointment the appointment remove count should get updated at the right corner")
+	public void i_verify_now_on_removing_appointment_the_appointment_remove_count_should_get_updated_at_the_right_corner() throws InterruptedException {
+		 assertTrue(apptPage.removeBannerMessage());
+	}
+	
+	@When("I apply filter for start date and end date in curbside arrival grid")
+	public void i_apply_filter_for_start_date_and_end_date_in_curbside_arrival_grid() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		curbsidePage.selectOneDayBeforeDateforStartdate("22", "12.00 AM");
+		curbsidePage.getCurrentEndDateAndTime();
+	}
+	@When("I switch to appointments tab and again switch to curbside arrival grid and I checkin two patients")
+	public void i_switch_to_appointments_tab_and_again_switch_to_curbside_arrival_grid_and_I_checkin_two_patients() throws InterruptedException {
+	   mainPage.clickOnAppointmentsTab();
+	   mainPage.clickOnCurbsideTab();
+	   curbsidePage.selectPatientscheckbox();
+	   curbsidePage.selectPatientscheckbox2();
+	   curbsidePage.clickOnCheckInButton();
+	}
+	@Then("I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in two patients then notifictaion count reduces")
+	public void i_verify_that_after_switching_from_appointments_tab_to_curbside_arrival_grid_filter_resets_to_current_date_and_time_and_check_in_two_patients_then_notifictaion_count_reduces() {
+		assertTrue(curbsidePage.visibiltyOfStartTimeFilter());
+	    assertTrue(curbsidePage.visibiltyOfEndTimeFilter());
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	    
+	}
+	@When("I apply filter for start date as current date {int} and end date as current date {int} in curbside arrival grid")
+	public void i_apply_filter_for_start_date_as_current_date_and_end_date_as_current_date_in_curbside_arrival_grid(Integer int1, Integer int2) throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		curbsidePage.selectOneDayBeforeDateforStartdate("22", "12.00 AM");
+		curbsidePage.selectOneDayBeforeDate("22", "11.59 PM");
+	}
+	@When("I switch to appointments tab and again switch to curbside arrival grid and I checkin one patient")
+	public void i_switch_to_appointments_tab_and_again_switch_to_curbside_arrival_grid_and_i_checkin_one_patient() throws InterruptedException {
+		 mainPage.clickOnAppointmentsTab();
+		 mainPage.clickOnCurbsideTab();
+		 curbsidePage.selectPatientscheckbox();
+		 curbsidePage.clickOnCheckInButton();
+	}
+	@Then("I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in one patient then notifictaion count reduces")
+	public void i_verify_that_after_switching_from_appointments_tab_to_curbside_arrival_grid_filter_resets_to_current_date_and_time_and_check_in_one_patient_then_notifictaion_count_reduces() {
+		assertTrue(curbsidePage.visibiltyOfStartTimeFilter());
+	    assertTrue(curbsidePage.visibiltyOfEndTimeFilter());
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+	@When("I apply filter for start date as current date {int} and end date as current date in curbside arrival grid")
+	public void i_apply_filter_for_start_date_as_current_date_and_end_date_as_current_date_in_curbside_arrival_grid(Integer int1) throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		curbsidePage.selectOneDayBeforeDateforStartdate("22", "12.00 AM");
+		curbsidePage.selectEndDate("22", "11.59PM");
+	}
+	@When("I switch to appointments tab and again switch to curbside arrival grid and I checkin all patients")
+	public void i_switch_to_appointments_tab_and_again_switch_to_curbside_arrival_grid_and_i_checkin_all_patients() throws InterruptedException {
+		 mainPage.clickOnAppointmentsTab();
+		 mainPage.clickOnCurbsideTab();
+		 curbsidePage.clickOnselectAllCheckbox();
+		 curbsidePage.clickOnCheckInButton();
+	}
+	@Then("I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in all patients then notifictaion count becomes zero")
+	public void i_verify_that_after_switching_from_appointments_tab_to_curbside_arrival_grid_filter_resets_to_current_date_and_time_and_check_in_all_patients_then_notifictaion_count_becomes_zero() {
+		assertTrue(curbsidePage.visibiltyOfStartTimeFilter());
+	    assertTrue(curbsidePage.visibiltyOfEndTimeFilter());
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+	@When("I schedule two appointments")
+	public void i_schedule_two_appointments() throws NullPointerException, IOException {
+		for (int i = 0; i < 2; i++) {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+
+			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(actionResponse.getStatusCode(), 200);
+
+			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(arrivalResponse.getStatusCode(), 200);
+		}
+	}
+	@When("I apply filter for start date as current date and end date as current date in curbside arrival grid")
+	public void i_apply_filter_for_start_date_as_current_date_and_end_date_as_current_date_in_curbside_arrival_grid() throws InterruptedException {
+	   mainPage.clickOnCurbsideTab();
+	   curbsidePage.selectCurrentdateforStartdate("22", "12.00 AM");
+	   curbsidePage.selectEndDate("22", "11.59 PM");
+	   
+	}
+	@Then("I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in two patients then notifictaion count becomes reduces")
+	public void i_verify_that_after_switching_from_appointments_tab_to_curbside_arrival_grid_filter_resets_to_current_date_and_time_and_check_in_two_patients_then_notifictaion_count_becomes_reduces() {
+		assertTrue(curbsidePage.visibiltyOfStartTimeFilter());
+	    assertTrue(curbsidePage.visibiltyOfEndTimeFilter());
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+
+	@When("I select all {int} records appointments from backdated {int} month")
+	public void i_select_all_records_appointments_from_backdated_month(Integer int1, Integer int2) throws InterruptedException {
+		apptPage.enterOneMonthBackdatedStartTime();
+		apptPage.selectAllCheckboxes();
+		
+	}
+	@When("I delete all {int} records appointments")
+	public void i_delete_all_records_appointments(Integer int1) {
+	    apptPage.clickOnActions();
+	    apptPage.clickOnRemoveButton();
+	}
+	@Then("I verify all appointment whose entry does not exist in arrival grid should not get deleted rest appointment entry should get deleted")
+	public void i_verify_all_appointment_whose_entry_does_not_exist_in_arrival_grid_should_not_get_deleted_rest_appointment_entry_should_get_deleted() {
+	    assertTrue(apptPage.visibilityBannerMessage());
+	}
+	@When("I select all {int} records appointments from page {int}")
+	public void i_select_all_records_appointments_from_page(Integer int1, Integer int2) throws InterruptedException {
+		apptPage.enterOneMonthBackdatedStartTime();
+		apptPage.selectAllCheckboxes();
+	}
+	@When("I delete all {int} records appointments from page {int} and click on refresh button")
+	public void i_delete_all_records_appointments_from_page_and_click_on_refresh_button(Integer int1, Integer int2) throws InterruptedException {
+	   apptPage.clickOnActions();
+	   apptPage.clickOnRemoveButton();
+	   apptPage.clickOnRefreshTab();
+	}
+	@Then("I verify all {int} records should get deleted and after deleting the records on clicking refresh button next page {int} records should come on page {int} records")
+	public void i_verify_all_records_should_get_deleted_and_after_deleting_the_records_on_clicking_refresh_button_next_page_records_should_come_on_page_records(Integer int1, Integer int2, Integer int3) throws InterruptedException {
+		assertTrue(apptPage.visibilityOfPageNo());
+	}
+	
+	@When("I apply filter for location and provider on appointment page")
+	public void i_apply_filter_for_location_and_provider_on_appointment_page() {
+		apptPage.locationDropdown();
+		apptPage.locationFilterSelected();
+		apptPage.providerDropdown();
+		apptPage.providerFilterSelected();
+	}
+	@When("I select all records from page {int}")
+	public void i_select_all_records_from_page(Integer int1) throws InterruptedException {
+	    apptPage.selectAllCheckboxes();
+	}
+	@Then("I verify all records should get deleted after deleting the records on  clicking refresh button previous page {int} records should come on page {int} records")
+	public void i_verify_all_records_should_get_deleted_after_deleting_the_records_on_clicking_refresh_button_previous_page_records_should_come_on_page_records(Integer int1, Integer int2) {
+		assertTrue(apptPage.visibilityOfPageNo());
+	}
+
 
 }
 

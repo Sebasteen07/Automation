@@ -10,6 +10,8 @@ import org.openqa.selenium.WebElement;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.medfusion.product.object.maps.pss2.decisionTree.ManageDecisionTree;
+import com.medfusion.product.object.maps.pss2.decisionTree.ManageGeneralInformation;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
 import com.medfusion.product.object.maps.pss2.page.CancelReason.ManageCancelReason;
@@ -946,6 +948,36 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageAppointmentType.selectAppointment(appointmentType);
 		manageAppointmentType.gotoConfiguration();
 		manageAppointmentType.excludeBtnWithTwoValues(firstValue , secondValue);
+	}
+	
+	public void decisionTreeSettingsWithProviderOFF(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+			String appointmentType, String reasonForAppointment) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		patientflow.removeAllRules();
+		Thread.sleep(2000);
+		patientflow.turnOffProvider();
+		setRulesNoProviderSet2(patientflow);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.importDecisionTree(decisionTreeName);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.setApptTypeDecisionTree(appointmentType);
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.publishGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
+	public void decisionTreeDeletion(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName) 
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.removedDecisionTree(decisionTreeName);
+		pageRefresh(driver);
+		manageDecisionTree.logout();
 	}
 	
 	public void resetExcludeSlotAppointmentType(WebDriver driver, AdminUser adminuser, Appointment appointment, String appointmentType) throws Exception {
