@@ -1,6 +1,7 @@
 //  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils;
 
+import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.pojos.Patient;
@@ -13,7 +14,7 @@ public class PatientFactory {
 				patient.setEmail(testData.getProperty("last.name") + IHGUtil.createRandomNumber()+"@yopmail.com");
 				patient.setFirstName(testData.getProperty("first.name") + IHGUtil.createRandomNumber());
 				patient.setLastName(testData.getProperty("last.name"));
-				patient.setPassword(testData.getProperty("password"));
+				patient.setPassword(EncryptionUtils.decrypt(testData.getProperty("password")));
 				patient.setGender(Patient.GenderExtended.MALE);
 				patient.setDOBDay(testData.getProperty("dob.day"));
 				patient.setDOBMonth(testData.getProperty("dob.month"));

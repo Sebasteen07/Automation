@@ -1,120 +1,121 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
-import com.medfusion.common.utils.ExcelSheetReader;
+import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 
 public class MedicationTestData {
 
-	private Medication MedicationObj = null;
-	private ExcelSheetReader excelReader = null;
+	private Properties property = new Properties();
+	
+	public MedicationTestData() throws IOException {
+		String env = IHGUtil.getEnvironmentType().toString();
+		String propertyFileNameString = env + ".properties";
 
-	public MedicationTestData(Medication aptData) throws Exception {
-		// which environment data need to picked
-		String temp = IHGUtil.getEnvironmentType().toString();
-		// file name
-		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
-		// reading the entire file
-		excelReader = new ExcelSheetReader(url.getFile());
-		// filtering the entire file
-		MedicationObj = (Medication) excelReader.getSingleExcelRow(aptData, temp);
+		URL url = ClassLoader.getSystemResource("data-driven/" + propertyFileNameString);
+		FileReader inputStream = new FileReader(url.getFile());
+		property.load(inputStream);
 	}
 
 	public String getUrl() {
-		return MedicationObj.Url;
+		return property.getProperty("patient.url");
 	}
 
 	public String getUserName() {
-		return MedicationObj.UserName;
+		return property.getProperty("med.patient.username");
 	}
 
 	public String getPassword() {
-		return MedicationObj.Password;
+		return EncryptionUtils.decrypt(property.getProperty("med.patient.password"));
 	}
 
 	public String getRestUrl() {
-		return MedicationObj.RestUrl;
+		return property.getProperty("med.rest.url");
 	}
 
 	public String getResponsePath() {
-		return MedicationObj.ResponsePath;
+		return property.getProperty("response.path");
 	}
 
 	public String getFrom() {
-		return MedicationObj.From;
+		return property.getProperty("med.from");
 	}
 
 	public String getMedicationPath() {
-		return MedicationObj.MedicationPath;
+		return property.getProperty("med.medication.path");
 	}
 
 	public String getOAuthProperty() {
-		return MedicationObj.OAuthProperty;
+		return property.getProperty("oauth.property");
 	}
 
 	public String getOAuthKeyStore() {
-		return MedicationObj.OAuthKeyStore;
+		return property.getProperty("oauth.keystore");
 	}
 
 	public String getOAuthAppToken() {
-		return MedicationObj.OAuthAppToken;
+		return property.getProperty("oauth.app.token");
 	}
 
 	public String getOAuthUsername() {
-		return MedicationObj.OAuthUsername;
+		return property.getProperty("oauth.username");
 	}
 
 	public String getOAuthPassword() {
-		return MedicationObj.OAuthPassword;
+		return EncryptionUtils.decrypt(property.getProperty("oauth.password"));
 	}
 
 	public String getPreferredDoctor() {
-		return MedicationObj.PreferredDoctor;
+		return property.getProperty("med.preferred.doctor");
 	}
 
 	public String getPhoneNumber() {
-		return MedicationObj.PhoneNumber;
+		return property.getProperty("med.phone.number");
 	}
 
 	public String getPracticeURL() {
-		return MedicationObj.PracticeURL;
+		return property.getProperty("practice.url");
 	}
 
 	public String getPracticeUserName() {
-		return MedicationObj.PracticeUserName;
+		return property.getProperty("practice.username");
 	}
 
 	public String getPracticePassword() {
-		return MedicationObj.PracticePassword;
+		return EncryptionUtils.decrypt(property.getProperty("practice.password"));
 	}
 
 	public String getGmailUserName() {
-		return MedicationObj.GmailUserName;
+		return property.getProperty("gmail.username");
 	}
 
 	public String getGmailPassword() {
-		return MedicationObj.GmailPassword;
+		return EncryptionUtils.decrypt(property.getProperty("gmail.password"));
 	}
 
 	public String getPracticeName() {
-		return MedicationObj.PracticeName;
+		return property.getProperty("practice.name");
 	}
 
 	public String getFirstName() {
-		return MedicationObj.FirstName;
+		return property.getProperty("med.first.name");
 	}
 
 	public String getLastName() {
-		return MedicationObj.LastName;
+		return property.getProperty("med.last.name");
 	}
 
 	public String getMFPatientID() {
-		return MedicationObj.MFPatientID;
+		return property.getProperty("med.mf.patient.id");
 	}
 
 	public String getRemoveMedicationRestUrl() {
-		return MedicationObj.RemoveMedicationRestUrl;
+		return property.getProperty("med.remove.medications.rest.url");
 	}
 
 }

@@ -30,7 +30,6 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.flows.iEHDCSendCCD;
 import com.intuit.ihg.product.integrationplatform.flows.iPIDCSendPatientInvite;
@@ -62,7 +61,6 @@ import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils
 import com.intuit.ihg.product.integrationplatform.utils.Patient_Login;
 import com.intuit.ihg.product.integrationplatform.utils.Pharmacies;
 import com.intuit.ihg.product.integrationplatform.utils.PharmacyPayload;
-import com.intuit.ihg.product.integrationplatform.utils.Prescription20;
 import com.intuit.ihg.product.integrationplatform.utils.Prescription20TestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
@@ -106,71 +104,73 @@ import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import com.medfusion.product.practice.api.pojo.Practice;
 
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
+	@DataProvider(name = "portalVersion")
+	public Object[][] portalVersionForRegistration() {
+		Object[][] obj = new Object[][] { { "2.0" }, };
+		return obj;
+	}
+	
 	@Test(enabled = true, dataProvider = "channelVersion", groups = { "RegressionTests1",
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testEHDCSendCCD(String version, Method method) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		log("Test Case: send a CCD and check in patient Portal");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		String ccd;
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		EHDC testData = new EHDC();
 		LoadPreTestDataObj.loadEHDCDataFromProperty(testData);
-		log("Step 1: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
+		logStep("Setup Oauth client");
 		if (version.equals("v1")) {
 			ccd = CCDPayload.getCCDPayload(testData);
 			Thread.sleep(6000);
 			log("Payload" + ccd);
 			log("Wait to generate CCD Payload");
-			log("Step 2: Do Message Post Request");
 			log("ResponsePath: " + testData.ResponsePath);
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, ccd, testData.ResponsePath);
+			logStep("Do Message Post Request");
 
 			log("Processing URL: " + processingUrl);
-			log("Step 3: Get processing status until it is completed");
+			log("Get processing status until it is completed");
 			Thread.sleep(60000);
 		} else {
 			ccd = CCDPayload.getCCDPayloadV3(testData, method.getName());
 			Thread.sleep(6000);
 			log("Payload" + ccd);
 			log("Wait to generate CCD Payload");
-			log("Step 2: Do Message Post Request");
 			log("ResponsePath: " + testData.ResponsePath);
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrlV3, ccd, testData.ResponsePath);
+			logStep("Do Message Post Request");
 
 			log("Processing URL: " + processingUrl);
-			log("Step 3: Get processing status until it is completed");
+			log("Get processing status until it is completed");
 			Thread.sleep(60000);
 		}
 
-		log("Step 4: Login to Patient Portal");
+		logStep("Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
-
 		log("Detecting if Home Page is opened");
 		assertTrue(homePage.isHomeButtonPresent(driver));
 
-		log("Click on messages solution");
+		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
-		log("Step 5: Validate message subject and send date");
+		logStep("Validate message subject and send date");
 		Thread.sleep(1000);
 		log("Message Date" + IHGUtil.getEstTiming());
 		assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
 		log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
 
-		log("Step 6: Click on link View health data");
+		logStep("Click on link View health data");
 		JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
 
-		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
+		logStep("Verify if CCD Viewer is loaded and click Close Viewer");
 		messagesPage = jalapenoCcdPage.closeCcd(driver);
 
-		log("Step 8: Logging out");
-		homePage = messagesPage.backToHomePage(driver);
+		logStep("Logging out");
+		homePage.clickOnMenuHome();
 		loginPage = homePage.clickOnLogout();
 	}
 
@@ -179,35 +179,32 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	public void testAMDCSecureMessages(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		log("Test Case: AMDC Secure Message with Read Communication");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Step 1: Get Data from property file");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AMDC testData = new AMDC();
+		logStep("Get Data from property file");
 
 		LoadPreTestDataObj.loadAMDCDataFromProperty(testData);
-		log("Step 2: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
+		logStep("Setup Oauth client");
 
 		testData.allowOnce = "true";
 		long timestamp = System.currentTimeMillis();
 		String messageID = null;
 
 		if (version.equals("v1")) {
-			log("Step 3: Fill Message data");
 			String message = AMDCPayload.getAMDCPayload(testData);
+			logStep("Fill Message data");
 
 			log("message :- " + message);
 			messageID = AMDCPayload.messageID;
 			log("Partner Message ID:" + messageID);
-			log("Step 4: Do Message Post Request");
 			log("responsePath: " + testData.ResponsePath);
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
 
-			log("Step 5: Get processing status until it is completed");
+			logStep("Do Message Post Request");
+
+			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
@@ -220,8 +217,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 			assertTrue(completed, "Message processing was not completed in time");
 		} else {
-			log("Step 3: Fill Message data");
 			String message = AMDCPayload.getAMDCV3Payload(testData);
+			logStep("Fill Message data");
 			log("message :- " + message);
 			messageID = AMDCPayload.messageID;
 			log("Partner Message ID:" + messageID);
@@ -229,11 +226,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			messageID = AMDCPayload.messageID;
 			log("Partner Message ID:" + messageID);
 
-			log("Step 4: Do Message Post Request");
-			log("responsePath: " + testData.ResponsePath);
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+			logStep("Do Message Post Request");
 
-			log("Step 5: Get processing status until it is completed");
+			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
@@ -246,7 +242,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 			assertTrue(completed, "Message processing was not completed in time");
 		}
-		log("Step 6: Check secure message in patient email inbox");
+		
+		logStep("Check secure message in patient email inbox");
 		String link = null;
 		String emailType = testData.GmailUserName.substring(testData.GmailUserName.indexOf("@") + 1);
 		emailType = emailType.substring(0, emailType.indexOf('.'));
@@ -265,7 +262,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(5000);
 		assertTrue(link != null, "AMDC Secure Message link not found in mail.");
 		link = link.replace("login?redirectoptout=true", "login");
-		log("Step 7: Login to Patient Portal");
+		
+		logStep("Login to Patient Portal");
 		log("Link is " + link);
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
@@ -273,60 +271,57 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(homePage.isHomeButtonPresent(driver));
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		log("Step 8: Find message in Inbox");
+		
+		logStep("Find message in Inbox");
 		String messageIdentifier = AMDCPayload.messageIdentifier;
 		log("message subject " + messageIdentifier);
-		log("Step 9: Log the message read time ");
+		
+		logStep("Log the message read time ");
 		long epoch = System.currentTimeMillis() / 1000;
-
 		String readdatetimestamp = RestUtils.readTime(epoch);
 		log("Message Read Time:" + readdatetimestamp);
 
-		log("Step 10: Validate message loads and is the right message");
+		logStep("Validate message loads and is the right message");
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
 
-		log("Step 11: Do a GET and get the read communication");
+		logStep("Do a GET and get the read communication");
 		Long since = timestamp / 1000L - 60 * 24;
-
-		log("Step 12: Wait 1 min, so the message can be processed");
+		log("Wait 1 min, so the message can be processed");
 		Thread.sleep(60000);
-
 		log("Getting messages since timestamp: " + since);
+		
 		if (version.equals("v1")) {
-			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0",
-					testData.ResponsePath);
+			RestUtils.setupHttpGetRequest(testData.ReadCommunicationUrl + "?since=" + since + ",0", testData.ResponsePath);
 
-			log("Step 13: Validate the message id and read time in response");
+			logStep("Validate the message id and read time in response");
 			RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
 		} else {
-			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURLV3 + "?since=" + since + ",0",
-					testData.ResponsePath);
+			RestUtils.setupHttpGetRequest(testData.ReadCommunicationUrlV3 + "?since=" + since + ",0", testData.ResponsePath);
 
-			log("Step 13: Validate the message id and read time in response");
+			logStep("Validate the message id and read time in response");
 			RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
 
 		}
-		log("Step 14: Reply to the message");
+		
+		logStep("Reply to the message");
 		messagesPage.replyToMessage(driver);
-
-		log("Step 15: Wait 60 seconds, so the message can be processed");
+		log("Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 		if (version.equals("v1")) {
-			log("Step 16: Do a GET and get the message");
+			logStep("Do a GET and get the message");
 			RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
 
-			log("Step 17: Validate message reply");
+			logStep("Validate message reply");
 			RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 		} else {
-			log("Step 16: Do a GET and get the message");
+			logStep("Do a GET and get the message");
 			RestUtils.setupHttpGetRequest(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath);
 
-			log("Step 17: Validate message reply");
+			logStep("Validate message reply");
 			RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 		}
 
-		log("Step 18: Move to  Health Record page");
-
+		logStep("Move to  Health Record page");
 		messagesPage.clickOnMenuHome();
 		Thread.sleep(4000);
 		DocumentsPage MedicalRecordSummariesPageObject = homePage.goToDocumentsPage();
@@ -356,9 +351,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Asserting for PDF match " + pdfMatch);
 		}
 
-		log("Step 20: Logging out");
+		logStep("Logging out");
 		homePage.clickOnLogout();
-
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
@@ -366,21 +360,17 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	public void testAMDCSecureMessagesWithAllCategoryTypes(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		log("Test Case: AMDC Secure Message with Read Communication");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Step 1: Get Data from property file");
+		logStep("Get Data from property file");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AMDC testData = new AMDC();
-
 		LoadPreTestDataObj.loadAMDCDataFromProperty(testData);
-		log("Step 2: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
-
+		
+		logStep("Setup Oauth client");
 		testData.allowOnce = "false";
-		log("Step 3: Fill Message data");
+		
+		logStep("Fill Message data");
 		long timestamp = System.currentTimeMillis();
 		String message;
 		if (version.equals("v1")) {
@@ -392,8 +382,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String messageID = AMDCPayload.messageID;
 		log("Partner Message ID:" + messageID);
 		String processingUrl;
-		log("Step 4: Do Message Post Request");
 		log("responsePath: " + testData.ResponsePath);
+		
+		logStep("Do Message Post Request");
 		if (version.equals("v1")) {
 			processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
 		} else {
@@ -401,7 +392,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		}
 
-		log("Step 5: Get processing status until it is completed");
+		logStep("Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -414,7 +405,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 
-		log("Step 6: Check secure message in patient email inbox");
+		logStep("Check secure message in patient email inbox");
 		String link = null;
 		String emailType = testData.GmailUserName.substring(testData.GmailUserName.indexOf("@") + 1);
 		emailType = emailType.substring(0, emailType.indexOf('.'));
@@ -433,88 +424,82 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(5000);
 		assertTrue(link != null, "AMDC Secure Message link not found in mail.");
 		link = link.replace("login?redirectoptout=true", "login");
-		log("Step 7: Login to Patient Portal");
 
+		logStep("Login to Patient Portal");
 		log("Link is " + link);
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 
-		log("Detecting if Home Page is opened");
+		logStep("Detecting if Home Page is opened");
 		assertTrue(homePage.isHomeButtonPresent(driver));
 
-		log("Click on messages solution");
+		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
-		log("Step 8: Find message in Inbox");
+		logStep("Find message in Inbox");
 		String messageIdentifier = AMDCPayload.messageIdentifier;
 
 		log("message subject " + messageIdentifier);
 
-		log("Step 9: Log the message read time ");
+		logStep("Log the message read time ");
 		long epoch = System.currentTimeMillis() / 1000;
+		String readDateTimestamp = RestUtils.readTime(epoch);
+		log("Message Read Time:" + readDateTimestamp);
 
-		String readdatetimestamp = RestUtils.readTime(epoch);
-		log("Message Read Time:" + readdatetimestamp);
-
-		log("Step 10: Validate message loads and is the right message");
+		logStep("Validate message loads and is the right message");
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
 
-		log("Step 11: Do a GET and get the read communication");
+		logStep("Do a GET and get the read communication");
 		Long since = timestamp / 1000L - 60 * 24;
-
-		log("Step 12: Wait 1 min, so the message can be processed");
+		log("Wait 1 min, so the message can be processed");
 		Thread.sleep(60000);
 
-		log("Getting messages since timestamp: " + since);
+		logStep("Getting messages since timestamp: " + since);
 		if (version.equals("v1")) {
-			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0",
+			RestUtils.setupHttpGetRequest(testData.ReadCommunicationUrl + "?since=" + since + ",0",
 					testData.ResponsePath);
 		} else {
-			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURLV3 + "?since=" + since + ",0",
+			RestUtils.setupHttpGetRequest(testData.ReadCommunicationUrlV3 + "?since=" + since + ",0",
 					testData.ResponsePath);
 		}
 
-		log("Step 13: Validate the message id and read time in response");
-		RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
-
-		log("Step 14: Reply to the message");
+		logStep("Validate the message id and read time in response");
+		RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readDateTimestamp);
+		
+		logStep("Reply to the message");
 		messagesPage.replyToMessage(driver);
-
-		log("Step 15: Wait 60 seconds, so the message can be processed");
+		log("Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 
-		log("Step 16: Do a GET and get the message");
+		logStep("Do a GET and get the message");
 		if (version.equals("v1")) {
 			RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
 		} else {
 			RestUtils.setupHttpGetRequest(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath);
 		}
-		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
+		logStep("Validate message reply");
 
-		log("Step 18: Move to Health Record page ");
+		logStep("Move to Health Record page ");
 		messagesPage.menuHealthRecordClickOnly();
 
-		log("Step 19: Open Other Documents");
+		logStep("Open Other Documents");
 		DocumentsPage MedicalRecordSummariesPageObject = homePage.goToDocumentsPageFromMenu();
 
-		log("Step 20: Verify name, from and catagory type");
 		MedicalRecordSummariesPageObject.verifyName_From_CategoryType(testData.From, testData.categoryType,
 				testData.fileName);
+		logStep("Verify name, from and catagory type");
 
-		log("Logging out");
+		logStep("Logging out");
 		homePage.clickOnLogout();
 
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMU2GetEventForExistingPatient(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		log("Test Case (testMU2GetEventForExistingPatient): Consolidated CCD related events verification in Pull Events");
-
-		log("Test case Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		MU2GetEventData testData = new MU2GetEventData();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
@@ -528,8 +513,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	public void testMU2GetEventForNewPatient(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		log("Test Case (testMU2GetEventForNewPatient): Consolidated CCD related events verification for newly created patients");
-		log("Environment " + IHGUtil.getEnvironmentType());
 		log("Step 1:  Create Patient");
 		long timestamp = System.currentTimeMillis();
 		MU2GetEventData testData = new MU2GetEventData();
@@ -626,35 +609,20 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		MU2UtilsObj.mu2GetEvent(testData, driver, version);
 	}
 
-	@DataProvider(name = "portalVersion")
-	public Object[][] portalVersionForRegistration() {
-		Object[][] obj = new Object[][] { { "2.0" }, };
-		return obj;
-	}
-
 	@Test(enabled = true, dataProvider = "portalVersion", groups = { "RegressionTests1",
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientRegistrationV1(String portalVersion) throws Exception {
-		log("Test Case: PIDC Patient Registration v1 channel for portal-" + portalVersion);
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		PatientRegistrationUtils.pidcPatientRegistration("v1", driver, portalVersion);
 	}
 
 	@Test(enabled = true, dataProvider = "portalVersion", groups = { "RegressionTests1",
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientRegistrationV2(String portalVersion) throws Exception {
-		log("Test Case: PIDC Patient Registration v2 channel for portal-" + portalVersion);
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		PatientRegistrationUtils.pidcPatientRegistration("v2", driver, portalVersion);
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestForNewSelfPatient() throws Exception {
-		log("Test Case: Appointment Request for New Patient From Partner");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AppointmentData testData = new AppointmentData();
@@ -746,7 +714,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("step 6: Login to Practice Portal");
 
 		Practice practice = new Practice();
-		practice.url = testData.portalURL;
+		practice.url = testData.PracticeURL;
 		practice.username = testData.practiceUserName;
 		practice.password = testData.practicePassword;
 
@@ -784,10 +752,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	public void testStatementEventForExistingPatient(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		log("Test Case: Post Statment and verify its Event for Existing Patient From Partner");
-		log("Recommended to use Firefox Browser for this test ");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		StatementEventData testData = new StatementEventData();
 		log("Step 1: load from external property file");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -803,10 +767,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	public void testStatementEventForNewSelfPatient(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		log("Test Case: POST Statement and Get Statement Event for New Patient From Partner");
-		log("Recommended to use Firefox Browser for this test ");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Create patient");
 		StatementEventData testData = new StatementEventData();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -863,9 +823,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	public void testBulkSecureMessage(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		log("Test Case: Bulk Secure Message");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Get Data from property file");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		BulkAdmin testData = new BulkAdmin();
@@ -982,7 +939,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 			if (i == 1 && BulkMessagePayload.checkWithPrevioudBulkMessageID == false) {
 				log("Step 12: Move to  Health Record page");
-				messagesPage.backToHomePage(driver);
+				homePage.clickOnMenuHome();
 				MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage
 						.clickOnMedicalRecordSummaries(driver);
 
@@ -1062,9 +1019,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSendDirectMessageXML() throws Exception {
-		log("Test Case: Send Secure Direct Message with XML as attachment");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Set Test Data from Property file");
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
 		SendDirectMessageUtilsObj.sendSecureDirectMessage(driver, "xml");
@@ -1073,9 +1027,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "attachmentType", groups = {
 			"RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSendDirectMessageAll(String typeOfAttachmentUsed) throws Exception {
-		log("Test Case: Send Secure Direct Message");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Set Test Data from Property file ");
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
 		SendDirectMessageUtilsObj.sendSecureDirectMessage(driver, typeOfAttachmentUsed);
@@ -1096,9 +1047,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersionPIDC", groups = {
 			"RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testOnDemandProvisionPIDC(String version) throws Exception {
-		log("Test Case: Test OnDemand Provision with PIDC");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Set Test Data from Property file ");
 		Long timestamp = System.currentTimeMillis();
 		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
@@ -1173,10 +1121,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersionPIDC", groups = {
 			"RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientDemographicsUpdate(String version) throws Exception {
-		log("Test Case: PIDC Patient Update for Race, Ethnicity, Gender and Language all the values for Version "
-				+ version);
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Set Test Data for Demographics update");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		PIDCInfo testData = new PIDCInfo();
@@ -1315,9 +1259,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersionPIDC", groups = {
 			"RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientDemographicsUpdateWithSpecialCharacter(String version) throws Exception {
-		log("Step 1: Test Case: Patient Update with special character data");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		PIDCInfo testData = new PIDCInfo();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		Long timestamp = System.currentTimeMillis();
@@ -1362,9 +1303,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersionPIDC", groups = {
 			"RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientRegistrationfromPractice(String version) throws Exception {
-		log("Test Case: Patient Registration from Practice Portal" + version);
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		PIDCInfo testData = new PIDCInfo();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		Long timestamp = System.currentTimeMillis();
@@ -1445,10 +1383,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUnseenMessageList() throws Exception {
-		log("Test Case: Get Unseen Messages");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		long epoch = System.currentTimeMillis();
 		String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(new java.util.Date(epoch));
 		log("currentDate " + currentDate);
@@ -1490,10 +1424,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "p2pattachmentType", groups = {
 			"RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUnseenMessageListAll(String attachment) throws Exception {
-		log("Test Case: Get Unseen Messages with attachment type " + attachment);
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("Step 1 : Set Test Data for UnseenMessageList");
 		SendDirectMessage testData = new SendDirectMessage();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -1589,7 +1519,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testErrorCasesDeleteMessage() throws Exception {
-
 		log("Step 1 : Set Test Data for UnseenMessageList");
 		SendDirectMessage testData = new SendDirectMessage();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -1621,10 +1550,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests", "RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDeleteP2PMessageInMailBox() throws Exception {
-		log("Test Case: To search for Deleted message in P2P MailBox");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("Step 1 : Set Test Data for UnseenMessageList");
 		SendDirectMessage testData = new SendDirectMessage();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -1657,15 +1582,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertEquals(responseCode, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				msgUid);
-
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests", "RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDeleteP2PMessage() throws Exception {
-		log("Test Case: Delete P2P messages");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		long epoch = System.currentTimeMillis();
 		String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(new java.util.Date(epoch));
 		log("currentDate " + currentDate);
@@ -1770,7 +1690,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDE2EFormExportfromPractice() throws Exception {
-		log("Test Case: Fill CCD Form and Verify the Details in Export");
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
 		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
@@ -1780,7 +1699,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDE2EFormExportfromPracticeRegression() throws Exception {
-		log("Test Case: Fill CCD Form and Verify the Details in Export Regression");
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
 		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
@@ -1791,7 +1709,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreCheckForms() throws Exception {
-		Log4jUtil.log("Test Case: Fill Pre check CCD Form and Verify the Details in Export ");
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
 		loadFormsExportInfoobj.loadFormsExportInfofromProperty(testData);
@@ -1863,10 +1780,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientMUEventForGuardian(String version) throws Exception {
-		Log4jUtil.log(
-				"Test Case: Verification of CCD - VDT Events of patient account through Guardian account using ccd viewer.");
-		log("Test case Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read Test Data and set Values ");
 		MU2GetEventData testData = new MU2GetEventData();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -1889,10 +1802,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientMUEventForExistingGuardian(String version) throws Exception {
-		Log4jUtil.log(
-				"Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using ccd viewer.");
-		log("Test case Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read Test Data and set Values ");
 		MU2GetEventData testData = new MU2GetEventData();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -1919,10 +1828,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			"RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientMUEventForNewGuardian(String version) throws Exception {
 		Long timestamp = System.currentTimeMillis();
-		Log4jUtil.log(
-				"Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using ccd viewer.");
-		log("Test case Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read Test Data and set Values ");
 		MU2GetEventData testData = new MU2GetEventData();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -1997,11 +1902,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	public void testMUEventForGuardianFromHealthRecord(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-
-		Log4jUtil.log(
-				"Test Case: Verification of CCD - VDT Events of patient account through Guardian account using Health Record Page.");
-		log("Test case Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read Test Data and set Values ");
 		MU2GetEventData testData = new MU2GetEventData();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -2034,10 +1934,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	public void testMUEventForExistingGuardianFromHealthRecord(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		Log4jUtil.log(
-				"Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using Health Record Page.");
-		log("Test case Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read Test Data and set Values ");
 		MU2GetEventData testData = new MU2GetEventData();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -2075,10 +1971,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			throw new SkipException("Test skipped as version is:" + version);
 
 		Long timestamp = System.currentTimeMillis();
-		Log4jUtil.log(
-				"Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using Health Record Page.");
-		log("Test case Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read Test Data and set Values ");
 		MU2GetEventData testData = new MU2GetEventData();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -2175,9 +2067,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests1", "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientEGQUpdatesFromForms() throws Exception {
-		log("Test Case: Update patient EGQ from patientForm and verify in the ccdExchangeBatch and get PIDC api's response");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Read data from an external property file.");
 		PatientFormsExportInfo testData = new PatientFormsExportInfo();
 		LoadPreTestData loadFormsExportInfoobj = new LoadPreTestData();
@@ -2298,10 +2187,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2EBalancePresentmentAndStatement() throws Exception {
-		log("Test Case: Posting of Balance Presentment and statement to same patient and verify on Portal2.0");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		StatementEventData testData = new StatementEventData();
 		log("Step 1: load from external property file");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -2418,10 +2303,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2EBalancePresentmentOnDemand() throws Exception {
-		log("Test Case: Posting of Balance Presentment with onDemand Provisioning");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		StatementEventData testData = new StatementEventData();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		LoadPreTestDataObj.loadStatementEventDataFromProperty(testData);
@@ -2519,7 +2400,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Thread.sleep(2000);
 			log("Step 9: Login to Practice Portal.");
 			Practice practice = new Practice();
-			practice.url = testData.portalURL;
+			practice.url = testData.PracticeURL;
 			practice.username = testData.practiceUserName;
 			practice.password = testData.practicePassword;
 
@@ -2578,10 +2459,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	public void testOnDemandHealthData(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-		log("Test Case: Request health data OnDemand in patient Portal 2.0");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		log("Step 1: Load Data from External file");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		EHDC testData = new EHDC();
@@ -2652,9 +2529,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3", "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestForExistingPatient() throws Exception {
-		log("Test Case: Appointment Request for Existing Patient From Partner");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AppointmentData testData = new AppointmentData();
 		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
@@ -2717,18 +2591,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "portalVersion", groups = {
 			"RegressionTests1" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientRegistrationV3(String portalVersion) throws Exception {
-		log("Test Case: PIDC Patient Registration v3 channel for portal-" + portalVersion);
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		PatientRegistrationUtils.pidcPatientRegistration("v3", driver, portalVersion);
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppoinmentType() throws Exception {
-		log("Test Case: To POST Appointment type");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AppointmentData testData = new AppointmentData();
 		LoadPreTestDataObj.loadAppointmentTypeFromProperty(testData);
@@ -2747,10 +2614,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddPharmacies() throws Exception {
-		log("Test Case: Add Pharmacy");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		Pharmacies testData = new Pharmacies();
 		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
@@ -2815,10 +2678,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdatePharmacies() throws Exception {
-		log("Test Case: Update Pharmacy");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		Pharmacies testData = new Pharmacies();
 		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
@@ -2911,10 +2770,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddandDeletePharmacies() throws Exception {
-		log("Test Case: Delete Pharmacy");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		Pharmacies testData = new Pharmacies();
 		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
@@ -3024,9 +2879,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestForExistingPatientV3() throws Exception {
-		log("Test Case: Appointment Request for Existing Patient From Partner");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Get Data from property file");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AppointmentData testData = new AppointmentData();
@@ -3090,10 +2942,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestForNewSelfPatientV3() throws Exception {
-		log("Test Case: Appointment Request for New Patient From Partner");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AppointmentData testData = new AppointmentData();
@@ -3130,7 +2978,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("step 3: Login to Practice Portal");
 		Practice practice = new Practice();
-		practice.url = testData.portalURL;
+		practice.url = testData.PracticeURL;
 		practice.username = testData.practiceUserName;
 		practice.password = testData.practicePassword;
 
@@ -3218,11 +3066,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testEHDCSendCCDLargeSize(Method method) throws Exception {
-		log("Test Case: send a CCD and check in patient Portal");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-		log("Method Name: " + method.getName());
-
 		String ccd;
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		EHDC testData = new EHDC();
@@ -3266,17 +3109,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		messagesPage = jalapenoCcdPage.closeCcd(driver);
 
 		log("Step 8: Logging out");
-		homePage = messagesPage.backToHomePage(driver);
+		homePage.clickOnMenuHome();
 		loginPage = homePage.clickOnLogout();
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLastLoginEvent() throws Exception {
-
-		log("Test Case: Last Login event data");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		Long timestamp = System.currentTimeMillis();
 
 		log("Step 1: Get Data from property file");
@@ -3333,11 +3171,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testStatementPayloadMinimum(Method method) throws Exception {
-		log("Test Case: To verify if the Statement payload is being posted with minimum payload");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-		log("Method Name: " + method.getName());
-
 		StatementEventData testData = new StatementEventData();
 		log("Step 1: load data from external property file");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
@@ -3389,19 +3222,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = {
-			"AcceptanceTests", "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "channelVersion", groups = { "AcceptanceTests",
+			"RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ERxMedication20(String version) throws Exception {
 		if (version.contains("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
-
-		log("Test Case: Rx Prescription Request");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		logStep("Get Data from Excel");
-		Prescription20 prescription20 = new Prescription20();
-		Prescription20TestData testData = new Prescription20TestData(prescription20);
+		logStep("Get Test Data");
+		Prescription20TestData testData = new Prescription20TestData();
 		Long timestamp = System.currentTimeMillis();
 		Long since;
 		log("Url: " + testData.getUrl());
@@ -3642,10 +3469,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessageWithAttachmentRefID() throws Exception {
-		log("Test Case: testAMDCSecureMessagewithAttachmentrefID");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Get TestData from both Property files AMDC and Attachment");
 
 		LoadPreTestData loadPreTestDataObj = new LoadPreTestData();
@@ -3763,10 +3586,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBulkAdminMessageWithAttachmentRefID() throws Exception {
-		log("Test Case: testBulkAdminMessageWithAttachmentRefID");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Get TestData from both Property files Bulk Admin and Attachment");
 
 		LoadPreTestData loadPreTestDataObj = new LoadPreTestData();
@@ -3784,9 +3603,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(bulkMessageTestData.OAuthKeyStore, bulkMessageTestData.OAuthProperty,
 				bulkMessageTestData.OAuthAppToken, bulkMessageTestData.OAuthUsername,
 				bulkMessageTestData.OAuthPassword);
-
-		logStep("Prepare Attachemnt Payload");
-		AttachmentPayload attachmentObj = new AttachmentPayload();
 
 		String externalAttachmentID = PharmacyPayload.randomNumbers(14);
 		log("externalAttachmentID posted is : " + externalAttachmentID);
@@ -3878,27 +3694,18 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			"RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 
 	public void testPIDCPatientRegistrationJSONV3(String portalVersion) throws Exception {
-		log("Test Case: Test to validate the patient Invite E2E workflow with the JSON payload for V3 endpoint");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		PatientRegistrationUtils.pidcPatientRegistrationJSONPayload("v3", driver, portalVersion);
 	}
 
 	@Test(enabled = true, dataProvider = "portalVersion", groups = {
 			"RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPrecheckPatientV4(String portalVersion) throws Exception {
-		log("Test Case: PIDC precheck Patient post for  v4 channel -" + portalVersion);
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		PatientRegistrationUtils.PrecheckPatientSubscriberPayloadV4("v4", driver, portalVersion);
 
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentDataExistingPatientV4() throws Exception {
-		log("Test Case: Appointment Request for Existing Patient From Partner");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
 		logStep("Get Data from property file");
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AppointmentData testData = new AppointmentData();
@@ -3962,10 +3769,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestForNewSelfPatientV4() throws Exception {
-		log("Test Case: Appointment Request for New Patient From Partner");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AppointmentData testData = new AppointmentData();
@@ -4002,7 +3805,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		logStep("Login to Practice Portal");
 		Practice practice = new Practice();
-		practice.url = testData.portalURL;
+		practice.url = testData.PracticeURL;
 		practice.username = testData.practiceUserName;
 		practice.password = testData.practicePassword;
 

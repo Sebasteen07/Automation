@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
+import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
@@ -58,8 +59,8 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 		logStep("Login to Practice Portal");
 
 		String tempUrl = (url == null) ? practiceTestData.getUrl() : url;
-		String tempDocLogin = (doctorLogin == null) ? practiceTestData.getUsername() : doctorLogin;
-		String tempDocPassword = (doctorPassword == null) ? practiceTestData.getPassword() : doctorPassword;
+		String tempDocLogin = (doctorLogin == null) ? practiceTestData.getPracticeUsername() : doctorLogin;
+		String tempDocPassword = (doctorPassword == null) ? practiceTestData.getPracticePassword() : doctorPassword;
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, tempUrl);
@@ -102,15 +103,15 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 			throws Exception {
 		String tempUrl = testData.getPortalUrl();
 		String docLogin = testData.getProperty("doctor.login");
-		String docPassword = testData.getProperty("doctor.password");
+		String docPassword = EncryptionUtils.decrypt(testData.getProperty("doctor.password"));
 		return getPatientActivationLink(driver, email, docLogin, docPassword, tempUrl);
 	}
 
 	public String getPatientActivationLink(WebDriver driver, PracticeTestData practiceTestData, String email)
 			throws Exception {
 		String tempUrl = practiceTestData.getUrl();
-		String tempDocLogin = practiceTestData.getUsername();
-		String tempDocPassword = practiceTestData.getPassword();
+		String tempDocLogin = practiceTestData.getPracticeUsername();
+		String tempDocPassword = practiceTestData.getPracticePassword();
 		return getPatientActivationLink(driver, email, tempDocLogin, tempDocPassword, tempUrl);
 	}
 

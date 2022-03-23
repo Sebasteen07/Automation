@@ -19,7 +19,7 @@ public class SitegenConstants {
 	public final static String LASTNAME = "Auto";
 	public final static String TITLE = "DR";
 	public final static String DEANUMBER = "123456";
-	public final static String PASSWORD = "intuit123";
+	public final static String PASSWORD = "ENC(g5I5yyL/AqZYQAVx5uLGM6uXTboyMqwc)";
 
 	// US6146:- Testcase testPermission
 	public final static String PERSONNELTYPE1 = "Nurses";
@@ -58,7 +58,7 @@ public class SitegenConstants {
 	public final static String PROCESSORVALUE1 = "PayPal";
 	public final static String PROCESSORVALUE2 = "QuickBooks Merchant Service";
 	public final static String SetUPPracticeUserName = "MedfusionTest";
-	public final static String SetUPPracticePassword = "1MedfusionTest";
+	public final static String SetUPPracticePassword = "ENC(XQ1EJDae9FrQE9O3OJYpF8A6wW0pMG3j)";
 	public final static String PartnerValue1 = "VeriSign";
 	public final static String PartnerValue2 = "Medfusion";
 	public final static String PartnerValue3 = "PayPal";
