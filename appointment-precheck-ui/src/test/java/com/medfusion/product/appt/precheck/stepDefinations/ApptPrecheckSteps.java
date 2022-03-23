@@ -4860,6 +4860,293 @@ public class ApptPrecheckSteps extends BaseTest {
 	   assertTrue(curbsidePage.visibilityOfSelectAllCheckbox());
 
 	}
+	
+	@When("I schedule an appointment for location L1 and provider A2")
+	public void i_schedule_an_appointment_for_location_l1_and_provider_a2() throws NullPointerException, IOException, InterruptedException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayloadwithdifferentProvider(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+		
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
+	
+	@Then("I verify notification count will get updated but entry will not come in arrival grid for provider A2")
+	public void i_verify_notification_count_will_get_updated_but_entry_will_not_come_in_arrival_grid_for_provider_a2() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+	@Then("I verify notification count will get updated and entry will also be seen in arrival grid for provider A1")
+	public void i_verify_notification_count_will_get_updated_and_entry_will_also_be_seen_in_arrival_grid_for_provider_a1() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+	    assertEquals(curbsidePage.getNotificationCount(),"1","Notification count is not match");
+	}
+	
+	@When("from setting in notifications I click on email hamburgerbutton section of appointment reminder")
+	public void from_setting_in_notifications_i_click_on_email_hamburgerbutton_section_of_appointment_reminder() {
+	    mainPage.clickOnSettingTab();
+	    notifPage.clickOnNotificationTab();
+	    notifPage.clickApptReminderEmailHamburgerButton();
+	}
+	@When("I hit edit button")
+	public void i_hit_edit_button() {
+	   notifPage.clickApptReminderEmailEditButton();
+	}
+	@Then("I verify on template editor page all fields are displayed properly of appointment reminder for email")
+	public void i_verify_on_template_editor_page_all_fields_are_displayed_properly_of_appointment_reminder_for_email() throws InterruptedException {
+		assertTrue(notifPage.visibilityOfeditPageTemplate(), "Editing:Appointment Reminder");
+		assertEquals(notifPage.visibilityOfversionTextInEditPage(), "Version:" ,"Version: is not match");
+		assertEquals(notifPage.visibilityOfversionV2TextInEditPage(), "v2" ,"v2 is not match");
+		assertTrue(notifPage.visibilityOflogoInEditPage());
+		assertEquals(notifPage.visibilityOfappointmentReminderTextInEditPage(),"Appointment Reminder","Appointment Reminder is not match");
+		assertEquals(notifPage.visibilityOfconfirmAppointmentButtonInEditPage(), "Confirm Appointment", "Confirm Appointment is not match");
+		assertEquals(notifPage.visibilityOfstartPrecheckLinkInEditPage(), "Start PreCheck", "Start PreCheck is not match");
+		assertEquals(notifPage.visibilityOfpatientTextComingUpInEditPage(), "[Patient Name], your appointment is coming up.","[Patient Name], your appointment is coming up. is not match");
+		assertEquals(notifPage.visibilityOfdateAndTimeTextInEditPage(),"Date and Time","Date and Time is not match");
+		assertEquals(notifPage.visibilityOfdayOfTheWeekTextInEditPage(),"Day of the week at 00:00 AM/PM","Day of the week at 00:00 AM/PM is not match");
+		assertEquals(notifPage.visibilityOfmonthDDYYYYFormatTextInEditPage(),"Month DD, YYYY","Month DD, YYYY is not match");
+		assertEquals(notifPage.visibilityOflocationTextInEditPage(),"Location","Location is not match");
+		assertEquals(notifPage.visibilityOflocationNameTextInEditPage(),"Location Name","Location Name is not match");
+		assertEquals(notifPage.visibilityOflocationAddress1TextInEditPage(),"Location Address1","Location Address1 is not match");
+		assertEquals(notifPage.visibilityOflocationAddress2TextInEditPage(),"Location Address2","Location Address2 is not match");
+		assertEquals(notifPage.visibilityOfcityStateZipTextInEditPage(),"City State, Zip","City State, Zip is not match");
+		assertEquals(notifPage.visibilityOfnumberTextInEditPage(),"(XXX) XXX-XXXX","(XXX) XXX-XXXX is not match");
+		assertEquals(notifPage.visibilityOfpinOnMapLinkTextInEditPage(),"Pin on Map","Pin on Map is not match");
+		assertEquals(notifPage.visibilityOfproviderTextInEditPage(),"Provider","Provider is not match");
+		assertEquals(notifPage.visibilityOfproviderNameTextInEditPage(),"Provider Name","Provider Name is not match");
+		assertEquals(notifPage.visibilityOfrescheduleOrCancelLinkTextInEditPage(),"Reschedule or Cancel","Reschedule or Cancel is not match");
+		notifPage.clickOnBackArrow();
+	}
+	@When("from setting in notifications I click on text hamburgerbutton section of appointment reminder")
+	public void from_setting_in_notifications_i_click_on_text_hamburgerbutton_section_of_appointment_reminder() {
+		 mainPage.clickOnSettingTab();
+		 notifPage.clickOnNotificationTab();
+		 notifPage.clickApptReminderSmsHamburgerButton();
+	}
+	@Then("I verify on template editor page all fields are displayed properly of appointment reminder for text")
+	public void i_verify_on_template_editor_page_all_fields_are_displayed_properly_of_appointment_reminder_for_text() throws InterruptedException {
+		assertTrue(notifPage.visibilityOfeditPageTemplateForText(), "Editing:Appointment Reminder");
+		assertEquals(notifPage.visibilityOfversionTextInEditPageForText(),"Version:","Version: is not match");
+		assertEquals(notifPage.visibilityOfdefaultTextInEditPageForText(),"Default","Default is not match");
+		assertTrue(notifPage.visibilityOfpatientTextInEditPageForText(),"[Patient Name], check in now for your appointment with [Resource Name] at [Practice Name] -   [Location Name] on [Day of the week], [Month] [DD] [YYYY] [00:00 AM/PM]:https://medfusion.page.link/wnoag9aksagQA");
+		assertTrue(notifPage.visibilityOfconfirmTextInEditPageForText(),"Confirm your appointment at:https://medfusion.page.link/wnoag9aksagQA");
+		assertTrue(notifPage.visibilityOfrescheduleCancelTextInEditPageForText(),"Reschedule/Cancel Appointmentat: https://medfusion.page.link/wnoags0gw29shg");
+		assertTrue(notifPage.visibilityOfdirectionsTextInEditPageForText(),"Get Directions at:https://medfusion.page.link/wnoags0gw29shg");
+		assertEquals(notifPage.visibilityOfstopToUnsubscribeTextInEditPageForText(),"Text STOP to unsubscribe","Text STOP to unsubscribe is not match");
+		notifPage.clickOnBackArrow();
+	}
+	
+	@When("I click on setting tab")
+	public void i_click_on_setting_tab() {
+	   mainPage.clickOnSettingTab();
+	}
+	@When("I click on notification tab")
+	public void i_click_on_notification_tab() {
+	   notifPage.clickOnNotificationTab();
+	}
+	@When("I click on edit of hamburger button for email in appointment reminders")
+	public void i_click_on_edit_of_hamburger_button_for_email_in_appointment_reminders() {
+		notifPage.clickApptReminderEmailHamburgerButton();
+		notifPage.clickApptReminderEmailEditButton();
+	}
+	@Then("I verify that design tab is visible under setting tab")
+	public void i_verify_that_design_tab_is_visible_under_setting_tab() throws InterruptedException {
+	   assertTrue(notifPage.visibilityOfsettingTabunderDesignsection());
+	   notifPage.clickOnBackArrow();
+	}
+	@Then("I verify that system should show all default value on cadence page properly")
+	public void i_verify_that_system_should_show_all_default_value_on_cadence_page_properly() throws InterruptedException {
+	   assertEquals(notifPage.visibilityOfnotificationTypetextUnderdesignTab(),"Notification Type","Notification Type is not match");
+	   assertEquals(notifPage.visibilityOfappointmentReminderstextUnderdesignTab(),"Appointment Reminder","Appointment Reminder is not match");
+	   assertEquals(notifPage.visibilityOfversionTextunderDesigntab(),"Version Name :","Version Name : is not match");
+	   assertEquals(notifPage.visibilityOfv2TextunderDesigntab(),"v2","v2 is not match");
+	   assertEquals(notifPage.visibilityOfappointmentMethodTextunderDesigntab(),"Appointment Method:","Appointment Method: is not match");
+	   assertEquals(notifPage.visibilityOfinOfficeTextunderDesigntab(),"In Office","In Office is not match");
+	   assertEquals(notifPage.visibilityOfdeliveryMethodTextunderDesigntab(),"Delivery Method:","Delivery Method: is not match");
+	   notifPage.clickOnBackArrow();
+	}
+	@Then("I verify that system should show  default three timing units")
+	public void i_verify_that_system_should_show_default_three_timing_units() throws InterruptedException {
+	    assertEquals(notifPage.visibilityOftimingtextUnderdesignTab(),"Days","Days is not match");
+	    assertTrue(notifPage.visibilityOftimingUnitstextUnderdesignTab());
+	    assertEquals(notifPage.visibilityOfdefaultTimingtextUnderdesignTab(),"Days","Days is not match");
+	    assertTrue(notifPage.visibilityOfdefaultTimingUnitstUnderdesignTab());
+	    assertEquals(notifPage.visibilityOfdefaultTimingstextUnderdesignTab(),"Days","Days is not match");
+	    assertTrue(notifPage.visibilityOfdefaultTimingUnitstextUnderdesignTab());
+	    notifPage.clickOnBackArrow();
+	}
+	@When("I click on add button and add timing and timing unit")
+	public void i_click_on_add_button_and_add_timing_and_timing_unit() {
+	   notifPage.ClickonAddbutton();
+	   notifPage.clickOntimingdropdownunderDesigntab();
+	   notifPage.selectDaydropdownunderDesigntab();
+	   notifPage.enterTimingunitUnderdesignTab();
+	   
+	}
+	@Then("I verify that system should not show add button after adding fourth timing and timing unit")
+	public void i_verify_that_system_should_not_show_add_button_after_adding_fourth_timing_and_timing_unit() throws InterruptedException {
+	   assertFalse(notifPage.visibilityOfClickonAddbutton());
+	   notifPage.saveChangesButton();
+	   notifPage.clickOnBackArrow();	
+	   
+	}
+	@When("I click on delete button of timing and timing unit")
+	public void i_click_on_delete_button_of_timing_and_timing_unit() {
+	   notifPage.deleteTimingunitUnderdesignTab();
+	}
+	@Then("I verify that system should show add button after deleting fourth timing and timing unit")
+	public void i_verify_that_system_should_show_add_button_after_deleting_fourth_timing_and_timing_unit() throws InterruptedException {
+		 assertTrue(notifPage.visibilityOfClickonAddbutton());
+		 notifPage.clickOnBackArrow();	
+	}
+	@When("I add timings in timing and timing unit fields and save changes")
+	public void i_add_timings_in_timing_and_timing_unit_fields_and_save_changes() throws InterruptedException {
+		notifPage.ClickonAddbutton();
+		notifPage.clickOntimingdropdownunderDesigntab();
+		notifPage.selectDaydropdownunderDesigntab();
+		notifPage.enterTimingunitUnderdesignTab();
+		notifPage.saveChangesButton();
+		notifPage.clickOnBackArrow();
+	}
+	@Then("I verify that system should redirect to the notification tab page after the changes are saved")
+	public void i_verify_that_system_should_redirect_to_the_appointment_tab_page_after_the_changes_are_saved() {
+	  assertTrue(notifPage.visibilityOfnotificationsTab());
+	  
+	}
+	
+	@When("I schedule an appointment in {string}")
+	public void i_schedule_an_appointment_in(String language) throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com", language,
+						propertyData.getProperty("patient.name")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	
+	@Then("verify on appointment dashboard broadcast message and send reminder button not displayed")
+	public void verify_on_appointment_dashboard_broadcast_message_and_send_reminder_button_not_displayed() throws InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		Thread.sleep(5000);
+		apptPage.clickOnActions();
+		log("verify user is not able to see reminder and broadcast message button in actions dropdown");
+		assertFalse(apptPage.sendReminder(), "user is able to see send reminder button");
+		assertFalse(apptPage.broadcastMessage(), "user is able to see broadcast message button");
+		log("Enable notifications");
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.onNotification();
+		notifPage.saveNotification();
+	}
+	
+	@When("I select practice language as {string} from notification in setting")
+	public void i_select_practice_language_as_from_notification_in_setting(String english) throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		scrollAndWait(0, 200, 5000);
+		notifPage.selectPracticeLanguagePreference(english);
+		notifPage.saveNotification();
+	}
+	
+	@When("I switch on appointment dashboard select patient and send broadcast message in english from action button")
+	public void i_switch_on_appointment_dashboard_select_patient_and_send_broadcast_message_in_english_from_action_button() throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		log("Click on Actions tab and select broadcast message");
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.performAction();
+		assertFalse(apptPage.visibilityOfEsTextbox());
+		scrollAndWait(0, -2000, 5000);
+		apptPage.sendBroadcastInEnglish(propertyData.getProperty("broadcast.message.en"));
+		Thread.sleep(10000);
+	}
+	
+	@Then("I verify on while sending broadcast only english language option text box should be seen in broadcast and Email should be recieved in english only")
+	public void i_verify_on_while_sending_broadcast_only_english_language_option_text_box_should_be_seen_in_broadcast_and_email_should_be_recieved_in_english_only() throws NullPointerException, Exception {
+		String practiceName=apptPage.getPracticeName();
+		YopMail yopMail= new YopMail(driver);
+	    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    		"Important Message from"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "
+						+ propertyData.getProperty("broadcast.message.en"), 10));
+	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	    mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		Thread.sleep(5000);
+		notifPage.selectPracticeLanguagePreference("English & Spanish");
+		notifPage.saveNotification();
+	}
+	
+	@When("I switch on appointment dashboard select patient and send broadcast message in english and spanish from action button")
+	public void i_switch_on_appointment_dashboard_select_patient_and_send_broadcast_message_in_english_and_spanish_from_action_button() throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		log("Click on Actions tab and select broadcast message");
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.performAction();
+		assertTrue(apptPage.visibilityOfEnTextbox());
+		assertTrue(apptPage.visibilityOfEsTextbox());
+		scrollAndWait(0, -2000, 5000);
+		apptPage.scrollOnBroadcastMsg();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		Thread.sleep(10000);
+	}
+	
+	@Then("I verify on while sending broadcast in english and spanish language option text box should be seen in broadcast and Email should be recieved in english")
+	public void i_verify_on_while_sending_broadcast_in_english_and_spanish_language_option_text_box_should_be_seen_in_broadcast_and_email_should_be_recieved_in_english() throws NullPointerException, Exception {
+		String practiceName=apptPage.getPracticeName();
+		YopMail yopMail= new YopMail(driver);
+		log("Message should get in english and spanish");
+	    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    		"Important Message from"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "
+						+ propertyData.getProperty("broadcast.message.en"), 10));
+	    
+	    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    		"Un mensaje importantede"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "+ propertyData.getProperty("broadcast.message.en")+" / "+"Lo llamaremos en breve para recopilar la información de su seguro.", 10));
+	    log("Make notification setting ON");
+	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	    mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		Thread.sleep(5000);
+		notifPage.selectPracticeLanguagePreference("English & Spanish");
+		notifPage.saveNotification();
+	}
 
 }
 

@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
 import static org.testng.Assert.assertTrue;
@@ -159,18 +159,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoMessagesPage showMessages(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		IHGUtil.waitForElement(driver, 60, messages);
 		messages.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
 	public JalapenoMessagesPage showMessagesSent(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		WebDriverWait wait = new WebDriverWait(driver, 20);
-		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		IHGUtil.waitForElement(driver, 60, messages);
 		messages.click();
-		wait.until(ExpectedConditions.elementToBeClickable(sentFolder));
+		IHGUtil.waitForElement(driver, 60, sentFolder);
 		sentFolder.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
@@ -187,6 +185,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAppointmentRequestPage clickOnAppointment(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, appointments);
 		appointments.click();
 		log("click");
 		return PageFactory.initElements(driver, JalapenoAppointmentRequestPage.class);
@@ -206,7 +205,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public JalapenoPayBillsMakePaymentPage clickOnNewPayBills(WebDriver driver) {
-
+		IHGUtil.waitForElement(driver, 50, payments);
 		log("Clicking on Payments button");
 		payments.click();
 
@@ -273,7 +272,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public boolean isTextDisplayed(String text) {
 		log("Looking for notification: " + text);
-
+		IHGUtil.waitForElement(driver, 50, continueRegistrationButton);
 		try {
 			return driver.findElement(By.xpath("//p[contains(text(),'" + text + "')]")).getText().contains(text);
 		} catch (Exception e) {
@@ -510,6 +509,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAskAStaffPage clickOnAskADoc(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, askAQuestion);
 		askAQuestion.click();
 		askADocButtonOnPopup.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);

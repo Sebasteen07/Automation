@@ -140,7 +140,7 @@ public class StatementEventUtils {
 		
 		long timeStamp = System.currentTimeMillis();
 
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String link = mail.getLinkFromEmail(testData.Email, testData.emailSubject, testData.PracticeName, 20);
 		assertTrue(link != null, "Statement Message link not found in mail.");
 		Log4jUtil.log("statement link  " + link);

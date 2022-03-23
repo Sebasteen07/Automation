@@ -49,6 +49,8 @@ locals {
     demo-payreporting-e2e-qbms         = "demo-payreporting-e2e-qbms"
     demo-payreporting-payments         = "demo-payreporting-payments"
     demo-payreporting-smoke            = "demo-payreporting-smoke"
+    demo-precheck                      = "demo-precheck"
+    demo-rcm-acceptance                = "demo-rcm-acceptance"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
