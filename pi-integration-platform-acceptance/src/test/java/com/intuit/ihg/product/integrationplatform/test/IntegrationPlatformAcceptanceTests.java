@@ -2,7 +2,6 @@
 package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
 import org.apache.commons.lang.StringUtils;
 import org.testng.SkipException;
@@ -117,8 +116,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 		
-		log("Step 5: Checking for the activation link inside the patient mailinator inbox");
-		// Searching for the link for patient activation in the mailinator Inbox
+		log("Step 5: Checking for the activation link inside the patient yopmail inbox");
+		// Searching for the link for patient activation in the yopmail Inbox
 
 		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
@@ -454,7 +453,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 			assertTrue(completed, "Message processing was not completed in time");
 		}
-		log("Step 12: Check secure message in patient mailinator inbox");
+		log("Step 12: Check secure message in patient yopmail inbox");
 
 		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from PI Automation rsdk Integrated";
@@ -1205,8 +1204,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 		
-		logStep("Checking for the activation link inside the patient mailinator inbox");
-		// Searching for the link for patient activation in the mailinator Inbox
+		logStep("Checking for the activation link inside the patient yopmail inbox");
+		// Searching for the link for patient activation in the yopmail Inbox
 
 		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,

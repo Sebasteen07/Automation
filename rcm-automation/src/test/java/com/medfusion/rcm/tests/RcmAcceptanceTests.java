@@ -1,11 +1,10 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.rcm.tests;
 
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
@@ -24,14 +23,18 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.Mailinator;
 import com.intuit.ihg.common.utils.WebPoster;
-import com.medfusion.common.utils.PropertyFileLoader;
 import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
+import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
@@ -40,13 +43,6 @@ import com.medfusion.product.practice.api.pojo.PatientInfo;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.implementedExternals.PatientActivation;
 import com.medfusion.rcm.utils.RCMUtil;
-
-import java.io.FileInputStream;
-
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
 
 /**
  * @Author:Jakub Odvarka
@@ -91,7 +87,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 
 		log(this.getClass().getName());
 		RCMUtil util = new RCMUtil(driver);
-		Mailinator mail = new Mailinator();
+		YopMailUtils mail = new YopMailUtils(driver);
 
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -134,7 +130,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 	public void testSendStmtE2ESftpGWMirth() throws Exception {
 
 		log(this.getClass().getName());
-		Mailinator mail = new Mailinator();
+		YopMailUtils mail = new YopMailUtils(driver);
 		Session session;
 		Channel channel;
 		ChannelSftp channelSftp;
@@ -340,7 +336,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 		log(this.getClass().getName());
 		log("Creating a new patient to use in statements");
 		PatientInfo newPat = new PatientInfo();
-		newPat.email = "eStMf." + IHGUtil.createRandomNumericString(6) + "@mailinator.com";
+		newPat.email = "eStMf." + IHGUtil.createRandomNumericString(6) + "@yopmail.com";
 
 		IPatientActivation act = new PatientActivation();
 		newPat = act.activatePatient(driver, testData, newPat.email);
