@@ -197,6 +197,9 @@ public class ManageResource extends PSS2MenuPage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[13]/div/label[1]/i")
 	private WebElement overBookingToggleclick;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[14]/div/label[1]/i")
+	private WebElement overBookingToggleclickGE;
 
 	
 	public ManageResource(WebDriver driver) {
@@ -530,6 +533,15 @@ public class ManageResource extends PSS2MenuPage {
 
 	public void overBookingClick() {
 		overBookingToggleclick.click();
+		log("Clicked on Ovrbooking for On ");
 		appointmenttypeSave.click();
+		log("....Save.......");
+	}
+	
+	public void overBookingClickGE() {
+		overBookingToggleclickGE.click();
+		log("Clicked on Ovrbooking for On ");
+		appointmenttypeSave.click();
+		log("....Save.......");
 	}
 }

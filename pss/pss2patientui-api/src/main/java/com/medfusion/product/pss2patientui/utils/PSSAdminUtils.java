@@ -1277,7 +1277,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.selectResource(providerName);
 		manageResource.selectAppointmenttype(appointmentType);
 		Log4jUtil.log("Status for OverBooking is " + manageResource.overBookingStatus());
-		appointment.setPreventBacktoBackToggleStatus(manageResource.overBookingStatus());
+		appointment.setAppointmentStacking(manageResource.overBookingStatus());
 
 		if (appointment.isAppointmentStacking() == false) {
 			manageResource.overBookingClick();
@@ -1304,6 +1304,48 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			manageResource.overBookingClick();
 		} else {
 			log("OverBooking Already OFF");
+		}
+		patientFlow.logout();
+		
+	}
+	
+	public void appointmentStackingEnableGE(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		Log4jUtil.log("Status for OverBooking is " + manageResource.overBookingStatus());
+		appointment.setAppointmentStacking(manageResource.overBookingStatus());
+
+		if (appointment.isAppointmentStacking() == false) {
+			manageResource.overBookingClickGE();
+		} else {
+			log("OverBooking Already On");
+		}
+		patientFlow.logout();
+		
+	}
+	
+	public void appointmentStackingDisableGE(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		Log4jUtil.log("Status for OverBooking is " + manageResource.overBookingStatus());
+		appointment.setAppointmentStacking(manageResource.overBookingStatus());
+
+		if (appointment.isAppointmentStacking() == true) {
+			manageResource.overBookingClickGE();
+		} else {
+			log("OverBooking Already Off");
 		}
 		patientFlow.logout();
 		
