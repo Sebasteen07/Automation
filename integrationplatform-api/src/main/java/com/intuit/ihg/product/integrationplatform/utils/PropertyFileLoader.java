@@ -1,11 +1,10 @@
-// Copyright 2016-2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2016-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PropertyFileLoader {
@@ -16,8 +15,10 @@ public class PropertyFileLoader {
 		String propertyFileNameString = env + ".properties";
 		InputStream url = ClassLoader.getSystemResourceAsStream("data-driven/" + propertyFileNameString);
 		property.load(url);
+
 	}
 
+	// CCD
 	public String getResponsePath() {
 		return property.getProperty("response.path");
 	}
@@ -67,7 +68,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPasswordCCD() {
-		return EncryptionUtils.decrypt(property.getProperty("password.ccd"));
+		return property.getProperty("password.ccd");
 	}
 
 	public String getdeviceNameCCD() {
@@ -126,6 +127,18 @@ public class PropertyFileLoader {
 		return property.getProperty("practice.patientid");
 	}
 
+	public String getOAuthAppTokenCCD() {
+		return property.getProperty("oauth.apptoken.ccd");
+	}
+
+	public String getOAuthUsernameCCD() {
+		return property.getProperty("oauth.username.ccd");
+	}
+
+	public String getOAuthPasswordCCD() {
+		return property.getProperty("oauth.password.ccd");
+	}
+
 	public String getUrlCCD() {
 		return property.getProperty("url.ccd");
 	}
@@ -143,16 +156,28 @@ public class PropertyFileLoader {
 		return property.getProperty("url.amdc");
 	}
 
+	public String getOAuthAppTokenAMDC() {
+		return property.getProperty("oauth.apptoken.amdc");
+	}
+
+	public String getOAuthUsernameAMDC() {
+		return property.getProperty("oauth.username.amdc");
+	}
+
+	public String getOAuthPasswordAMDC() {
+		return property.getProperty("oauth.password.amdc");
+	}
+
 	public String getUserNameAMDC() {
 		return property.getProperty("username.amdc");
 	}
 
 	public String getPasswordAMDC() {
-		return EncryptionUtils.decrypt(property.getProperty("password.amdc"));
+		return property.getProperty("password.amdc");
 	}
 
 	public String getRestUrlAMDC() {
-		return property.getProperty("rest.url.amdc");
+		return property.getProperty("resturl.amdc");
 	}
 
 	public String getResponsePathAMDC() {
@@ -164,7 +189,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getReadCommunicationUrlAMDC() {
-		return property.getProperty("read.communication.url.amdc");
+		return property.getProperty("readcommunicationurl.amdc");
 	}
 
 	public String getSender3AMDC() {
@@ -172,7 +197,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getIntegrationPracticeID() {
-		return property.getProperty("integration.practice.id");
+		return property.getProperty("integrationpracticeid.amdc");
 	}
 
 	public String getGmailUserNameAMDC() {
@@ -180,7 +205,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getGmailPasswordAMDC() {
-		return EncryptionUtils.decrypt(property.getProperty("gmail.password.amdc"));
+		return property.getProperty("gmail.password.amdc");
 	}
 
 	public String getAllowReply() {
@@ -196,11 +221,11 @@ public class PropertyFileLoader {
 	}
 
 	public String getRestUrlV3AMDC() {
-		return property.getProperty("rest.urlv3.amdc");
+		return property.getProperty("resturlv3.amdc");
 	}
 
 	public String getReadCommunicationUrlV3AMDC() {
-		return property.getProperty("read.communication.urlv3.amdc");
+		return property.getProperty("readcommunicationurlv3.amdc");
 	}
 
 	// MU2 EVENTS
@@ -210,6 +235,18 @@ public class PropertyFileLoader {
 
 	public String getPULLAPI_URLV3_MU2() {
 		return property.getProperty("pullapi.urlv3.mu2");
+	}
+
+	public String getOAuthAppToken_MU2() {
+		return property.getProperty("oauth.apptoken.mu2");
+	}
+
+	public String getOAuthUsername_MU2() {
+		return property.getProperty("oauth.username.mu2");
+	}
+
+	public String getOAuthPassword_MU2() {
+		return property.getProperty("oauth.password.mu2");
 	}
 
 	public String getPUSHAPI_URL_MU2() {
@@ -225,7 +262,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPORTAL_PASSWORD_MU2() {
-		return EncryptionUtils.decrypt(property.getProperty("portal.password.mu2"));
+		return property.getProperty("portal.password.mu2");
 	}
 
 	public String getINTUIT_PATIENT_ID_MU2() {
@@ -289,7 +326,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPatientPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("patient.password"));
+		return property.getProperty("patient.password");
 	}
 
 	public String getCCDMessageID1() {
@@ -322,7 +359,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getGuardian_Password_MU2() {
-		return EncryptionUtils.decrypt(property.getProperty("guardian.password.mu2"));
+		return property.getProperty("guardian.password.mu2");
 	}
 
 	public String getPatient_ExternalPatientID_MU2() {
@@ -343,7 +380,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getGuardian_Password_MU2_Existing() {
-		return EncryptionUtils.decrypt(property.getProperty("guardian.password.mu2.existing"));
+		return property.getProperty("guardian.password.mu2.existing");
 	}
 
 	public String getPatient_ExternalPatientID_MU2_Existing() {
@@ -384,7 +421,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("password"));
+		return property.getProperty("password");
 	}
 
 	public String getRestUrl() {
@@ -404,7 +441,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getOAuthAppToken() {
-		return property.getProperty("oauth.app.token");
+		return property.getProperty("oauth.apptoken");
 	}
 
 	public String getOAuthUsername() {
@@ -412,15 +449,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getOAuthPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("oauth.password"));
-	}
-
-	public String getOAuthUsername2() {
-		return property.getProperty("oauth.username2");
-	}
-
-	public String getOAuthPassword2() {
-		return EncryptionUtils.decrypt(property.getProperty("oauth.password2"));
+		return property.getProperty("oauth.password");
 	}
 
 	public String getBirthday() {
@@ -472,7 +501,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPracticeURL() {
-		return property.getProperty("practice.url");
+		return property.getProperty("practiceurl");
 	}
 
 	public String getPortalVersion() {
@@ -502,13 +531,25 @@ public class PropertyFileLoader {
 	public String getRestUrl3_20() {
 		return property.getProperty("resturl3.20");
 	}
-
+	
 	public String getRestUrl4_20() {
 		return property.getProperty("resturl4.20");
 	}
 
 	public String getPracticeId_PIDC_20() {
 		return property.getProperty("practiceid.pidc.20");
+	}
+
+	public String getOAuthAppToken_20() {
+		return property.getProperty("oauth.apptoken.20");
+	}
+
+	public String getOAuthUsername_20() {
+		return property.getProperty("oauth.username.20");
+	}
+
+	public String getOAuthPassword_20() {
+		return property.getProperty("oauth.password.20");
 	}
 
 	public String getStandard_Email() {
@@ -520,7 +561,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPracticePassword() {
-		return EncryptionUtils.decrypt(property.getProperty("practice.password"));
+		return property.getProperty("practice.password");
 	}
 
 	public String getCity() {
@@ -538,19 +579,18 @@ public class PropertyFileLoader {
 	public String getLanguageType() {
 		return property.getProperty("preferred.language");
 	}
-
+	
 	public String getTestPatientIDUserName() {
-		return property.getProperty("username");
+			return property.getProperty("username");
 	}
-
+	
 	public String getPrecheckSubscriberPatientRestURL() {
 		return property.getProperty("rest.precheck.subscriber");
 	}
-
 	public String getSubscriberPracticeID() {
 		return property.getProperty("subscriber.praticeid");
 	}
-
+	
 	// PIDC END
 
 	// Appointment Data Request from partner
@@ -558,8 +598,20 @@ public class PropertyFileLoader {
 		return property.getProperty("appointment.request.url");
 	}
 
+	public String getOAuthAppToken_AD() {
+		return property.getProperty("oauth.apptoken.ad");
+	}
+
+	public String getOAuthUsername_AD() {
+		return property.getProperty("oauth.username.ad");
+	}
+
+	public String getoAuthPassword_AD() {
+		return property.getProperty("oauth.password.ad");
+	}
+
 	public String getIntegrationPracticeID_AD() {
-		return property.getProperty("integration.practice.id");
+		return property.getProperty("integrationpracticeid.ad");
 	}
 
 	public String getMedfusionPracticeId_AD() {
@@ -571,7 +623,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPassword_AD() {
-		return EncryptionUtils.decrypt(property.getProperty("password.ad"));
+		return property.getProperty("password.ad");
 	}
 
 	public String getPatientPracticeID_AD() {
@@ -618,6 +670,10 @@ public class PropertyFileLoader {
 		return property.getProperty("appointmenttype.ad");
 	}
 
+	public String getPracticeURL_AD() {
+		return property.getProperty("practiceurl.ad");
+	}
+
 	public String getPreviousAppointmentId() {
 		return property.getProperty("previousappointmentid");
 	}
@@ -636,6 +692,18 @@ public class PropertyFileLoader {
 
 	public String getCSVFILEPATH_AD() {
 		return property.getProperty("csvfile.path.ad");
+	}
+
+	public String getPracticePortalURL_AD() {
+		return property.getProperty("portalurl");
+	}
+
+	public String getProtalUserName_AD() {
+		return property.getProperty("portal.username");
+	}
+
+	public String getPortalPassword_AD() {
+		return property.getProperty("portal.password");
 	}
 
 	// Start POST STATEMENT & Get EVENT
@@ -711,7 +779,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPassword_SE() {
-		return EncryptionUtils.decrypt(property.getProperty("password.se"));
+		return property.getProperty("password.se");
 	}
 
 	public String getEmail_SE() {
@@ -724,6 +792,18 @@ public class PropertyFileLoader {
 
 	public String getRestV3Url_SE() {
 		return property.getProperty("restv3url.se");
+	}
+
+	public String getOAuthAppToken_SE() {
+		return property.getProperty("oauth.apptoken.se");
+	}
+
+	public String getOAuthUsername_SE() {
+		return property.getProperty("oauth.username.se");
+	}
+
+	public String getOAuthPassword_SE() {
+		return property.getProperty("oauth.password.se");
 	}
 
 	public String getFirstName_SE() {
@@ -766,6 +846,14 @@ public class PropertyFileLoader {
 		return property.getProperty("statement.email.subject");
 	}
 
+	public String getPortalUserName_SE() {
+		return property.getProperty("portal.username.se");
+	}
+
+	public String getPortalPassword_SE() {
+		return property.getProperty("portal.password.se");
+	}
+	
 	// BULK
 	public String getOAuthPropertyAMDC() {
 		return property.getProperty("oauth.property.amdc");
@@ -852,7 +940,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getresendPrevoiusMessage() {
-		return property.getProperty("resend.previous.message");
+		return property.getProperty("resend.prevoius.message");
 	}
 
 	public String getpreviousBulkMessageId() {
@@ -914,15 +1002,15 @@ public class PropertyFileLoader {
 	}
 
 	public String getPasswordBulk1() {
-		return EncryptionUtils.decrypt(property.getProperty("password.bulk1"));
+		return property.getProperty("password.bulk1");
 	}
 
 	public String getPasswordBulk2() {
-		return EncryptionUtils.decrypt(property.getProperty("password.bulk2"));
+		return property.getProperty("password.bulk2");
 	}
 
 	public String getPasswordBulk3() {
-		return EncryptionUtils.decrypt(property.getProperty("password.bulk3"));
+		return property.getProperty("password.bulk3");
 	}
 
 	public String getUserPatiendIDBulk1() {
@@ -954,7 +1042,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getresendMessageToPatientPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("resend.message.to.patient.password"));
+		return property.getProperty("resend.message.to.patient.password");
 	}
 
 	public String getresendMessageToPatientID() {
@@ -983,7 +1071,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getSecureEmailPassword_SDM() {
-		return EncryptionUtils.decrypt(property.getProperty("secureemailpassword.sdm"));
+		return property.getProperty("secureemailpassword.sdm");
 	}
 
 	public String getFromSecureEmailID_SDM() {
@@ -1028,6 +1116,18 @@ public class PropertyFileLoader {
 
 	public String getAttachmentLocationPNG_SDM() {
 		return property.getProperty("attachmentlocationpng.sdm");
+	}
+
+	public String getOAuthAppToken_SDM() {
+		return property.getProperty("oauth.apptoken.sdm");
+	}
+
+	public String getOAuthUsername_SDM() {
+		return property.getProperty("oauth.username.sdm");
+	}
+
+	public String getOAuthPassword_SDM() {
+		return property.getProperty("oauth.password.sdm");
 	}
 
 	public String getTOCName_SDM() {
@@ -1085,6 +1185,18 @@ public class PropertyFileLoader {
 
 	public String getDirectAddress_provider_DS() {
 		return property.getProperty("directaddress.provider.ds");
+	}
+
+	public String getOAuthAppToken_DS() {
+		return property.getProperty("oauth.apptoken.ds");
+	}
+
+	public String getOAuthUsername_DS() {
+		return property.getProperty("oauth.username.ds");
+	}
+
+	public String getOAuthPassword_DS() {
+		return property.getProperty("oauth.password.ds");
 	}
 
 	public String getSearchLength() {
@@ -1161,7 +1273,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getpatientPassword1_FE() {
-		return EncryptionUtils.decrypt(property.getProperty("patient.password1.fe"));
+		return property.getProperty("patient.password1.fe");
 	}
 
 	public String getpatientSecretAnswer_FE() {
@@ -1292,6 +1404,18 @@ public class PropertyFileLoader {
 		return property.getProperty("ccd.url1.fe");
 	}
 
+	public String getoAuthAppTokenCCD1_FE() {
+		return property.getProperty("oauth.apptoken.ccd1.fe");
+	}
+
+	public String getoAuthUsernameCCD1_FE() {
+		return property.getProperty("oauth.username.ccd1.fe");
+	}
+
+	public String getoAuthPasswordCCD1_FE() {
+		return property.getProperty("oauth.password.ccd1.fe");
+	}
+
 	public String getoAuthKeyStore1_FE() {
 		return property.getProperty("oauth.keystore1.fe");
 	}
@@ -1302,6 +1426,19 @@ public class PropertyFileLoader {
 
 	public String getresponsePath_CCD1_FE() {
 		return property.getProperty("response.path.ccd1.fe");
+	}
+
+	public String getpracticeURL_FE() {
+		return property.getProperty("practiceurl.fe");
+	}
+
+	public String getpracticeUserName_FE() {
+		return property.getProperty("practice.username.fe");
+
+	}
+
+	public String getpracticePassword_FE() {
+		return property.getProperty("practice.password.fe");
 	}
 
 	public String getpatientLocation_FE() {
@@ -1413,7 +1550,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getNewPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("new.password"));
+		return property.getProperty("new.password");
 	}
 
 	public String getEmailSubjectBalance() {
@@ -1446,7 +1583,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPostGREdbPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("postgres.db.password"));
+		return property.getProperty("postgres.db.password");
 	}
 
 	public String getCoreMSSQLdbHostName() {
@@ -1462,7 +1599,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getCoreMSSQLdbPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("core.db.password"));
+		return property.getProperty("core.db.password");
 	}
 
 	public String getMFMSSQLdbHostName() {
@@ -1478,7 +1615,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getMFMSSQLdbPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("mf.agent.db.password"));
+		return property.getProperty("mf.agent.db.password");
 	}
 
 	public String getMFOracleSQLdbHostName() {
@@ -1494,7 +1631,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getMFOracleSQLdbPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("consumer.db.password"));
+		return property.getProperty("consumer.db.password");
 	}
 
 	// MF API Url
@@ -1516,7 +1653,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getDoctorPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("doctor.password"));
+		return property.getProperty("doctor.password");
 	}
 
 	public String getPortalUrl() {
@@ -1733,12 +1870,24 @@ public class PropertyFileLoader {
 	}
 
 	// Pharmacies
+	public String getOAuthAppToken_PH() {
+		return property.getProperty("oauth.apptoken.ph");
+	}
+
+	public String getOAuthUsername_PH() {
+		return property.getProperty("oauth.username.ph");
+	}
+
+	public String getoAuthPassword_PH() {
+		return property.getProperty("oauth.password.ph");
+	}
+
 	public String getPatientUsername_PH() {
 		return property.getProperty("username.ph");
 	}
 
 	public String getPatientPassword_PH() {
-		return EncryptionUtils.decrypt(property.getProperty("password.ph"));
+		return property.getProperty("password.ph");
 	}
 
 	public String getPharmacyRenewalUrl() {
@@ -1800,11 +1949,10 @@ public class PropertyFileLoader {
 	public String getPATIENT_INVITE_RESTV3URL() {
 		return property.getProperty("resturl.pidcv3");
 	}
-	
 	public String getPATIENT_INVITE_RESTV4URL() {
 		return property.getProperty("resturl.pidcv4");
 	}
-
+	
 	public String getPatienturl_Event() {
 		return property.getProperty("patient.url.loginevent");
 	}
@@ -1814,7 +1962,19 @@ public class PropertyFileLoader {
 	}
 
 	public String getPatientpassword_Event() {
-		return EncryptionUtils.decrypt(property.getProperty("password.loginevent"));
+		return property.getProperty("password.loginevent");
+	}
+
+	public String getPatientoAuthAppToken_Event() {
+		return property.getProperty("oauth.apptoken.loginevent");
+	}
+
+	public String getPatientoAuthUsername_Event() {
+		return property.getProperty("oauth.username.loginevent");
+	}
+
+	public String getPatientoAuthPassword_Event() {
+		return property.getProperty("oauth.password.loginevent");
 	}
 
 	public String getPatientoAuthProperty_Event() {
@@ -1843,6 +2003,18 @@ public class PropertyFileLoader {
 
 	public String getPatientStatementUrl() {
 		return property.getProperty("url.patientstatement");
+	}
+
+	public String getOAuthAppToken_Statement() {
+		return property.getProperty("oauth.apptoken.patientstatement");
+	}
+
+	public String getOAuthAppUsername_Statement() {
+		return property.getProperty("oauth.username.patientstatement");
+	}
+
+	public String getOAuthAppPassword_Statement() {
+		return property.getProperty("oauth.password.patientstatement");
 	}
 
 	// Attachment

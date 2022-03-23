@@ -1,96 +1,95 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 
-import com.medfusion.common.utils.EncryptionUtils;
+import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
 public class StatementPreferenceTestData {
 
-	private Properties property = new Properties();
+	private StatementPreference StmtPrefObj = null;
+	private ExcelSheetReader excelReader = null;
 
-	public StatementPreferenceTestData() throws IOException {
-		String env = IHGUtil.getEnvironmentType().toString();
-		String propertyFileNameString = env + ".properties";
-
-		URL url = ClassLoader.getSystemResource("data-driven/" + propertyFileNameString);
-		FileReader inputStream = new FileReader(url.getFile());
-		property.load(inputStream);
+	public StatementPreferenceTestData(StatementPreference sheetName) throws Exception {
+		// which enviroment data need to picked
+		String temp = IHGUtil.getEnvironmentType().toString();
+		// file name
+		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
+		// reading the entire file
+		excelReader = new ExcelSheetReader(url.getFile());
+		// filtering the entire file
+		StmtPrefObj = (StatementPreference) excelReader.getSingleExcelRow(sheetName, temp);
 	}
 
 	public String getUrl() {
-		return property.getProperty("patient.portal.url.statements");
+		return StmtPrefObj.Url;
 	}
 
 	public String getUserName() {
-		return property.getProperty("patient.portal.username.statements");
+		return StmtPrefObj.UserName;
 	}
 
 	public String getPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("patient.portal.password.statements"));
+		return StmtPrefObj.Password;
 	}
 
 	public String getRestUrl() {
-		return property.getProperty("rest.url.statements");
+		return StmtPrefObj.RestUrl;
 	}
 
 	public String getStatementPath() {
-		return property.getProperty("statement.path");
+		return StmtPrefObj.StatementPath;
 	}
 
 	public String getResponsePath() {
-		return property.getProperty("response.path");
+		return StmtPrefObj.ResponsePath;
 	}
 
 	public String getOAuthProperty() {
-		return property.getProperty("oauth.property");
+		return StmtPrefObj.OAuthProperty;
 	}
 
 	public String getOAuthKeyStore() {
-		return property.getProperty("oauth.keystore");
+		return StmtPrefObj.OAuthKeyStore;
 	}
 
 	public String getOAuthAppToken() {
-		return property.getProperty("oauth.app.token");
+		return StmtPrefObj.OAuthAppToken;
 	}
 
 	public String getOAuthUsername() {
-		return property.getProperty("oauth.username");
+		return StmtPrefObj.OAuthUsername;
 	}
 
 	public String getOAuthPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("oauth.password"));
+		return StmtPrefObj.OAuthPassword;
 	}
 
 	public String getPracticeURL() {
-		return property.getProperty("practice.url");
+		return StmtPrefObj.PracticeURL;
 	}
 
 	public String getPracticeUserName() {
-		return property.getProperty("practice.username");
+		return StmtPrefObj.PracticeUserName;
 	}
 
 	public String getPracticePassword() {
-		return EncryptionUtils.decrypt(property.getProperty("practice.password"));
+		return StmtPrefObj.PracticePassword;
 	}
 
 	public String getFirstName() {
-		return property.getProperty("first.name.statements");
+		return StmtPrefObj.FirstName;
 	}
 
 	public String getLastName() {
-		return property.getProperty("last.name.statements");
+		return StmtPrefObj.LastName;
 	}
 	
 	public String getRestUrlV3() {
-		return property.getProperty("restv3.url.statements");
+		return StmtPrefObj.RestUrlV3;
 	}
 
 	public String getStatementPathV3() {
-		return property.getProperty("statementv3.path");
+		return StmtPrefObj.StatementPathV3;
 	}
 }

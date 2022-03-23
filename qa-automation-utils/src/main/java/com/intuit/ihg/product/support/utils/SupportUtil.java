@@ -206,6 +206,24 @@ public class SupportUtil extends IHGUtil {
 		}
 	}
 
+	public HashMap<String, List<String>> getPatientsDetails() throws Exception {
+
+		return getTestData(TestConfig.getDataDrivenSpreadsheet(), "Support", "PatientDetails");
+
+	}
+
+	public List<String> getPatientData(String tableColumn) throws Exception {
+		List<String> tdList = null;
+		HashMap<String, List<String>> td = getPatientsDetails();
+		tdList = td.get(tableColumn);
+		if (tdList == null) {
+			throw new Exception("Table column- " + tableColumn
+					+ " not found in the mentioned table name, Please ensure the table name and column name are exacly same as mentioned in excel");
+		} else {
+			return tdList;
+		}
+	}
+
 	// Returns the contents of the file in a byte array.
 
 	public static byte[] getBytesFromFile(File file) throws IOException {

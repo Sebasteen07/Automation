@@ -20,7 +20,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.medfusion.common.utils.EncryptionUtils;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
@@ -47,7 +46,7 @@ public class Utils {
 
 	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) {
 		String url = getPortalURL(practiceType, true, testData);
-		return loginPI(driver, url, testData.getProperty("patient.username"), EncryptionUtils.decrypt(testData.getProperty("patient.password")));
+		return loginPI(driver, url, testData.getProperty("patient.username"), testData.getProperty("patient.password"));
 	}
 
 	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, String username,

@@ -1,4 +1,3 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 public class AMDC {
@@ -15,7 +14,7 @@ public class AMDC {
 	public String OAuthAppToken ="";
 	public String OAuthUsername ="";
 	public String OAuthPassword ="";
-	public String ReadCommunicationUrl ="";
+	public String ReadCommuniationURL ="";
 	public String SecureMessage_AskaStaffXML ="";
 	public String Batch_SecureMessage ="";
 	public String UserName1 = "";
@@ -31,7 +30,7 @@ public class AMDC {
 	public String GmailUserName="";
 	public String GmailPassword="";
 	public String RestV3Url = "";
-	public String ReadCommunicationUrlV3 = "";
+	public String ReadCommuniationURLV3 = "";
 	public String AllowReply = "";
 	public String Message = "";
 	public String PatientExternalId = "";

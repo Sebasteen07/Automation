@@ -60,7 +60,10 @@ public class PIDCInfo {
 	private String secondInsuranceName = "";
 	private String testPatientIDUserName = "";
 	private String fnameSC = "";
+	private String mnameSC = "";
 	private String lnameSC = "";
+	private String address1SC = "";
+	private String address2SC = "";
 	private String portalVersion = "";
 	private String csvFilePath = "";
 	public ArrayList<PatientDetail> patientDetailList = new ArrayList<PatientDetail>();	
@@ -492,12 +495,36 @@ public class PIDCInfo {
 		this.fnameSC = fnameSC;
 	}
 
+	public String getMnameSC() {
+		return mnameSC;
+	}
+
+	public void setMnameSC(String mnameSC) {
+		this.mnameSC = mnameSC;
+	}
+
 	public String getLnameSC() {
 		return lnameSC;
 	}
 
 	public void setLnameSC(String lnameSC) {
 		this.lnameSC = lnameSC;
+	}
+
+	public String getAddress1SC() {
+		return address1SC;
+	}
+
+	public void setAddress1SC(String address1sc) {
+		address1SC = address1sc;
+	}
+
+	public String getAddress2SC() {
+		return address2SC;
+	}
+
+	public void setAddress2SC(String address2sc) {
+		address2SC = address2sc;
 	}
 
 	public String getPortalVersion() {

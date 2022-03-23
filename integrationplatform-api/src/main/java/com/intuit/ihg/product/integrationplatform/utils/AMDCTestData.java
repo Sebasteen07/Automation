@@ -1,128 +1,137 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 
-import com.medfusion.common.utils.EncryptionUtils;
+import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
 public class AMDCTestData {
 
-	private Properties property = new Properties();
+	private AMDC AmdcObj = null;
+	private ExcelSheetReader excelReader = null;
 
-	public AMDCTestData() throws IOException {
-		String env = IHGUtil.getEnvironmentType().toString();
-		String propertyFileNameString = env + ".properties";
-
-		URL url = ClassLoader.getSystemResource("data-driven/" + propertyFileNameString);
-		FileReader inputStream = new FileReader(url.getFile());
-		property.load(inputStream);
+	public AMDCTestData(AMDC sheetName) throws Exception {
+		// which enviroment data need to picked
+		String temp = IHGUtil.getEnvironmentType().toString();
+		// file name
+		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
+		// reading the entire file
+		excelReader = new ExcelSheetReader(url.getFile());
+		// filtering the entire file
+		AmdcObj = (AMDC) excelReader.getSingleExcelRow(sheetName, temp);
 	}
 
 	public String getUrl() {
-		return property.getProperty("patient.portal.url.amdc");
+		return AmdcObj.Url;
 	}
 
 	public String getUserName() {
-		return property.getProperty("patient.portal.username.amdc");
+		return AmdcObj.UserName;
 	}
 
 	public String getPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("patient.portal.password.amdc"));
+		return AmdcObj.Password;
 	}
 
 	public String getRestUrl() {
-		return property.getProperty("rest.url.amdc");
+		return AmdcObj.RestUrl;
 	}
 
 	public String getResponsePath() {
-		return property.getProperty("response.path");
+		return AmdcObj.ResponsePath;
 	}
 
-	public String getFrom1() {
-		return property.getProperty("from1.amdc");
+	public String getFrom() {
+		return AmdcObj.From;
 	}
 
 	public String getSecureMessagePath() {
-		return property.getProperty("secure.message.path.amdc");
+		return AmdcObj.SecureMessagePath;
 	}
 
+
+
 	public String getOAuthProperty() {
-		return property.getProperty("oauth.property");
+		return AmdcObj.OAuthProperty;
 	}
 
 	public String getOAuthKeyStore() {
-		return property.getProperty("oauth.keystore");
+		return AmdcObj.OAuthKeyStore;
 	}
 
 	public String getOAuthAppToken() {
-		return property.getProperty("oauth.app.token");
+		return AmdcObj.OAuthAppToken;
 	}
 
 	public String getOAuthUsername() {
-		return property.getProperty("oauth.username");
+		return AmdcObj.OAuthUsername;
 	}
 
 	public String getOAuthPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("oauth.password"));
+		return AmdcObj.OAuthPassword;
 	}
 
 	public String getReadCommunicationURL() {
-		return property.getProperty("read.communication.url.amdc");
+		return AmdcObj.ReadCommuniationURL;
 	}
 
 	public String getSecureMessage_AskaStaffXML() {
-		return property.getProperty("secure.message.ask.a.staff.xml.amdc");
+		return AmdcObj.SecureMessage_AskaStaffXML;
 	}
 
 	public String getBatch_SecureMessage() {
-		return property.getProperty("batch.secure.message.amdc");
+		return AmdcObj.Batch_SecureMessage;
 	}
 
 	public String getUserName1() {
-		return property.getProperty("username1.amdc");
+		return AmdcObj.UserName1;
 	}
 
-	public String getFrom2() {
-		return property.getProperty("from2.amdc");
+	public String getFrom1() {
+		return AmdcObj.From1;
 	}
 
 	public String getUserName2() {
-		return property.getProperty("username2.amdc");
+		return AmdcObj.UserName2;
 	}
 
 	public String getSender1() {
-		return property.getProperty("amdc.sender1");
+		return AmdcObj.Sender1;
 	}
 
 	public String getSender2() {
-		return property.getProperty("amdc.sender2");
+		return AmdcObj.Sender2;
 	}
 
 	public String getSender3() {
-		return property.getProperty("amdc.sender3");
+		return AmdcObj.Sender3;
 	}
 
 	public String getIntegrationPracticeID() {
-		return property.getProperty("integration.practice.id");
+		return AmdcObj.IntegrationPracticeID;
 	}
 
 	public String getPatientName1() {
-		return property.getProperty("patient.name1.amdc");
+		return AmdcObj.PatientName1;
 	}
 
 	public String getPatientName2() {
-		return property.getProperty("patient.name2.amdc");
+		return AmdcObj.PatientName2;
 	}
 
 	public String getPatientName3() {
-		return property.getProperty("patient.name3.amdc");
+		return AmdcObj.PatientName3;
+	}
+
+	public String getGmailUserName() {
+		return AmdcObj.GmailUserName;
+	}
+
+	public String getGmailPassword() {
+		return AmdcObj.GmailPassword;
 	}
 
 	public String getRestV3Url() {
-		return property.getProperty("rest.urlv3.amdc");
+		return AmdcObj.RestV3Url;
 	}
 }

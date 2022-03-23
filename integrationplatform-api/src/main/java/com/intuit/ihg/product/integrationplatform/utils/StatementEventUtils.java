@@ -30,7 +30,6 @@ import org.w3c.dom.NodeList;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
-import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
@@ -41,6 +40,7 @@ import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.practice.api.pojo.Practice;
 
 public class StatementEventUtils {
 	public List<String> eventList = new ArrayList<String>();
@@ -110,9 +110,14 @@ public class StatementEventUtils {
 		Thread.sleep(2000);
 		Log4jUtil.log("step 6: Login to Practice Portal");
 
+		Practice practice = new Practice();
+		practice.url = testData.portalURL;
+		practice.username = testData.practiceUserName;
+		practice.password = testData.practicePassword;
+
 		// Now start login with practice data
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.PracticeURL);
-		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.practiceUserName, EncryptionUtils.decrypt(testData.practicePassword));
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practice.url);
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(practice.username, practice.password);
 
 		Log4jUtil.log("step 7: Click on Patient Search Link");
 		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();

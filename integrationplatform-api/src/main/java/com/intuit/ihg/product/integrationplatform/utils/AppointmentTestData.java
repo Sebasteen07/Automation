@@ -1,100 +1,115 @@
-//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 
-import com.medfusion.common.utils.EncryptionUtils;
+import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
 public class AppointmentTestData {
 
-	private Properties property = new Properties();
-	
-	public AppointmentTestData() throws IOException {
-		String env = IHGUtil.getEnvironmentType().toString();
-		String propertyFileNameString = env + ".properties";
-		
-		URL url = ClassLoader.getSystemResource("data-driven/" + propertyFileNameString);
-		FileReader inputStream = new FileReader(url.getFile());
-		property.load(inputStream);
+	private Appointment AppointmentObj = null;
+	private ExcelSheetReader excelReader = null;
+
+	public AppointmentTestData(Appointment aptData) throws Exception {
+		// which environment data need to picked
+		String temp = IHGUtil.getEnvironmentType().toString();
+		// file name
+		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
+		// reading the entire file
+		excelReader = new ExcelSheetReader(url.getFile());
+		// filtering the entire file
+		AppointmentObj = (Appointment) excelReader.getSingleExcelRow(aptData, temp);
 	}
 
 	public String getUrl() {
-		return property.getProperty("patient.portal.url.appointments");
+		return AppointmentObj.Url;
 	}
 
 	public String getUserName() {
-		return property.getProperty("patient.portal.username.appointments");
+		return AppointmentObj.UserName;
 	}
 
 	public String getPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("patient.portal.password.appointments"));
+		return AppointmentObj.Password;
 	}
 
 	public String getRestUrl() {
-		return property.getProperty("rest.url.appointments");
+		return AppointmentObj.RestUrl;
 	}
 
 	public String getResponsePath() {
-		return property.getProperty("response.path");
-	}
-
-	public String getOAuthProperty() {
-		return property.getProperty("oauth.property");
-	}
-
-	public String getOAuthKeyStore() {
-		return property.getProperty("oauth.keystore");
-	}
-
-	public String getOAuthAppToken() {
-		return property.getProperty("oauth.app.token");
-	}
-
-	public String getOAuthUsername() {
-		return property.getProperty("oauth.username");
-	}
-
-	public String getOAuthPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("oauth.password"));
+		return AppointmentObj.ResponsePath;
 	}
 
 	public String getFrom() {
-		return property.getProperty("from.appointments");
+		return AppointmentObj.From;
 	}
 
 	public String getAppointmentPath() {
-		return property.getProperty("appointment.path");
+		return AppointmentObj.AppointmentPath;
+	}
+
+	public String getOAuthProperty() {
+		return AppointmentObj.OAuthProperty;
+	}
+
+	public String getOAuthKeyStore() {
+		return AppointmentObj.OAuthKeyStore;
+	}
+
+	public String getOAuthAppToken() {
+		return AppointmentObj.OAuthAppToken;
+	}
+
+	public String getOAuthUsername() {
+		return AppointmentObj.OAuthUsername;
+	}
+
+	public String getOAuthPassword() {
+		return AppointmentObj.OAuthPassword;
+	}
+
+	public String getPreferredDoctor() {
+		return AppointmentObj.PreferredDoctor;
+	}
+
+	public String getPhoneNumber() {
+		return AppointmentObj.PhoneNumber;
 	}
 
 	public String getPracticeURL() {
-		return property.getProperty("practice.url");
+		return AppointmentObj.PracticeURL;
 	}
 
 	public String getPracticeUserName() {
-		return property.getProperty("practice.username");
+		return AppointmentObj.PracticeUserName;
 	}
 
 	public String getPracticePassword() {
-		return EncryptionUtils.decrypt(property.getProperty("practice.password"));
+		return AppointmentObj.PracticePassword;
+	}
+
+	public String getGmailUserName() {
+		return AppointmentObj.GmailUserName;
+	}
+
+	public String getGmailPassword() {
+		return AppointmentObj.GmailPassword;
 	}
 
 	public String getPracticeName() {
-		return property.getProperty("practice.name.appointments");
+		return AppointmentObj.PracticeName;
 	}
 
 	public String getRestV3Url() {
-		return property.getProperty("restv3.url.appointments");
+		return AppointmentObj.RestV3Url;
 	}
 
 	public String getAppointmentPathV3() {
-		return property.getProperty("appointmentv3.path");
+		return AppointmentObj.AppointmentPathV3;
 	}
 
 	public String getRestUrlV3Headers() {
-		return property.getProperty("restv3.url.headers.appointments");
+		return AppointmentObj.RestUrlV3Headers;
 	}
 }

@@ -1,92 +1,116 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 
-import com.medfusion.common.utils.EncryptionUtils;
+import com.medfusion.common.utils.ExcelSheetReader;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PrescriptionTestData {
 
-	private Properties property = new Properties();
+	private Prescription PrescriptionObj = null;
+	private ExcelSheetReader excelReader = null;
 
-	public PrescriptionTestData() throws IOException {
-		String env = IHGUtil.getEnvironmentType().toString();
-		String propertyFileNameString = env + ".properties";
+	public PrescriptionTestData(Prescription aptData) throws Exception {
+		// which enviroment data need to picked
+		String temp = IHGUtil.getEnvironmentType().toString();
+		// file name
+		URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls");
+		// reading the entire file
+		excelReader = new ExcelSheetReader(url.getFile());
+		// filtering the entire file
 
-		URL url = ClassLoader.getSystemResource("data-driven/" + propertyFileNameString);
-		FileReader inputStream = new FileReader(url.getFile());
-		property.load(inputStream);
+		PrescriptionObj = (Prescription) excelReader.getSingleExcelRow(aptData, temp);
 	}
 
 	public String getUrl() {
-		return property.getProperty("patient.portal.url.prescription");
+		return PrescriptionObj.Url;
 	}
 
 	public String getUserName() {
-		return property.getProperty("patient.portal.username.prescription");
+		return PrescriptionObj.UserName;
 	}
 
 	public String getPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("patient.portal.password.prescription"));
+		return PrescriptionObj.Password;
 	}
 
 	public String getRestUrl() {
-		return property.getProperty("rest.url.prescription");
+		return PrescriptionObj.RestUrl;
 	}
 
 	public String getResponsePath() {
-		return property.getProperty("response.path");
+		return PrescriptionObj.ResponsePath;
 	}
 
 	public String getFrom() {
-		return property.getProperty("from");
+		return PrescriptionObj.From;
 	}
 
 	public String getPrescriptionPath() {
-		return property.getProperty("prescription.path");
+		return PrescriptionObj.PrescriptionPath;
 	}
 
 	public String getOAuthProperty() {
-		return property.getProperty("oauth.property");
+		return PrescriptionObj.OAuthProperty;
 	}
 
 	public String getOAuthKeyStore() {
-		return property.getProperty("oauth.keystore");
+		return PrescriptionObj.OAuthKeyStore;
 	}
 
 	public String getOAuthAppToken() {
-		return property.getProperty("oauth.app.token");
+		return PrescriptionObj.OAuthAppToken;
 	}
 
 	public String getOAuthUsername() {
-		return property.getProperty("oauth.username");
+		return PrescriptionObj.OAuthUsername;
 	}
 
 	public String getOAuthPassword() {
-		return EncryptionUtils.decrypt(property.getProperty("oauth.password"));
+		return PrescriptionObj.OAuthPassword;
+	}
+
+	public String getPreferredDoctor() {
+		return PrescriptionObj.PreferredDoctor;
+	}
+
+	public String getPhoneNumber() {
+		return PrescriptionObj.PhoneNumber;
 	}
 
 	public String getPracticeURL() {
-		return property.getProperty("practice.url");
+		return PrescriptionObj.PracticeURL;
 	}
 
 	public String getPracticeUserName() {
-		return property.getProperty("practice.username");
+		return PrescriptionObj.PracticeUserName;
 	}
 
 	public String getPracticePassword() {
-		return EncryptionUtils.decrypt(property.getProperty("practice.password"));
+		return PrescriptionObj.PracticePassword;
 	}
 
+	public String getGmailUserName() {
+		return PrescriptionObj.GmailUserName;
+	}
+
+	public String getGmailPassword() {
+		return PrescriptionObj.GmailPassword;
+	}
+
+	public String getPracticeName() {
+		return PrescriptionObj.PracticeName;
+	}
 	public String getRestV3Url() {
-		return property.getProperty("restv3.url.prescription");
+		return PrescriptionObj.RestV3Url;
 	}
 	
 	public String getPrescriptionPathV3() {
-		return property.getProperty("prescriptionv3.path");
+		return PrescriptionObj.PrescriptionPathV3;
 	}
+	
+	public String getPharmacyName() {
+		return PrescriptionObj.PharmacyName;
+	}
+
 }

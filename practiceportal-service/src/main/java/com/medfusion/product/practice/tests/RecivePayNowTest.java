@@ -28,7 +28,7 @@ public class RecivePayNowTest extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practiceTestData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getPracticeUsername(), practiceTestData.getPracticePassword());
+		PracticeHomePage practiceHome = practiceLogin.login(practiceTestData.getUsername(), practiceTestData.getPassword());
 
 		log("step 2: Click on Virtual card swiper");
 		VirtualCardSwiperPage pVirtualCardSwiperTab = practiceHome.clickVirtualCardSwiperTab();

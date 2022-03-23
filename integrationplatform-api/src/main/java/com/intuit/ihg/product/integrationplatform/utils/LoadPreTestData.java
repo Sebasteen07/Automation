@@ -22,9 +22,9 @@ public class LoadPreTestData {
 		testData.CCDPath = propertyData.getCCDPath();
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthAppToken = propertyData.getOAuthAppTokenCCD();
+		testData.OAuthUsername = propertyData.getOAuthUsernameCCD();
+		testData.OAuthPassword = propertyData.getOAuthPasswordCCD();
 		testData.ResponsePath = propertyData.getResponsePath();
 
 		testData.From = propertyData.getFromCCD();
@@ -58,14 +58,14 @@ public class LoadPreTestData {
 		testData.Url = propertyData.geturlAMDC();
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthAppToken = propertyData.getOAuthAppTokenAMDC();
+		testData.OAuthUsername = propertyData.getOAuthUsernameAMDC();
+		testData.OAuthPassword = propertyData.getOAuthPasswordAMDC();
 		testData.UserName = propertyData.getUserNameAMDC();
 		testData.Password = propertyData.getPasswordAMDC();
 		testData.RestUrl = propertyData.getRestUrlAMDC();
 		testData.From = propertyData.getFromAMDC();
-		testData.ReadCommunicationUrl = propertyData.getReadCommunicationUrlAMDC();
+		testData.ReadCommuniationURL = propertyData.getReadCommunicationUrlAMDC();
 		testData.Sender3 = propertyData.getSender3AMDC();
 		testData.GmailUserName = propertyData.getGmailUserNameAMDC();
 		testData.GmailPassword = propertyData.getGmailPasswordAMDC();
@@ -82,7 +82,7 @@ public class LoadPreTestData {
 		testData.downloadLocation = propertyData.getDownloadFileLocation();
 		testData.portalCategoryType = propertyData.getPortalCategoryType();
 		testData.RestV3Url = propertyData.getRestUrlV3AMDC();
-		testData.ReadCommunicationUrlV3 = propertyData.getReadCommunicationUrlV3AMDC();
+		testData.ReadCommuniationURLV3 = propertyData.getReadCommunicationUrlV3AMDC();
 
 		return testData;
 	}
@@ -94,9 +94,9 @@ public class LoadPreTestData {
 		testData.PULLAPI_URLV3 = propertyData.getPULLAPI_URLV3_MU2();
 		testData.OAUTH_PROPERTY = propertyData.getOAuthProperty();
 		testData.OAUTH_KEYSTORE = propertyData.getOAuthKeyStore();
-		testData.OAUTH_APPTOKEN = propertyData.getOAuthAppToken();
-		testData.OAUTH_USERNAME = propertyData.getOAuthUsername();
-		testData.OAUTH_PASSWORD = propertyData.getOAuthPassword();
+		testData.OAUTH_APPTOKEN = propertyData.getOAuthAppToken_MU2();
+		testData.OAUTH_USERNAME = propertyData.getOAuthUsername_MU2();
+		testData.OAUTH_PASSWORD = propertyData.getOAuthPassword_MU2();
 		testData.PUSHAPI_URL = propertyData.getPUSHAPI_URL_MU2();
 		testData.PUSH_RESPONSEPATH = propertyData.getResponsePath();
 		testData.PORTAL_URL = propertyData.getPORTAL_URL_MU2();
@@ -208,9 +208,9 @@ public class LoadPreTestData {
 			}
 			
 			testData.setPracticeId(propertyData.getPracticeId_PIDC_20());
-			testData.setoAuthAppToken(propertyData.getOAuthAppToken());
-			testData.setoAuthUsername(propertyData.getOAuthUsername());
-			testData.setoAuthPassword(propertyData.getOAuthPassword());
+			testData.setoAuthAppToken(propertyData.getOAuthAppToken_20());
+			testData.setoAuthUsername(propertyData.getOAuthUsername_20());
+			testData.setoAuthPassword(propertyData.getOAuthPassword_20());
 
 			testData.setFnameSC(propertyData.getFirstName_AD());
 			testData.setLnameSC(propertyData.getLastName_AD());
@@ -237,15 +237,15 @@ public class LoadPreTestData {
 		testData.EmailUserName = propertyData.getEmail_AD();
 		testData.MFPatientId = propertyData.getMedfusionPatientId_AD();
 		testData.MFPracticeId = propertyData.getMedfusionPracticeId_AD();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_AD();
+		testData.OAuthUsername = propertyData.getOAuthUsername_AD();
+		testData.OAuthPassword = propertyData.getoAuthPassword_AD();
 
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.PracticeName = propertyData.getIntegrationPracticeID_AD();
-		testData.PracticeURL = propertyData.getPracticeURL();
+		testData.URL = propertyData.getPracticeURL_AD();
 		testData.UserName = propertyData.getUserName_AD();
 		testData.Password = propertyData.getPassword_AD();
 		testData.PatientPracticeId = propertyData.getPatientPracticeID_AD();
@@ -261,8 +261,9 @@ public class LoadPreTestData {
 		testData.HomePhoneNo = propertyData.getHomePhoneNo();
 		testData.BatchSize = propertyData.getBatchSize_AD();
 		testData.csvFilePath = propertyData.getCSVFILEPATH_AD();
-		testData.practiceUserName = propertyData.getPracticeUserName();
-		testData.practicePassword = propertyData.getPracticePassword();
+		testData.portalURL = propertyData.getPracticePortalURL_AD();
+		testData.practiceUserName = propertyData.getProtalUserName_AD();
+		testData.practicePassword = propertyData.getPortalPassword_AD();
 		testData.AppointmentRequestV3URL = propertyData.getAppointmentRequestV3URL();
 		testData.AppointmentRequestV4URL = propertyData.getAppointmentRequestV4URL();
 		testData.PATIENT_INVITE_RESTV3URL = propertyData.getPATIENT_INVITE_RESTV3URL();
@@ -279,11 +280,11 @@ public class LoadPreTestData {
 		testData.RestUrl = propertyData.getRestUrl_SE();
 		testData.RestV3Url = propertyData.getRestV3Url_SE();
 		testData.ResponsePath = propertyData.getResponsePath();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_SE();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.OAuthProperty = propertyData.getOAuthProperty();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthUsername = propertyData.getOAuthUsername_SE();
+		testData.OAuthPassword = propertyData.getOAuthPassword_SE();
 		testData.FirstName = propertyData.getFirstName_SE();
 		testData.LastName = propertyData.getLastName_SE();
 		testData.PatientID = propertyData.getPatientID_SE();
@@ -308,9 +309,9 @@ public class LoadPreTestData {
 		testData.PaymentDueDate = propertyData.getPaymentDueDate();
 		testData.RestURLPIDC = propertyData.getRestUrlPIDC_SE();
 		testData.PracticeName = propertyData.getPracticeName_SE();
-		testData.PracticeURL = propertyData.getPracticeURL();
-		testData.practiceUserName = propertyData.getPracticeUserName();
-		testData.practicePassword = propertyData.getPracticePassword();
+		testData.portalURL = propertyData.getPracticePortalURL_AD();
+		testData.practiceUserName = propertyData.getPortalUserName_SE();
+		testData.practicePassword = propertyData.getPortalPassword_SE();
 		testData.emailSubject = propertyData.getStatementEmailSubject();
 		testData.balanceUrl = propertyData.getBalanceUrl();
 		testData.balanceIntegrationPracticeId = propertyData.getBalanceIntegrationPracticeId();
@@ -320,9 +321,9 @@ public class LoadPreTestData {
 		testData.StatementPdf_Detail = propertyData.getStatementPdfDetail();
 		testData.restUrlV3_Statement = propertyData.getStatementUrlV3();
 		testData.url_PatientStatement= propertyData.getPatientStatementUrl();
-		testData.oAuthAppToken_PatientSt= propertyData.getOAuthAppToken();
-		testData.oAuthAppUsername_PatientSt= propertyData.getOAuthUsername();
-		testData.oAuthAppPw_PatientSt= propertyData.getOAuthPassword();
+		testData.oAuthAppToken_PatientSt= propertyData.getOAuthAppToken_Statement();
+		testData.oAuthAppUsername_PatientSt= propertyData.getOAuthAppUsername_Statement();
+		testData.oAuthAppPw_PatientSt= propertyData.getOAuthAppPassword_Statement();
 		return testData;
 	}
 
@@ -332,9 +333,9 @@ public class LoadPreTestData {
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthAppToken = propertyData.getOAuthAppTokenAMDC();
+		testData.OAuthUsername = propertyData.getOAuthUsernameAMDC();
+		testData.OAuthPassword = propertyData.getOAuthPasswordAMDC();
 
 		testData.UserName = propertyData.getUserNameAMDC();
 		testData.Password = propertyData.getPasswordAMDC();
@@ -423,9 +424,9 @@ public class LoadPreTestData {
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_SDM();
+		testData.OAuthUsername = propertyData.getOAuthUsername_SDM();
+		testData.OAuthPassword = propertyData.getOAuthPassword_SDM();
 		testData.Subject = propertyData.getSubject_SDM();
 		testData.SecureDirectMessageURL = propertyData.getSecureEmailURL_SDM();
 		testData.SecureDirectMessageUsername = propertyData.getSecureEmailUsername_SDM();
@@ -464,9 +465,9 @@ public class LoadPreTestData {
 		testData.RestUrl = propertyData.getRestURL_SD();
 		testData.DirectAddressOrganization = propertyData.getDirectAddress_organization_DS();
 		testData.DirectAddressProvider = propertyData.getDirectAddress_provider_DS();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_DS();
+		testData.OAuthUsername = propertyData.getOAuthUsername_DS();
+		testData.OAuthPassword = propertyData.getOAuthPassword_DS();
 		testData.SearchLength = propertyData.getSearchLength();
 		testData.CSVFilePath = propertyData.getCSVFilePath_DS();
 		testData.ResponsePath = propertyData.getResponsePath();
@@ -526,15 +527,15 @@ public class LoadPreTestData {
 		testData.exercise = propertyData.getexercise();
 		testData.day = propertyData.getday();
 		testData.ccd_url1_FE = propertyData.getccd_url1_FE();
-		testData.oAuthAppTokenCCD1_FE = propertyData.getOAuthAppToken();
-		testData.oAuthUsernameCCD1_FE = propertyData.getOAuthUsername();
-		testData.oAuthPasswordCCD1_FE = propertyData.getOAuthPassword();
+		testData.oAuthAppTokenCCD1_FE = propertyData.getoAuthAppTokenCCD1_FE();
+		testData.oAuthUsernameCCD1_FE = propertyData.getoAuthUsernameCCD1_FE();
+		testData.oAuthPasswordCCD1_FE = propertyData.getoAuthPasswordCCD1_FE();
 		testData.oAuthKeyStore1_FE = propertyData.getoAuthKeyStore1_FE();
 		testData.oAuthProperty1_FE = propertyData.getoAuthProperty1_FE();
 		testData.responsePath_CCD1_FE = propertyData.getresponsePath_CCD1_FE();
-		testData.practiceURL_FE = propertyData.getPracticeURL();
-		testData.practiceUserName_FE = propertyData.getPracticeUserName();
-		testData.practicePassword_FE = propertyData.getPracticePassword();
+		testData.practiceURL_FE = propertyData.getpracticeURL_FE();
+		testData.practiceUserName_FE = propertyData.getpracticeUserName_FE();
+		testData.practicePassword_FE = propertyData.getpracticePassword_FE();
 		testData.patientLocation_FE = propertyData.getpatientLocation_FE();
 		testData.patientProvider_FE = propertyData.getpatientProvider_FE();
 		testData.responsePDF_FE = propertyData.getresponsePDF_FE();
@@ -560,9 +561,9 @@ public class LoadPreTestData {
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_AD();
+		testData.OAuthUsername = propertyData.getOAuthUsername_AD();
+		testData.OAuthPassword = propertyData.getoAuthPassword_AD();
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.AppointmentTypeName = propertyData.getAppointmentTypeName();
 		testData.AppointmentTypeID = propertyData.getAppointmentTypeID();
@@ -579,9 +580,9 @@ public class LoadPreTestData {
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.ResponsePath = propertyData.getResponsePath();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_PH();
+		testData.OAuthUsername = propertyData.getOAuthUsername_PH();
+		testData.OAuthPassword = propertyData.getoAuthPassword_PH();
 		testData.UserName = propertyData.getPatientUsername_PH();
 		testData.Password = propertyData.getPatientPassword_PH();
 		testData.PharmacyRenewalUrl = propertyData.getPharmacyRenewalUrl();
@@ -606,9 +607,9 @@ public class LoadPreTestData {
 		testData.restUrlLogin_V3 = propertyData.getPatientrestUrlLogin_V3_Event();
 		testData.OAuthProperty = propertyData.getPatientoAuthProperty_Event();
 		testData.OAuthKeyStore = propertyData.getPatientoAuthKeystore_Event();
-		testData.OAuthAppToken = propertyData.getOAuthAppToken();
-		testData.OAuthUsername = propertyData.getOAuthUsername();
-		testData.OAuthPassword = propertyData.getOAuthPassword();
+		testData.OAuthAppToken = propertyData.getPatientoAuthAppToken_Event();
+		testData.OAuthUsername = propertyData.getPatientoAuthUsername_Event();
+		testData.OAuthPassword = propertyData.getPatientoAuthPassword_Event();
 		testData.ResponsePath = propertyData.getPatientResponsePath_Event();
 
 		return testData;

@@ -1,4 +1,3 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.practice.implementedExternals;
 
 import java.io.IOException;
@@ -16,6 +15,7 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDash
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.practice.api.flows.IPatientActivation;
 import com.medfusion.product.practice.api.pojo.PatientInfo;
+import com.medfusion.product.practice.api.pojo.Practice;
 import com.medfusion.product.practice.api.pojo.PracticeTestData;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 
@@ -26,13 +26,17 @@ public class PatientActivation implements IPatientActivation {
 			throws InterruptedException, ClassNotFoundException, IllegalAccessException, IOException {
 		System.out.println(this.getClass().getName());
 		System.out.println("Setting up a patient through patient activation");
+
+		// RCMUtil util = new RCMUtil(driver);
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 
 		System.out.println("Getting Test Data");
-		PracticeTestData practiceTestData = new PracticeTestData();
+		Practice practice = new Practice();
+		PracticeTestData practiceTestData = new PracticeTestData(practice);
 		PatientInfo patInfo = new PatientInfo();
 		patInfo.email = mail;
 		System.out.println("Patient Activation on Practice Portal");
+		// String patMail = "eStMf."+IHGUtil.createRandomNumericString(6)+"@mailinator.com";
 		return patientActivationSearchTest.PatientActivation(driver, practiceTestData, mail, testData.getDoctorLogin(), testData.getDoctorPassword(),
 				testData.getPortalUrl(), patInfo);
 
@@ -41,11 +45,11 @@ public class PatientActivation implements IPatientActivation {
 	@Override
 	public PatientInfo editPatientRSDKExternalID(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo)
 			throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException {
-	    return editPatientSetExternalID( driver,  testData,  patientInfo,"emrid");
+	    return editPatientSetExternalID( driver,  testData,  patientInfo,"78");
 	}
 	/**
 	 *  Sets the external id to any external system, the element name of the box filled is "patientid_%externalSystemId" 
-	 *  e.g. emrid for rsdk, patientid_79 for elekta, etc...
+	 *  e.g. patientid_78 for rsdk, patientid_79 for elekta, etc...
 	 * @param driver
 	 * @param testData
 	 * @param patientInfo
@@ -60,7 +64,7 @@ public class PatientActivation implements IPatientActivation {
 	public PatientInfo editPatientSetExternalID(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo,String externalSystemId)
             throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException {
         System.out.println("Starting flow to set externalId for system: " + externalSystemId);        
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practice.portal.url"));
+        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portal.url"));
         PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
         System.out.println("Click on Patient Search Link");
@@ -84,7 +88,7 @@ public class PatientActivation implements IPatientActivation {
         String memberId = driver.findElement(By.xpath("//form[@name = 'edituserinfo']/table/tbody/tr[5]/td[2]")).getText();
         System.out.println("Found memberId: " + memberId);
         patientInfo.memberId = memberId;
-        WebElement rsdkId = driver.findElement(By.name(externalSystemId));
+        WebElement rsdkId = driver.findElement(By.name("patientid_" + externalSystemId));
         rsdkId.sendKeys(patientInfo.firstName);
         driver.findElement(By.name("submitted")).click();
         if (pPatientDashboardPage.getFeedback().contains("Patient Id(s) Updated") != true)
@@ -98,7 +102,7 @@ public class PatientActivation implements IPatientActivation {
 	public PatientInfo editPatientSetPrimaryId(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo, String emrid)
             throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException {
         System.out.println("Starting flow to set primary external id for patient, emrid: " + emrid);        
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practice.portal.url"));
+        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portal.url"));
         PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
         System.out.println("Click on Patient Search Link");
