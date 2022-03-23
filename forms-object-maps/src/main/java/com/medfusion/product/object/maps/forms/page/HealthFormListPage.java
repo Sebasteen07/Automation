@@ -37,7 +37,7 @@ public class HealthFormListPage extends BasePageObject {
 
 	private static final By newFormIframeXpath = By.xpath("//iframe[@title='Forms']");
 
-	@FindBy(xpath = "//iframe[@title='Forms']")
+	@FindBy(xpath = "//iframe[@title='Solution details']")
 	private WebElement newFormIframe;
 
 	@FindBy(xpath = "//iframe[@title='Forms']")
@@ -89,12 +89,14 @@ public class HealthFormListPage extends BasePageObject {
 
 	public void clickOnHealthFormsRegistrationLink() throws InterruptedException {
 		log("Clicking On General Registration and Health History ");
-		IHGUtil.waitForElement(driver, 30, healthFormsRegistrationLink);
-		healthFormsRegistrationLink.click();
-		Thread.sleep(7000);
+		IHGUtil.waitForElement(driver, 50, healthFormsRegistrationLink);
+		driver.switchTo().defaultContent();
+		driver.switchTo().frame(newFormIframe);
+
 		formValueNew = healthFormsRegistrationLink.getText();
+		healthFormsRegistrationLink.click();
+		driver.switchTo().defaultContent();
 		driver.switchTo().frame(iframeforms);
-		// wait.until(ExpectedConditions.visibilityOf(Continuebutton1));
 		IHGUtil.waitForElement(driver, 80, Continuebutton1);
 		Continuebutton1.click();
 	}

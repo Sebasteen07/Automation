@@ -37,7 +37,7 @@ public class YopMailUtils extends MedfusionPage{
 	@FindBy(how = How.XPATH, using = "//iframe[@id='ifinbox']")
 	private WebElement iframeInbox;
 
-	@FindBy(how = How.XPATH, using = "//p[contains(.,'activate')]")
+	@FindBy(how = How.XPATH, using = "//p[contains(.,'activate')] | //p/a[.='Visit our website'] | //p[contains(.,'Sign in to')]/a")
 	private WebElement linkInMailBody;
 
 	public YopMailUtils(WebDriver driver, String url) {
@@ -55,6 +55,7 @@ public class YopMailUtils extends MedfusionPage{
 	public String getLinkFromEmail(String username, String emailSubject, String findInEmail, int retries)
 		throws InterruptedException {
 		this.driver.get(YOPMAIL_URL);
+		mailIdTextBox.clear();
 		mailIdTextBox.sendKeys(username);
 		this.clickOnElement(goToMailbox);
 
@@ -69,10 +70,10 @@ public class YopMailUtils extends MedfusionPage{
 			String parentWindow = driver.getWindowHandle();
 
 			try {
-				driver.findElement(By.xpath("//body[@class='bodymail yscrollbar']//*[contains(text(),'" + findInEmail + "')]")).click();
+				driver.findElement(By.xpath("//body[@class='bodymail yscrollbar']//a[contains(text(),'" + findInEmail + "')]")).click();
 			} catch (Exception e) {
 				log("Trying with the next link in email as first attempt failed with exception: " + e.getMessage());
-				return linkInMailBody.getText().trim();
+				return linkInMailBody.getAttribute("href").trim();
 			}
 
 			Set<String> handles = driver.getWindowHandles();

@@ -20,7 +20,6 @@ import com.intuit.ihg.product.integrationplatform.utils.BalancePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.CancelInvitePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
-import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
 import com.intuit.ihg.product.integrationplatform.utils.Medication;
 import com.intuit.ihg.product.integrationplatform.utils.MedicationPayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.MedicationTestData;
@@ -33,6 +32,7 @@ import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
+import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
@@ -78,7 +78,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String practicePatientId = "Patient" + timestamp;
 		String firstName = "Name" + timestamp;
 		String lastName = "TestPatient1" + timestamp;
-		String email = firstName + "@mailinator.com";
+		String email = firstName + "@yopmail.com";
 		String zip = testData.getZipCode();
 		String date = testData.getBirthDay();
 
@@ -1164,7 +1164,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String practicePatientId = "Name" + timestamp;
 		String firstName = "Name" + timestamp;
 		String lastName = "TestPatient1" + timestamp;
-		String email = firstName + "@mailinator.com";
+		String email = firstName + "@yopmail.com";
 		String zip = testData.getZipCode();
 		String date = testData.getBirthDay();
 
