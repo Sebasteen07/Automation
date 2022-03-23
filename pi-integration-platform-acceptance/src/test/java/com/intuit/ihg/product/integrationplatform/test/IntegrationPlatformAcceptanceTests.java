@@ -2,6 +2,7 @@
 package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import org.apache.commons.lang.StringUtils;
 import org.testng.SkipException;
