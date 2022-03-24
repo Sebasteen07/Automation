@@ -2191,7 +2191,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.url_FE);
 		JalapenoHomePage jalapenoHomePage = loginPage.login(testData.patientuserid_FE, testData.patientPassword1_FE);
 		Thread.sleep(6000);
-		jalapenoHomePage.clickOnMenuHealthForms();
+		jalapenoHomePage.clickOnHealthForms();
 
 		log("Step 5: Click on Registration button ");
 		int sizeOfDropDown = testDataPIDC.patientDetailList.size();

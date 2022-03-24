@@ -157,7 +157,7 @@ public class FormsExportUtils {
 			new JalapenoLoginPage(driver, testData.url_FE);
 			loginPage.login(username, testData.patientPassword1_FE);
 			Thread.sleep(9000);	
-			jalapenoHomePage.clickOnMenuHealthForms();
+			jalapenoHomePage.clickOnHealthForms();
 			
             Log4jUtil.log("Step 12: Click on Registration button ");
 			HealthFormListPage healthListpage= new HealthFormListPage(driver);
