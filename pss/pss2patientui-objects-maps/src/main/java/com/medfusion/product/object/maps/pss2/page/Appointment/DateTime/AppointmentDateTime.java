@@ -308,6 +308,14 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	}
 	
+	public String getFirstTimeWithHHMM() {
+		String time = "";
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			time = appointmentTimeList.get(0).getText();
+		}
+		return time.substring(0,5);
+	}
+
 	public String chooseAppttypeText(String reasonForAppointment) {
 		WebElement chooseApptTypeText = driver.findElement(By.xpath("//*[text()='"+reasonForAppointment+"']"));
 		String chooseApptText = chooseApptTypeText.getText();
