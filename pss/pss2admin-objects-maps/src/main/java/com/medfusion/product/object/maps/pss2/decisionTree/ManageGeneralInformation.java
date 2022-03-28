@@ -7,8 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.medfusion.common.utils.IHGUtil;
-
 public class ManageGeneralInformation extends ManageDecisionTree {
 	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/ul/li/button[2]")
 	private WebElement saveGeneralInformationBtn;
@@ -34,23 +32,8 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 	@FindBy(how = How.XPATH, using = "//*[@id='rect]/div[1]/div/a")
 	private WebElement addNodesBtn;
 	
-	@FindBy(how = How.XPATH, using = "//div[@class='tree-root tree-node ng-star-inserted']/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div")
-	private WebElement clickOnQuestionField;
-	
-	@FindBy(how = How.XPATH, using = "//div[@class='tree-root tree-node ng-star-inserted']/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/textarea")
-	private WebElement fillQuestionField;
-	
-	@FindBy(how = How.XPATH, using = "//div[@class='tree-element-container']/div/div/div[2]/div")
-	private WebElement clickOnAnswerField;
-	
-	@FindBy(how = How.XPATH, using = "//div[@class='tree-element-container']/div/div/div[2]/div/textarea")
-	private WebElement fillAnswerField;
-	
 	@FindBy(how = How.XPATH, using = "//*[@id='appointmentType']")
 	private WebElement fillSearchAppointmentType;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"content\"]/div[2]/ng-component/div/div/section/header/legend/span")
-	private WebElement ClickOnCustomizeText;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='rect']/div[2]/div/div[2]/ul/li")
 	private WebElement setAppointmentType;
@@ -95,39 +78,9 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 		super(driver);
 	}
 	
-	public void addQuestionInDecisionTree(String questionForAppointment) throws InterruptedException {
-		IHGUtil.waitForElement(driver, 60, englishLangGeneralInformation);
-		englishLangGeneralInformation.click();
-		javascriptClick(firstBtn);
-		clickOnQuestionField.click();
-		IHGUtil.waitForElement(driver, 60, fillQuestionField);
-		fillQuestionField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
-		fillQuestionField.sendKeys(questionForAppointment);
-		log("Question added in Decision Tree");
-		ClickOnCustomizeText.click();
-	}
-	
-	public void addAnswerOneInDecisionTree(String decisionTreeAnswer) throws InterruptedException {
-		Thread.sleep(2000);
-		javascriptClick(thirdBtn);
-		clickOnAnswerField.click();
-		IHGUtil.waitForElement(driver, 60, fillAnswerField);
-		fillAnswerField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
-		fillAnswerField.sendKeys(decisionTreeAnswer);
-		log("First Answer added in Decision Tree");
-		ClickOnCustomizeText.click();
-	}
-	
 	public void setApptTypeDecisionTree(String appointmentType) throws InterruptedException {
 		Thread.sleep(5000);
 		englishLangGeneralInformation.click();
-		javascriptClick(fourthBtn);
-		fillSearchAppointmentType.sendKeys(appointmentType);
-		setAppointmentType.click();
-		log("Appointment type added");
-	}
-	
-	public void setApptTypeDecisionTreeSet2(String appointmentType) throws InterruptedException {
 		javascriptClick(fourthBtn);
 		fillSearchAppointmentType.sendKeys(appointmentType);
 		setAppointmentType.click();
@@ -146,13 +99,6 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 		publishGeneralInformation.click();
 		backToDecisionTreeBtn.click();
 		log("Decision Tree published successfully");
-	}
-	
-	public void saveAsDraftGeneralInfo() {
-		javascriptClick(saveGeneralInformationBtn);
-		IHGUtil.waitForElement(driver, 60, saveAsDraftGeneralInformation);
-		saveAsDraftGeneralInformation.click();
-		log("Decision Tree saved successfully");
 	}
 	
 }

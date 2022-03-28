@@ -971,29 +971,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
-	public void addMultipleFieldsInDecisionTree(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
-			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer) throws Exception {
-		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
-		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
-		patientflow.removeAllRules();
-		Thread.sleep(2000);
-		patientflow.turnOnProvider();
-		setRulesNoSpecialitySet1(patientflow);
-		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
-		manageDecisionTree.addDecisionTree(decisionTreeName);
-		manageDecisionTree.selectDecisionTree(decisionTreeName);
-		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
-		manageGeneralInformation.addQuestionInDecisionTree(questionForAppointment);
-		manageGeneralInformation.addAnswerOneInDecisionTree(decisionTreeAnswer);
-		manageGeneralInformation.setApptTypeDecisionTreeSet2(appointmentType);
-		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
-		manageGeneralInformation.publishGeneralInfo();
-		pageRefresh(driver);
-		manageDecisionTree.logout();
-	}
-	
 	public void decisionTreeDeletion(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName) 
 			throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
