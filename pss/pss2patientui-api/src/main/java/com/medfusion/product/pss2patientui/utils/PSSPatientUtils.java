@@ -2309,5 +2309,23 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		homePage.patientLogout(driver);
 		return time;
 		}
+		
+		public String bookLT(HomePage homePage, Appointment testData, WebDriver driver, String locationName,
+				String appType) throws Exception {
+			Location location = null;
+			StartAppointmentInOrder startAppointmentInOrder = null;
+			startAppointmentInOrder = homePage.skipInsurance(driver);
+			location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+			logStep("Verfiy Location Page and location =" + locationName);
+			AppointmentPage appointment = location.selectAppointment(locationName);
+			logStep("Verfiy Appointment Page and appointment to be selected = " + appType);
+			AppointmentDateTime aptDateTime = appointment.selectAptTyper(appType,
+					Boolean.valueOf(testData.getIsAppointmentPopup()));
+			aptDateTime.selectDate(testData.getIsNextDayBooking());
+			String time = aptDateTime.getFirstTimeWithHHMM();
+			clickOnSubmitAppt1(false, aptDateTime, testData, driver);
+			homePage.patientLogout(driver);
+			return time;
+		}
 
-}
+	}
