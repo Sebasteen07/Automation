@@ -29,7 +29,6 @@ public class MfisAppointmentServicePayload {
 		
 		if(strMonth<=9) {
 			startMonth= "0"+strMonth;
-			System.out.println("STSRT DATE  "+startMonth);
 		}
 		
 		if(edMonth<=9) {
