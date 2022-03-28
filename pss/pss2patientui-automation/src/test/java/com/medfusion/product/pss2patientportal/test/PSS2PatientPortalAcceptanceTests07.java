@@ -702,7 +702,6 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		logStep("Move to PSS admin Portal to login and then delete decision tree");
 		adminUtils.decisionTreeDeletion(driver, adminUser, testData, testData.getDecisionTreeName());
-		log("Test Case passed");
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
