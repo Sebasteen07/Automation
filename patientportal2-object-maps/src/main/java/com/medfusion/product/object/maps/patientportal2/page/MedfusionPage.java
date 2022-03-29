@@ -106,6 +106,7 @@ public abstract class MedfusionPage extends BasePageObject {
 					while (isElementVisible(weNeedToConfirmSomethingModal, 6)) {
 						log("We need to confirm something modal window shown");
 						if (new IHGUtil(driver).exists(weNeedToConfirmSomethingModal)) {
+							Thread.sleep(5000);
 							statementPreferenceRadioButton.click();
 							okButton.click();
 						} else {

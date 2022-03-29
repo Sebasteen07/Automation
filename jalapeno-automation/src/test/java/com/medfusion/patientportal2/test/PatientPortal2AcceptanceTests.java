@@ -236,7 +236,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLoginValidCredentialsAndValidateMenuElements() {
+	public void testLoginValidCredentialsAndValidateMenuElements() throws InterruptedException {
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
@@ -933,7 +933,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
 	}
 
-	
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayBills() throws Exception {
 		logStep("Initiate payment data");
@@ -1162,7 +1161,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		YopMail mail = new YopMail(driver);
 		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail, emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT,
 				15);
-		
+
 		assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
 		if (!isInviteLinkFinal(guardianUrlEmail)) {
 			guardianUrlEmail = getRedirectUrl(guardianUrlEmail);
@@ -1558,7 +1557,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInviteTrustedRepresentativeWithAccount() throws Exception {
 		createPatient();
-		String email = testData.getProperty("tr.user.id") + IHGUtil.createRandomNumber() + "@yopmail.com";
+		String email = testData.getProperty("trusted.rep.email")+ "@yopmail.com";
 
 		logStep("Go to account page");
 		JalapenoHomePage homePage = new JalapenoHomePage(driver);
@@ -2017,7 +2016,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at "
 				+ testData.getPracticeName();
 		System.out.println("This is the emailSubjectGuardian::" + emailSubjectGuardian);
-		
+
 		YopMail mail = new YopMail(driver);
 		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail, emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT,
 				10);
@@ -2758,7 +2757,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String notificationEmailSubject = "Payment Receipt";
 		String mailAddress = patient.getEmail();
 //		assertTrue(mail.getEmailContentText(mailAddress, notificationEmailSubject, "************", 10));
-
 
 	}
 
@@ -6077,7 +6075,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver);
 		assertTrue(loginPage.checkResetPasswordError(resetUrl));
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testTermsOfServicePopUp() throws Exception {
 
@@ -6095,7 +6093,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Validate presence of Terms of Service popup in Security Details Page");
 		assertTrue(accountDetailsPage.isTermsOfServicePopupDisplayed());
-		
+
 	}
 
 	public void testBanner() throws Exception {

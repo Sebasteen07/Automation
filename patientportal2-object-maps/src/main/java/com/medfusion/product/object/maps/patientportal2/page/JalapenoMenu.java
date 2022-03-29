@@ -226,12 +226,12 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 	}
 
-	public JalapenoLoginPage clickOnLogout() {
+	public JalapenoLoginPage clickOnLogout() throws InterruptedException {
 
 		log("Clicking on Logout button - regular resolution");
 
 		try {
-			IHGUtil.waitForElement(driver, 30, signout);
+			Thread.sleep(4000);
 			javascriptClick(signout);
 
 		} catch (NoSuchElementException ex) {
