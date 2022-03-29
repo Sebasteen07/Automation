@@ -17,14 +17,35 @@ public class MfisAppointmentServicePayload {
 	public String apptServicePayload() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-		int startdat = cal.get(Calendar.DATE)-1;
-		int dd = cal.get(Calendar.DATE) + 1;
+		int strDate = cal.get(Calendar.DATE)-1;
+		int edDate = cal.get(Calendar.DATE) + 1;
 		int yyyy = cal.get(Calendar.YEAR);
-		int startMonth = cal.get(Calendar.MONTH)+1;
-		int endMonth = cal.get(Calendar.MONTH)+2;
+		int strMonth = cal.get(Calendar.MONTH)+1;
+		int edMonth = cal.get(Calendar.MONTH)+2;
+		String startMonth=Integer.toString(strMonth);
+		String endMonth=Integer.toString(edMonth);
+		String startDate=Integer.toString(strDate);
+		String endDate=Integer.toString(edDate);
+		
+		if(strMonth<=9) {
+			startMonth= "0"+strMonth;
+		}
+		
+		if(edMonth<=9) {
+			endMonth= "0"+edMonth;
+		}
+		
+		if(strDate<=9) {
+			startDate= "0"+strDate;
+		}
+		
+		if(edDate<=9) {
+			endDate= "0"+edDate;
+		}
+		
 		String apptService = "{\r\n"
-				+ "  \"appointmentDateRangeStart\": \""+yyyy+"-"+startMonth+"-"+startdat+"T18:30:00Z\",\r\n"
-				+ "  \"appointmentDateRangeEnd\": \""+yyyy+"-"+endMonth+"-"+dd+"T18:30:00Z\",\r\n"
+				+ "  \"appointmentDateRangeStart\": \""+yyyy+"-"+startMonth+"-"+startDate+"T18:30:00Z\",\r\n"
+				+ "  \"appointmentDateRangeEnd\": \""+yyyy+"-"+endMonth+"-"+endDate+"T18:30:00Z\",\r\n"
 				+ "  \"locationPagingFilter\": {\r\n"
 				+ "    \"pagingFilterType\": \"\",\r\n"
 				+ "    \"pagingFilterAlg\": \"\",\r\n"
