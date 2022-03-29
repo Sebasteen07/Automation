@@ -978,7 +978,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
 		patientflow.removeAllRules();
-		Thread.sleep(2000);
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
