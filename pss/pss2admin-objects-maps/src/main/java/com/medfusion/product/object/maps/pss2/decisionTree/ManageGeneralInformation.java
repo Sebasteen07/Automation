@@ -1,6 +1,8 @@
 // Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.decisionTree;
 
+import java.util.List;
+
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -34,22 +36,22 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 	@FindBy(how = How.XPATH, using = "//*[@id='rect]/div[1]/div/a")
 	private WebElement addNodesBtn;
 	
-	@FindBy(how = How.XPATH, using = "//div[@class='tree-root tree-node ng-star-inserted']/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div")
-	private WebElement clickOnQuestionField;
+	@FindBy(how = How.XPATH, using = "//*[@id='rect']/div[2]/div/span")
+	private List<WebElement> clickOnEngLangField;
 	
-	@FindBy(how = How.XPATH, using = "//div[@class='tree-root tree-node ng-star-inserted']/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/textarea")
-	private WebElement fillQuestionField;
+	@FindBy(how = How.XPATH, using = "//*[@id='displayNames[EN]']")
+	private WebElement fillEngLangField;
 	
-	@FindBy(how = How.XPATH, using = "//div[@class='tree-element-container']/div/div/div[2]/div")
-	private WebElement clickOnAnswerField;
+	@FindBy(how = How.XPATH, using = "//*[@id='rect']/div[2]/div/span")
+	private List<WebElement> clickOnEsLangField;
 	
-	@FindBy(how = How.XPATH, using = "//div[@class='tree-element-container']/div/div/div[2]/div/textarea")
-	private WebElement fillAnswerField;
+	@FindBy(how = How.XPATH, using = "//*[@id='displayNames[ES]']")
+	private WebElement fillEsLangField;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='appointmentType']")
 	private WebElement fillSearchAppointmentType;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"content\"]/div[2]/ng-component/div/div/section/header/legend/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/ng-component/div/div/section/header/legend/span")
 	private WebElement ClickOnCustomizeText;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='rect']/div[2]/div/div[2]/ul/li")
@@ -99,10 +101,10 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 		IHGUtil.waitForElement(driver, 60, englishLangGeneralInformation);
 		englishLangGeneralInformation.click();
 		javascriptClick(firstBtn);
-		clickOnQuestionField.click();
-		IHGUtil.waitForElement(driver, 60, fillQuestionField);
-		fillQuestionField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
-		fillQuestionField.sendKeys(questionForAppointment);
+		clickOnEngLangField.get(1).click();
+		IHGUtil.waitForElement(driver, 60, fillEngLangField);
+		fillEngLangField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
+		fillEngLangField.sendKeys(questionForAppointment);
 		log("Question added in Decision Tree");
 		ClickOnCustomizeText.click();
 	}
@@ -110,10 +112,10 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 	public void addAnswerOneInDecisionTree(String decisionTreeAnswer) throws InterruptedException {
 		Thread.sleep(2000);
 		javascriptClick(thirdBtn);
-		clickOnAnswerField.click();
-		IHGUtil.waitForElement(driver, 60, fillAnswerField);
-		fillAnswerField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
-		fillAnswerField.sendKeys(decisionTreeAnswer);
+		clickOnEngLangField.get(2).click();
+		IHGUtil.waitForElement(driver, 60, fillEngLangField);
+		fillEngLangField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
+		fillEngLangField.sendKeys(decisionTreeAnswer);
 		log("First Answer added in Decision Tree");
 		ClickOnCustomizeText.click();
 	}

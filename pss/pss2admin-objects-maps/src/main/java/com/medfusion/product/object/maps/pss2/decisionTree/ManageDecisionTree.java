@@ -28,7 +28,7 @@ public class ManageDecisionTree extends PSS2MainPage {
 	private WebElement importDecisiontreebtn;
 	
 	// Add Decision Tree
-	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/ng-component/div/div/section/header/legend/a")
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Decision Tree']//*[name()='svg']")
 	private WebElement addDecisionTree;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/ng-component/div/div[1]/section/header/div/a")
