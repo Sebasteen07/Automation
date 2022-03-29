@@ -98,7 +98,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	public JalapenoHomePage login(String username, String password) {
 		makeLogin(username, password);
-		IHGUtil.waitForElement(driver, 50, loginProof);
+		IHGUtil.waitForElement(driver, 60, loginProof);
 		log("User is logged in");
 		handleWeNeedToConfirmSomethingModal();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);

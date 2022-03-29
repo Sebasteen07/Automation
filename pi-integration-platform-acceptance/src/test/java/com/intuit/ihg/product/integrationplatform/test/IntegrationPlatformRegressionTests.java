@@ -767,7 +767,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
 		driver.findElement(By.xpath(searchResult)).click();
 
-		String editPatientID = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[7]/td[2]/a";
+		String editPatientID = "//td[.='Patient Id ']/../td[2]/a";
 		driver.findElement(By.xpath(editPatientID)).click();
 		Thread.sleep(3000);
 		String onDemandID = "//*[@name=\"emrid\"]";
@@ -1938,7 +1938,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3: Check and extract Invite link in patient Email");
 		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
-				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
+				"re invited to create a Patient Portal",
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
@@ -2097,7 +2097,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3: Check and extract Invite link in patient Email");
 		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
-				"You are invited to create a Patient Portal",
+				"re invited to create a Patient Portal",
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
@@ -2824,6 +2824,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Add Pharmacy with status 'NEW' ");
 		testData.Status = "NEW";
 		testData.PharmacyName = "AddedNewPharmacy" + PharmacyPayload.randomNumbers(3);
+		String pharmacyNameOld = testData.PharmacyName;
 
 		PharmacyPayload pharmacyObj = new PharmacyPayload();
 		String ExternalPharmacyId = PharmacyPayload.randomNumbers(14);
@@ -2900,6 +2901,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		String pharmacyFirstWord = testData.PharmacyName;
 		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFirstWord, env);
+
+		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyNameOld, env);
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
