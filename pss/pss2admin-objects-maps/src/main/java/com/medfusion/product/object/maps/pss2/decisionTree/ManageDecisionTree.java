@@ -28,7 +28,7 @@ public class ManageDecisionTree extends PSS2MainPage {
 	private WebElement importDecisiontreebtn;
 	
 	// Add Decision Tree
-	@FindBy(how = How.XPATH, using = "//a[@title='Add Decision Tree']")
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Decision Tree']//*[name()='svg']")
 	private WebElement addDecisionTree;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/ng-component/div/div[1]/section/header/div/a")
@@ -117,6 +117,18 @@ public class ManageDecisionTree extends PSS2MainPage {
 	public void clickSpecialtyToggle() {
 		toggleSpecialtyONOFF.click();
 		log("Clicked on Specialty Toggle button");
+	}
+	
+	public void addDecisionTree(String decisionTreeName) {
+		IHGUtil.waitForElement(driver, 60, addDecisionTree);
+		addDecisionTree.click();
+		log("Add Decision tree Button clicked");
+		editDecisionTreeName.sendKeys(decisionTreeName);
+		editEnglishDecisionTreeName.sendKeys(decisionTreeName);
+		clickEspanolDecisionTreeName.click();
+		editEspanolDecisionTreeName.sendKeys(decisionTreeName);
+		buttonSaveDecisionTree.click();
+		log("Decision Tree is added successfully.");	
 	}
 	
 	public ManageGeneralInformation goToGeneralInformation() {
