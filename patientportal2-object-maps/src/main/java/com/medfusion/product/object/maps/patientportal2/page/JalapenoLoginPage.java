@@ -213,4 +213,22 @@ public class JalapenoLoginPage extends MedfusionPage {
         
     }
 
+	public boolean loginWithWrongPassword(String username) throws InterruptedException {
+		log("Looking for Account Locked Out error message on loginPage after logging in 5 times with wrong password");
+		for(int i=1;i<=10;i++)
+		{
+		System.out.println(i);
+		String wrongPassword ="wrong" + IHGUtil.createRandomNumericString();
+		makeLogin(username, wrongPassword);
+		Thread.sleep(2000);
+//		if(i==7)
+//		{
+//			log("User entered Wrong password for 5 times,");
+//			Thread.sleep(3000);
+//		}
+		}
+		return true;
+		
+	}
+
 }
