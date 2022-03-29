@@ -23,7 +23,6 @@ import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestAdapterModulator;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestPMNG;
-import com.medfusion.product.pss2patientapi.payload.PayloadAM01;
 import com.medfusion.product.pss2patientapi.payload.PayloadAM02;
 import com.medfusion.product.pss2patientapi.payload.PayloadAdapterModulator;
 import com.medfusion.product.pss2patientapi.payload.PayloadPM02;
@@ -782,6 +781,164 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn,ln,dob,"",gender,"","");
 
 		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		logStep("Clicked on the Skip Insurance Button ");
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Select First Provider- " + PSSConstants.START_PROVIDER);
+		Provider provider = startAppointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());		
+		String actual_BookName=provider.getProviderText(testData.getProvider());
+		log("Provider Name is-  " +actual_BookName );
+		
+		assertTrue(actual_BookName.contains("LAST SEEN"));	
+		
+		payloadAM02.fctBookappointmenttype(bookApptId, bookId, apptId, locationId, 0);
+		apv.responseCodeValidation(response, 200);
+				
+		adminPayload=payloadAM02.lastSeenProviderPyaload(1);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test01UI_ForceLastSeen_BookFirst_GE() throws Exception {
+		
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+
+		Response response;
+		String adminPayload;
+		
+		logStep("Set up the desired rule in Admin UI using API");
+		addRule("B,L,T", "L,T,B");
+
+		adminPayload=payloadAM02.lastSeenProviderPyaload(12);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		String bookAppt=propertyData.getProperty("fct.bookappt.id.pm08");
+		String book=propertyData.getProperty("fct.book.id.pm08");
+		String appt=propertyData.getProperty("fct.appt.id.pm08");
+		String loc=propertyData.getProperty("fct.location.id.pm08");
+		String fct=propertyData.getProperty("fct.days.pm08");
+		
+		int bookApptId=Integer.parseInt(bookAppt);
+		int bookId=Integer.parseInt(book);
+		int apptId=Integer.parseInt(appt);
+		int locationId=Integer.parseInt(loc);
+		int fctDays=Integer.parseInt(fct);
+		
+		payloadAM02.fctBookappointmenttype(bookApptId, bookId, apptId, locationId, fctDays);
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGE());
+		apv.responseCodeValidation(response, 200);
+		
+		String firstNamePreReq = propertyData.getProperty("firstname.prereqpast.ge");
+		String lastNamePreReq = propertyData.getProperty("lastname.prereqpast.ge");
+		String genderPreReq = propertyData.getProperty("gender.prereqpast.ge");
+		String dobPreReq = propertyData.getProperty("dob.prereqpast.ge");
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		
+		logStep("Click on the Start Button ");
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNamePreReq, lastNamePreReq, dobPreReq, "", genderPreReq, "", "");
+		homePage.btnStartSchedClick();	
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		logStep("Clicked on the Skip Insurance Button ");
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Select First Provider- " + PSSConstants.START_PROVIDER);
+		Provider provider = startAppointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());		
+		String actual_BookName=provider.getProviderText(testData.getProvider());
+		log("Provider Name is-  " +actual_BookName );
+		
+		assertTrue(actual_BookName.contains("LAST SEEN"));	
+		
+		payloadAM02.fctBookappointmenttype(bookApptId, bookId, apptId, locationId, 0);
+		apv.responseCodeValidation(response, 200);
+				
+		adminPayload=payloadAM02.lastSeenProviderPyaload(1);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test01UI_ForceLastSeen_BookFirst_GW() throws Exception {
+		
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+
+		Response response;
+		String adminPayload;
+		
+		logStep("Set up the desired rule in Admin UI using API");
+		addRule("B,L,T", "L,T,B");
+		
+		String patientMatch=payloadAM.patientInfoWithOptionalGW();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		apv.responseCodeValidation(response, 200);
+
+		adminPayload=payloadAM02.lastSeenProviderPyaload(12);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+
+		String bookAppt=propertyData.getProperty("fct.bookappt.id.gw.pm08");
+		String book=propertyData.getProperty("fct.book.id.gw.pm08");
+		String appt=propertyData.getProperty("fct.appt.id.gw.pm08");
+		String loc=propertyData.getProperty("fct.location.id.gw.pm08");
+		String fct=propertyData.getProperty("fct.days.pm08");
+		
+		int bookApptId=Integer.parseInt(bookAppt);
+		int bookId=Integer.parseInt(book);
+		int apptId=Integer.parseInt(appt);
+		int locationId=Integer.parseInt(loc);
+		int fctDays=Integer.parseInt(fct);
+		
+		adminPayload=payloadAM02.flsBookappt_GW(bookApptId, bookId, apptId, locationId, fctDays);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		String fn = propertyData.getProperty("lastseen.fn.pm.gw");
+		String ln = propertyData.getProperty("lastseen.ln.pm.gw");
+		String dob = propertyData.getProperty("lastseen.dob.pm.gw");
+		String gender = propertyData.getProperty("lastseen.gender.pm.gw");
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		
+		logStep("Click on the Start Button ");
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");
+		homePage.btnStartSchedClick();	
 		logStep("Clicked on the Start Button ");
 
 		StartAppointmentInOrder startAppointmentInOrder = null;
