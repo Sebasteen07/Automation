@@ -2310,7 +2310,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		return time;
 		}
 		
-		public String bookLT(HomePage homePage, Appointment testData, WebDriver driver, String locationName,
+		public String bookLTWithTime(HomePage homePage, Appointment testData, WebDriver driver, String locationName,
 				String appType) throws Exception {
 			Location location = null;
 			StartAppointmentInOrder startAppointmentInOrder = null;

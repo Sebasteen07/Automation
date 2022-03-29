@@ -1185,23 +1185,23 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP1, lastNameP1, dobP1, "", genderP1,
 				"", "");
 		homePage.btnStartSchedClick();
-		String Patient1FirstTime = pssPatientUtils.bookLT(homePage, testData, driver, locationName, appType);
+		String Patient1FirstTime = pssPatientUtils.bookLTWithTime(homePage, testData, driver, locationName, appType);
 		log("Time of First Patient First Time Booking is  " + Patient1FirstTime);
 		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP1, lastNameP1, dobP1, "", genderP1, "", "");
 		homePage.btnStartSchedClick();
-		String patient1SecondBookTime = pssPatientUtils.bookLT(homePage, testData, driver, locationName, appType);
+		String patient1SecondBookTime = pssPatientUtils.bookLTWithTime(homePage, testData, driver, locationName, appType);
 		log("Time of First Patient Second Time Booking is " + patient1SecondBookTime);
 		assertNotEquals(patient1SecondBookTime, Patient1FirstTime);
 		logStep("going to Book Apppointment For Second Patient");
 		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP2, lastNameP2, dobP2, "", genderP2, "", "");
 		homePage.btnStartSchedClick();
-		String secondPatientTime = pssPatientUtils.bookLT(homePage, testData, driver, locationName, appType);
+		String secondPatientTime = pssPatientUtils.bookLTWithTime(homePage, testData, driver, locationName, appType);
 		log("Patient 2 Time Is " + secondPatientTime);
 		assertEquals(secondPatientTime, Patient1FirstTime);
 		logStep("going to Book Apppointment For Third Patient");
 		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP3, lastNameP3, dobP3, "", genderP3, "", "");
 		homePage.btnStartSchedClick();
-		String thirdPatientTime = pssPatientUtils.bookLT(homePage, testData, driver, locationName, appType);
+		String thirdPatientTime = pssPatientUtils.bookLTWithTime(homePage, testData, driver, locationName, appType);
 		log("Patient 2 Time Is " + thirdPatientTime);
 		assertNotEquals(thirdPatientTime, Patient1FirstTime);
 		logStep("ReSetting Admin UI For Overbooking");
