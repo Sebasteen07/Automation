@@ -7,8 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 
@@ -61,7 +59,6 @@ public class JalapenoForgotPasswordPage3 extends MedfusionPage {
 			}
 			IHGUtil.waitForElement(driver, 10, msgAccountLocked);
 			log("Looking for account locked message");
-			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(msgAccountLocked));
 			msgAccountLocked.isDisplayed();
 			return PageFactory.initElements(driver, JalapenoForgotPasswordPage4.class);
 		}
