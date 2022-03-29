@@ -534,7 +534,7 @@ public class RestUtils {
 			OAuth20TokenManager.initializeTokenStore(appToken, username, password);
 		} catch (Exception hException) {
 			// TODO Auto-generated catch block
-			hException.getCause().printStackTrace();
+			System.out.println(hException);
 		}
 		// System.out.println("appToken: " +appToken);
 		// System.out.println("username: " +username);

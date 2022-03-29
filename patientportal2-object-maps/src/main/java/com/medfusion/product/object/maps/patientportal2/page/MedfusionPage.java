@@ -2,6 +2,8 @@
 
 package com.medfusion.product.object.maps.patientportal2.page;
 
+import static java.lang.Thread.sleep;
+
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Map;
@@ -104,10 +106,17 @@ public abstract class MedfusionPage extends BasePageObject {
 					while (isElementVisible(weNeedToConfirmSomethingModal, 6)) {
 						log("We need to confirm something modal window shown");
 						if (new IHGUtil(driver).exists(weNeedToConfirmSomethingModal)) {
+							Thread.sleep(5000);
 							statementPreferenceRadioButton.click();
 							okButton.click();
 						} else {
 							okButton.click();
+						}
+						try {
+							// wait to modal view disappear
+							sleep(2000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
 					}
 				} catch (Exception e) {
