@@ -86,6 +86,7 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 	
 	public JalapenoHomePage linkPatientToCreateTrustedRep(String login, String password, String relationship) throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		Thread.sleep(2000);
 		userIdInput.sendKeys(login);
 		passwordInput.sendKeys(password);
 		log("Trusted Representative login / password: " + login + " / " + password);
