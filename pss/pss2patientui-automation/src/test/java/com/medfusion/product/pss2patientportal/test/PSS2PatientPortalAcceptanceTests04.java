@@ -1148,31 +1148,9 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		Response response;
-//		logStep("Setting Rule By Using Adapter Modulator Api Call");
-//		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
-//		apv.responseCodeValidation(response, 200);
-//		JSONArray arr = new JSONArray(response.body().asString());
-//		int l = arr.length();
-//		log("Length is- " + l);
-//		for (int i = 0; i < l; i++) {
-//			int ruleId = arr.getJSONObject(i).getInt("id");
-//			log("Object No." + i + "- " + ruleId);
-//			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
-//			apv.responseCodeValidation(responseForDeleteRule, 200);
-//		}
-//		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
-//				payloadAM.rulePayload("LT", "L,T"));
-//		apv.responseCodeValidation(responseRulePost, 200);
-//
-//		Response responseRulePostTBL = postAPIRequestAM.resourceConfigRulePost(practiceId,
-//				payloadAM.rulePayload("TL", "T,L"));
-//		apv.responseCodeValidation(responseRulePostTBL, 200);
 		addRule("L,T", "T,L");
-
-		
 		logStep("Show Provider On Using AM ");
-		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
-				payloadAM01.turnONOFFShowProvider(false));
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,payloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(responseShowOff, 200);
 
 		logStep("Patient Matching By Using Adapter Modulator");
@@ -1191,6 +1169,11 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		String lastNameP2 = propertyData.getProperty("stacking.p2.lastname.ng");
 		String dobP2 = propertyData.getProperty("stacking.p2.dob.ng");
 		String genderP2 = propertyData.getProperty("stacking.p2.gender.ng");
+		
+		String firstNameP3 = propertyData.getProperty("stacking.p3.firstname.ng");
+		String lastNameP3 = propertyData.getProperty("stacking.p3.lastname.ng");
+		String dobP3 = propertyData.getProperty("stacking.p3.dob.ng");
+		String genderP3 = propertyData.getProperty("stacking.p3.gender.ng");
 
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
@@ -1198,6 +1181,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		logStep("Clicked on Dismiss Button");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		logStep("going to Book Apppointment For First Patient");
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP1, lastNameP1, dobP1, "", genderP1,
 				"", "");
 		homePage.btnStartSchedClick();
@@ -1208,14 +1192,19 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		String patient1SecondBookTime = pssPatientUtils.bookLT(homePage, testData, driver, locationName, appType);
 		log("Time of First Patient Second Time Booking is " + patient1SecondBookTime);
 		assertNotEquals(patient1SecondBookTime, Patient1FirstTime);
-
+		logStep("going to Book Apppointment For Second Patient");
 		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP2, lastNameP2, dobP2, "", genderP2, "", "");
 		homePage.btnStartSchedClick();
 		String secondPatientTime = pssPatientUtils.bookLT(homePage, testData, driver, locationName, appType);
 		log("Patient 2 Time Is " + secondPatientTime);
 		assertEquals(secondPatientTime, Patient1FirstTime);
+		logStep("going to Book Apppointment For Third Patient");
+		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP3, lastNameP3, dobP3, "", genderP3, "", "");
+		homePage.btnStartSchedClick();
+		String thirdPatientTime = pssPatientUtils.bookLT(homePage, testData, driver, locationName, appType);
+		log("Patient 2 Time Is " + thirdPatientTime);
+		assertNotEquals(thirdPatientTime, Patient1FirstTime);
 		logStep("ReSetting Admin UI For Overbooking");
 		adminUtils.appointmentStackingDisableShowPRoviderOFF(driver, adminuser, testData, appType);
-
 	}
 }
