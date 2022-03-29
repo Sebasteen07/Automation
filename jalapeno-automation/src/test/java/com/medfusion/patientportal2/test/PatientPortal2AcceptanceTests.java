@@ -6127,4 +6127,39 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		homePage.clickOnLogout();
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAccountlocked() throws Exception {
+		createCommonPatient();
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		logStep("Clicking on forgot username or password");
+		JalapenoForgotPasswordPage forgotPasswordPage = loginPage.clickForgotPasswordButton();
+
+		JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPage(patient.getEmail());
+		logStep("Message was sent, closing");
+		forgotPasswordPage2.clickCloseButton();
+
+		logStep("Logging into yopmail and getting ResetPassword url");
+		String[] mailAddress = patient.getEmail().split("@");
+		String emailSubject = "Help with your user name or password";
+		String inEmail = "Reset Password Now";
+
+		YopMail mail = new YopMail(driver);
+		String url = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
+
+		if (!isInviteLinkFinal(url)) {
+			url = getRedirectUrl(url);
+		}
+		assertNotNull(url, "Url is null.");
+
+		JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
+		
+		logStep("Redirecting to patient portal, filling wrong secret answer as: " + testData.getProperty("wrong.secret.answer"));
+		logStep("Looking for account has been locked because you have entered an incorrect answer too many times message");
+		forgotPasswordPage3.fillInWrongSecretAnswer(testData.getProperty("wrong.secret.answer"));
+
+	}
+
 }
