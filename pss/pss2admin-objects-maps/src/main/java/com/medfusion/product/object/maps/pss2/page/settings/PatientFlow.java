@@ -220,6 +220,7 @@ public class PatientFlow extends SettingsTab {
 		log("insuranceToggle = " + providerToggle.isSelected());
 
 		if(isProviderEnabled() == true) {
+			IHGUtil.waitForElement(driver, 60, providerToggleCheckBox);
 			providerToggleCheckBox.click();
 		}		
 		log("Turn off the Enable Provider Setting ");
@@ -229,6 +230,7 @@ public class PatientFlow extends SettingsTab {
 		log("insuranceToggle = " + providerToggle.isSelected());
 		
 		if(isProviderEnabled() == false) {
+			IHGUtil.waitForElement(driver, 60, providerToggleCheckBox);
 			providerToggleCheckBox.click();
 		log("Status after turn on Provider-"+providerToggle.isSelected());
 		}		
@@ -247,7 +249,7 @@ public class PatientFlow extends SettingsTab {
 	}
 	
 	public void disableDecisionTree() throws InterruptedException {
-		log("Toggle status of Decision Tree = " + decisionTreeToggle.isSelected());
+		log("Toggle status of Decision Tree = " + isDecisionTreeEnabled());
 
 		if(isDecisionTreeEnabled() == true) {
 			clickonDecisionTreeToggle();
@@ -257,7 +259,7 @@ public class PatientFlow extends SettingsTab {
 	}	
 	
 	public void enableDecisionTree() throws InterruptedException {
-		log("Toggle  Status of Decision Tree = " + decisionTreeToggle.isSelected());
+		log("Toggle  Status of Decision Tree = " + isDecisionTreeEnabled());
 		
 		if(isDecisionTreeEnabled() == false) {
 			clickonDecisionTreeToggle();

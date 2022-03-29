@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.CurbsideCheckIn;
 
 import java.util.Calendar;
@@ -142,7 +143,7 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@class='react-datepicker__year-select']")
 	private WebElement years;
 	
-	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])")
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[1]")
 	private WebElement selectAllCheckinAppt;
 	
 	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
@@ -204,6 +205,18 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how=How.XPATH, using ="//div[text()='AppScheduler One']")
 	private WebElement selectPatientP1;
 	
+	@FindBy(how=How.XPATH, using ="(//*[@title='Toggle Row Selected'])[1]/following::span[1]")
+	private WebElement patientDev1;
+	
+	@FindBy(how=How.XPATH, using ="(//*[@title='Toggle Row Selected'])[2]/following::span[1]")
+	private WebElement patientDev2;
+	
+	@FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::span[1]")
+	private WebElement patientDemo1;	
+	
+	@FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::span[7]")
+	private WebElement patientDemo2;
+			
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -1093,7 +1106,29 @@ public class CurbsideCheckInPage extends BasePageObject {
 			Thread.sleep(10000);
 			return mm+"/"+dd+"/"+currentYear+" "+time;
 		}
-
-
 		
+		public String getPatient1FromCurbsideDev() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDev1.getText();
+			return getPatient;
+		}
+		
+		public String getPatient2FromCurbsideDev() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDev2.getText();
+			return getPatient;
+		}
+		
+		public String getPatient1FromCurbsideDemo() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDemo1.getText();
+			return getPatient;
+		}
+		
+		public String getPatient2FromCurbsideDemo() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDemo2.getText();
+			return getPatient;
+		}
+	
 }

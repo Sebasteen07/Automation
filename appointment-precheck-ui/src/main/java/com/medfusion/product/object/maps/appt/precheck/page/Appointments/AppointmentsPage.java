@@ -1,4 +1,4 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Appointments;
 
 import java.text.DateFormat;
@@ -462,6 +462,8 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//div[text()='Brown, Jennifer']")
 	private WebElement providerFilterSelected;
 
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-td history-medium-cell status-cell']")
+	private WebElement messageStatus;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -1808,7 +1810,6 @@ public class AppointmentsPage extends BasePageObject {
 	
 	public void clickOnExpandForSelectedPatient(String patientId,String apptId) throws InterruptedException{
 		IHGUtil.PrintMethodName();
-		driver.navigate().refresh();
 		Thread.sleep(5000);
         WebElement expandButton= driver.findElement(By.xpath(" //input[@id='select-"+patientId+"-"+apptId+"']/following::div[@class='expand-test']"));
         expandButton.click();
@@ -1930,5 +1931,15 @@ public class AppointmentsPage extends BasePageObject {
 	 public void clickOnBroadcastMessageButton() {
 			IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
 			jse.executeScript("arguments[0].click();", broadcastMessageButton);
+		}
+	 
+		public String getBroadcastMsgStatusForSelectedPatient(String patientId, String apptId) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			WebElement broadcastMsg = driver.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId
+					+ "']//following::div[@class='reminders-cell-content'])[4]"));
+			broadcastMsg.click();
+			scrollAndWait(2000, 1000, 6000);
+			jse.executeScript("arguments[0].scrollIntoView(true);", reminderLogsPopupTitle);
+			return messageStatus.getText();
 		}
 }

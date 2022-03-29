@@ -1,4 +1,4 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.appt.precheck.stepDefinations;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.appt.precheck.payload.AptPrecheckPayload;
@@ -4354,15 +4355,6 @@ public class ApptPrecheckSteps extends BaseTest {
 	    
 	}
 
-    @When("from setting in notifications I click on curbside checkin tab")
-	public void from_setting_in_notifications_i_click_on_curbside_checkin_tab() {
-		mainPage.clickOnSettingTab();
-		notifPage.clickOnNotificationTab();
-		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
-		log("user on notification page");
-		notifPage.clickOnCurbsideCheckInTabInNotif();
-	}
-
 	@When("I schedule an appointment and perform checkin action")
 	public void i_schedule_an_appointment_and_perform_checkin_action() throws NullPointerException, IOException {
 		Appointment.patientId = commonMethod.generateRandomNum();
@@ -5365,6 +5357,171 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(apptPage.visibilityOfPageNo());
 	}
 
+	@When("I schedule an appointment where mobile number is valid ten digit number but not US number")
+	public void i_schedule_an_appointment_where_mobile_number_is_valid_ten_digit_number_but_not_us_number()
+			throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.sche.phone.number"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+
+	@Then("I verify if broadcast is sent sucessfully and status in broadcast log is failed with message sent")
+	public void i_verify_if_broadcast_is_sent_sucessfully_and_status_in_broadcast_log_is_failed_with_message_sent()
+			throws InterruptedException {
+		Thread.sleep(20000);
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(300, 2000, 10000);
+		assertEquals(apptPage.getBroadcastMsgStatusForSelectedPatient(Appointment.patientId, Appointment.apptId),
+				"FAILED", "Status was not match");
+	}
+	
+	@When("from setting in notifications I click on curbside checkin tab")
+	public void from_setting_in_notifications_i_click_on_curbside_checkin_tab() {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+	}
+
+	@When("I click on english button and additional arrival instructions text box keep blank")
+	public void i_click_on_english_button_and_additional_arrival_instructions_text_box_keep_blank()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnEnglishButton();
+		notifPage.clearArrivalInstTextbox();
+	}
+
+	@When("I click on save button")
+	public void i_click_on_save_button() throws InterruptedException {
+		notifPage.saveNotification();
+	}
+
+	@Then("I verify user is not able to see additional arrival instruction in mail for english")
+	public void i_verify_user_is_not_able_to_see_additional_arrival_instruction_in_mail_for_english() throws Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertNotEquals(
+				yopMail.getMessageAfterArrival("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						propertyData.getProperty("curbside.checkin.mail.subject"),
+						propertyData.getProperty("email.title.in.en"),
+						propertyData.getProperty("add.arrival.instruction.in.en")),
+				propertyData.getProperty("add.arrival.instruction.in.en"), "Message is displayed");
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnEnglishButton();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.en"));
+		notifPage.saveNotification();
+	}
+	
+	@When("I click on spanish button and additional arrival instructions text box keep blank")
+	public void i_click_on_spanish_button_and_additional_arrival_instructions_text_box_keep_blank()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnSpanishButton();
+		notifPage.clearArrivalInstTextbox();
+	}
+
+	@Then("I verify user is not able to see additional arrival instruction in mail for spanish")
+	public void i_verify_user_is_not_able_to_see_additional_arrival_instruction_in_mail_for_spanish() throws Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertNotEquals(
+				yopMail.getMessageAfterArrival("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						propertyData.getProperty("curbside.checkin.mail.subject.in.es"),
+						propertyData.getProperty("email.title.in.es"),
+						propertyData.getProperty("add.arrival.instruction.in.es")),
+				propertyData.getProperty("add.arrival.instruction.in.es"), "Message is displayed");
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnSpanishButton();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.es"));
+		notifPage.saveNotification();
+	}
+	
+	@When("I schedule an appointment for patient {string} after {int} minutes")
+	public void i_schedule_an_appointment_for_patient_after_minutes(String patientName, int time)
+			throws NullPointerException, IOException, InterruptedException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(time);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com", "en", patientName),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+
+	@When("I received curbside message on email and confirm arrival")
+	public void i_received_curbside_message_on_email_and_confirm_arrival() throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		yopMail.confirmArrivalFromEmail("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("email.title.in.en"));
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		Thread.sleep(10000);
+	}
+
+	@Then("I verify patient1 has oldest time enrty so patient1 should get displayed at the top of patient2")
+	public void i_verify_patient1_has_oldest_time_enrty_so_patient1_should_get_displayed_at_the_top_of_patient2()
+			throws InterruptedException {
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnCurbsideTab();
+		Thread.sleep(5000);
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+		assertEquals(curbsidePage.getPatient1FromCurbsideDev(),
+				propertyData.getProperty("patient1.fname.lname"), "Entry of patient was not correct");
+		assertEquals(curbsidePage.getPatient2FromCurbsideDev(),
+				propertyData.getProperty("patient2.fname.lname"), "Entry of patient was not correct");
+		}else {
+			assertEquals(curbsidePage.getPatient1FromCurbsideDemo(),
+					propertyData.getProperty("patient1.fname.lname"), "Entry of patient was not correct");
+			assertEquals(curbsidePage.getPatient2FromCurbsideDemo(),
+					propertyData.getProperty("patient2.fname.lname"), "Entry of patient was not correct");
+		}
+
+	}
+	
+	@Then("I verify latest patient arrived goes to the end of the line that is row is added to the bottom")
+	public void i_verify_latest_patient_arrived_goes_to_the_end_of_the_line_that_is_row_is_added_to_the_bottom()
+			throws InterruptedException {
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnCurbsideTab();
+		Thread.sleep(5000);
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+		assertEquals(curbsidePage.getPatient1FromCurbsideDev(),
+				propertyData.getProperty("patient1.fname.lname"), "Entry of patient was not correct");
+		assertEquals(curbsidePage.getPatient2FromCurbsideDev(),
+				propertyData.getProperty("patient2.fname.lname"), "Entry of patient was not correct");
+		}else {
+			assertEquals(curbsidePage.getPatient1FromCurbsideDemo(),
+					propertyData.getProperty("patient1.fname.lname"), "Entry of patient was not correct");
+			assertEquals(curbsidePage.getPatient2FromCurbsideDemo(),
+					propertyData.getProperty("patient2.fname.lname"), "Entry of patient was not correct");
+		}
+	}
 
 }
 
