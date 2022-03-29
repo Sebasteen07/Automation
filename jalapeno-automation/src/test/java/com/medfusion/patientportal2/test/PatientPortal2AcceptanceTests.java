@@ -75,7 +75,6 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsStatementPdfPage;
-import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.patientportal2.page.ScheduleAppoinment.JalapenoAppoinmentSchedulingPage;
 import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
 import com.medfusion.product.object.maps.patientportal2.page.util.CreatePatient;
@@ -1163,19 +1162,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		YopMail mail = new YopMail(driver);
 		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail, emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT,
 				15);
-
-		// Email emailGuardian = new
-		// Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30,
-		// testSecondsTaken(testStart));
-		// assertNotNull(emailGuardian,
-		// "Error: No email found for guardian recent enough and with specified subject:
-		// " + emailSubjectGuardian);
-		// String guardianUrlEmail = Mailer.getLinkByText(emailGuardian,
-		// INVITE_EMAIL_BUTTON_TEXT);
-
+		
 		assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
-		// SendInBlue workaround, go through the redirect and save the actual URL if the
-		// invite link does not contain a specific string
 		if (!isInviteLinkFinal(guardianUrlEmail)) {
 			guardianUrlEmail = getRedirectUrl(guardianUrlEmail);
 		}
@@ -2024,49 +2012,27 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logging out");
 		jalapenoHomePage.clickOnLogout();
 
-		logStep("Using yopmail Mailer to retrieve the latest emails for patient and guardian");
+		logStep("Using yopmail to retrieve the latest emails for patient and guardian");
 
 		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at "
 				+ testData.getPracticeName();
-		Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30,
-				testSecondsTaken(testStart));
-
-		assertNotNull(emailGuardian,
-				"Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
-		String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
-
+		System.out.println("This is the emailSubjectGuardian::" + emailSubjectGuardian);
+		
+		YopMail mail = new YopMail(driver);
+		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail, emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT,
+				10);
 		assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
 
+		// SendInBlue workaround, go through the redirect and save the actual URL if the
+		// invite link does not contain a specific string
 		if (!isInviteLinkFinal(guardianUrlEmail)) {
 			guardianUrlEmail = getRedirectUrl(guardianUrlEmail);
 		}
 
 		logStep("Retrieved dependents activation link is " + guardianUrlEmail);
 		logStep("Comparing with dependents link from PrP " + guardianUrl);
-
 		assertEquals(guardianUrl, guardianUrlEmail,
 				"Practice portal and email unlock links for guardian are not equal!");
-
-		String emailSubjectPatient = INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName();
-		Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30,
-				testSecondsTaken(testStart));
-
-		assertNotNull(emailPatient,
-				"Error: No email found for patient recent enough and with specified subject: " + emailSubjectPatient);
-		String patientUrlEmail = Mailer.getLinkByText(emailPatient, INVITE_EMAIL_BUTTON_TEXT);
-
-		assertTrue(patientUrlEmail.length() > 0, "Error: No matching link found in dependent invite email!");
-
-		// SendInBlue workaround, go through the redirect and save the actual URL if the
-		// invite link does not contain a specific string
-		if (!isInviteLinkFinal(patientUrlEmail)) {
-			patientUrlEmail = getRedirectUrl(patientUrlEmail);
-		}
-		logStep("Retrieved patients activation link is " + patientUrl);
-		logStep("Comparing with patients link from PrP " + patientUrlEmail);
-
-		assertEquals(patientUrl, patientUrlEmail,
-				"Practice portal and email unlock links for dependent are not equal!");
 
 		logStep("Create a underage patient account at patient portal and validate State ageout error");
 		createUnderAgePatient();
@@ -6131,38 +6097,36 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(accountDetailsPage.isTermsOfServicePopupDisplayed());
 		
 	}
-	
-	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testBanner() throws Exception {
-        String message=IHGUtil.createRandomNumericString(8);
-        
-        logStep("Login to sitegen as Admin user");
-        SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-        SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("sitegen.admin.user"),
-                testData.getProperty("sitegen.password.user"));
-        logStep("Navigate to SiteGen PracticeHomePage");
-        SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
-        logStep("Check if SiteGen Practice Homepage elements are present ");
-        assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
-                "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-        
-        pSiteGenPracticeHomePage.clickOnPatientBroadcast();
 
-         PatientPortalBroadcastPage PatientPortalBroadcast = new PatientPortalBroadcastPage(driver);
-         PatientPortalBroadcast.deleteBroadCast();
-        PatientPortalBroadcast.addBroadCast(testData.getProperty("broadcast.title"),message);
+	public void testBanner() throws Exception {
+		String message = IHGUtil.createRandomNumericString(8);
 
-        logStep("Load login page and login");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
-        String actual=loginPage.readBroadcastMessage();
-        assertEquals(actual, message, "broadcast Message is matching");
-        JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
-                testData.getProperty("med.wf.password"));
-        
-        String actualBroadcastmessage=homePage.readBroadcast();
-        assertEquals(actualBroadcastmessage, message);
+		logStep("Login to sitegen as Admin user");
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("sitegen.admin.user"),
+				testData.getProperty("sitegen.password.user"));
+		logStep("Navigate to SiteGen PracticeHomePage");
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Check if SiteGen Practice Homepage elements are present ");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
-        homePage.clickOnLogout();
-    }
-	
+		pSiteGenPracticeHomePage.clickOnPatientBroadcast();
+
+		PatientPortalBroadcastPage PatientPortalBroadcast = new PatientPortalBroadcastPage(driver);
+		PatientPortalBroadcast.deleteBroadCast();
+		PatientPortalBroadcast.addBroadCast(testData.getProperty("broadcast.title"), message);
+
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		String actual = loginPage.readBroadcastMessage();
+		assertEquals(actual, message, "broadcast Message is matching");
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
+				testData.getProperty("med.wf.password"));
+
+		String actualBroadcastmessage = homePage.readBroadcast();
+		assertEquals(actualBroadcastmessage, message);
+
+		homePage.clickOnLogout();
+	}
 }
