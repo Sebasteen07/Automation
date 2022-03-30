@@ -1157,7 +1157,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
 		apv.responseCodeValidation(response, 200);
 
-		String appType = "Covid-19";
+		String appType = propertyData.getProperty("stacking.apptype.showproviderof.ng");
 		String locationName = propertyData.getProperty("stacking.location.ng");
 
 		String firstNameP1 = propertyData.getProperty("stacking.p1.firstname.ng");
@@ -1177,7 +1177,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
-		adminUtils.appointmentStackingEnableShowPRoviderOFF(driver, adminuser, testData, appType);
+		adminUtils.appointmentStackingEnableShowProviderOFF(driver, adminuser, testData, appType);
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		logStep("Clicked on Dismiss Button");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -1205,6 +1205,6 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		log("Patient 2 Time Is " + thirdPatientTime);
 		assertNotEquals(thirdPatientTime, Patient1FirstTime);
 		logStep("ReSetting Admin UI For Overbooking");
-		adminUtils.appointmentStackingDisableShowPRoviderOFF(driver, adminuser, testData, appType);
+		adminUtils.appointmentStackingDisableShowProviderOFF(driver, adminuser, testData, appType);
 	}
 }

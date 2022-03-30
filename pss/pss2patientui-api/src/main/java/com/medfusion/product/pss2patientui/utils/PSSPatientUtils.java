@@ -1051,7 +1051,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 
-		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+		AppointmentDateTime aptDateTime = appointment.selectAptType(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 
 		log("Select avaiable Date ");
@@ -1080,7 +1080,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+		AppointmentDateTime aptDateTime = appointment.selectAptType(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
@@ -2319,7 +2319,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			logStep("Verfiy Location Page and location =" + locationName);
 			AppointmentPage appointment = location.selectAppointment(locationName);
 			logStep("Verfiy Appointment Page and appointment to be selected = " + appType);
-			AppointmentDateTime aptDateTime = appointment.selectAptTyper(appType,
+			AppointmentDateTime aptDateTime = appointment.selectAptType(appType,
 					Boolean.valueOf(testData.getIsAppointmentPopup()));
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
 			String time = aptDateTime.getFirstTimeWithHHMM();
