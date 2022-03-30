@@ -66,7 +66,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+		AppointmentDateTime aptDateTime = appointment.selectAptType(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Date selected is for App " + date);	
@@ -104,7 +104,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+		AppointmentDateTime aptDateTime = appointment.selectAptType(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Date selected is for App " + date);	
