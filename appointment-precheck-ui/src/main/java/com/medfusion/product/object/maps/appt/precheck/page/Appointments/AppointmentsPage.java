@@ -1879,7 +1879,7 @@ public class AppointmentsPage extends BasePageObject {
 			}
 		}
 		
-		public boolean visibilityOfsendReminderButton() {
+		public boolean visibilityOfSendReminderButton() {
 			IHGUtil.waitForElement(driver, 10, sendReminderButton);
 			if (sendReminderButton.isDisplayed()) {
 				System.out.print("Send Reminder button is enabled. ");
@@ -1890,7 +1890,7 @@ public class AppointmentsPage extends BasePageObject {
 			}
 		}
 		
-		public boolean visibilityOfbroadcastMessageButton() {
+		public boolean visibilityOfBroadcastMessageButton() {
 			IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
 			if (broadcastMessageButton.isDisplayed()) {
 				System.out.print("Broadcast Message button is enabled.");

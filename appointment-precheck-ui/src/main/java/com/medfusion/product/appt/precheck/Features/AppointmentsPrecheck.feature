@@ -1462,28 +1462,28 @@ Feature: Test fuctionality of Appointment precheck
     And logout from practice provisioning portal
 
   Scenario: verify if patient receives appointment scheduled email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
-    And I schedule a appointment from swagger
+    And I schedule an appointment using schedule Appointment API
     Then I verify appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email
     And logout from practice provisioning portal
 
   Scenario: verify if patient receives appointment confirmation reminder in email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
-    And I schedule a appointment from swagger
+    And I schedule an appointment using schedule Appointment API
     Then I verify confirmation reminder for appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email
     And logout from practice provisioning portal
 
   Scenario: verify if patient receives curbside reminder in email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
-    And I schedule a appointment from swagger
+    And I schedule an appointment using schedule Appointment API
     Then I verify appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email for curbside reminder
     And logout from practice provisioning portal
 
   Scenario: verify if patient receives broadcast in email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
-    And I schedule a appointment from swagger
+    And I schedule an appointment using schedule Appointment API
     And I send broadcast message on email
     Then I verify appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email for broadcast reminder
     And logout from practice provisioning portal
 
   Scenario: verify if patient receives manual reminder in email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
-    And I schedule a appointment from swagger
+    And I schedule an appointment using schedule Appointment API
     And I send reminder to the patient
     Then I verify appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email for manual reminder
 

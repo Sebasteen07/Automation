@@ -5243,8 +5243,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@Then("there will be no options for send a broadcast and send a reminder in Actions dropdown")
 	public void there_will_be_no_options_for_send_a_broadcast_and_send_a_reminder_in_actions_dropdown() {
-		assertFalse(apptPage.visibilityOfsendReminderButton());
-		assertFalse(apptPage.visibilityOfbroadcastMessageButton());
+		assertFalse(apptPage.visibilityOfSendReminderButton());
+		assertFalse(apptPage.visibilityOfBroadcastMessageButton());
 	}
 	@When("I go to settings tab")
 	public void i_go_to_settings_tab() {
@@ -5566,8 +5566,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 	}
 	
-	@When("I schedule a appointment from swagger")
-	public void i_schedule_a_appointment_from_swagger() throws NullPointerException, IOException {
+	@When("I schedule an appointment using schedule Appointment API")
+	public void i_schedule_an_appointment_using_schedule_appointment_api() throws NullPointerException, IOException {
 		Appointment.patientId = commonMethod.generateRandomNum();
 		Appointment.apptId = commonMethod.generateRandomNum();
 		Appointment.randomNumber = commonMethod.generateRandomNum();
