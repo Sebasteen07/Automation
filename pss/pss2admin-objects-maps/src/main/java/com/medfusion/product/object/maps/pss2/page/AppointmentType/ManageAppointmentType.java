@@ -145,7 +145,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	private WebElement overBookingToggle;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[1]/div[12]/div/label[1]/i")
-	private WebElement overBookingToggleclick;
+	private WebElement overBookingToggleClick;
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
@@ -193,7 +193,6 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	}
 	
 	public void selectAppointment(String appointment) throws InterruptedException {
-		Thread.sleep(3000);
 		searchByAptTypeName(appointment);
 		IHGUtil.waitForElement(driver, 60, selectAppointment);
 		selectAppointment.click();
@@ -338,7 +337,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	}
 
 	public void overBookingClick() {
-		overBookingToggleclick.click();
+		overBookingToggleClick.click();
 		appointmenttypeSave.click();
 	}
 }

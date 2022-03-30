@@ -1405,7 +1405,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		
 	}
 	
-	public void appointmentStackingEnableShowPRoviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,
+	public void appointmentStackingEnableShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,
 			String appointmentType) throws Exception {
 
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
@@ -1426,7 +1426,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	}
 	
 	
-	public void appointmentStackingDisableShowPRoviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,
+	public void appointmentStackingDisableShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,
 			String appointmentType) throws Exception {
 
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
