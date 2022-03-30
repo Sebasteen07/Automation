@@ -1413,7 +1413,7 @@ Feature: Test fuctionality of Appointment precheck
     Then I verify on while sending broadcast in english and spanish language option text box should be seen in broadcast and Email should be recieved in english
     And logout from practice provisioning portal
 
-  Scenario: Verify practice provisioning settings when notification is on
+  Scenario: Verify system should send reminder, curbside mail to patient when notification is on
     And I click on settings tab
     And I click on notifications tab
     And I select send notifications as On and Save notifications
@@ -1423,7 +1423,7 @@ Feature: Test fuctionality of Appointment precheck
     Then I verify system should send reminder,curbside mail to patient
     And logout from practice provisioning portal
 
-  Scenario: Verify practice provisioning settings when notification is off
+  Scenario: Verify system should not send reminder, curbside mail to patient when notification is off
     And I click on settings tab
     And I click on notifications tab
     And I select send notifications as Off and Save notifications
@@ -1432,7 +1432,7 @@ Feature: Test fuctionality of Appointment precheck
     Then I verify system should not send reminder,curbside mail to patient
     And logout from practice provisioning portal
 
-  Scenario: Verify practice provisioning settings when notification is off
+  Scenario: Verify in appt dashboard reminder and broadcast column will not be visible when notification is off
     And I click on settings tab
     And I click on notifications tab
     And I select send notifications as Off and Save notifications
@@ -1443,7 +1443,7 @@ Feature: Test fuctionality of Appointment precheck
     And there will be no options for send a broadcast and send a reminder in Actions dropdown
     And logout from practice provisioning portal
 
-  Scenario: verify practice provisioning settings when email checkbox is On
+  Scenario: verify system should send reminder, curbside, broadcast on email when email checkbox is On
     And I go to settings tab
     And when from settings email checkbox is enable
     And I click on appointment tab
@@ -1452,7 +1452,7 @@ Feature: Test fuctionality of Appointment precheck
     Then I verify system should send reminder,curbside,broadcast on email
     And logout from practice provisioning portal
 
-  Scenario: verify practice provisioning settings when email checkbox is Off
+  Scenario: verify system should not send reminder, curbside on email when email checkbox is Off
     And I go to settings tab
     And when from settings email checkbox is disable
     And I click on appointment tab
