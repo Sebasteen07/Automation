@@ -1859,4 +1859,27 @@ public class AppointmentsPage extends BasePageObject {
 			}
 		}
 		
+		public boolean visibilityOfsendReminderButton() {
+			IHGUtil.waitForElement(driver, 10, sendReminderButton);
+			if (sendReminderButton.isDisplayed()) {
+				System.out.print("Send Reminder button is enabled. ");
+				return true;
+			} else {
+				System.out.print("Send Reminder button is disabled.");
+				return false;
+			}
+		}
+		
+		public boolean visibilityOfbroadcastMessageButton() {
+			IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
+			if (broadcastMessageButton.isDisplayed()) {
+				System.out.print("Broadcast Message button is enabled.");
+				return true;
+			} else {
+				System.out.print("Broadcast Message button is disabled.");
+				return false;
+			}
+		}
+
+		
 }

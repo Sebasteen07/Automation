@@ -1412,3 +1412,78 @@ Feature: Test fuctionality of Appointment precheck
     And I switch on appointment dashboard select patient and send broadcast message in english and spanish from action button
     Then I verify on while sending broadcast in english and spanish language option text box should be seen in broadcast and Email should be recieved in english
     And logout from practice provisioning portal
+
+  Scenario: Verify practice provisioning settings when notification is on
+    And I click on settings tab
+    And I click on notifications tab
+    And I select send notifications as On and Save notifications
+    And I click on appointments tab
+    And I schedule an appointment when notification is on
+    And I send reminder to the patient
+    Then I verify system should send reminder,curbside mail to patient
+    And logout from practice provisioning portal
+
+  Scenario: Verify practice provisioning settings when notification is off
+    And I click on settings tab
+    And I click on notifications tab
+    And I select send notifications as Off and Save notifications
+    And I click on appointments tab
+    And I schedule an appointment when notification is off
+    Then I verify system should not send reminder,curbside mail to patient
+    And logout from practice provisioning portal
+
+  Scenario: Verify practice provisioning settings when notification is off
+    And I click on settings tab
+    And I click on notifications tab
+    And I select send notifications as Off and Save notifications
+    And I click on appointments tab
+    And I schedule an appointment when notification is off
+    Then I verify in appt dashboard reminder and broadcast column will not be visible
+    And I select the patient and click on actions dropdown
+    And there will be no options for send a broadcast and send a reminder in Actions dropdown
+    And logout from practice provisioning portal
+
+  Scenario: verify practice provisioning settings when email checkbox is On
+    And I go to settings tab
+    And when from settings email checkbox is enable
+    And I click on appointment tab
+    And I schedule an appointment when email checkbox is on
+    And I send broadcast message on email
+    Then I verify system should send reminder,curbside,broadcast on email
+    And logout from practice provisioning portal
+
+  Scenario: verify practice provisioning settings when email checkbox is Off
+    And I go to settings tab
+    And when from settings email checkbox is disable
+    And I click on appointment tab
+    And I schedule an appointment when email checkbox is off
+    And I send broadcast message on email
+    Then I verify system should not send reminder,curbside on email
+    And logout from practice provisioning portal
+
+  Scenario: verify if patient receives appointment scheduled email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
+    And I schedule a appointment from swagger
+    Then I verify appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email
+    And logout from practice provisioning portal
+
+  Scenario: verify if patient receives appointment confirmation reminder in email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
+    And I schedule a appointment from swagger
+    Then I verify confirmation reminder for appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email
+    And logout from practice provisioning portal
+
+  Scenario: verify if patient receives curbside reminder in email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
+    And I schedule a appointment from swagger
+    Then I verify appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email for curbside reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify if patient receives broadcast in email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
+    And I schedule a appointment from swagger
+    And I send broadcast message on email
+    Then I verify appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email for broadcast reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify if patient receives manual reminder in email as per '[Practice name]' '<no-reply@medfusion.net>' and practice name contains special characters
+    And I schedule a appointment from swagger
+    And I send reminder to the patient
+    Then I verify appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email for manual reminder
+    And logout from practice provisioning portal
