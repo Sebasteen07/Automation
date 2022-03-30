@@ -1207,4 +1207,70 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		logStep("ReSetting Admin UI For Overbooking");
 		adminUtils.appointmentStackingDisableShowPRoviderOFF(driver, adminuser, testData, appType);
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentStackingWithDurationNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+//		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+//		Response response;
+//		
+//		addRule("L,T,B", "T,L,B");
+//
+//		logStep("Show Provider On Using AM ");
+//		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+//				payloadAM01.turnONOFFShowProvider(true));
+//		apv.responseCodeValidation(responseShowOff, 200);
+//
+//		logStep("Patient Matching By Using Adapter Modulator");
+//		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+//		apv.responseCodeValidation(response, 200);
+//
+		String appType = propertyData.getProperty("stacking.apptype.ng");
+		String providerName = propertyData.getProperty("stacking.provider.ng");
+		String locationName = propertyData.getProperty("stacking.location.ng");
+//
+//		String firstNameP1 = propertyData.getProperty("stacking.p1.firstname.ng");
+//		String lastNameP1 = propertyData.getProperty("stacking.p1.lastname.ng");
+//		String dobP1 = propertyData.getProperty("stacking.p1.dob.ng");
+//		String genderP1 = propertyData.getProperty("stacking.p1.gender.ng");
+//
+//		String firstNameP2 = propertyData.getProperty("stacking.p2.firstname.ng");
+//		String lastNameP2 = propertyData.getProperty("stacking.p2.lastname.ng");
+//		String dobP2 = propertyData.getProperty("stacking.p2.dob.ng");
+//		String genderP2 = propertyData.getProperty("stacking.p2.gender.ng");
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.appointmentStackingEnableWihDuration(driver, adminuser, testData, appType, providerName);
+//		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+//		logStep("Clicked on Dismiss Button");
+//		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+//		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP1, lastNameP1, dobP1, "", genderP1,
+//				"", "");
+//		homePage.btnStartSchedClick();
+//		String Patient1FirstTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
+//				providerName);
+//		log("Time of First Patient First Time Booking is  " + Patient1FirstTime);
+//		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP1, lastNameP1, dobP1, "", genderP1, "", "");
+//		homePage.btnStartSchedClick();
+//		String patient1SecondBookTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
+//				providerName);
+//		log("Time of First Patient Second Time Booking is " + patient1SecondBookTime);
+//		assertNotEquals(patient1SecondBookTime, Patient1FirstTime);
+//
+//		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP2, lastNameP2, dobP2, "", genderP2, "", "");
+//		homePage.btnStartSchedClick();
+//		String secondPatientTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
+//				providerName);
+//		log("Patient 2 Time Is " + secondPatientTime);
+//		assertEquals(secondPatientTime, Patient1FirstTime);
+//		logStep("ReSetting Admin UI For Overbooking");
+//		adminUtils.appointmentStackingDisable(driver, adminuser, testData, appType, providerName);
+
+	}
 }

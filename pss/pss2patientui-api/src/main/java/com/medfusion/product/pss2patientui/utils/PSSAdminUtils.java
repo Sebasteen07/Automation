@@ -1445,4 +1445,25 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		pssPracticeConfig.logout();
 
 	}
+	
+	public void appointmentStackingEnableWihDuration(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		Log4jUtil.log("Status for OverBooking is " + manageResource.overBookingStatus());
+		appointment.setAppointmentStacking(manageResource.overBookingStatus());
+
+		if (appointment.isAppointmentStacking() == false) {
+			manageResource.overBookingClick();
+		} else {
+			log("OverBooking Already On");
+		}
+		patientFlow.logout();
+		
+	}
 }
