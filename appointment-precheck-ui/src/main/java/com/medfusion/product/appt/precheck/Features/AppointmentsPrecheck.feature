@@ -1486,4 +1486,123 @@ Feature: Test fuctionality of Appointment precheck
     And I schedule a appointment from swagger
     And I send reminder to the patient
     Then I verify appointment should be received from '[Practice name]<no-reply@medfusion.net>' in email for manual reminder
+
+  Scenario: verify on deleting all 50 records from page 1 or page 2, appointment of next page or previous page are populated and page number gets reduced
+    And I click on page 2 from appointment dashboard
+    And I select all 50 records from page 2
+    And I click on remove button from actions dropdown
+    Then I verify all 50 records should get deleted after deleting the records on  clicking refresh button previous page 1 records should come on page 1 records
+    And logout from practice provisioning portal
+
+  Scenario: verify records are deleted as per the filter applied on location, provider
+    And I apply filter for location and provider on appointment page
+    And I select all records from page 1
+    And I click on remove button from actions dropdown
+    Then I verify all records should get deleted after deleting the records on  clicking refresh button previous page 1 records should come on page 1 records
+    And logout from practice provisioning portal
+
+  Scenario: verify on sending broadcast latest banner is updated for broadcast
+    And I select appointment from appointment dashboard
+    And I click on Actions button
+    And I click on Send Reminder option and dont close the banner
+    And I click on broadcast message options
+    Then I verify now on sending broadcast broadcast banner should get updated at the top right corner
+    And logout from practice provisioning portal
+
+  Scenario: verify on removing appointment banner should get updated
+    And I select appointment from appointment dashboard
+    And I click on Actions button
+    And I click on Send Reminder option and dont close the banner
+    And I click on remove button options
+    Then I verify now on removing appointment the appointment remove count should get updated at the top right corner
+    And logout from practice provisioning portal
+
+  Scenario: verify on sending broadcast and later removing the appointment banner gets updated
+    And I select appointment from appointment dashboard
+    And I click on Actions button
+    And I click on broadcast message options
+    And I click on remove button options
+    Then I verify now on removing appointment the appointment remove count should get updated at the right corner
+    And logout from practice provisioning portal
+
+  Scenario: verify on doing check-in for current date -1 appointment and notification count are coming correctly after check in curbside arrival grid
+    When I schedule two appointments
+    And I apply filter for start date and end date in curbside arrival grid
+    And I switch to appointments tab and again switch to curbside arrival grid and I checkin two patients
+    Then I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in two patients then notifictaion count reduces
+    And logout from practice provisioning portal
+
+  Scenario: verify on doing check-in for current date -1 appointments and notification count are coming correctly after check in of patients in curbside arrival grid
+    When I schedule an appointment
+    And I apply filter for start date as current date -1 and end date as current date -1 in curbside arrival grid
+    And I switch to appointments tab and again switch to curbside arrival grid and I checkin one patient
+    Then I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in one patient then notifictaion count reduces
+    And logout from practice provisioning portal
+
+  Scenario: verify on doing check-in for current date -1 appointments and notification count are coming correctly after check in of all patients in curbside arrival grid
+    When I schedule two appointments
+    And I apply filter for start date as current date -1 and end date as current date in curbside arrival grid
+    And I switch to appointments tab and again switch to curbside arrival grid and I checkin all patients
+    Then I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in all patients then notifictaion count becomes zero
+    And logout from practice provisioning portal
+
+  Scenario: verify on doing check-in for current date appointment and notification count are coming correctly after check in of two patients in curbside arrival grid
+    When I schedule two appointments
+    And I apply filter for start date as current date and end date as current date in curbside arrival grid
+    And I switch to appointments tab and again switch to curbside arrival grid and I checkin two patients
+    Then I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in two patients then notifictaion count becomes reduces
+    And logout from practice provisioning portal
+
+  Scenario: verify all '50 records' from current page are deleted which contains valid data
+    And I select all 50 records appointments from backdated 1 month
+    And I delete all 50 records appointments
+    Then I verify all appointment whose entry does not exist in arrival grid should not get deleted rest appointment entry should get deleted
+    And logout from practice provisioning portal
+
+  Scenario: verify all 50 records gets deleted and system shows page 1 of 2 with latest records on page 1 after deleting appointments
+    And I select all 50 records appointments from page 1
+    And I delete all 50 records appointments from page 1 and click on refresh button
+    Then I verify all 50 records should get deleted and after deleting the records on clicking refresh button next page 2 records should come on page 1 records
+    And logout from practice provisioning portal
+
+  Scenario: Verify if broadcast is sent sucessfully and status in broadcast log is failed with message sent
+    When I schedule an appointment where mobile number is valid ten digit number but not US number
+    And I select patient from appointment dashboard and send broadcast message
+    Then I verify if broadcast is sent sucessfully and status in broadcast log is failed with message sent
+    And logout from practice provisioning portal
+
+  Scenario: verify that user is able to see blank additional arrival instructions in english language
+    When from setting in notifications I click on curbside checkin tab
+    And I click on english button and additional arrival instructions text box keep blank
+    And I click on save button
+    And I schedule an appointment in "en"
+    Then I verify user is not able to see additional arrival instruction in mail for english
+    And logout from practice provisioning portal
+
+  Scenario: verify that user is able to see blank additional arrival instructions in spanish language
+    When from setting in notifications I click on curbside checkin tab
+    And I click on spanish button and additional arrival instructions text box keep blank
+    And I click on save button
+    And I schedule an appointment in "es"
+    Then I verify user is not able to see additional arrival instruction in mail for spanish
+    And logout from practice provisioning portal
+
+  Scenario: verify that Display oldest timer entry on the top
+    When I enabled curbside remainder checkbox from notifications tab in Setting tab
+    And I switch on curbside checkin tab
+    And I schedule an appointment for patient "Kane" after 30 minutes
+    And I received curbside message on email and confirm arrival
+    And I schedule an appointment for patient "William" after 15 minutes
+    And I received curbside message on email and confirm arrival
+    Then I verify patient1 has oldest time enrty so patient1 should get displayed at the top of patient2
+    And logout from practice provisioning portal
+
+  Scenario: Verify that latest patient arrived goes to the end of the line that is row is added to the bottom
+    When I enabled curbside remainder checkbox from notifications tab in Setting tab
+    And I switch on curbside checkin tab
+    And I schedule an appointment for patient "Kane" after 20 minutes
+    And I received curbside message on email and confirm arrival
+    And I schedule an appointment for patient "William" after 30 minutes
+    And I received curbside message on email and confirm arrival
+    Then I verify latest patient arrived goes to the end of the line that is row is added to the bottom
     And logout from practice provisioning portal

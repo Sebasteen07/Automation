@@ -40,6 +40,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setLinkProvider(property.getProperty("link.provider.gw"));
 		appointValues.setLinkLocation(property.getProperty("link.location.gw"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttype.gw"));
+		appointValues.setDecisionTreeName(property.getProperty("decision.tree.name.gw"));
 		appointValues.setDatetime(property.getProperty("datetime.gw"));
 		appointValues.setLocation(property.getProperty("location.gw"));
 		appointValues.setPassword(property.getProperty("password.gw"));
@@ -254,6 +255,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setLinkLocation(property.getProperty("link.location.ge"));
 		appointValues.setMaxperDay(property.getProperty("max.per.day.ge"));
 		appointValues.setAppointmenttype(property.getProperty("appointment.type.ge"));
+		appointValues.setDecisionTreeName(property.getProperty("decision.tree.name.ge"));
 		appointValues.setDatetime(property.getProperty("datetime.ge"));
 		appointValues.setLocation(property.getProperty("location.ge"));
 		appointValues.setPassword(property.getProperty("password.ge"));
@@ -342,6 +344,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setAppointmenttype(property.getProperty("appointment.type.ng"));
 		appointValues.setDatetime(property.getProperty("datetime.ng"));
 		appointValues.setLocation(property.getProperty("location.ng"));
+		appointValues.setDecisionTreeName(property.getProperty("decision.tree.name.ng"));
 		appointValues.setPassword(property.getProperty("password.ng"));
 		appointValues.setProvider(property.getProperty("provider.ng"));
 		appointValues.setSpeciality(property.getProperty("speciality.ng"));

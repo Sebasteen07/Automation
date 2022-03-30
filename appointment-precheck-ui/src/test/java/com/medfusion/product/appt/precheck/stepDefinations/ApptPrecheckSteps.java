@@ -1,4 +1,4 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.appt.precheck.stepDefinations;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.appt.precheck.payload.AptPrecheckPayload;
@@ -4354,15 +4355,6 @@ public class ApptPrecheckSteps extends BaseTest {
 	    
 	}
 
-    @When("from setting in notifications I click on curbside checkin tab")
-	public void from_setting_in_notifications_i_click_on_curbside_checkin_tab() {
-		mainPage.clickOnSettingTab();
-		notifPage.clickOnNotificationTab();
-		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
-		log("user on notification page");
-		notifPage.clickOnCurbsideCheckInTabInNotif();
-	}
-
 	@When("I schedule an appointment and perform checkin action")
 	public void i_schedule_an_appointment_and_perform_checkin_action() throws NullPointerException, IOException {
 		Appointment.patientId = commonMethod.generateRandomNum();
@@ -5281,6 +5273,238 @@ public class ApptPrecheckSteps extends BaseTest {
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 				Appointment.apptId);
 	}
+	@When("I click on page {int} from appointment dashboard")
+	public void i_click_on_page_from_appointment_dashboard(Integer int1) throws InterruptedException {
+		apptPage.enterStartTimeWithinMonth();
+		apptPage.jumpToNextPage();
+		
+	}
+	@When("I select all {int} records from page {int}")
+	public void i_select_all_records_from_page(Integer int1, Integer int2) throws InterruptedException {
+		apptPage.selectAllCheckboxes();
+	}
+	@When("I click on remove button from actions dropdown")
+	public void i_click_on_remove_button_from_actions_dropdown() throws InterruptedException {
+	    apptPage.clickOnActions();
+	    apptPage.clickOnRemoveButton();
+	    apptPage.clickOnRefreshTab();
+	    apptPage.jumpToPreviousPage();
+	}
+	@Then("I verify all {int} records should get deleted after deleting the records on  clicking refresh button previous page {int} records should come on page {int} records")
+	public void i_verify_all_records_should_get_deleted_after_deleting_the_records_on_clicking_refresh_button_previous_page_records_should_come_on_page_records(Integer int1, Integer int2, Integer int3) throws InterruptedException {
+	   assertTrue(apptPage.removeBannerMessage());
+	}
+	
+	@When("I select appointment from appointment dashboard")
+	public void i_select_appointment_from_appointment_dashboard() {
+	  apptPage.selectFirstPatient();
+	}
+	@When("I click on Actions button")
+	public void i_click_on_actions_button() {
+	    apptPage.clickOnActions();
+	}
+	@When("I click on Send Reminder option and dont close the banner")
+	public void i_click_on_send_reminder_option_and_dont_close_the_banner() throws InterruptedException {
+	   apptPage.clickOnSendReminder();
+	}
+	@When("I click on broadcast message options")
+	public void i_click_on_broadcast_message_options() throws Exception {
+	  apptPage.selectFirstPatient();
+	  apptPage.clickOnActions();
+	  apptPage.clickOnBroadcastMessageButton();
+	  apptPage.sendBroadcastMessage("welcome to curbside check-in", "Bienvenida al check-in en la acera");
+	}
+	@Then("I verify now on sending broadcast broadcast banner should get updated at the top right corner")
+	public void i_verify_now_on_sending_broadcast_broadcast_banner_should_get_updated_at_the_top_right_corner() {
+		assertEquals(apptPage.broadcastMessageStatus(), "Broadcast Message Sent. 0 successful. 1 failed.",
+				"Message was not correct");
+	}
+	@When("I click on remove button options")
+	public void i_click_on_remove_button_options() {
+		apptPage.selectFirstPatient();
+		apptPage.clickOnActions();
+		apptPage.selectRemoveButton();
+	}
+	@Then("I verify now on removing appointment the appointment remove count  should get updated at the top right corner")
+	public void i_verify_now_on_removing_appointment_the_appointment_remove_count_should_get_updated_at_the_top_right_corner() throws InterruptedException {
+		 assertTrue(apptPage.removeBannerMessage());
+	}
+	@Then("I verify now on removing appointment the appointment remove count should get updated at the right corner")
+	public void i_verify_now_on_removing_appointment_the_appointment_remove_count_should_get_updated_at_the_right_corner() throws InterruptedException {
+		 assertTrue(apptPage.removeBannerMessage());
+	}
+	
+	@When("I apply filter for start date and end date in curbside arrival grid")
+	public void i_apply_filter_for_start_date_and_end_date_in_curbside_arrival_grid() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		curbsidePage.selectOneDayBeforeDateforStartdate("22", "12.00 AM");
+		curbsidePage.getCurrentEndDateAndTime();
+	}
+	@When("I switch to appointments tab and again switch to curbside arrival grid and I checkin two patients")
+	public void i_switch_to_appointments_tab_and_again_switch_to_curbside_arrival_grid_and_I_checkin_two_patients() throws InterruptedException {
+	   mainPage.clickOnAppointmentsTab();
+	   mainPage.clickOnCurbsideTab();
+	   curbsidePage.selectPatientscheckbox();
+	   curbsidePage.selectPatientscheckbox2();
+	   curbsidePage.clickOnCheckInButton();
+	}
+	@Then("I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in two patients then notifictaion count reduces")
+	public void i_verify_that_after_switching_from_appointments_tab_to_curbside_arrival_grid_filter_resets_to_current_date_and_time_and_check_in_two_patients_then_notifictaion_count_reduces() {
+		assertTrue(curbsidePage.visibiltyOfStartTimeFilter());
+	    assertTrue(curbsidePage.visibiltyOfEndTimeFilter());
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	    
+	}
+	@When("I apply filter for start date as current date {int} and end date as current date {int} in curbside arrival grid")
+	public void i_apply_filter_for_start_date_as_current_date_and_end_date_as_current_date_in_curbside_arrival_grid(Integer int1, Integer int2) throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		curbsidePage.selectOneDayBeforeDateforStartdate("22", "12.00 AM");
+		curbsidePage.selectOneDayBeforeDate("22", "11.59 PM");
+	}
+	@When("I switch to appointments tab and again switch to curbside arrival grid and I checkin one patient")
+	public void i_switch_to_appointments_tab_and_again_switch_to_curbside_arrival_grid_and_i_checkin_one_patient() throws InterruptedException {
+		 mainPage.clickOnAppointmentsTab();
+		 mainPage.clickOnCurbsideTab();
+		 curbsidePage.selectPatientscheckbox();
+		 curbsidePage.clickOnCheckInButton();
+	}
+	@Then("I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in one patient then notifictaion count reduces")
+	public void i_verify_that_after_switching_from_appointments_tab_to_curbside_arrival_grid_filter_resets_to_current_date_and_time_and_check_in_one_patient_then_notifictaion_count_reduces() {
+		assertTrue(curbsidePage.visibiltyOfStartTimeFilter());
+	    assertTrue(curbsidePage.visibiltyOfEndTimeFilter());
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+	@When("I apply filter for start date as current date {int} and end date as current date in curbside arrival grid")
+	public void i_apply_filter_for_start_date_as_current_date_and_end_date_as_current_date_in_curbside_arrival_grid(Integer int1) throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		curbsidePage.selectOneDayBeforeDateforStartdate("22", "12.00 AM");
+		curbsidePage.selectEndDate("22", "11.59PM");
+	}
+	@When("I switch to appointments tab and again switch to curbside arrival grid and I checkin all patients")
+	public void i_switch_to_appointments_tab_and_again_switch_to_curbside_arrival_grid_and_i_checkin_all_patients() throws InterruptedException {
+		 mainPage.clickOnAppointmentsTab();
+		 mainPage.clickOnCurbsideTab();
+		 curbsidePage.clickOnselectAllCheckbox();
+		 curbsidePage.clickOnCheckInButton();
+	}
+	@Then("I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in all patients then notifictaion count becomes zero")
+	public void i_verify_that_after_switching_from_appointments_tab_to_curbside_arrival_grid_filter_resets_to_current_date_and_time_and_check_in_all_patients_then_notifictaion_count_becomes_zero() {
+		assertTrue(curbsidePage.visibiltyOfStartTimeFilter());
+	    assertTrue(curbsidePage.visibiltyOfEndTimeFilter());
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+	@When("I schedule two appointments")
+	public void i_schedule_two_appointments() throws NullPointerException, IOException {
+		for (int i = 0; i < 2; i++) {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+
+			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(actionResponse.getStatusCode(), 200);
+
+			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(arrivalResponse.getStatusCode(), 200);
+		}
+	}
+	@When("I apply filter for start date as current date and end date as current date in curbside arrival grid")
+	public void i_apply_filter_for_start_date_as_current_date_and_end_date_as_current_date_in_curbside_arrival_grid() throws InterruptedException {
+	   mainPage.clickOnCurbsideTab();
+	   curbsidePage.selectCurrentdateforStartdate("22", "12.00 AM");
+	   curbsidePage.selectEndDate("22", "11.59 PM");
+	   
+	}
+	@Then("I verify that after switching from appointments tab to curbside arrival grid filter resets to current date and time and check-in two patients then notifictaion count becomes reduces")
+	public void i_verify_that_after_switching_from_appointments_tab_to_curbside_arrival_grid_filter_resets_to_current_date_and_time_and_check_in_two_patients_then_notifictaion_count_becomes_reduces() {
+		assertTrue(curbsidePage.visibiltyOfStartTimeFilter());
+	    assertTrue(curbsidePage.visibiltyOfEndTimeFilter());
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+
+	@When("I select all {int} records appointments from backdated {int} month")
+	public void i_select_all_records_appointments_from_backdated_month(Integer int1, Integer int2) throws InterruptedException {
+		apptPage.enterOneMonthBackdatedStartTime();
+		apptPage.selectAllCheckboxes();
+		
+	}
+	@When("I delete all {int} records appointments")
+	public void i_delete_all_records_appointments(Integer int1) {
+	    apptPage.clickOnActions();
+	    apptPage.clickOnRemoveButton();
+	}
+	@Then("I verify all appointment whose entry does not exist in arrival grid should not get deleted rest appointment entry should get deleted")
+	public void i_verify_all_appointment_whose_entry_does_not_exist_in_arrival_grid_should_not_get_deleted_rest_appointment_entry_should_get_deleted() {
+	    assertTrue(apptPage.visibilityBannerMessage());
+	}
+	@When("I select all {int} records appointments from page {int}")
+	public void i_select_all_records_appointments_from_page(Integer int1, Integer int2) throws InterruptedException {
+		apptPage.enterOneMonthBackdatedStartTime();
+		apptPage.selectAllCheckboxes();
+	}
+	@When("I delete all {int} records appointments from page {int} and click on refresh button")
+	public void i_delete_all_records_appointments_from_page_and_click_on_refresh_button(Integer int1, Integer int2) throws InterruptedException {
+	   apptPage.clickOnActions();
+	   apptPage.clickOnRemoveButton();
+	   apptPage.clickOnRefreshTab();
+	}
+	@Then("I verify all {int} records should get deleted and after deleting the records on clicking refresh button next page {int} records should come on page {int} records")
+	public void i_verify_all_records_should_get_deleted_and_after_deleting_the_records_on_clicking_refresh_button_next_page_records_should_come_on_page_records(Integer int1, Integer int2, Integer int3) throws InterruptedException {
+		assertTrue(apptPage.visibilityOfPageNo());
+	}
+	
+	@When("I apply filter for location and provider on appointment page")
+	public void i_apply_filter_for_location_and_provider_on_appointment_page() {
+		apptPage.locationDropdown();
+		apptPage.locationFilterSelected();
+		apptPage.providerDropdown();
+		apptPage.providerFilterSelected();
+	}
+	@When("I select all records from page {int}")
+	public void i_select_all_records_from_page(Integer int1) throws InterruptedException {
+	    apptPage.selectAllCheckboxes();
+	}
+	@Then("I verify all records should get deleted after deleting the records on  clicking refresh button previous page {int} records should come on page {int} records")
+	public void i_verify_all_records_should_get_deleted_after_deleting_the_records_on_clicking_refresh_button_previous_page_records_should_come_on_page_records(Integer int1, Integer int2) {
+		assertTrue(apptPage.visibilityOfPageNo());
+	}
+
+	@When("I schedule an appointment where mobile number is valid ten digit number but not US number")
+	public void i_schedule_an_appointment_where_mobile_number_is_valid_ten_digit_number_but_not_us_number()
+			throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
 	@When("I send broadcast message on email")
 	public void i_send_broadcast_message_on_email() throws Exception {
 		apptPage.filterPatientId(Appointment.patientId);
@@ -5356,6 +5580,105 @@ public class ApptPrecheckSteps extends BaseTest {
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 				Appointment.apptId);
 	}
+
+	@Then("I verify if broadcast is sent sucessfully and status in broadcast log is failed with message sent")
+	public void i_verify_if_broadcast_is_sent_sucessfully_and_status_in_broadcast_log_is_failed_with_message_sent()
+			throws InterruptedException {
+		Thread.sleep(20000);
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(300, 2000, 10000);
+		assertEquals(apptPage.getBroadcastMsgStatusForSelectedPatient(Appointment.patientId, Appointment.apptId),
+				"FAILED", "Status was not match");
+	}
+	
+	@When("from setting in notifications I click on curbside checkin tab")
+	public void from_setting_in_notifications_i_click_on_curbside_checkin_tab() {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+	}
+
+	@When("I click on english button and additional arrival instructions text box keep blank")
+	public void i_click_on_english_button_and_additional_arrival_instructions_text_box_keep_blank()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnEnglishButton();
+		notifPage.clearArrivalInstTextbox();
+	}
+
+	@When("I click on save button")
+	public void i_click_on_save_button() throws InterruptedException {
+		notifPage.saveNotification();
+	}
+
+	@Then("I verify user is not able to see additional arrival instruction in mail for english")
+	public void i_verify_user_is_not_able_to_see_additional_arrival_instruction_in_mail_for_english() throws Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertNotEquals(
+				yopMail.getMessageAfterArrival("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						propertyData.getProperty("curbside.checkin.mail.subject"),
+						propertyData.getProperty("email.title.in.en"),
+						propertyData.getProperty("add.arrival.instruction.in.en")),
+				propertyData.getProperty("add.arrival.instruction.in.en"), "Message is displayed");
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnEnglishButton();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.en"));
+		notifPage.saveNotification();
+	}
+	
+	@When("I click on spanish button and additional arrival instructions text box keep blank")
+	public void i_click_on_spanish_button_and_additional_arrival_instructions_text_box_keep_blank()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnSpanishButton();
+		notifPage.clearArrivalInstTextbox();
+	}
+
+	@Then("I verify user is not able to see additional arrival instruction in mail for spanish")
+	public void i_verify_user_is_not_able_to_see_additional_arrival_instruction_in_mail_for_spanish() throws Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertNotEquals(
+				yopMail.getMessageAfterArrival("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						propertyData.getProperty("curbside.checkin.mail.subject.in.es"),
+						propertyData.getProperty("email.title.in.es"),
+						propertyData.getProperty("add.arrival.instruction.in.es")),
+				propertyData.getProperty("add.arrival.instruction.in.es"), "Message is displayed");
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnSpanishButton();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.es"));
+		notifPage.saveNotification();
+	}
+	
+	@When("I schedule an appointment for patient {string} after {int} minutes")
+	public void i_schedule_an_appointment_for_patient_after_minutes(String patientName, int time)
+			throws NullPointerException, IOException, InterruptedException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
 	@Then("I verify appointment should be received from {string} in email")
 	public void i_verify_appointment_should_be_received_from_in_email(String string) throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
@@ -5391,6 +5714,57 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),
 				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
+	}
+
+	@When("I received curbside message on email and confirm arrival")
+	public void i_received_curbside_message_on_email_and_confirm_arrival() throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		yopMail.confirmArrivalFromEmail("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("email.title.in.en"));
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		Thread.sleep(10000);
+	}
+
+	@Then("I verify patient1 has oldest time enrty so patient1 should get displayed at the top of patient2")
+	public void i_verify_patient1_has_oldest_time_enrty_so_patient1_should_get_displayed_at_the_top_of_patient2()
+			throws InterruptedException {
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnCurbsideTab();
+		Thread.sleep(5000);
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+		assertEquals(curbsidePage.getPatient1FromCurbsideDev(),
+				propertyData.getProperty("patient1.fname.lname"), "Entry of patient was not correct");
+		assertEquals(curbsidePage.getPatient2FromCurbsideDev(),
+				propertyData.getProperty("patient2.fname.lname"), "Entry of patient was not correct");
+		}else {
+			assertEquals(curbsidePage.getPatient1FromCurbsideDemo(),
+					propertyData.getProperty("patient1.fname.lname"), "Entry of patient was not correct");
+			assertEquals(curbsidePage.getPatient2FromCurbsideDemo(),
+					propertyData.getProperty("patient2.fname.lname"), "Entry of patient was not correct");
+		}
+
+	}
+	
+	@Then("I verify latest patient arrived goes to the end of the line that is row is added to the bottom")
+	public void i_verify_latest_patient_arrived_goes_to_the_end_of_the_line_that_is_row_is_added_to_the_bottom()
+			throws InterruptedException {
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnCurbsideTab();
+		Thread.sleep(5000);
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+		assertEquals(curbsidePage.getPatient1FromCurbsideDev(),
+				propertyData.getProperty("patient1.fname.lname"), "Entry of patient was not correct");
+		assertEquals(curbsidePage.getPatient2FromCurbsideDev(),
+				propertyData.getProperty("patient2.fname.lname"), "Entry of patient was not correct");
+		}else {
+			assertEquals(curbsidePage.getPatient1FromCurbsideDemo(),
+					propertyData.getProperty("patient1.fname.lname"), "Entry of patient was not correct");
+			assertEquals(curbsidePage.getPatient2FromCurbsideDemo(),
+					propertyData.getProperty("patient2.fname.lname"), "Entry of patient was not correct");
+		}
 	}
 
 }

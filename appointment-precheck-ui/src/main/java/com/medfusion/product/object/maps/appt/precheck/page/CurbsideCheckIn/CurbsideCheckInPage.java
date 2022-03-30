@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.CurbsideCheckIn;
 
 import java.util.Calendar;
@@ -142,7 +143,7 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@class='react-datepicker__year-select']")
 	private WebElement years;
 	
-	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])")
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[1]")
 	private WebElement selectAllCheckinAppt;
 	
 	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
@@ -203,8 +204,19 @@ public class CurbsideCheckInPage extends BasePageObject {
 	
 	@FindBy(how=How.XPATH, using ="//div[text()='AppScheduler One']")
 	private WebElement selectPatientP1;
-
 	
+	@FindBy(how=How.XPATH, using ="(//*[@title='Toggle Row Selected'])[1]/following::span[1]")
+	private WebElement patientDev1;
+	
+	@FindBy(how=How.XPATH, using ="(//*[@title='Toggle Row Selected'])[2]/following::span[1]")
+	private WebElement patientDev2;
+	
+	@FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::span[1]")
+	private WebElement patientDemo1;	
+	
+	@FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::span[7]")
+	private WebElement patientDemo2;
+			
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -986,6 +998,137 @@ public class CurbsideCheckInPage extends BasePageObject {
 			IHGUtil.waitForElement(driver, 10, selectPatientP1);
 			jse.executeScript("arguments[0].click();", selectPatientP1);
 		}
-
 		
+		public String selectOneDayBeforeDateforStartdate(String currentYear,String time) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			log("Select one day before date");
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+			int dd = cal.get(Calendar.DATE) - 1;
+			int yyyy = cal.get(Calendar.YEAR);
+			int mm = cal.get(Calendar.MONTH)+1;
+
+			log("One day before date : " + dd + "-" + mm + "-" + yyyy);
+			startTimeField.click();
+
+			log("Select Month");
+			Select selectMonth = new Select(months);
+			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
+			Thread.sleep(3000);
+
+			log("Select Year");
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			WebElement date = driver.findElement(By.xpath(
+					"//*[@id=\"page-content-container\"]/div/header/div[2]/div[3]//div/div/div[4]/div[text()="
+					+ "'" + dd + "'" +"]"));
+			log("Date : " + dd);
+			date.click();
+			Thread.sleep(10000);
+			return mm+"/"+dd+"/"+currentYear+" "+time;
+		}
+		
+		public String  selectEndDate(String currentYear,String time) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			log("Select one day before date");
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+			int dd = cal.get(Calendar.DATE);
+			int yyyy = cal.get(Calendar.YEAR);
+			int mm = cal.get(Calendar.MONTH)+1;
+
+			log("One day before date : " + dd + "-" + mm + "-" + yyyy);
+			endTimeField.click();
+
+			log("Select Month");
+			Select selectMonth = new Select(months);
+			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
+			Thread.sleep(3000);
+
+			log("Select Year");
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			WebElement date = driver.findElement(By.xpath(
+					"(//*[@id=\"page-content-container\"]/div/header/div[2]/div[4]/div[2]/div[2]/div/div/div[2]/div[2]//div[text()="
+							+ "'" + dd + "'" + "])[1]"));
+			log("Date : " + dd);
+			date.click();
+			Thread.sleep(10000);
+			return mm+"/"+dd+"/"+currentYear+" "+time;
+		}
+		
+		public void clickOnselectAllCheckbox() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, selectAllCheckbox);
+			jse.executeScript("arguments[0].click();", selectAllCheckbox);
+		}
+		
+		public String selectCurrentdateforStartdate(String currentYear,String time) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			log("Select one day before date");
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+			int dd = cal.get(Calendar.DATE);
+			int yyyy = cal.get(Calendar.YEAR);
+			int mm = cal.get(Calendar.MONTH)+1;
+
+			log("One day before date : " + dd + "-" + mm + "-" + yyyy);
+			startTimeField.click();
+
+			log("Select Month");
+			Select selectMonth = new Select(months);
+			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
+			Thread.sleep(3000);
+
+			log("Select Year");
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			WebElement date = driver.findElement(By.xpath(
+					"//*[@id=\"page-content-container\"]/div/header/div[2]/div[3]//div/div/div[4]/div[text()="
+					+ "'" + dd + "'" +"]"));
+			log("Date : " + dd);
+			date.click();
+			Thread.sleep(10000);
+			return mm+"/"+dd+"/"+currentYear+" "+time;
+		}
+		
+		public String getPatient1FromCurbsideDev() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDev1.getText();
+			return getPatient;
+		}
+		
+		public String getPatient2FromCurbsideDev() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDev2.getText();
+			return getPatient;
+		}
+		
+		public String getPatient1FromCurbsideDemo() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDemo1.getText();
+			return getPatient;
+		}
+		
+		public String getPatient2FromCurbsideDemo() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDemo2.getText();
+			return getPatient;
+		}
+	
 }

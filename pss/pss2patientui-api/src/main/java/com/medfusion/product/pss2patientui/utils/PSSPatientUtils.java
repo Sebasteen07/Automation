@@ -37,6 +37,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
@@ -46,12 +47,14 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.Appointm
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePageSpeciality;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.DismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.NewPatientInsuranceInfo;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PrivacyPolicy;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Speciality;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
+import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentQuestionsPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
@@ -1082,6 +1085,35 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		log("Test Case Passed");
+	}
+	
+	public void bookAppointmentWithDecisiontree(HomePage homeage, Appointment testData, WebDriver driver, String decisionTreeName, 
+			String appointmentType, String reasonForAppointment, String decisionTreeAnswer) throws Exception {
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getDecisionTreeName());
+		AppointmentQuestionsPage apptQuestion = appointment.selectApptTypeDecisionTree(decisionTreeName);
+		AppointmentDateTime aptDateTime= apptQuestion.selectAnswerFromOptions(decisionTreeAnswer,
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		if(aptDateTime.chooseAppttypeText(reasonForAppointment).equals(reasonForAppointment)) {
+			Assert.assertTrue(true);
+			log("Reason for appointment is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 	}
 	
 	public Boolean deleteFile(String fileName) {
@@ -2257,4 +2289,25 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			String newTime = df.format(cal.getTime());
 			return newTime;
 		}
+		
+		public String bookLTB(HomePage homePage, Appointment testData,WebDriver driver,String locationName,String appType,String providerName) throws Exception {
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + locationName);
+
+		AppointmentPage appointment = location.selectAppointment(locationName);
+		logStep("Verfiy Appointment Page and appointment to be selected = " + appType);
+		Provider provider = appointment.selectTypeOfProvider(appType,Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + providerName);
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(providerName);
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		logStep("Date selected is for App" + date);
+		String time=aptDateTime.getFirstTimeWithHHMM();
+		clickOnSubmitAppt1(false, aptDateTime, testData, driver);
+		homePage.patientLogout(driver);
+		return time;
+		}
+
 }

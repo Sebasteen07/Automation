@@ -1,6 +1,7 @@
 package com.medfusion.product.pss2patientportal.test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -943,6 +944,170 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		String ActualTime = aptDateTime.getfirsttime().substring(0, 5);
 		log("Actual Time   " + ActualTime);
 		assertEquals(ActualTime, expectedTime);
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentStackingNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		logStep("Setting Rule By Using Adapter Modulator Api Call");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		apv.responseCodeValidation(response, 200);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(responseForDeleteRule, 200);
+		}
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(responseRulePost, 200);
+
+		Response responseRulePostTBL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.rulePayload("TBL", "T,B,L"));
+		apv.responseCodeValidation(responseRulePostTBL, 200);
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);
+
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+		apv.responseCodeValidation(response, 200);
+
+		String appType = propertyData.getProperty("stacking.apptype.ng");
+		String providerName = propertyData.getProperty("stacking.provider.ng");
+		String locationName = propertyData.getProperty("stacking.location.ng");
+
+		String firstNameP1 = propertyData.getProperty("stacking.p1.firstname.ng");
+		String lastNameP1 = propertyData.getProperty("stacking.p1.lastname.ng");
+		String dobP1 = propertyData.getProperty("stacking.p1.dob.ng");
+		String genderP1 = propertyData.getProperty("stacking.p1.gender.ng");
+
+		String firstNameP2 = propertyData.getProperty("stacking.p2.firstname.ng");
+		String lastNameP2 = propertyData.getProperty("stacking.p2.lastname.ng");
+		String dobP2 = propertyData.getProperty("stacking.p2.dob.ng");
+		String genderP2 = propertyData.getProperty("stacking.p2.gender.ng");
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.appointmentStackingEnable(driver, adminuser, testData, appType, providerName);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss Button");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP1, lastNameP1, dobP1, "", genderP1,
+				"", "");
+		homePage.btnStartSchedClick();
+		String Patient1FirstTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
+				providerName);
+		log("Time of First Patient First Time Booking is  " + Patient1FirstTime);
+		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP1, lastNameP1, dobP1, "", genderP1, "", "");
+		homePage.btnStartSchedClick();
+		String patient1SecondBookTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
+				providerName);
+		log("Time of First Patient Second Time Booking is " + patient1SecondBookTime);
+		assertNotEquals(patient1SecondBookTime, Patient1FirstTime);
+
+		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP2, lastNameP2, dobP2, "", genderP2, "", "");
+		homePage.btnStartSchedClick();
+		String secondPatientTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
+				providerName);
+		log("Patient 2 Time Is " + secondPatientTime);
+		assertEquals(secondPatientTime, Patient1FirstTime);
+		logStep("ReSetting Admin UI For Overbooking");
+		adminUtils.appointmentStackingDisable(driver, adminuser, testData, appType, providerName);
+
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentStackingGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		logStep("Setting Rule By Using Adapter Modulator Api Call");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		apv.responseCodeValidation(response, 200);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(responseForDeleteRule, 200);
+		}
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(responseRulePost, 200);
+
+		Response responseRulePostTBL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.rulePayload("TBL", "T,B,L"));
+		apv.responseCodeValidation(responseRulePostTBL, 200);
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);
+
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientMatchGE());
+		apv.responseCodeValidation(response, 200);
+
+		String appType = propertyData.getProperty("stacking.apptype.ge");
+		String providerName = propertyData.getProperty("stacking.provider.ge");
+		String locationName = propertyData.getProperty("stacking.location.ge");
+
+		String firstNameP1 = propertyData.getProperty("stacking.p1.firstname.ge");
+		String lastNameP1 = propertyData.getProperty("stacking.p1.lastname.ge");
+		String dobP1 = propertyData.getProperty("stacking.p1.dob.ge");
+		String genderP1 = propertyData.getProperty("stacking.p1.gender.ge");
+
+		String firstNameP2 = propertyData.getProperty("stacking.p2.firstname.ge");
+		String lastNameP2 = propertyData.getProperty("stacking.p2.lastname.ge");
+		String dobP2 = propertyData.getProperty("stacking.p2.dob.ge");
+		String genderP2 = propertyData.getProperty("stacking.p2.gender.ge");
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.appointmentStackingEnableGE(driver, adminuser, testData, appType, providerName);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP1, lastNameP1, dobP1, "", genderP1,
+				"", "");
+		homePage.btnStartSchedClick();
+		String Patient1FirstTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
+				providerName);
+		log("Patient 1 First booking time  " + Patient1FirstTime);
+		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP1, lastNameP1, dobP1, "", genderP1, "", "");
+		homePage.btnStartSchedClick();
+		String Patient1SecondTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
+				providerName);
+		log("Patient 1 Second Booking Time is " + Patient1SecondTime);
+		assertNotEquals(Patient1SecondTime, Patient1FirstTime);
+
+		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP2, lastNameP2, dobP2, "", genderP2, "", "");
+		homePage.btnStartSchedClick();
+		String secondPatientTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
+				providerName);
+		log("Patient 2 Time Is " + secondPatientTime);
+		assertEquals(secondPatientTime, Patient1FirstTime);
+		logStep("ReSetting Admin UI For Overbooking");
+		adminUtils.appointmentStackingDisableGE(driver, adminuser, testData, appType, providerName);
+
 	}
 
 }

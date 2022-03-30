@@ -57,6 +57,18 @@ public class AppointmentPage extends PSS2MainPage {
 		selectNextStep(isPopUpSelected);
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
+	
+	public AppointmentQuestionsPage selectApptTypeDecisionTree(String decisionTreeApptTypeName) {
+		log("appointmentTypeList " + appointmentTypeList.size());
+		for (int i = 0; i < appointmentTypeList.size(); i++) {
+			if (appointmentTypeList.get(i).getText().contains(decisionTreeApptTypeName)) {
+				appointmentTypeList.get(i).click();
+				return PageFactory.initElements(driver, AppointmentQuestionsPage.class);
+			}
+		}
+		log("no matching appointment found ");
+		return PageFactory.initElements(driver, AppointmentQuestionsPage.class);
+	}
 
 	public AppointmentDateTime selectAppointmentandClick(String appointmentType, Boolean isPopUpSelected) {
 		log("appointmentTypeList " + appointmentTypeList.size());

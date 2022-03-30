@@ -10,6 +10,8 @@ import org.openqa.selenium.WebElement;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.medfusion.product.object.maps.pss2.decisionTree.ManageDecisionTree;
+import com.medfusion.product.object.maps.pss2.decisionTree.ManageGeneralInformation;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
 import com.medfusion.product.object.maps.pss2.page.CancelReason.ManageCancelReason;
@@ -948,6 +950,58 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageAppointmentType.excludeBtnWithTwoValues(firstValue , secondValue);
 	}
 	
+	public void decisionTreeSettingsWithProviderOFF(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+			String appointmentType, String reasonForAppointment) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		patientflow.removeAllRules();
+		Thread.sleep(2000);
+		patientflow.turnOffProvider();
+		setRulesNoProviderSet2(patientflow);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.importDecisionTree(decisionTreeName);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.setApptTypeDecisionTree(appointmentType);
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.publishGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
+	public void addMultipleFieldsInDecisionTree(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		patientflow.removeAllRules();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.addDecisionTree(decisionTreeName);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.addQuestionInDecisionTree(questionForAppointment);
+		manageGeneralInformation.addAnswerOneInDecisionTree(decisionTreeAnswer);
+		manageGeneralInformation.setApptTypeDecisionTreeSet2(appointmentType);
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.publishGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
+	public void decisionTreeDeletion(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName) 
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.removedDecisionTree(decisionTreeName);
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
 	public void resetExcludeSlotAppointmentType(WebDriver driver, AdminUser adminuser, Appointment appointment, String appointmentType) throws Exception {
 		
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
@@ -1265,5 +1319,89 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		}
 
 		patientFlow.logout();
+	}
+	
+	public void appointmentStackingEnable(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		Log4jUtil.log("Status for OverBooking is " + manageResource.overBookingStatus());
+		appointment.setAppointmentStacking(manageResource.overBookingStatus());
+
+		if (appointment.isAppointmentStacking() == false) {
+			manageResource.overBookingClick();
+		} else {
+			log("OverBooking Already On");
+		}
+		patientFlow.logout();
+		
+	}
+	
+	public void appointmentStackingDisable(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		Log4jUtil.log("Status for OverBooking is " + manageResource.overBookingStatus());
+		appointment.setPreventBacktoBackToggleStatus(manageResource.overBookingStatus());
+
+		if (appointment.isAppointmentStacking() == true) {
+			manageResource.overBookingClick();
+		} else {
+			log("OverBooking Already OFF");
+		}
+		patientFlow.logout();
+		
+	}
+	
+	public void appointmentStackingEnableGE(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		Log4jUtil.log("Status for OverBooking is " + manageResource.overBookingStatus());
+		appointment.setAppointmentStacking(manageResource.overBookingStatus());
+
+		if (appointment.isAppointmentStacking() == false) {
+			manageResource.overBookingClickGE();
+		} else {
+			log("OverBooking Already On");
+		}
+		patientFlow.logout();
+		
+	}
+	
+	public void appointmentStackingDisableGE(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		Log4jUtil.log("Status for OverBooking is " + manageResource.overBookingStatus());
+		appointment.setAppointmentStacking(manageResource.overBookingStatus());
+
+		if (appointment.isAppointmentStacking() == true) {
+			manageResource.overBookingClickGE();
+		} else {
+			log("OverBooking Already Off");
+		}
+		patientFlow.logout();
+		
 	}
 }
