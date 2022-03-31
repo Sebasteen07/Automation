@@ -54,6 +54,10 @@ locals {
     dev3-pss-api-geadapter-acceptance  = "dev3-pss-api-geadapter-acceptance"
     dev3-pss-api-ngadapter-acceptance  = "dev3-pss-api-ngadapter-acceptance"
     dev3-pss-regression1               = "dev3-pss-regression1"
+    qa1-integration-acceptance         = "qa1-integration-acceptance"
+    qa1-integration-acceptance-2_0     = "qa1-integration-acceptance-2_0"
+    qa1-integration-acceptance-oauth10 = "qa1-integration-acceptance-oauth10"
+    qa1-integration-regression         = "qa1-integration-regression"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
