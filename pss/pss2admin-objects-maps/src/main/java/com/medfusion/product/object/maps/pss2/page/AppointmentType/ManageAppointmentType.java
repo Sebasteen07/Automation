@@ -140,6 +140,12 @@ public class ManageAppointmentType extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"tabX33\"]/form/div[2]/table/tbody/tr[1]/td[2]/a")
 	private WebElement excludeSlotCheckBox;	
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']")
+	private WebElement overBookingToggle;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[1]/div[12]/div/label[1]/i")
+	private WebElement overBookingToggleClick;
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
@@ -148,6 +154,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	CommonMethods commonMethods = new CommonMethods(driver);
 	
 	public void searchByAptTypeName(String appointmentName) {
+		searchAppointment.clear();
 		searchAppointment.sendKeys(appointmentName);
 	}
 
@@ -323,5 +330,14 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		log("Exclude Btn reset");
 		appointmenttypeSave.click();	
 	}
-	
+	public boolean overBookingStatus() {
+		boolean bool = overBookingToggle.isSelected();
+		log("Status of OverBooking -" + bool);
+		return bool;
+	}
+
+	public void overBookingClick() {
+		overBookingToggleClick.click();
+		appointmenttypeSave.click();
+	}
 }
