@@ -92,8 +92,8 @@ public class AppointmentDataPayload {
 
 			mainRootElement.appendChild(AppointmentMessageHeader);
 			// End AppointmentMessageHeader Node
-			testData.Time = this.getCalculatedDate("YYYY-MM-dd", 30);
-			String[] time = {testData.Time + "T00:00:00.000Z", testData.appointmentDetailList.get(2).getTime()};
+			testData.Time = this.getCalculatedDate("YYYY-MM-dd", 30) + "T00:00:00.000Z";
+			String[] time = {testData.Time, testData.appointmentDetailList.get(2).getTime()};
 			String[] status = { testData.Status, testData.appointmentDetailList.get(2).getStatus() };
 
 			String[] pId = { testData.PatientPracticeId, testData.PatientPracticeId };
