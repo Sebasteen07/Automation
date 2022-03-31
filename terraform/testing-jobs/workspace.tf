@@ -51,6 +51,9 @@ locals {
     demo-payreporting-smoke            = "demo-payreporting-smoke"
     demo-precheck                      = "demo-precheck"
     demo-rcm-acceptance                = "demo-rcm-acceptance"
+    dev3-pss-api-geadapter-acceptance  = "dev3-pss-api-geadapter-acceptance"
+    dev3-pss-api-ngadapter-acceptance  = "dev3-pss-api-ngadapter-acceptance"
+    dev3-pss-regression1               = "dev3-pss-regression1"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
