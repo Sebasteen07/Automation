@@ -66,6 +66,19 @@ public class Provider extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, Location.class);
 	}
+	
+	public Location selectLocation1(String providerName) {
+		log("in selectLocation providerList" + providerName);
+		for (int i = 0; i < providerList1.size(); i++) {
+			log(providerList1.get(i).getText() + " match "
+					+ providerList1.get(i).getText().equalsIgnoreCase(providerName));
+			if (providerList1.get(i).getText().trim().equalsIgnoreCase(providerName.trim())) {
+				providerList1.get(i).click();
+				return PageFactory.initElements(driver, Location.class);
+			}
+		}
+		return PageFactory.initElements(driver, Location.class);
+	}
 
 	public AppointmentPage selectAppointment(String providerName) {
 		log("size= " + providerList.size());
@@ -184,6 +197,26 @@ public class Provider extends PSS2MainPage {
 				log("Search Provider");
 				log("Provider of user found at " + providerList.get(i).getText());
 				providerList.get(i).click();
+				log("Clicked on Provider");
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
+	
+	public AppointmentDateTime getProviderandClick1(String providerName) throws InterruptedException {
+		log("in select Provider from providerList" + providerName);
+		log("Size is " + providerList1.size());
+		Thread.sleep(1000);
+		for (int i = 0; i < providerList1.size(); i++) {
+			log(providerList1.get(i).getText() + " match " + providerList1.get(i).getText().contains(providerName));
+			if (providerList1.get(i).getText().trim().contains(providerName.trim())) {
+				CommonMethods.highlightElement(providerList1.get(i));
+				IHGUtil.waitForElement(driver, 13, providerList1.get(i));
+				Thread.sleep(1000);
+				log("Search Provider");
+				log("Provider of user found at " + providerList1.get(i).getText());
+				providerList1.get(i).click();
 				log("Clicked on Provider");
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
