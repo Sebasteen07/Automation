@@ -1453,45 +1453,4 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientFlow.logout();
 		
 	}
-	
-	public void appointmentStackingEnableShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,
-			String appointmentType) throws Exception {
-
-		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
-		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
-		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
-		manageAppointmentType.selectAppointment(appointmentType);
-		manageAppointmentType.gotoConfiguration();
-		log("Status for OverBooking is " + manageAppointmentType.overBookingStatus());
-		appointment.setAppointmentStacking(manageAppointmentType.overBookingStatus());
-		log("Status for OverBooking After set  " + appointment.isAppointmentStacking());
-		if (appointment.isAppointmentStacking() == false) {
-			manageAppointmentType.overBookingClick();
-		} else {
-			log("OverBooking Already On");
-		}
-		pssPracticeConfig.logout();
-
-	}
-	
-	
-	public void appointmentStackingDisableShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,
-			String appointmentType) throws Exception {
-
-		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
-		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
-		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
-		manageAppointmentType.selectAppointment(appointmentType);
-		manageAppointmentType.gotoConfiguration();
-		log("Status for OverBooking is " + manageAppointmentType.overBookingStatus());
-		appointment.setAppointmentStacking(manageAppointmentType.overBookingStatus());
-		log("Status for OverBooking After set  " + appointment.isAppointmentStacking());
-		if (appointment.isAppointmentStacking() == true) {
-			manageAppointmentType.overBookingClick();
-		} else {
-			log("OverBooking Already OFF");
-		}
-		pssPracticeConfig.logout();
-
-	}
 }

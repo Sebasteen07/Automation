@@ -5140,139 +5140,6 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.saveNotification();
 	}
 	
-	@When("I click on settings tab")
-	public void i_click_on_settings_tab() {
-	   mainPage.clickOnSettingTab();
-	}
-	@When("I click on notifications tab")
-	public void i_click_on_notifications_tab() {
-	    notifPage.clickOnNotificationTab();
-	}
-	@When("I select send notifications as On and Save notifications")
-	public void i_select_send_notifications_as_on_and_save_notifications() throws InterruptedException {
-	   notifPage.onNotification();
-	   notifPage.saveNotification();
-	}
-	@When("I click on appointments tab")
-	public void i_click_on_appointments_tab() {
-	   mainPage.clickOnAppointmentsTab();
-	}
-	@When("I schedule an appointment when notification is on")
-	public void i_schedule_an_appointment_when_notification_is_on() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generateRandomNum();
-		Appointment.apptId = commonMethod.generateRandomNum();
-		Appointment.randomNumber = commonMethod.generateRandomNum();
-		long currentTimestamp = System.currentTimeMillis();
-		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
-		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("apt.precheck.practice.id"),
-				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
-				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
-				Appointment.apptId);
-	}
-	@When("I send reminder to the patient")
-	public void i_send_reminder_to_the_patient() throws InterruptedException {
-		 apptPage.filterPatientId(Appointment.patientId);
-		 apptPage.selectFirstPatient();
-		 apptPage.clickOnActions();
-		 apptPage.clickOnSendReminder();
-	}
-	@Then("I verify system should send reminder,curbside mail to patient")
-	public void i_verify_system_should_send_reminder_curbside_mail_to_patient() throws NullPointerException, Exception {
-		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appointment.email.subject"),
-				propertyData.getProperty("appointment.email.title"), 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appt.email.subject"),
-				"Appointment Reminder", 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("curbside.checkin.mail.subject"),
-				propertyData.getProperty("curbside.checkin.mail.title"), 5));
-		
-		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
-		
-	}
-	@When("I select send notifications as Off and Save notifications")
-	public void i_select_send_notifications_as_off_and_save_notifications() throws InterruptedException {
-	    notifPage.offNotification();
-	    notifPage.saveNotification();
-	}
-	@When("I schedule an appointment when notification is off")
-	public void i_schedule_an_appointment_when_notification_is_off() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generateRandomNum();
-		Appointment.apptId = commonMethod.generateRandomNum();
-		Appointment.randomNumber = commonMethod.generateRandomNum();
-		long currentTimestamp = System.currentTimeMillis();
-		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
-		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("apt.precheck.practice.id"),
-				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
-				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
-				Appointment.apptId);
-	}
-	@Then("I verify system should not send reminder,curbside mail to patient")
-	public void i_verify_system_should_not_send_reminder_curbside_mail_to_patient() throws NullPointerException, Exception {
-		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appointment.email.subject"),
-				propertyData.getProperty("appointment.email.title"), 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appt.email.subject"),
-				"Appointment Reminder", 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("curbside.checkin.mail.subject"),
-				propertyData.getProperty("curbside.checkin.mail.title"), 5));
-		
-		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
-	}
-	@Then("I verify in appt dashboard reminder and broadcast column will not be visible")
-	public void i_verify_in_appt_dashboard_reminder_and_broadcast_column_will_not_be_visible() {
-		assertFalse(apptPage.sendReminderEmailColumn());
-		assertFalse(apptPage.sendRemibderTextColumn());
-		assertFalse(apptPage.broadcastMessageEmailColumn());
-		assertFalse(apptPage.visibilityBroadcastMessageTextColumn());
-	}
-	@When("I select the patient and click on actions dropdown")
-	public void i_select_the_patient_and_click_on_actions_dropdown() throws InterruptedException {
-		apptPage.filterPatientId(Appointment.patientId);
-		apptPage.selectFirstPatient();
-		apptPage.clickOnActions();
-	}
-	@Then("there will be no options for send a broadcast and send a reminder in Actions dropdown")
-	public void there_will_be_no_options_for_send_a_broadcast_and_send_a_reminder_in_actions_dropdown() {
-		assertFalse(apptPage.visibilityOfSendReminderButton());
-		assertFalse(apptPage.visibilityOfBroadcastMessageButton());
-	}
-	@When("I go to settings tab")
-	public void i_go_to_settings_tab() {
-		mainPage.clickOnSettingTab();
-	}
-	@When("when from settings email checkbox is enable")
-	public void when_from_settings_email_checkbox_is_enable() {
-		generalPage.enableEmailCheckbox();
-		
-	}
-	@When("I click on appointment tab")
-	public void i_click_on_appointment_tab() {
-	    mainPage.clickOnAppointmentsTab();
-	}
-	@When("I schedule an appointment when email checkbox is on")
-	public void i_schedule_an_appointment_when_email_checkbox_is_on() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generateRandomNum();
-		Appointment.apptId = commonMethod.generateRandomNum();
-		Appointment.randomNumber = commonMethod.generateRandomNum();
-		long currentTimestamp = System.currentTimeMillis();
-		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
-		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("apt.precheck.practice.id"),
-				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
-				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
-				Appointment.apptId);
-	}
 	@When("I click on page {int} from appointment dashboard")
 	public void i_click_on_page_from_appointment_dashboard(Integer int1) throws InterruptedException {
 		apptPage.enterStartTimeWithinMonth();
@@ -5499,84 +5366,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("apt.precheck.practice.id"),
-				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
-				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
-				Appointment.apptId);
-	}
-	@When("I send broadcast message on email")
-	public void i_send_broadcast_message_on_email() throws Exception {
-		apptPage.filterPatientId(Appointment.patientId);
-		apptPage.selectFirstPatient();
-		apptPage.performAction();
-		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
-			   propertyData.getProperty("broadcast.message.es"));
-	}
-	@Then("I verify system should send reminder,curbside,broadcast on email")
-	public void i_verify_system_should_send_reminder_curbside_broadcast_on_email() throws NullPointerException, Exception {
-		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appointment.email.subject"),
-				propertyData.getProperty("appointment.email.title"), 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("broadcast.email.subject"),
-				propertyData.getProperty("broadcast.email.title"), 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appt.email.subject"),
-				"Appointment Reminder", 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("curbside.checkin.mail.subject"),
-				propertyData.getProperty("curbside.checkin.mail.title"), 5));
-		
-		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
-	}
-	@When("when from settings email checkbox is disable")
-	public void when_from_settings_email_checkbox_is_disable() throws InterruptedException {
-		generalPage.enableAndDisableEmailCheckbox();
-		generalPage.clickOnUpdateSettingbutton();
-	}
-	@When("I schedule an appointment when email checkbox is off")
-	public void i_schedule_an_appointment_when_email_checkbox_is_off() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generateRandomNum();
-		Appointment.apptId = commonMethod.generateRandomNum();
-		Appointment.randomNumber = commonMethod.generateRandomNum();
-		long currentTimestamp = System.currentTimeMillis();
-		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
-		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("apt.precheck.practice.id"),
-				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
-				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
-				Appointment.apptId);
-	}
-	@Then("I verify system should not send reminder,curbside on email")
-	public void i_verify_system_should_not_send_reminder_curbside_on_email() throws NullPointerException, Exception {
-		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appointment.email.subject"),
-				propertyData.getProperty("appointment.email.title"), 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appt.email.subject"),
-				"Appointment Reminder", 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("curbside.checkin.mail.subject"),
-				propertyData.getProperty("curbside.checkin.mail.title"), 5));
-		
-		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
-	}
-	
-	@When("I schedule an appointment using schedule Appointment API")
-	public void i_schedule_an_appointment_using_schedule_appointment_api() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generateRandomNum();
-		Appointment.apptId = commonMethod.generateRandomNum();
-		Appointment.randomNumber = commonMethod.generateRandomNum();
-		long currentTimestamp = System.currentTimeMillis();
-		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
-		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("apt.precheck.practice.id"),
-				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.sche.phone.number"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 				Appointment.apptId);
 	}
@@ -5671,49 +5463,13 @@ public class ApptPrecheckSteps extends BaseTest {
 		Appointment.apptId = commonMethod.generateRandomNum();
 		Appointment.randomNumber = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
-		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(time);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("apt.precheck.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com", "en", patientName),
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 				Appointment.apptId);
-	}
-	@Then("I verify appointment should be received from {string} in email")
-	public void i_verify_appointment_should_be_received_from_in_email(String string) throws NullPointerException, Exception {
-		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appointment.email.subject"),
-				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
-		
-	}
-	@Then("I verify confirmation reminder for appointment should be received from {string} in email")
-	public void i_verify_confirmation_reminder_for_appointment_should_be_received_from_in_email(String string) throws NullPointerException, Exception {
-		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appt.email.subject"),
-				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
-	}
-	@Then("I verify appointment should be received from {string} in email for curbside reminder")
-	public void i_verify_appointment_should_be_received_from_in_email_for_curbside_reminder(String string) throws NullPointerException, Exception {
-		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("curbside.checkin.mail.subject"),
-				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
-	}
-	@Then("I verify appointment should be received from {string} in email for broadcast reminder")
-	public void i_verify_appointment_should_be_received_from_in_email_for_broadcast_reminder(String string) throws NullPointerException, Exception {
-		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("broadcast.email.subject"),
-				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
-	}
-	@Then("I verify appointment should be received from {string} in email for manual reminder")
-	public void i_verify_appointment_should_be_received_from_in_email_for_manual_reminder(String string) throws NullPointerException, Exception {
-		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
-				propertyData.getProperty("appt.email.subject"),
-				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
 	}
 
 	@When("I received curbside message on email and confirm arrival")

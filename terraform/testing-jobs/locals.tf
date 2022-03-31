@@ -760,51 +760,6 @@ locals {
       chrome_driver_version = "99.0.4844.51"
       cron_shedule          = "cron(5 23 ? * 2 *)"
     }
-
-    "dev3-pss-api-geadapter-acceptance" = {
-      codecommit_branch     = "development"
-      PollForSourceChanges  = false
-      execution_folder      = "pss/pss2patientui-automation"
-      test_environment      = "dev3"
-      suite_xml             = "pss-ge-adpter-acceptancetest.xml"
-      pxp_application       = "PatientSelfScheduling"
-      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
-      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
-      maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
-    }
-
-    "dev3-pss-api-ngadapter-acceptance" = {
-      codecommit_branch     = "development"
-      PollForSourceChanges  = false
-      execution_folder      = "pss/pss2patientui-automation"
-      test_environment      = "dev3"
-      suite_xml             = "pss-ng-adpter-acceptancetest.xml"
-      pxp_application       = "PatientSelfScheduling"
-      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
-      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
-      maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
-    }
-
-    "dev3-pss-regression1" = {
-      codecommit_branch     = "development"
-      PollForSourceChanges  = false
-      execution_folder      = "pss/pss2patientui-automation"
-      test_environment      = "dev3"
-      suite_xml             = "pss-ng-tc.xml"
-      pxp_application       = "PatientSelfScheduling"
-      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
-      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
-      maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
-    }
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)

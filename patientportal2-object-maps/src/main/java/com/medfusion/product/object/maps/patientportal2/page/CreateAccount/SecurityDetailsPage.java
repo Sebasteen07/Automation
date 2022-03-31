@@ -110,7 +110,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber,
 				int statementPreference) throws InterruptedException {
-			    Thread.sleep(5000);
+			Thread.sleep(5000);
 				IHGUtil.PrintMethodName();
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
 				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
@@ -118,7 +118,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 				log("Clicking finish btn");
 				buttonFinishStep.click();
 				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
-				Thread.sleep(8000);
+				Thread.sleep(10000);
 				handleWeNeedToConfirmSomethingModal();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}

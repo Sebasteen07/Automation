@@ -236,7 +236,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLoginValidCredentialsAndValidateMenuElements() throws InterruptedException {
+	public void testLoginValidCredentialsAndValidateMenuElements() {
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
@@ -933,6 +933,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
 	}
 
+	
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayBills() throws Exception {
 		logStep("Initiate payment data");
@@ -1161,7 +1162,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		YopMail mail = new YopMail(driver);
 		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail, emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT,
 				15);
-
+		
 		assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
 		if (!isInviteLinkFinal(guardianUrlEmail)) {
 			guardianUrlEmail = getRedirectUrl(guardianUrlEmail);
@@ -1557,7 +1558,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInviteTrustedRepresentativeWithAccount() throws Exception {
 		createPatient();
-		String email = testData.getProperty("trusted.rep.email")+ "@yopmail.com";
+		String email = testData.getProperty("tr.user.id") + IHGUtil.createRandomNumber() + "@yopmail.com";
 
 		logStep("Go to account page");
 		JalapenoHomePage homePage = new JalapenoHomePage(driver);
@@ -2016,7 +2017,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at "
 				+ testData.getPracticeName();
 		System.out.println("This is the emailSubjectGuardian::" + emailSubjectGuardian);
-
+		
 		YopMail mail = new YopMail(driver);
 		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail, emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT,
 				10);
@@ -2757,6 +2758,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String notificationEmailSubject = "Payment Receipt";
 		String mailAddress = patient.getEmail();
 //		assertTrue(mail.getEmailContentText(mailAddress, notificationEmailSubject, "************", 10));
+
 
 	}
 
@@ -6075,7 +6077,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver);
 		assertTrue(loginPage.checkResetPasswordError(resetUrl));
 	}
-
+	
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testTermsOfServicePopUp() throws Exception {
 
@@ -6093,7 +6095,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Validate presence of Terms of Service popup in Security Details Page");
 		assertTrue(accountDetailsPage.isTermsOfServicePopupDisplayed());
-
+		
 	}
 
 	public void testBanner() throws Exception {
@@ -6127,39 +6129,4 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		homePage.clickOnLogout();
 	}
-	
-	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAccountlocked() throws Exception {
-		createCommonPatient();
-		logStep("Load login page");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-
-		logStep("Clicking on forgot username or password");
-		JalapenoForgotPasswordPage forgotPasswordPage = loginPage.clickForgotPasswordButton();
-
-		JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPage(patient.getEmail());
-		logStep("Message was sent, closing");
-		forgotPasswordPage2.clickCloseButton();
-
-		logStep("Logging into yopmail and getting ResetPassword url");
-		String[] mailAddress = patient.getEmail().split("@");
-		String emailSubject = "Help with your user name or password";
-		String inEmail = "Reset Password Now";
-
-		YopMail mail = new YopMail(driver);
-		String url = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
-
-		if (!isInviteLinkFinal(url)) {
-			url = getRedirectUrl(url);
-		}
-		assertNotNull(url, "Url is null.");
-
-		JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
-		
-		logStep("Redirecting to patient portal, filling wrong secret answer as: " + testData.getProperty("wrong.secret.answer"));
-		logStep("Looking for account has been locked because you have entered an incorrect answer too many times message");
-		forgotPasswordPage3.fillInWrongSecretAnswer(testData.getProperty("wrong.secret.answer"));
-
-	}
-
 }
