@@ -1042,7 +1042,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
-	public void decisionTreeDeletionWithSpecialty(WebDriver driver, AdminUser adminUser, Appointment appointment, 
+	public void decisionTreeDeletionWithSpeciality(WebDriver driver, AdminUser adminUser, Appointment appointment, 
 			String decisionTreeName, String specilityName) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();

@@ -75,16 +75,16 @@ public class ManageDecisionTree extends PSS2MainPage {
 	private WebElement editGeneralTab;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[2]/a")
-	private WebElement editSpecialtyTab;
+	private WebElement editSpecialityTab;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tab33']/table/tbody/tr/td[1]")
-	private WebElement selectSpecialtyName;
+	private WebElement selectSpecialityName;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='search-specialty']")
-	private WebElement searchForSpecialty;
+	private WebElement searchForSpeciality;
 
 	@FindBy(how = How.XPATH, using = "//label[@class='switch']/i")
-	private WebElement toggleSpecialtyONOFF;
+	private WebElement toggleSpecialityONOFF;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/a")
 	private WebElement settingBtn;
@@ -106,8 +106,8 @@ public class ManageDecisionTree extends PSS2MainPage {
 	
 	public void searchSpecility(String specilityName) {
 		log("Enter the speciality name and Search speciality");
-		IHGUtil.waitForElement(driver, 60, searchForSpecialty);
-		searchForSpecialty.sendKeys(specilityName);
+		IHGUtil.waitForElement(driver, 60, searchForSpeciality);
+		searchForSpeciality.sendKeys(specilityName);
 	}
 	
 	public void selectSpecility(String specilityName) throws InterruptedException {
@@ -119,15 +119,15 @@ public class ManageDecisionTree extends PSS2MainPage {
 		}
 	
 	public void clickOnSpecialtyTab() {
-		commonMethods.highlightElement(editSpecialtyTab);
-		IHGUtil.waitForElement(driver, 60, editSpecialtyTab);
-		editSpecialtyTab.click();
+		commonMethods.highlightElement(editSpecialityTab);
+		IHGUtil.waitForElement(driver, 60, editSpecialityTab);
+		editSpecialityTab.click();
 		log("Clicked On Specialty Tab From Decision Tree ");
 	}
 
 	public void clickOnSpecialtyToggle() {
-		IHGUtil.waitForElement(driver, 60, toggleSpecialtyONOFF);
-		toggleSpecialtyONOFF.click();
+		IHGUtil.waitForElement(driver, 60, toggleSpecialityONOFF);
+		toggleSpecialityONOFF.click();
 		log("Clicked on Specialty Toggle button");
 	}
 	
