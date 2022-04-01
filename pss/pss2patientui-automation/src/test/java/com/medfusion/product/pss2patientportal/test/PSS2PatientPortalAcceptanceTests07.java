@@ -911,7 +911,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		logStep("Move to PSS admin Portal to login and then delete decision tree");
-		adminUtils.decisionTreeDeletionWithSpeciality(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getSpeciality());
+		adminUtils.decisionTreeDeletionWithSpecialty(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getSpeciality());
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -968,7 +968,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		logStep("Move to PSS admin Portal to login and then delete decision tree");
-		adminUtils.decisionTreeDeletionWithSpeciality(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getSpeciality());
+		adminUtils.decisionTreeDeletionWithSpecialty(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getSpeciality());
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1025,6 +1025,6 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		logStep("Move to PSS admin Portal to login and then delete decision tree");
-		adminUtils.decisionTreeDeletionWithSpeciality(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getSpeciality());
+		adminUtils.decisionTreeDeletionWithSpecialty(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getSpeciality());
 	}
 }

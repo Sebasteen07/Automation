@@ -75,15 +75,15 @@ public class ManageDecisionTree extends PSS2MainPage {
 	private WebElement editGeneralTab;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[2]/a")
-	private WebElement editSpecialityTab;
+	private WebElement editSpecialtyTab;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tab33']/table/tbody/tr/td[1]")
-	private WebElement selectSpecialityName;
+	private WebElement selectSpecialtyName;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='search-specialty']")
 	private WebElement searchForSpecialty;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='tab33']/table/tbody/tr/td[3]/div/label/i")
+	@FindBy(how = How.XPATH, using = "//label[@class='switch']/i")
 	private WebElement toggleSpecialtyONOFF;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/a")
@@ -119,9 +119,9 @@ public class ManageDecisionTree extends PSS2MainPage {
 		}
 	
 	public void clickOnSpecialtyTab() {
-		commonMethods.highlightElement(editSpecialityTab);
-		IHGUtil.waitForElement(driver, 60, editSpecialityTab);
-		editSpecialityTab.click();
+		commonMethods.highlightElement(editSpecialtyTab);
+		IHGUtil.waitForElement(driver, 60, editSpecialtyTab);
+		editSpecialtyTab.click();
 		log("Clicked On Specialty Tab From Decision Tree ");
 	}
 
