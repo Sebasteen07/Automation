@@ -692,7 +692,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		Provider provider = apptQuestion.selectAnswerFromQue(decisionTreeAnswer,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verify Provider Page and Provider = " + testData.getProvider());
-		AppointmentDateTime aptDateTime = provider.getProviderandClick1(testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
 		if(aptDateTime.chooseAppttypeText(reasonForAppointment).equals(reasonForAppointment)) {
 			Assert.assertTrue(true);
 			log("Reason for appointment is matching");
@@ -826,7 +826,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void publishedCategoryWIthProviderON_NG() throws Exception {
+	public void publishedCategoryWithProviderON_NG() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -857,7 +857,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		Provider provider = apptQuestion.selectAnswerFromQue(decisionTreeAnswer,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verify Provider Page and Provider = " + testData.getProvider());
-		AppointmentDateTime aptDateTime = provider.getProviderandClick1(testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
 		if(aptDateTime.chooseAppttypeText(reasonForAppointment).equals(reasonForAppointment)) {
 			Assert.assertTrue(true);
 			log("Reason for appointment is matching");

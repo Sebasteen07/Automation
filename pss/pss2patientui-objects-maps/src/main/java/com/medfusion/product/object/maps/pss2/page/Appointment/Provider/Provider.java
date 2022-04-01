@@ -204,7 +204,7 @@ public class Provider extends PSS2MainPage {
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 	
-	public AppointmentDateTime getProviderandClick1(String providerName) throws InterruptedException {
+	public AppointmentDateTime getProviderAndClick1(String providerName) throws InterruptedException {
 		log("in select Provider from providerList" + providerName);
 		log("Size is " + providerList1.size());
 		Thread.sleep(1000);
