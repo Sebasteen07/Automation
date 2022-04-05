@@ -95,7 +95,12 @@ public class HealthFormListPage extends BasePageObject {
 		formValueNew = healthFormsRegistrationLink.getText();
 		healthFormsRegistrationLink.click();
 		IHGUtil.waitForElement(driver, 80, Continuebutton1);
-		driver.switchTo().frame(iframeforms);
+		try {
+			driver.switchTo().frame(iframeforms);
+		} catch (Exception e) {
+			log(e.getMessage());
+		}
+		log("Clicking on continue button.");
 		Continuebutton1.click();
 	}
 
