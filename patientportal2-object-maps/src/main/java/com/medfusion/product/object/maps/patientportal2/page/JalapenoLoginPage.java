@@ -13,6 +13,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
+import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
 
@@ -68,6 +69,9 @@ public class JalapenoLoginPage extends MedfusionPage {
 	
 	@FindBy(how = How.XPATH, using = "//div[contains(@class,'broadcastMessage')]")
     private WebElement broadCastMessage;
+	
+	@FindBy(how = How.ID, using = "credential")
+	private WebElement wrongPwdAccounLockout;
 	
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
@@ -214,21 +218,21 @@ public class JalapenoLoginPage extends MedfusionPage {
     }
 
 	public boolean loginWithWrongPassword(String username) throws InterruptedException {
-		log("Looking for Account Locked Out error message on loginPage after logging in 5 times with wrong password");
-		for(int i=1;i<=10;i++)
-		{
-		System.out.println(i);
-		String wrongPassword ="wrong" + IHGUtil.createRandomNumericString();
-		makeLogin(username, wrongPassword);
-		Thread.sleep(2000);
-//		if(i==7)
-//		{
-//			log("User entered Wrong password for 5 times,");
-//			Thread.sleep(3000);
-//		}
+		IHGUtil.PrintMethodName();
+		String wrongPassword= "wrongPassword" + IHGUtil.createRandomNumber();
+		IHGUtil.waitForElement(driver, 60, inputPassword);
+		inputUserName.sendKeys(username);
+		int i = 1;
+		while (i < 6) {
+			
+			inputPassword.sendKeys(wrongPassword);
+			buttonSignIn.click();
+			inputPassword.clear();
+			i++;
 		}
-		return true;
-		
+		log("Looking for account locked out message");
+		return wrongPwdAccounLockout.isDisplayed();
+
 	}
 
 }
