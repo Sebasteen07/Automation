@@ -1455,7 +1455,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		pageRefresh(driver);
 		manageResource.selectResource(providerName);
 		manageResource.selectAppointmenttype(appointmentType);
-		Log4jUtil.log("Status for OverBooking is " + manageResource.overBookingStatus());
+		log("Status for OverBooking is " + manageResource.overBookingStatus());
 		appointment.setAppointmentStacking(manageResource.overBookingStatus());
 
 		if (appointment.isAppointmentStacking() == false) {
@@ -1463,6 +1463,17 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		} else {
 			log("OverBooking Already On");
 		}
+		
+		log("Status for AppointmentDuration is " + manageResource.appointmentDurationStatus());
+		appointment.setAppointmentDuration(manageResource.appointmentDurationStatus());
+
+		if (appointment.isAppointmentDuration() == false) {
+			manageResource.appointmentDurationClick();
+		} else {
+			log("AppointmentDuration Already On");
+		}
+
+		
 		patientFlow.logout();
 		
 	}

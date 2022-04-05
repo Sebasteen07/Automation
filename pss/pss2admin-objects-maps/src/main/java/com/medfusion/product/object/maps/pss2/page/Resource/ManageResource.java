@@ -195,11 +195,20 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']")
 	private WebElement overBookingToggle;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[13]/div/label[1]/i")
+	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']/following-sibling::i")
 	private WebElement overBookingToggleclick;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[14]/div/label[1]/i")
 	private WebElement overBookingToggleclickGE;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='slotScaling']")
+	private WebElement appointmentDurationToggle;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='slotScaling']/following-sibling::i")
+	private WebElement appointmentDurationClick;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='schedulingDuration']")
+	private WebElement appointmentDurationSendKeys;
 
 	
 	public ManageResource(WebDriver driver) {
@@ -538,6 +547,19 @@ public class ManageResource extends PSS2MenuPage {
 	
 	public void overBookingClickGE() {
 		overBookingToggleclickGE.click();
+		appointmenttypeSave.click();
+	}
+	
+	public boolean appointmentDurationStatus() {
+		boolean bool = appointmentDurationToggle.isSelected();
+		log("Status of appointmentDurationToggle -" + bool);
+		return bool;
+	}
+
+	public void appointmentDurationClick() {
+		appointmentDurationClick.click();
+		appointmentDurationSendKeys.clear();
+		appointmentDurationSendKeys.sendKeys("30");
 		appointmenttypeSave.click();
 	}
 }
