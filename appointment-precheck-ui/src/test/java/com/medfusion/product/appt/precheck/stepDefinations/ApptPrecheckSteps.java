@@ -5145,6 +5145,10 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_click_on_settings_tab() {
 	   mainPage.clickOnSettingTab();
 	}
+	@When("I click on notifications tab")
+	public void i_click_on_notifications_tab() {
+	    notifPage.clickOnNotificationTab();
+	}
 	@When("I select send notifications as On and Save notifications")
 	public void i_select_send_notifications_as_on_and_save_notifications() throws InterruptedException {
 	   notifPage.onNotification();
@@ -5242,6 +5246,10 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void there_will_be_no_options_for_send_a_broadcast_and_send_a_reminder_in_actions_dropdown() {
 		assertFalse(apptPage.visibilityOfSendReminderButton());
 		assertFalse(apptPage.visibilityOfBroadcastMessageButton());
+	}
+	@When("I go to settings tab")
+	public void i_go_to_settings_tab() {
+		mainPage.clickOnSettingTab();
 	}
 	@When("when from settings email checkbox is enable")
 	public void when_from_settings_email_checkbox_is_enable() {
@@ -5810,14 +5818,6 @@ public class ApptPrecheckSteps extends BaseTest {
 	    assertTrue(generalPage.visibilityofdeletedProvider());
 	}
 
-	@When("I go to settings tab")
-	public void i_go_to_settings_tab() {
-	   mainPage.clickOnSettingTab();
-	}
-	@When("I click on notifications tab")
-	public void i_click_on_notifications_tab() {
-	    notifPage.clickOnNotificationTab();
-	}
 	@When("I click on practice preference language and select English and Spanish language from dropdown")
 	public void i_click_on_practice_preference_language_and_select_english_and_spanish_language_from_dropdown() throws InterruptedException {
 		notifPage.selectPracticeLanguagePreference("English & Spanish");
