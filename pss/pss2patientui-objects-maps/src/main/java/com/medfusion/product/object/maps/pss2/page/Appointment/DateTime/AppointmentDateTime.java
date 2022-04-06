@@ -84,25 +84,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 	
-	/*----New Method For Future Date APPT----*/
-	public String selectFutureDate1(Boolean nextMonthBooking) {
-		String dt = null;
-		if (nextMonthBooking) {
-			driver.findElement(By.className("rbc-next-month")).click();
-			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
-		}
-		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
-		for (int i = appointmentList.size() - 1; i >= 0; i--) {
-			if (appointmentList.get(i).isDisplayed()) {
-				log("Appointment Date selected=" + appointmentList.get(i).getText());
-				log("Value of i is " + i);
-				appointmentList.get(i).click();
-				dt = appointmentList.get(i).getText();
-				log("Date is " + dt);
-				return appointmentList.get(i).getText();			}
-		}
-		return dt;	}
-
 	public String selectDate(Boolean nextMonthBooking) {
 		String dt = null;
 		if (nextMonthBooking) {
