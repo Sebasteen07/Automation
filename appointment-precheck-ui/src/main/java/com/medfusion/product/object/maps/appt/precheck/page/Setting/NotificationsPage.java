@@ -757,6 +757,55 @@ public class NotificationsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//div[@class=' css-qc6sy-singleValue']")
 	private WebElement prcticeLanguage;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[3]")
+	private WebElement disableDisplayPatientFirstNameCheckbox;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='css-tlfecz-indicatorContainer'])[1]")
+	private WebElement clickTimingDropdownunderDesigntab;  
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text() ,'Hours')]")
+	private WebElement selectHourDropdownunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[1]")
+	private WebElement enterTimingUnitunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='css-tlfecz-indicatorContainer'])[2]")
+	private WebElement click2ndTimingDropdownunderDesigntab;  
+	
+	@FindBy(how = How.XPATH, using = "//div[text()='Minutes']")
+	private WebElement selectMinutesTimingDropdownunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[2]")
+	private WebElement enter2ndTimingUnitunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='css-tlfecz-indicatorContainer'])[3]")
+	private WebElement click3rdTimingDropdownunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text() , 'Days')]")
+	private WebElement selectDayDropdownunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[3]")
+	private WebElement enter3rdTimingUnitunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[1]")
+	private WebElement enter1stMinutesTimingUnitunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[2]")
+	private WebElement enter2ndHoursTimingUnitunderDesignTab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[contains(text() , 'Hours')])[2]")
+	private WebElement select2ndHourDropdownunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[3]")
+	private WebElement enter3rdHourtimingUnitunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-tlfecz-indicatorContainer'])[4]")
+	private WebElement click4thTimingDropdownunderDesigntab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[4]")
+	private WebElement enter4thTimingUnitunderDesigntab;
+	
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -2875,5 +2924,290 @@ public class NotificationsPage extends BasePageObject {
 		   log("select language as: "+prcticeLanguage.getText());
 	   }
 	}
+	
+	public String characterCount() {
+		WebElement element = driver.findElement(By.xpath("//label[@class='number-of-characters']"));
+		return element.getText();
+		
+	}
+	
+	public void disableDisplayPatientFirstNameCheckbox() throws InterruptedException {
+		boolean enabled = displayPatientFirstNameCheckbox.isEnabled();
+		if (!enabled) {
+			log("Disable 'Display patient's' first name' checkbox");
+			displayPatientFirstNameCheckbox.click();
+			Thread.sleep(3000);
+		}
+	}
+	
+	public void clickTimingDropdownunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, clickTimingDropdownunderDesigntab);
+		jse.executeScript("arguments[0].click();", clickTimingDropdownunderDesigntab);
+	}
+	
+	public void selectHourDropdownunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectHourDropdownunderDesigntab);
+		selectHourDropdownunderDesigntab.click();
+	}
+	
+	public void enterTimingUnitunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enterTimingUnitunderDesigntab);
+		enterTimingUnitunderDesigntab.clear();
+		enterTimingUnitunderDesigntab.sendKeys("23");
+	}
+	
+	public boolean visibilityOfselectHourDropdownunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectHourDropdownunderDesigntab);
+		if(selectHourDropdownunderDesigntab.isDisplayed()) {
+			log("Hours timing is displayed");
+			return true;
+		} else {
+			log("Hours timing is not displayed");
+			return false;
+		}
+		
+	}
+	
+	public boolean visibilityOfenterTimingUnitunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enterTimingUnitunderDesigntab);
+		if (enterTimingUnitunderDesigntab.isDisplayed()) {
+			log("Hours timing units is displayed");
+			return true;
+		} else {
+			log("Hours timing units is displayed");
+			return false;
+		}
+	}
+	
+	public void selectMinutesTimingDropdownunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectMinutesTimingDropdownunderDesigntab);
+		selectMinutesTimingDropdownunderDesigntab.click();
+	}
+	
+	public void enter2ndTimingUnitunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter2ndTimingUnitunderDesigntab);
+		enter2ndTimingUnitunderDesigntab.clear();
+		enter2ndTimingUnitunderDesigntab.sendKeys("49");
+	}
+
+	public void click2ndTimingDropdownunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, click2ndTimingDropdownunderDesigntab);
+		click2ndTimingDropdownunderDesigntab.click();
+	}
+
+	public boolean visibilityOfselectMinutesTimingDropdownunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectMinutesTimingDropdownunderDesigntab);
+		if(selectMinutesTimingDropdownunderDesigntab.isDisplayed()) {
+			log("Minutes timing is displayed");
+			return true;
+		} else {
+			log("Minutes timing is not displayed");
+			return false;
+		}
+	}
+
+	public boolean visibilityOfenter2ndTimingUnitunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter2ndTimingUnitunderDesigntab);
+		if(enter2ndTimingUnitunderDesigntab.isDisplayed()) {
+			log("Minutes timing units is displayed");
+			return true;
+		} else {
+			log("Minutes timing units is not displayed");
+			return false;
+		}
+	}
+	
+	public void selectDayDropdownunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectDayDropdownunderDesigntab);
+		jse.executeScript("arguments[0].click();", selectDayDropdownunderDesigntab);
+	}
+	
+	public void click3rdTimingDropdownunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, click3rdTimingDropdownunderDesigntab);
+		click3rdTimingDropdownunderDesigntab.click();
+	}
+	
+	public void enter3rdTimingUnitunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter3rdTimingUnitunderDesigntab);
+		enter3rdTimingUnitunderDesigntab.clear();
+		enter3rdTimingUnitunderDesigntab.sendKeys("222");
+	}
+
+	public boolean visibilityOfselectDayTimingDropdownunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectDayDropdownunderDesigntab);
+		if(selectDayDropdownunderDesigntab.isDisplayed()) {
+			log("Days timing is displayed");
+			return true;
+		} else {
+			log("Days timing is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfenter3rdTimingUnitunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter3rdTimingUnitunderDesigntab);
+		if(enter3rdTimingUnitunderDesigntab.isDisplayed()) {
+			log("3rd timingunit is displayed");
+			return true;
+		} else {
+			log("3rd timingunit is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfTiming() {
+		IHGUtil.PrintMethodName();
+		WebElement timing = driver.findElement(By.xpath("(//div[@class='table-data'])[14]"));
+		IHGUtil.waitForElement(driver, 10, timing);
+		if(timing.isDisplayed()) {
+			log("timing is displayed in Days,Hours,Minutes");
+			return true;
+		} else {
+			log("timing is not displayed in Days,Hours,Minutes");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfTimingUnit() {
+		IHGUtil.PrintMethodName();
+		WebElement timingunit = driver.findElement(By.xpath("(//div[@class='table-data'])[15]"));
+		IHGUtil.waitForElement(driver, 10, timingunit);
+		if(timingunit.isDisplayed()) {
+			log("timingunit is displayed in sequence");
+			return true;
+		} else {
+			log("timingunit is not displayed in sequence");
+			return false;
+		}
+	}
+	
+	public void enter1stMinutesTimingUnitunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter1stMinutesTimingUnitunderDesigntab);
+		enter1stMinutesTimingUnitunderDesigntab.clear();
+		enter1stMinutesTimingUnitunderDesigntab.sendKeys("49");
+	}
+	
+	public void enter2ndHoursTimingUnitunderDesignTab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter2ndHoursTimingUnitunderDesignTab);
+		enter2ndHoursTimingUnitunderDesignTab.clear();
+		enter2ndHoursTimingUnitunderDesignTab.sendKeys("23");
+	}
+	
+	public boolean visibilityOfenter1stMinutesTimingUnitunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter1stMinutesTimingUnitunderDesigntab);
+		if(enter1stMinutesTimingUnitunderDesigntab.isDisplayed()) {
+			log("Minutes timingunit is displayed");
+			return true;
+		} else {
+			log("Minutes timingunit is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfenter2ndHoursTimingUnitunderDesignTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter2ndHoursTimingUnitunderDesignTab);
+		if(enter2ndHoursTimingUnitunderDesignTab.isDisplayed()) {
+			log("Hours timingunit is displayed");
+			return true;
+		} else {
+			log("Hours timingunit is not displayed");
+			return false;
+		}
+	}
+	
+	public void select2ndHourDropdownunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, select2ndHourDropdownunderDesigntab);
+		select2ndHourDropdownunderDesigntab.click();
+	}
+	
+	public void enter3rdHourtimingUnitunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter3rdHourtimingUnitunderDesigntab);
+		enter3rdHourtimingUnitunderDesigntab.clear();
+		enter3rdHourtimingUnitunderDesigntab.sendKeys("22");
+	}
+	
+	public void click4thTimingDropdownunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, click4thTimingDropdownunderDesigntab);
+		click4thTimingDropdownunderDesigntab.click();
+	}
+	
+	public void enter4thTimingUnitunderDesigntab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter4thTimingUnitunderDesigntab);
+		enter4thTimingUnitunderDesigntab.clear();
+		enter4thTimingUnitunderDesigntab.sendKeys("222");
+	}
+	
+	public boolean visibilityOfselect2ndHourDropdownunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, select2ndHourDropdownunderDesigntab);
+		if(select2ndHourDropdownunderDesigntab.isDisplayed()) {
+			log("Hours is displayed");
+			return true;
+		} else {
+			log("Hours is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfenter3rdHourtimingUnitunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter3rdHourtimingUnitunderDesigntab);
+		if(enter3rdHourtimingUnitunderDesigntab.isDisplayed()) {
+			log("Hours timingunit is displayed");
+			return true;
+		} else {
+			log("Hours timingunit is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfselectDayDropdownunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectDayDropdownunderDesigntab);
+		if(selectDayDropdownunderDesigntab.isDisplayed()) {
+			log("Day timing is displayed");
+			return true;
+		} else {
+			log("Day timing is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfenter4thTimingUnitunderDesigntab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, enter4thTimingUnitunderDesigntab);
+		if(enter4thTimingUnitunderDesigntab.isDisplayed()) {
+			log("Day timingunit is displayed");
+			return true;
+		} else {
+			log("Day timingunit is not displayed");
+			return false;
+		}
+	}
+	
+
 
 }
