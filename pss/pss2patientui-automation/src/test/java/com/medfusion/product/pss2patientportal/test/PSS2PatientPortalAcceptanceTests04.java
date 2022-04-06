@@ -1237,11 +1237,12 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		String dobP3 = propertyData.getProperty("stacking.p3.dob.ng");
 		String genderP3 = propertyData.getProperty("stacking.p3.gender.ng");
 		int slotsize=Integer.parseInt(propertyData.getProperty("slotsize.ng04"));
+		String appointmentDuration = propertyData.getProperty("app.duration.ng04");
 
 
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
-		adminUtils.appointmentStackingEnableWihDuration(driver, adminuser, testData, appType, providerName);
+		adminUtils.appointmentStackingEnableWihDuration(driver, adminuser, testData, appType, providerName,appointmentDuration);
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		logStep("Clicked on Dismiss Button");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -1278,23 +1279,5 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		logStep("ReSetting Admin UI For Overbooking");
 		adminUtils.appointmentStackingDisableWihDuration(driver, adminuser, testData, appType, providerName);
 		
-
-
-	}
-	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testSample() throws Exception {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		propertyData.setAdminNG(adminuser);
-		propertyData.setAppointmentResponseNG(testData);
-		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
-		String firstAppointmentBookTime="12:30";
-		int slotsize=5;
-		String time=pssPatientUtils.addToTimeUI(firstAppointmentBookTime, slotsize);
-		log("total time is "+time);
-
-
 	}
 }

@@ -1446,7 +1446,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 	}
 	
-	public void appointmentStackingEnableWihDuration(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName) throws Exception {
+	public void appointmentStackingEnableWihDuration(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName,String appointmentDurationValue) throws Exception {
 
 		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
 		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
@@ -1468,7 +1468,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		appointment.setAppointmentDuration(manageResource.appointmentDurationStatus());
 
 		if (appointment.isAppointmentDuration() == false) {
-			manageResource.appointmentDurationClick();
+			manageResource.appointmentDurationClick(appointmentDurationValue);
 		} else {
 			log("AppointmentDuration Already On");
 		}
@@ -1500,13 +1500,10 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		appointment.setAppointmentDuration(manageResource.appointmentDurationStatus());
 
 		if (appointment.isAppointmentDuration() == true) {
-			manageResource.appointmentDurationClick();
+			manageResource.appointmentDurationClickForDisable();
 		} else {
 			log("AppointmentDuration Already OFF");
 		}
-
-		
 		patientFlow.logout();
-		
 	}
 }

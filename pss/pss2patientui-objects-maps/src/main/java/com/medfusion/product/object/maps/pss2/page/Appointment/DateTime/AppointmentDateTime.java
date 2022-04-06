@@ -104,8 +104,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 		return dt;
 	}
 	
-	
-	
 	public void selectDateOnly(Boolean nextMonthBooking) {
 		String dt = null;
 		if (nextMonthBooking) {

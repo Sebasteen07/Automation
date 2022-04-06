@@ -556,10 +556,15 @@ public class ManageResource extends PSS2MenuPage {
 		return bool;
 	}
 
-	public void appointmentDurationClick() {
+	public void appointmentDurationClick(String durationValue) {
 		appointmentDurationClick.click();
 		appointmentDurationSendKeys.clear();
-		appointmentDurationSendKeys.sendKeys("30");
+		appointmentDurationSendKeys.sendKeys(durationValue);
+		appointmenttypeSave.click();
+	}
+	
+	public void appointmentDurationClickForDisable() {
+		appointmentDurationClick.click();
 		appointmenttypeSave.click();
 	}
 }
