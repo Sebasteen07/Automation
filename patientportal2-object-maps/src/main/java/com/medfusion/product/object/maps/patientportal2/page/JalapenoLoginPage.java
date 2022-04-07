@@ -57,12 +57,18 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'You are no longer able to sign in because you have been unlinked from all patient accounts. Please contact our practice if you need assistance.')]")
 	private WebElement trustedRepresentativeLoginError;
+	
+	@FindBy(how = How.XPATH, using ="//h2[contains(text(),'Create Security Details')]")
+	private WebElement textInHeader;
 
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Your account is no longer active. Please contact our practice in order re-activate it.')]")
 	private WebElement msgInactivePatientError;
 	
 	@FindBy(how = How.ID, using = "diff")
 	private WebElement msgAlreadyHaveAnAccountError;
+	
+	@FindBy(how = How.XPATH, using = "//p[contains(text(),\"We were unable to verify you by the phone number(s) you entered\")]")
+	private WebElement invalidPhoneNumError;
 	
 	@FindBy(how = How.ID, using = "link")
 	private WebElement invalidPasswordResetLink;
@@ -198,6 +204,19 @@ public class JalapenoLoginPage extends MedfusionPage {
 	
 	public String getAlreadyHaveAnAccountErrorText() {
 		return msgAlreadyHaveAnAccountError.getText();
+	}
+	
+	public String getUnableToVerifyPhoneNumErrorText() {
+		return invalidPhoneNumError.getText();
+	}
+	
+	public boolean isCreateSecurityHeaderDisplayed() {
+		try {
+			log("Looking Create Security Details Header");
+			return textInHeader.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
 	}
 
 	public boolean checkResetPasswordError(String resetUrl) throws InterruptedException {
