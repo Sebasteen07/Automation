@@ -6161,5 +6161,23 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		forgotPasswordPage3.fillInWrongSecretAnswer(testData.getProperty("wrong.secret.answer"));
 
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testIdentityLockOut() throws Exception {
+		
+		createCommonPatient();
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+		logStep("Logging out");
+		loginPage = homePage.clickOnLogout();
+		
+		logStep("Attempt to login with wrong password and verify User lockout Error Message");
+		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage1.loginWithWrongPassword(patient.getUsername()));
+	
+		
+	}
 
 }
