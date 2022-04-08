@@ -37,8 +37,11 @@ public class YopMailUtils extends MedfusionPage{
 	@FindBy(how = How.XPATH, using = "//iframe[@id='ifinbox']")
 	private WebElement iframeInbox;
 
-	@FindBy(how = How.XPATH, using = "//p[contains(.,'activate')]")
+	@FindBy(how = How.XPATH, using = "//p[contains(.,'activate')] | //p/a[.='Visit our website'] | //p[contains(.,'Sign in to')]/a")
 	private WebElement linkInMailBody;
+
+	@FindBy(how = How.XPATH, using = "//div[.='Complete the CAPTCHA to continue']")
+	private WebElement recaptchaPopup;
 
 	public YopMailUtils(WebDriver driver, String url) {
 	    super(driver, url);
@@ -55,70 +58,91 @@ public class YopMailUtils extends MedfusionPage{
 	public String getLinkFromEmail(String username, String emailSubject, String findInEmail, int retries)
 		throws InterruptedException {
 		this.driver.get(YOPMAIL_URL);
+		mailIdTextBox.clear();
 		mailIdTextBox.sendKeys(username);
 		this.clickOnElement(goToMailbox);
 
-	    for (int j = 1; j <= retries; j++) {
 		try {
-			this.driver.switchTo().frame(iframeInbox);
-		    if (this.isTextVisible(emailSubject)) {
-			this.clickOnElement(firstRowSubject);
-			this.driver.switchTo().defaultContent();
-			this.driver.switchTo().frame(iframe);
-
-			String parentWindow = driver.getWindowHandle();
-
-			try {
-				driver.findElement(By.xpath("//body[@class='bodymail yscrollbar']//*[contains(text(),'" + findInEmail + "')]")).click();
-			} catch (Exception e) {
-				log("Trying with the next link in email as first attempt failed with exception: " + e.getMessage());
-				return linkInMailBody.getText().trim();
+			if (recaptchaPopup.isDisplayed()) {
+				log("recaptcha found in the Yopmail UI. Exiting from Yopmail UI.");
+				return "";
 			}
-
-			Set<String> handles = driver.getWindowHandles();
-			for (String windowHandle : handles) {
-			    if (handles.size() > 1 && windowHandle.equals(parentWindow)) {
-				driver.close(); // closing parent window
-			    } else {
-				driver.switchTo().window(windowHandle);
-			    }
-			}
-			return this.driver.getCurrentUrl();
-		    }
 		} catch (Exception e) {
-		    log("Exception found: " + e.getMessage());
+			log(e.getMessage());
 		}
-		logAttemptAndSleep(j, retries);
-	    }
 
-	    return null;
+		for (int j = 1; j <= retries; j++) {
+			try {
+				this.driver.switchTo().frame(iframeInbox);
+				if (this.isTextVisible(emailSubject)) {
+					this.clickOnElement(firstRowSubject);
+					this.driver.switchTo().defaultContent();
+					this.driver.switchTo().frame(iframe);
+
+					String parentWindow = driver.getWindowHandle();
+
+					try {
+						driver.findElement(By.xpath("//body[@class='bodymail yscrollbar']//a[contains(text(),'" + findInEmail + "')]")).click();
+					} catch (Exception e) {
+						log("Trying with the next link in email as first attempt failed with exception: " + e.getMessage());
+						return linkInMailBody.getAttribute("href").trim();
+					}
+
+					Set<String> handles = driver.getWindowHandles();
+					for (String windowHandle : handles) {
+						if (handles.size() > 1 && windowHandle.equals(parentWindow)) {
+							driver.close(); // closing parent window
+						} else {
+							driver.switchTo().window(windowHandle);
+						}
+					}
+					return this.driver.getCurrentUrl();
+				}
+			} catch (Exception e) {
+				log("Exception found: " + e.getMessage());
+			}
+			logAttemptAndSleep(j, retries);
+			driver.navigate().refresh();
+		}
+
+		return null;
 	}
 
 	public boolean isMessageInInbox(String username, String emailSubject, String findInEmail, int retries)
 		throws Exception {
 
-	    for (int j = 1; j <= retries; j++) {
-				this.driver.get(YOPMAIL_URL);
-				mailIdTextBox.sendKeys(username);
-				this.clickOnElement(goToMailbox);
-		try {
-			this.driver.switchTo().frame(iframeInbox);
-			if (this.isTextVisible(emailSubject)) {
-				this.clickOnElement(firstRowSubject);
-				this.driver.switchTo().defaultContent();
-				this.driver.switchTo().frame(iframe);
+		for (int j = 1; j <= retries; j++) {
+			this.driver.get(YOPMAIL_URL);
+			mailIdTextBox.sendKeys(username);
+			this.clickOnElement(goToMailbox);
 
-			if (driver.findElement(By.xpath("//a[contains(text(),'" + findInEmail + "')]")).isDisplayed()) {
-			    return true;
-
+			try {
+				if (recaptchaPopup.isDisplayed()) {
+					log("recaptcha found in the Yopmail UI.");
+					return false;
+				}
+			} catch (Exception e) {
+				log(e.getMessage());
 			}
-		    }
-		} catch (Exception e) {
-		    log("Exception found: " + e.getMessage());
+
+			try {
+				this.driver.switchTo().frame(iframeInbox);
+				if (this.isTextVisible(emailSubject)) {
+					this.clickOnElement(firstRowSubject);
+					this.driver.switchTo().defaultContent();
+					this.driver.switchTo().frame(iframe);
+
+					if (driver.findElement(By.xpath("//a[contains(text(),'" + findInEmail + "')]")).isDisplayed()) {
+						return true;
+
+					}
+				}
+			} catch (Exception e) {
+				log("Exception found: " + e.getMessage());
+			}
+			logAttemptAndSleep(j, retries);
 		}
-		logAttemptAndSleep(j, retries);
-	    }
-	    return false;
+		return false;
 	}
 
 	private void logAttemptAndSleep(int currentAttempt, int maxAttempts) throws InterruptedException {
@@ -148,6 +172,15 @@ public class YopMailUtils extends MedfusionPage{
 		this.driver.get(YOPMAIL_URL);
 		mailIdTextBox.sendKeys(username);
 		this.clickOnElement(goToMailbox);
+
+		try {
+			if (recaptchaPopup.isDisplayed()) {
+				log("recaptcha found in the Yopmail UI.");
+				return "";
+			}
+		} catch (Exception e) {
+			log(e.getMessage());
+		}
 
 		try {
 			this.driver.switchTo().frame(iframeInbox);
