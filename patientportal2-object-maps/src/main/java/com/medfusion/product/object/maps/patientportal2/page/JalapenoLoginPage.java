@@ -51,7 +51,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
-
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='same']")
 	private WebElement healthKeyMatchError;
 
@@ -101,6 +101,14 @@ public class JalapenoLoginPage extends MedfusionPage {
 		makeLogin(username, password);
 		log("User is logged in");
 		handleWeNeedToConfirmSomethingModal();
+		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+	
+	public JalapenoHomePage loginWithPreference(String username, String password) throws InterruptedException {
+		makeLogin(username, password);
+		log("User is logged in");
+		Thread.sleep(5000);
+		okButton.click();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
