@@ -89,19 +89,32 @@ public class HealthFormListPage extends BasePageObject {
 
 	public void clickOnHealthFormsRegistrationLink() throws InterruptedException {
 		log("Clicking On General Registration and Health History ");
-		IHGUtil.waitForElement(driver, 50, healthFormsRegistrationLink);
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame(newFormIframe);
-		formValueNew = healthFormsRegistrationLink.getText();
-		healthFormsRegistrationLink.click();
-		IHGUtil.waitForElement(driver, 80, Continuebutton1);
-		try {
-			driver.switchTo().frame(iframeforms);
-		} catch (Exception e) {
-			log(e.getMessage());
+		for (int i = 0; i < 3; i++) {
+			if (!IHGUtil.waitForElement(driver, 50, healthFormsRegistrationLink)) {
+				driver.switchTo().defaultContent();
+				driver.switchTo().frame(newFormIframe);
+			}
+
+			formValueNew = healthFormsRegistrationLink.getText();
+			healthFormsRegistrationLink.click();
+
+			try {
+				if (!IHGUtil.waitForElement(driver, 60, Continuebutton1)) {
+					driver.switchTo().frame(iframeforms);
+				}
+
+				if (IHGUtil.waitForElement(driver, 60, Continuebutton1)) {
+					log("Clicking on continue button.");
+					Continuebutton1.click();
+					break;
+				}
+
+			} catch (Exception e) {
+				log(e.getMessage());
+			}
+			driver.navigate().back();
+
 		}
-		log("Clicking on continue button.");
-		Continuebutton1.click();
 	}
 
 	public String getFormName() {

@@ -293,6 +293,7 @@ public class FormsExportUtils {
 
 			Thread.sleep(4000);
 			Log4jUtil.log("Step 34: Logout from patient portal");
+			driver.navigate().refresh();
 			driver.switchTo().defaultContent();
 			jalapenoMenuPage.clickOnMenuHome();
 			jalapenoMenuPage.clickOnLogout();
