@@ -6180,6 +6180,27 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 	}
 	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreateSamePatientWithInVaildPhonenumber() throws Exception {
+		createCommonPatient();
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		logStep("Try to create the same patient");
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+
+		patientDemographicPage.fillInPatientData(patient.getFirstName(), patient.getLastName(),
+				testData.getProperty("email"), testData.getProperty("dob.month.text"), patient.getDOBDay(),
+				patient.getDOBYear(), patient.getGender(), patient.getZipCode(), patient.getAddress2(),
+				patient.getAddress1(), patient.getCity(), patient.getState());
+
+		patientDemographicPage.tryToContinueToSecurityPage();
+		patientDemographicPage.tryToVerifyPhonenumber(testData.getProperty("phone.number1"));
+		logStep("Verify Invalid Phone Number error is displayed");
+		assertTrue(loginPage.isCreateSecurityHeaderDisplayed());
+		assertTrue(loginPage.getUnableToVerifyPhoneNumErrorText().contentEquals(
+				"We were unable to verify you by the phone number(s) you entered. Please continue to create a new account here."));
+	}
+
 	/*
 	 * SCENARIO2- where a patient having statement Preference as Paper will get
 	 * update to Electronic after updating the job with estatement configuration
@@ -6274,4 +6295,3 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		}
 	}
-
