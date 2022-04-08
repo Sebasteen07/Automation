@@ -145,8 +145,8 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 	
 	public void publishGeneralInfo() throws InterruptedException {
 		javascriptClick(saveGeneralInformationBtn);
+		IHGUtil.waitForElement(driver, 60, publishGeneralInformation);
 		publishGeneralInformation.click();
-		backToDecisionTreeBtn.click();
 		log("Decision Tree published successfully");
 	}
 	
