@@ -1033,6 +1033,70 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
+	public void addMultipleFieldsInDecisionTree1(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer,
+			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		patientflow.removeAllRules();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.addDecisionTree(decisionTreeName);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.addQuestionInDecisionTree(questionForAppointment);
+		manageGeneralInformation.addAnswerOneInDecisionTree(decisionTreeAnswer);
+		manageGeneralInformation.setApptTypeDecisionTreeSet2(appointmentType);
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.addAnswerTwoInDecisionTree(decisionTreeAnswer1);
+		manageGeneralInformation.setApptTypeForAnswerTwoInDecisionTreeSet(appointmentType1);
+		manageGeneralInformation.addReasonForAnswerTwo(reasonForAppointment1);
+		manageGeneralInformation.publishGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.addQuestionInEsLanguageDecisionTree(questionForAppointment);
+		manageGeneralInformation.addAnswerOneInEsLanguageDecisionTree(decisionTreeAnswer);
+		manageGeneralInformation.addAnswerTwoInEsLanguageDecisionTree(decisionTreeAnswer1);
+		manageGeneralInformation.publishGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
+	public void addMultipleFieldsInDecisionTree2(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer,
+			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		setRulesNoSpecialitySet1(patientflow);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.addDecisionTree(decisionTreeName);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.addQuestionInDecisionTree(questionForAppointment);
+		manageGeneralInformation.addAnswerOneInDecisionTree(decisionTreeAnswer);
+		manageGeneralInformation.setApptTypeDecisionTreeSet2(appointmentType);
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.addAnswerTwoInDecisionTree(decisionTreeAnswer1);
+		manageGeneralInformation.setApptTypeForAnswerTwoInDecisionTreeSet(appointmentType1);
+		manageGeneralInformation.addReasonForAnswerTwo(reasonForAppointment1);
+		manageGeneralInformation.publishGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.addQuestionInEsLanguageDecisionTree(questionForAppointment);
+		manageGeneralInformation.addAnswerOneInEsLanguageDecisionTree(decisionTreeAnswer);
+		manageGeneralInformation.addAnswerTwoInEsLanguageDecisionTree(decisionTreeAnswer1);
+		manageGeneralInformation.publishGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
 	public void decisionTreeDeletion(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName) 
 			throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);

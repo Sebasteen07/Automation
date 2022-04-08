@@ -109,6 +109,18 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 		ClickOnCustomizeText.click();
 	}
 	
+	public void addQuestionInEsLanguageDecisionTree(String questionForAppointment) throws InterruptedException {
+		Thread.sleep(2000);
+		IHGUtil.waitForElement(driver, 60, espanolLangGeneralInformation);
+		espanolLangGeneralInformation.click();
+		clickOnEsLangField.get(1).click();
+		IHGUtil.waitForElement(driver, 60, fillEsLangField);
+		fillEsLangField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
+		fillEsLangField.sendKeys(questionForAppointment);
+		log("Question added in Spanish language");
+		ClickOnCustomizeText.click();
+	}
+	
 	public void addAnswerOneInDecisionTree(String decisionTreeAnswer) throws InterruptedException {
 		Thread.sleep(2000);
 		javascriptClick(thirdBtn);
@@ -117,6 +129,37 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 		fillEngLangField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
 		fillEngLangField.sendKeys(decisionTreeAnswer);
 		log("First Answer added in Decision Tree");
+		ClickOnCustomizeText.click();
+	}
+	
+	public void addAnswerOneInEsLanguageDecisionTree(String decisionTreeAnswer) throws InterruptedException {
+		Thread.sleep(2000);
+		clickOnEsLangField.get(2).click();
+		IHGUtil.waitForElement(driver, 60, fillEsLangField);
+		fillEsLangField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
+		fillEsLangField.sendKeys(decisionTreeAnswer);
+		log("First Answer added in Spanish language");
+		ClickOnCustomizeText.click();
+	}
+	
+	public void addAnswerTwoInDecisionTree(String decisionTreeAnswer1) throws InterruptedException {
+		Thread.sleep(2000);
+		javascriptClick(thirdBtn);
+		clickOnEngLangField.get(3).click();
+		IHGUtil.waitForElement(driver, 60, fillEngLangField);
+		fillEngLangField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
+		fillEngLangField.sendKeys(decisionTreeAnswer1);
+		log("Second Answer added in Decision Tree");
+		ClickOnCustomizeText.click();
+	}
+	
+	public void addAnswerTwoInEsLanguageDecisionTree(String decisionTreeAnswer1) throws InterruptedException {
+		Thread.sleep(2000);
+		clickOnEsLangField.get(3).click();
+		IHGUtil.waitForElement(driver, 60, fillEsLangField);
+		fillEsLangField.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
+		fillEsLangField.sendKeys(decisionTreeAnswer1);
+		log("Second Answer added in Spanish language");
 		ClickOnCustomizeText.click();
 	}
 	
@@ -141,6 +184,20 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 		fillAddReasonField.sendKeys(reasonForAppointment);
 		addApptReason.click();
 		log("Decision Tree published successfully");
+	}
+	
+	public void setApptTypeForAnswerTwoInDecisionTreeSet(String appointmentType1) throws InterruptedException {
+		javascriptClick(fourthBtn);
+		fillSearchAppointmentType.sendKeys(appointmentType1);
+		setAppointmentType.click();
+		log("Appointment type added for second answer");
+	}
+	
+	public void addReasonForAnswerTwo(String reasonForAppointment1) {
+		javascriptClick(addReason);
+		fillAddReasonField.sendKeys(reasonForAppointment1);
+		addApptReason.click();
+		log("Reason for second Answer added successfully");
 	}
 	
 	public void publishGeneralInfo() throws InterruptedException {
