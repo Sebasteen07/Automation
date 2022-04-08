@@ -169,6 +169,9 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//h3[text()='Request received']")
 	private WebElement notificationMessage;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Please enter a valid date range.')]")
+	private WebElement txtDateErrorMessage;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -496,6 +499,16 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 			log("Looking for the Request Recived message");
 			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(notificationMessage));
 			return notificationMessage.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
+	}
+	
+	public boolean isDateErrorMessageDisplayed() {
+		try {
+			log("Looking for the date error message");
+			new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(txtDateErrorMessage));
+			return txtDateErrorMessage.isDisplayed();
 		} catch (Exception e) {
 		}
 		return false;
