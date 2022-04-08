@@ -893,7 +893,7 @@ locals {
       maven_parameter       = "mvn -U clean install"
       google_chrome_version = "99.0.4844.82-1"
       chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(40 2 ? * * 1)"
+      cron_shedule          = "cron(40 2 ? * 1 *)"
     }
 
     "qa1-sitegen-regression" = {
@@ -908,7 +908,7 @@ locals {
       maven_parameter       = "mvn -U clean install"
       google_chrome_version = "99.0.4844.82-1"
       chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(40 2 ? * * 1)"
+      cron_shedule          = "cron(40 2 ? * 1 *)"
     }
   }
 
