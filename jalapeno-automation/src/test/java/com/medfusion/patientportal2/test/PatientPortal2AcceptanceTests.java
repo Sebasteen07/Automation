@@ -6201,5 +6201,97 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				"We were unable to verify you by the phone number(s) you entered. Please continue to create a new account here."));
 	}
 
+	/*
+	 * SCENARIO2- where a patient having statement Preference as Paper will get
+	 * update to Electronic after updating the job with estatement configuration
+	 */
 
-}
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+		    public void testSatementPreferenceUpdatingToElectronicFromPaper() throws Exception {
+			SiteGenLoginPage loginpage;
+			SiteGenHomePage pSiteGenHomePage;
+			SiteGenPracticeHomePage pSiteGenPracticeHomePage;
+			EstatementPage estatement;
+			JalapenoLoginPage loginPage;
+			JalapenoHomePage homePage;
+			JalapenoAccountPage accountPage;
+			JalapenoMyAccountPreferencesPage myAccountSecurityPage;
+			JalapenoMyAccountProfilePage myAccountPage;
+
+			logStep("Login to sitegen as Admin user");
+			loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+			pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
+					testData.getProperty("jalapeno.sitgen.password"));
+
+			logStep("Navigate to SiteGen PracticeHomePage");
+			pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+			logStep("Check if SiteGen Practice Homepage elements are present ");
+			assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+					"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+
+			logStep("Click on online bill pay and Navigate to Estatement");
+			pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+
+			logStep("Doing the configuration setting for estatement and setting up the default delivery option");
+			estatement = new EstatementPage(driver);
+			estatement.enableStatementDelivery("check");
+			estatement.bothPaperAndElectronic("uncheck");// check //uncheck//check
+			estatement.disablePaperOnly("uncheck");
+			Thread.sleep(5000);// Waiting for the update of default delivery options
+			estatement.defaultDeliveryOption("Paper statement");
+			estatement.submitButton();
+
+			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
+			patient = PatientFactory.createJalapenoPatient(username, testData);
+			patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 1);
+
+			logStep("Load login page");
+			loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+			homePage = loginPage.loginWithPreference(patient.getUsername(), patient.getPassword());
+
+			logStep("Go to Account tab on my account page");
+			accountPage = homePage.clickOnAccount();
+			myAccountPage = accountPage.clickOnEditMyAccount();
+
+			logStep("Navigate to Preference page and validate the preferencer has been updated to Paper");
+			myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+			assertEquals("In the mail (paper statements)", myAccountSecurityPage.getSelectedStatementPreference());
+			myAccountPage.clickOnLogout();
+
+			logStep("Again login back to Sitegen for estamenet Setting ");
+			loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+			pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
+					testData.getProperty("jalapeno.sitgen.password"));
+
+			logStep("Navigate to SiteGen PracticeHomePage");
+			pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+			logStep("Check if SiteGen Practice Homepage elements are present ");
+			assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+					"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+
+			logStep("Clicking on online Bill Pay and Navigate to Estatement");
+			pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+
+			logStep("Setting up the estatement configuration and setting the default delivery option to estatement");
+			estatement = new EstatementPage(driver);
+			estatement.enableStatementDelivery("check");
+			estatement.bothPaperAndElectronic("check");
+			estatement.disablePaperOnly("check");
+			Thread.sleep(5000);// Waiting for the update of default delivery options
+			estatement.defaultDeliveryOption("eStatement");
+			estatement.submitButton();
+
+			logStep("Load login page");
+			loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+			homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+			logStep("Go to security tab on my account page");
+			accountPage = homePage.clickOnAccount();
+			myAccountPage = accountPage.clickOnEditMyAccount();
+
+			logStep("Navigate to Preference page and validate the preferencer has been updated to Electronically");
+			myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+			assertEquals("Electronically", myAccountSecurityPage.getSelectedStatementPreference());
+
+		}
+	}

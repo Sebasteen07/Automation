@@ -109,6 +109,14 @@ public class JalapenoLoginPage extends MedfusionPage {
 		handleWeNeedToConfirmSomethingModal();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
+	
+	public JalapenoHomePage loginWithPreference(String username, String password) throws InterruptedException {
+		makeLogin(username, password);
+		log("User is logged in");
+		Thread.sleep(5000);
+		okButton.click();
+		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
 
 	public void loginEmptyCredentials() {
 		makeLogin("", "");
