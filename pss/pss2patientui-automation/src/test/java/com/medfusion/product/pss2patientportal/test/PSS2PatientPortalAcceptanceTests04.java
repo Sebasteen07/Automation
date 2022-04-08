@@ -1259,9 +1259,9 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		String patient1SecondBookTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
 				providerName);
 		log("Time of First Patient Second Time Booking is " + patient1SecondBookTime);	
-		String expectedTimeAppointmentPatient1Appointment2 =pssPatientUtils.addToTimeUI(Patient1FirstTime, slotsize);	
-		log("Time of First Patient First Time Booking With Add Slot Size is " + expectedTimeAppointmentPatient1Appointment2);
-		assertEquals(expectedTimeAppointmentPatient1Appointment2, patient1SecondBookTime);
+		String expTimeAppPatient1App2 =pssPatientUtils.addToTimeUI(Patient1FirstTime, slotsize);	
+		log("Time of First Patient First Time Booking With Add Slot Size is " + expTimeAppPatient1App2);
+		assertEquals(expTimeAppPatient1App2, patient1SecondBookTime);
 		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP2, lastNameP2, dobP2, "", genderP2, "", "");
 		homePage.btnStartSchedClick();
 		String secondPatientTime = pssPatientUtils.bookLTB(homePage, testData, driver, locationName, appType,
