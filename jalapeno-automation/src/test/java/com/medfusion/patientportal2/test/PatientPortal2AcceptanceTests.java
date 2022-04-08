@@ -682,6 +682,18 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Set filter to default position and check page elements");
 		recordSummaries.setFilterToDefaultPositionAndCheckElements();
+		
+		log("Step Begins: Click on Request Health Record");
+		recordSummaries.selectHealthRecordRequestButton();
+		assertFalse(recordSummaries.isDateErrorMessageDisplayed());
+
+		log("Step Begins: Selecting the date range for the health Data Request");
+		recordSummaries.onDemandFilterCCDs(
+				recordSummaries.get3MonthsOldDateinYYYY_MM_DDFormat(),
+				recordSummaries.getTodaysDateinYYYY_MM_DDFormat());
+		log(recordSummaries.get3MonthsOldDateinYYYY_MM_DDFormat());
+		log(recordSummaries.getTodaysDateinYYYY_MM_DDFormat());
+		recordSummaries.requestCcdOnDemandFromPopUp();
 
 		logStep("Go to Documents tab");
 		recordSummaries.gotoOtherDocumentTab();
