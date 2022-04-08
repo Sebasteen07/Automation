@@ -111,7 +111,6 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 	
 	public void addQuestionInEsLanguageDecisionTree(String questionForAppointment) throws InterruptedException {
 		Thread.sleep(2000);
-		IHGUtil.waitForElement(driver, 60, espanolLangGeneralInformation);
 		espanolLangGeneralInformation.click();
 		clickOnEsLangField.get(1).click();
 		IHGUtil.waitForElement(driver, 60, fillEsLangField);

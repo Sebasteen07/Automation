@@ -1045,8 +1045,8 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String questionForAppointment = propertyData.getProperty("decision.tree.appointment.question.ng");
 		String reasonForAppointment1 = propertyData.getProperty("decision.tree.appointment.reason1.ng");
 		String decisionTreeAnswer1 = propertyData.getProperty("decision.tree.answer1.ng");
-		String appointmentType1 = propertyData.getProperty("decision.tree.appointmenttype1.ng");
-		adminUtils.addMultipleFieldsInDecisionTree1(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
+		String appointmentType1 = propertyData.getProperty("decision.tree.appointment.type1.ng");
+		adminUtils.addAndEditAnswerFieldsInCategoryWithProviderOn(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
 				reasonForAppointment,questionForAppointment, decisionTreeAnswer, appointmentType1, reasonForAppointment1, decisionTreeAnswer1);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -1094,8 +1094,8 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String questionForAppointment = propertyData.getProperty("decision.tree.appointment.question.ge");
 		String reasonForAppointment1 = propertyData.getProperty("decision.tree.appointment.reason1.ge");
 		String decisionTreeAnswer1 = propertyData.getProperty("decision.tree.answer1.ge");
-		String appointmentType1 = propertyData.getProperty("decision.tree.appointmenttype1.ge");
-		adminUtils.addMultipleFieldsInDecisionTree2(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
+		String appointmentType1 = propertyData.getProperty("decision.tree.appointment.type1.ge");
+		adminUtils.addAndEditAnswerFieldsInCategoryWithProviderOff(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
 				reasonForAppointment,questionForAppointment, decisionTreeAnswer, appointmentType1, reasonForAppointment1, decisionTreeAnswer1);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -1143,8 +1143,8 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String questionForAppointment = propertyData.getProperty("decision.tree.appointment.question.gw");
 		String reasonForAppointment1 = propertyData.getProperty("decision.tree.appointment.reason1.gw");
 		String decisionTreeAnswer1 = propertyData.getProperty("decision.tree.answer1.gw");
-		String appointmentType1 = propertyData.getProperty("decision.tree.appointmenttype1.gw");
-		adminUtils.addMultipleFieldsInDecisionTree2(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
+		String appointmentType1 = propertyData.getProperty("decision.tree.appointment.type1.gw");
+		adminUtils.addAndEditAnswerFieldsInCategoryWithProviderOff(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
 				reasonForAppointment,questionForAppointment, decisionTreeAnswer, appointmentType1, reasonForAppointment1, decisionTreeAnswer1);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());

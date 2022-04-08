@@ -1033,7 +1033,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
-	public void addMultipleFieldsInDecisionTree1(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+	public void addAndEditAnswerFieldsInCategoryWithProviderOn(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
 			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer,
 			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
@@ -1066,7 +1066,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
-	public void addMultipleFieldsInDecisionTree2(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+	public void addAndEditAnswerFieldsInCategoryWithProviderOff(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
 			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer,
 			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
