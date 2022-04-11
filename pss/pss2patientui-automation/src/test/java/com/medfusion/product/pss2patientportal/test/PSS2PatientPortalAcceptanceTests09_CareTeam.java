@@ -198,9 +198,9 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn,ln,dob,"",gender,"","");
 
+		logStep("Click on the Start Button ");
 		homePage.btnStartSchedClick();
-		logStep("Clicked on the Start Button ");
-
+		
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
 		logStep("Clicked on the Skip Insurance Button ");
@@ -293,9 +293,9 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn,ln,dob,"",gender,"","");
 
+		logStep("Click on the Start Button ");
 		homePage.btnStartSchedClick();
-		logStep("Clicked on the Start Button ");
-
+		
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
 		logStep("Clicked on the Skip Insurance Button ");
@@ -393,8 +393,8 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn,ln,dob,"",gender,"","");
 
-		homePage.btnStartSchedClick();
-		logStep("Clicked on the Start Button ");
+		logStep("Click on the Start Button ");
+		homePage.btnStartSchedClick();		
 
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
@@ -502,9 +502,9 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn,ln,dob,"",gender,"","");
 
+		logStep("Click on the Start Button ");
 		homePage.btnStartSchedClick();
-		logStep("Clicked on the Start Button ");
-
+		
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
 		logStep("Clicked on the Skip Insurance Button ");
