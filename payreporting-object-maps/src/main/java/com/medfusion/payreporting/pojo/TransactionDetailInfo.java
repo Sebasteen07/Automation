@@ -13,6 +13,7 @@ public class TransactionDetailInfo {
 	public String cardholderName;
 	//last 4
 	public String cardNumber;
+	public String orderId;
 	public String transactionId;
 	public String transactionType;
 	public String status;
@@ -24,7 +25,7 @@ public class TransactionDetailInfo {
 	public TransactionDetailInfo(String activityDate, String fundedDate,
 			String paymentSource, String location, String staffName, 
 			String patientName, String accountNumber, String cardType, 
-			String cardholderName, String cardNumber, String transactionId,
+			String cardholderName, String cardNumber, String orderId, String transactionId,
 			String transactionType, String status, String paymentAmount, String refundAmount,
 			boolean voidDisplayed, boolean refundDisplayed){
 		this.activityDate = activityDate;
@@ -37,6 +38,7 @@ public class TransactionDetailInfo {
 		this.cardType = cardType;
 		this.cardholderName = cardholderName;
 		this.cardNumber = cardNumber;
+		this.orderId = orderId;
 		this.transactionId = transactionId;
 		this.transactionType = transactionType;
 		this.status = status;
@@ -87,6 +89,11 @@ public class TransactionDetailInfo {
 		check = equalsIgnoreLeftBlank(this.cardholderName,other.cardholderName);
 		if (!check){
 			System.err.println("cardholderName did not match! had " + this.cardholderName + " found " + other.cardholderName);
+		}
+		pass = pass && check;
+		check = equalsIgnoreLeftBlank(this.orderId,other.orderId);
+		if (!check){
+			System.err.println("orderId did not match! had " + this.orderId + " found " + other.orderId);
 		}
 		pass = pass && check;
 		check = equalsIgnoreLeftBlank(this.transactionId,other.transactionId);

@@ -78,6 +78,9 @@ public class ReportingTransactionDetail {
 	private WebElement cardNumberDetail;
 
 	@FindBy(how=How.XPATH,using ="//*[@id='transactionTable']/tbody/tr[11]/td[2]")
+	private WebElement orderIdDetail;
+
+	@FindBy(how=How.XPATH,using ="//*[@id='transactionTable']/tbody/tr[11]/td[2]")
 	private WebElement transactionIdDetail;
 
 	@FindBy(how=How.XPATH,using ="//*[@id='transactionTable']/tbody/tr[15]/td[2]")
@@ -138,6 +141,9 @@ public class ReportingTransactionDetail {
 	}
 	public String getTransactionDetailCardNumber(){ 
 		return cardNumberDetail.getText();
+	}
+	public String getTransactionDetailOrderId(){
+		return orderIdDetail.getText();
 	}
 	public String getTransactionDetailTransactionId(){ 
 		return transactionIdDetail.getText();
@@ -325,7 +331,7 @@ public class ReportingTransactionDetail {
 		return new TransactionDetailInfo(this.activityDateDetail.getText(), this.fundedDateDetail.getText(),
 				this.paymentSourceDetail.getText(), this.locationDetail.getText(), this.staffNameDetail.getText(),
 				this.patientNameDetail.getText(), this.accountNumberDetail.getText(), this.cardTypeDetail.getText(),
-				this.cardHolderDetail.getText(), this.cardNumberDetail.getText(), this.transactionIdDetail.getText(),
+				this.cardHolderDetail.getText(), this.cardNumberDetail.getText(), this.orderIdDetail.getText(), this.transactionIdDetail.getText(),
 				this.transactionType.getText(), this.statusDetail.getText(), this.paymentDetail.getText(),
 				this.refundDetail.getText(), this.isDisplayedVoid(), this.isDisplayedRefund());
 	}
