@@ -317,8 +317,11 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	}
 
 	public void validatemedication(String productName) {
+		try {
 		driver.switchTo().frame("iframe");
-
+		} catch (Exception e) {
+			log(e.toString());
+		}
 		for (int i = 1; i < Medicationlist.size(); i++) {
 			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[" + i + "]"))
 					.getText();

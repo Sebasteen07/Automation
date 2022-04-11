@@ -2,7 +2,6 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -69,7 +68,6 @@ public class FormMedicationsPage extends PortalFormPage {
 		IHGUtil.waitForElement(driver, 10, medications);
 		medications.clear();
 		medications.sendKeys(medicine);
-		medications.sendKeys(Keys.TAB);
 		IHGUtil.waitForElement(driver, 40, autoComplete);
 		autoComplete.click();
 	}

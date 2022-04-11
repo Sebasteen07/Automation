@@ -37,7 +37,7 @@ public class HealthFormListPage extends BasePageObject {
 
 	private static final By newFormIframeXpath = By.xpath("//iframe[@title='Forms']");
 
-	@FindBy(xpath = "//iframe[@title='Forms']")
+	@FindBy(xpath = "//iframe[@title='Solution details']")
 	private WebElement newFormIframe;
 
 	@FindBy(xpath = "//iframe[@title='Forms']")
@@ -89,14 +89,32 @@ public class HealthFormListPage extends BasePageObject {
 
 	public void clickOnHealthFormsRegistrationLink() throws InterruptedException {
 		log("Clicking On General Registration and Health History ");
-		IHGUtil.waitForElement(driver, 30, healthFormsRegistrationLink);
-		healthFormsRegistrationLink.click();
-		Thread.sleep(7000);
-		formValueNew = healthFormsRegistrationLink.getText();
-		driver.switchTo().frame(iframeforms);
-		// wait.until(ExpectedConditions.visibilityOf(Continuebutton1));
-		IHGUtil.waitForElement(driver, 80, Continuebutton1);
-		Continuebutton1.click();
+		for (int i = 0; i < 3; i++) {
+			if (!IHGUtil.waitForElement(driver, 50, healthFormsRegistrationLink)) {
+				driver.switchTo().defaultContent();
+				driver.switchTo().frame(newFormIframe);
+			}
+
+			formValueNew = healthFormsRegistrationLink.getText();
+			healthFormsRegistrationLink.click();
+
+			try {
+				if (!IHGUtil.waitForElement(driver, 60, Continuebutton1)) {
+					driver.switchTo().frame(iframeforms);
+				}
+
+				if (IHGUtil.waitForElement(driver, 60, Continuebutton1)) {
+					log("Clicking on continue button.");
+					Continuebutton1.click();
+					break;
+				}
+
+			} catch (Exception e) {
+				log(e.getMessage());
+			}
+			driver.navigate().back();
+
+		}
 	}
 
 	public String getFormName() {

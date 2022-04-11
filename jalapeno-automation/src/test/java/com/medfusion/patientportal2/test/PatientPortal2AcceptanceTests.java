@@ -682,6 +682,18 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Set filter to default position and check page elements");
 		recordSummaries.setFilterToDefaultPositionAndCheckElements();
+		
+		log("Step Begins: Click on Request Health Record");
+		recordSummaries.selectHealthRecordRequestButton();
+		assertFalse(recordSummaries.isDateErrorMessageDisplayed());
+
+		log("Step Begins: Selecting the date range for the health Data Request");
+		recordSummaries.onDemandFilterCCDs(
+				recordSummaries.get3MonthsOldDateinYYYY_MM_DDFormat(),
+				recordSummaries.getTodaysDateinYYYY_MM_DDFormat());
+		log(recordSummaries.get3MonthsOldDateinYYYY_MM_DDFormat());
+		log(recordSummaries.getTodaysDateinYYYY_MM_DDFormat());
+		recordSummaries.requestCcdOnDemandFromPopUp();
 
 		logStep("Go to Documents tab");
 		recordSummaries.gotoOtherDocumentTab();
@@ -6161,5 +6173,137 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		forgotPasswordPage3.fillInWrongSecretAnswer(testData.getProperty("wrong.secret.answer"));
 
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testIdentityLockOut() throws Exception {
+		
+		createCommonPatient();
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
-}
+		logStep("Logging out");
+		loginPage = homePage.clickOnLogout();
+		
+		logStep("Attempt to login with wrong password and verify User lockout Error Message");
+		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
+		assertTrue(loginPage1.loginWithWrongPassword(patient.getUsername()));
+	
+		
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreateSamePatientWithInVaildPhonenumber() throws Exception {
+		createCommonPatient();
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		logStep("Try to create the same patient");
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+
+		patientDemographicPage.fillInPatientData(patient.getFirstName(), patient.getLastName(),
+				testData.getProperty("email"), testData.getProperty("dob.month.text"), patient.getDOBDay(),
+				patient.getDOBYear(), patient.getGender(), patient.getZipCode(), patient.getAddress2(),
+				patient.getAddress1(), patient.getCity(), patient.getState());
+
+		patientDemographicPage.tryToContinueToSecurityPage();
+		patientDemographicPage.tryToVerifyPhonenumber(testData.getProperty("phone.number1"));
+		logStep("Verify Invalid Phone Number error is displayed");
+		assertTrue(loginPage.isCreateSecurityHeaderDisplayed());
+		assertTrue(loginPage.getUnableToVerifyPhoneNumErrorText().contentEquals(
+				"We were unable to verify you by the phone number(s) you entered. Please continue to create a new account here."));
+	}
+
+	/*
+	 * SCENARIO2- where a patient having statement Preference as Paper will get
+	 * update to Electronic after updating the job with estatement configuration
+	 */
+
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+		    public void testSatementPreferenceUpdatingToElectronicFromPaper() throws Exception {
+			SiteGenLoginPage loginpage;
+			SiteGenHomePage pSiteGenHomePage;
+			SiteGenPracticeHomePage pSiteGenPracticeHomePage;
+			EstatementPage estatement;
+			JalapenoLoginPage loginPage;
+			JalapenoHomePage homePage;
+			JalapenoAccountPage accountPage;
+			JalapenoMyAccountPreferencesPage myAccountSecurityPage;
+			JalapenoMyAccountProfilePage myAccountPage;
+
+			logStep("Login to sitegen as Admin user");
+			loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+			pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
+					testData.getProperty("jalapeno.sitgen.password"));
+
+			logStep("Navigate to SiteGen PracticeHomePage");
+			pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+			logStep("Check if SiteGen Practice Homepage elements are present ");
+			assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+					"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+
+			logStep("Click on online bill pay and Navigate to Estatement");
+			pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+
+			logStep("Doing the configuration setting for estatement and setting up the default delivery option");
+			estatement = new EstatementPage(driver);
+			estatement.enableStatementDelivery("check");
+			estatement.bothPaperAndElectronic("uncheck");// check //uncheck//check
+			estatement.disablePaperOnly("uncheck");
+			Thread.sleep(5000);// Waiting for the update of default delivery options
+			estatement.defaultDeliveryOption("Paper statement");
+			estatement.submitButton();
+
+			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
+			patient = PatientFactory.createJalapenoPatient(username, testData);
+			patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 1);
+
+			logStep("Load login page");
+			loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+			homePage = loginPage.loginWithPreference(patient.getUsername(), patient.getPassword());
+
+			logStep("Go to Account tab on my account page");
+			accountPage = homePage.clickOnAccount();
+			myAccountPage = accountPage.clickOnEditMyAccount();
+
+			logStep("Navigate to Preference page and validate the preferencer has been updated to Paper");
+			myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+			assertEquals("In the mail (paper statements)", myAccountSecurityPage.getSelectedStatementPreference());
+			myAccountPage.clickOnLogout();
+
+			logStep("Again login back to Sitegen for estamenet Setting ");
+			loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+			pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
+					testData.getProperty("jalapeno.sitgen.password"));
+
+			logStep("Navigate to SiteGen PracticeHomePage");
+			pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+			logStep("Check if SiteGen Practice Homepage elements are present ");
+			assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+					"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+
+			logStep("Clicking on online Bill Pay and Navigate to Estatement");
+			pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+
+			logStep("Setting up the estatement configuration and setting the default delivery option to estatement");
+			estatement = new EstatementPage(driver);
+			estatement.enableStatementDelivery("check");
+			estatement.bothPaperAndElectronic("check");
+			estatement.disablePaperOnly("check");
+			Thread.sleep(5000);// Waiting for the update of default delivery options
+			estatement.defaultDeliveryOption("eStatement");
+			estatement.submitButton();
+
+			logStep("Load login page");
+			loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+			homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+			logStep("Go to security tab on my account page");
+			accountPage = homePage.clickOnAccount();
+			myAccountPage = accountPage.clickOnEditMyAccount();
+
+			logStep("Navigate to Preference page and validate the preferencer has been updated to Electronically");
+			myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+			assertEquals("Electronically", myAccountSecurityPage.getSelectedStatementPreference());
+
+		}
+	}

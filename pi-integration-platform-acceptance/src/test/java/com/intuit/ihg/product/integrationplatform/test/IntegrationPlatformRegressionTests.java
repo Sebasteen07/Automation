@@ -254,7 +254,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			link = RestUtils.verifyEmailNotification(testData.GmailUserName, testData.GmailPassword, testData.Sender3,
 					3, "Portal 2.0");
 		}
-		if (emailType.contains("mailinator")) {
+		if (emailType.contains("yopmail")) {
 			YopMailUtils mail = new YopMailUtils(driver);
 			String subject = "New message from " + testData.Sender3;
 			String messageLink = "Sign in to view this message";
@@ -422,7 +422,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			link = RestUtils.verifyEmailNotification(testData.GmailUserName, testData.GmailPassword, testData.Sender3,
 					3, "Portal 2.0");
 		}
-		if (emailType.contains("mailinator")) {
+		if (emailType.contains("yopmail")) {
 			YopMailUtils mail = new YopMailUtils(driver);
 			String subject = "New message from " + testData.Sender3;
 			String messageLink = "Sign in to view this message";
@@ -767,7 +767,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
 		driver.findElement(By.xpath(searchResult)).click();
 
-		String editPatientID = "//*[@id=\"dashboard\"]/fieldset[1]/table/tbody/tr[7]/td[2]/a";
+		String editPatientID = "//td[.='Patient Id ']/../td[2]/a";
 		driver.findElement(By.xpath(editPatientID)).click();
 		Thread.sleep(3000);
 		String onDemandID = "//*[@name=\"emrid\"]";
@@ -1083,7 +1083,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "channelVersionPIDC")
 	public Object[][] channelVersionPIDC() {
-		Object[][] obj = new Object[][] { { "v1" }, { "v2" }, { "v3" } };
+		Object[][] obj = new Object[][] {{"v1"}, {"v2"}, {"v3"}};
 		return obj;
 	}
 
@@ -1203,14 +1203,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Updating Values of '" + dropValues[k] + "' field");
 			int count = accountProfilePageObject.countDropDownValue(dropValues[k].charAt(0));
 			log("Total number of values in '" + dropValues[k] + "' field drop-down:" + count);
-			for (int i = 0; i < count; i++) {
+			for (int i = 1; i < count; i++) {
 				String updatedValue = accountProfilePageObject.updateDropDownValue(i, dropValues[k].charAt(0));
-				if (updatedValue.equalsIgnoreCase("Declined to Answer")
-						&& dropValues[k].equalsIgnoreCase(IntegrationConstants.RACE)) {
+				if (updatedValue.equalsIgnoreCase("Declined to Answer") && dropValues[k].equalsIgnoreCase(IntegrationConstants.RACE)) {
 					updatedValue = "Unreported or refused to report";
 				}
-				if (updatedValue.equalsIgnoreCase("Declined to Answer")
-						&& dropValues[k].equalsIgnoreCase(IntegrationConstants.ETHINICITY)) {
+				if (updatedValue.equalsIgnoreCase("Declined to Answer") && dropValues[k].equalsIgnoreCase(IntegrationConstants.ETHINICITY)) {
 					updatedValue = "Unreported";
 				}
 				Thread.sleep(40000);
@@ -1230,24 +1228,21 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					}
 					log("Updated Value :" + updatedValue);
 					log("Do a GET on PIDC Url to fetch updated patient for " + version);
-					String responseCodeV = RestUtils.setupHttpGetRequestWithEmptyResponse(
-							testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+					String responseCodeV = RestUtils.setupHttpGetRequestWithEmptyResponse(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 					if (!responseCodeV.equalsIgnoreCase("204")) {
 						Thread.sleep(800);
-						RestUtils.validateNode(testData.getResponsePath(), updatedValue, dropValue,
-								testData.getPracticeId_PIDC_20());
+						RestUtils.validateNode(testData.getResponsePath(), updatedValue, dropValue, testData.getPracticeId_PIDC_20());
 					}
 				}
 			}
 			driver.navigate().refresh();
 
 		}
-		String updatedGIValue = accountProfilePageObject.updateDropDownValue(0, 'G');
-		String updatedSOValue = accountProfilePageObject.updateDropDownValue(0, 'S');
-		log("Gender Identity is " + updatedGIValue + " and Sexual Orientation is " + updatedSOValue + " for version"
-				+ version);
+		String updatedGIValue = accountProfilePageObject.updateDropDownValue(1, 'G');
+		String updatedSOValue = accountProfilePageObject.updateDropDownValue(1, 'S');
+		log("Gender Identity is " + updatedGIValue + " and Sexual Orientation is " + updatedSOValue + " for version" + version);
 		timestamp = System.currentTimeMillis();
-		int genderLength = 3;
+		int genderLength = 4;
 		String[] gender = new String[genderLength];
 		String gVal = null;
 		for (int g = 1; g <= genderLength; g++) {
@@ -1272,18 +1267,16 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Thread.sleep(40000);
 			Long since = timestamp / 1000L - 60 * 24;
 			log("Do a GET on PIDC Url to fetch updated patient for " + version);
-			String responseCode = RestUtils.setupHttpGetRequestWithEmptyResponse(
-					testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			String responseCode = RestUtils.setupHttpGetRequestWithEmptyResponse(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 			Thread.sleep(800);
 			if (!responseCode.equalsIgnoreCase("204")) {
-				if (version.equalsIgnoreCase("v1") && updatedValue == "UNKNOWN") {
+				if (version.equalsIgnoreCase("v1") && updatedValue == "UNKNOWN" || updatedValue == "UNDIFFERENTIATED") {
 					// --
 				} else {
-					RestUtils.validateNode(testData.getResponsePath(), updatedValue, 'G',
-							testData.getPracticeId_PIDC_20());
+					RestUtils.validateNode(testData.getResponsePath(), updatedValue, 'G', testData.getPracticeId_PIDC_20());
 				}
 			} else {
-				if (version.equalsIgnoreCase("v1") && updatedValue == "UNKNOWN") {
+				if (version.equalsIgnoreCase("v1") && updatedValue == "UNKNOWN" || updatedValue == "UNDIFFERENTIATED") {
 					log("Empty response for UNKNOWN value update with v1 api call");
 				}
 			}
@@ -1945,7 +1938,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3: Check and extract Invite link in patient Email");
 		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
-				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
+				"re invited to create a Patient Portal",
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
@@ -2104,7 +2097,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3: Check and extract Invite link in patient Email");
 		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
-				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
+				"re invited to create a Patient Portal",
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
@@ -2198,7 +2191,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.url_FE);
 		JalapenoHomePage jalapenoHomePage = loginPage.login(testData.patientuserid_FE, testData.patientPassword1_FE);
 		Thread.sleep(6000);
-		jalapenoHomePage.clickOnMenuHealthForms();
+		jalapenoHomePage.clickOnHealthForms();
 
 		log("Step 5: Click on Registration button ");
 		int sizeOfDropDown = testDataPIDC.patientDetailList.size();
@@ -2831,6 +2824,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Add Pharmacy with status 'NEW' ");
 		testData.Status = "NEW";
 		testData.PharmacyName = "AddedNewPharmacy" + PharmacyPayload.randomNumbers(3);
+		String pharmacyNameOld = testData.PharmacyName;
 
 		PharmacyPayload pharmacyObj = new PharmacyPayload();
 		String ExternalPharmacyId = PharmacyPayload.randomNumbers(14);
@@ -2907,6 +2901,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		String pharmacyFirstWord = testData.PharmacyName;
 		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFirstWord, env);
+
+		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyNameOld, env);
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
@@ -3577,7 +3573,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			assertTrue(completed, "Message processing was not completed in time");
 		}
 		// Patient portal validation
-		logStep("Check secure message in patient mailinator inbox");
+		logStep("Check secure message in patient yopmail inbox");
 		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from " + testData.getPracticeName();
 		String messageLink = "Sign in to view this message";

@@ -157,7 +157,7 @@ public class PatientRegistrationUtils {
 		csvFileReader(testData, workingDir);
 
 		Thread.sleep(600);
-		if (ChannelVersion.contains("v1")) {
+		if (ChannelVersion.contains("v1") || ChannelVersion.contains("v2")) {
 			replaceUnknownForv1(ChannelVersion, testData);
 		}
 		Log4jUtil.log("Payload Batchsize :" + testData.getBatchSize());
@@ -262,9 +262,9 @@ public class PatientRegistrationUtils {
 
 
 	public static void replaceUnknownForv1(String ChannelVersion, PIDCInfo testData) {
-		if (ChannelVersion.contains("v1")) {
+		if (ChannelVersion.contains("v1") || ChannelVersion.contains("v2")) {
 			for (int i = 0; i < testData.patientDetailList.size(); i++) {
-				if (testData.patientDetailList.get(i).getGender().equals("UNKNOWN")) {
+				if (testData.patientDetailList.get(i).getGender().equals("UNKNOWN") || testData.patientDetailList.get(i).getGender().equals("UNDIFFERENTIATED")) {
 					testData.patientDetailList.get(i).setGender("MALE");
 				}
 			}
