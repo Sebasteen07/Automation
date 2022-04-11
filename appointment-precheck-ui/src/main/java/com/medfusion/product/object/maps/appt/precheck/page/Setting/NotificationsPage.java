@@ -1,6 +1,7 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -19,6 +20,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 
 public class NotificationsPage extends BasePageObject {
@@ -761,7 +763,7 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[3]")
 	private WebElement disableDisplayPatientFirstNameCheckbox;
 	
-	@FindBy(how = How.XPATH, using = "(//div[@class='css-tlfecz-indicatorContainer'])[1]")
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
 	private WebElement clickTimingDropdownunderDesigntab;  
 	
 	@FindBy(how = How.XPATH, using = "//div[contains(text() ,'Hours')]")
@@ -770,7 +772,7 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[1]")
 	private WebElement enterTimingUnitunderDesigntab;
 	
-	@FindBy(how = How.XPATH, using = "(//div[@class='css-tlfecz-indicatorContainer'])[2]")
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-tlfecz-indicatorContainer'])[2]")
 	private WebElement click2ndTimingDropdownunderDesigntab;  
 	
 	@FindBy(how = How.XPATH, using = "//div[text()='Minutes']")
@@ -779,7 +781,7 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[2]")
 	private WebElement enter2ndTimingUnitunderDesigntab;
 	
-	@FindBy(how = How.XPATH, using = "(//div[@class='css-tlfecz-indicatorContainer'])[3]")
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-tlfecz-indicatorContainer'])[3]")
 	private WebElement click3rdTimingDropdownunderDesigntab;
 	
 	@FindBy(how = How.XPATH, using = "//div[contains(text() , 'Days')]")
@@ -806,6 +808,17 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[4]")
 	private WebElement enter4thTimingUnitunderDesigntab;
 	
+	@FindBy(how = How.XPATH, using = "//label[@class='number-of-characters']")
+	private WebElement characterCount;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data'])[14]")
+	private WebElement timing;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data'])[15]")
+	private WebElement timingunit;
+	
+	
+	PropertyFileLoader propertyData;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -2926,8 +2939,9 @@ public class NotificationsPage extends BasePageObject {
 	}
 	
 	public String characterCount() {
-		WebElement element = driver.findElement(By.xpath("//label[@class='number-of-characters']"));
-		return element.getText();
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, characterCount);
+		return characterCount.getText();
 		
 	}
 	
@@ -2949,14 +2963,14 @@ public class NotificationsPage extends BasePageObject {
 	public void selectHourDropdownunderDesigntab() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, selectHourDropdownunderDesigntab);
-		selectHourDropdownunderDesigntab.click();
+		jse.executeScript("arguments[0].click();", selectHourDropdownunderDesigntab);
 	}
 	
-	public void enterTimingUnitunderDesigntab() throws InterruptedException {
+	public void enterTimingUnitunderDesigntab() throws InterruptedException, IOException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, enterTimingUnitunderDesigntab);
 		enterTimingUnitunderDesigntab.clear();
-		enterTimingUnitunderDesigntab.sendKeys("23");
+		enterTimingUnitunderDesigntab.sendKeys(propertyData.getProperty("timing.unit.hour.one"));
 	}
 	
 	public boolean visibilityOfselectHourDropdownunderDesigntab() throws InterruptedException {
@@ -2990,17 +3004,17 @@ public class NotificationsPage extends BasePageObject {
 		selectMinutesTimingDropdownunderDesigntab.click();
 	}
 	
-	public void enter2ndTimingUnitunderDesigntab() throws InterruptedException {
+	public void enter2ndTimingUnitunderDesigntab() throws InterruptedException, IOException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, enter2ndTimingUnitunderDesigntab);
 		enter2ndTimingUnitunderDesigntab.clear();
-		enter2ndTimingUnitunderDesigntab.sendKeys("49");
+		enter2ndTimingUnitunderDesigntab.sendKeys(propertyData.getProperty("timing.unit.minutes"));
 	}
 
 	public void click2ndTimingDropdownunderDesigntab() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, click2ndTimingDropdownunderDesigntab);
-		click2ndTimingDropdownunderDesigntab.click();
+		jse.executeScript("arguments[0].click();", click2ndTimingDropdownunderDesigntab);
 	}
 
 	public boolean visibilityOfselectMinutesTimingDropdownunderDesigntab() {
@@ -3036,14 +3050,14 @@ public class NotificationsPage extends BasePageObject {
 	public void click3rdTimingDropdownunderDesigntab() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, click3rdTimingDropdownunderDesigntab);
-		click3rdTimingDropdownunderDesigntab.click();
+		jse.executeScript("arguments[0].click();", click3rdTimingDropdownunderDesigntab);
 	}
 	
-	public void enter3rdTimingUnitunderDesigntab() throws InterruptedException {
+	public void enter3rdTimingUnitunderDesigntab() throws InterruptedException, IOException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, enter3rdTimingUnitunderDesigntab);
 		enter3rdTimingUnitunderDesigntab.clear();
-		enter3rdTimingUnitunderDesigntab.sendKeys("222");
+		enter3rdTimingUnitunderDesigntab.sendKeys(propertyData.getProperty("timing.unit.day"));
 	}
 
 	public boolean visibilityOfselectDayTimingDropdownunderDesigntab() {
@@ -3072,7 +3086,6 @@ public class NotificationsPage extends BasePageObject {
 	
 	public boolean visibilityOfTiming() {
 		IHGUtil.PrintMethodName();
-		WebElement timing = driver.findElement(By.xpath("(//div[@class='table-data'])[14]"));
 		IHGUtil.waitForElement(driver, 10, timing);
 		if(timing.isDisplayed()) {
 			log("timing is displayed in Days,Hours,Minutes");
@@ -3085,7 +3098,6 @@ public class NotificationsPage extends BasePageObject {
 	
 	public boolean visibilityOfTimingUnit() {
 		IHGUtil.PrintMethodName();
-		WebElement timingunit = driver.findElement(By.xpath("(//div[@class='table-data'])[15]"));
 		IHGUtil.waitForElement(driver, 10, timingunit);
 		if(timingunit.isDisplayed()) {
 			log("timingunit is displayed in sequence");
@@ -3096,18 +3108,18 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 	
-	public void enter1stMinutesTimingUnitunderDesigntab() throws InterruptedException {
+	public void enter1stMinutesTimingUnitunderDesigntab() throws InterruptedException, IOException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, enter1stMinutesTimingUnitunderDesigntab);
 		enter1stMinutesTimingUnitunderDesigntab.clear();
-		enter1stMinutesTimingUnitunderDesigntab.sendKeys("49");
+		enter1stMinutesTimingUnitunderDesigntab.sendKeys(propertyData.getProperty("timing.unit.minutes"));
 	}
 	
-	public void enter2ndHoursTimingUnitunderDesignTab() throws InterruptedException {
+	public void enter2ndHoursTimingUnitunderDesignTab() throws InterruptedException, IOException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, enter2ndHoursTimingUnitunderDesignTab);
 		enter2ndHoursTimingUnitunderDesignTab.clear();
-		enter2ndHoursTimingUnitunderDesignTab.sendKeys("23");
+		enter2ndHoursTimingUnitunderDesignTab.sendKeys(propertyData.getProperty("timing.unit.hour.one"));
 	}
 	
 	public boolean visibilityOfenter1stMinutesTimingUnitunderDesigntab() {
@@ -3137,27 +3149,27 @@ public class NotificationsPage extends BasePageObject {
 	public void select2ndHourDropdownunderDesigntab() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, select2ndHourDropdownunderDesigntab);
-		select2ndHourDropdownunderDesigntab.click();
+		jse.executeScript("arguments[0].click();", select2ndHourDropdownunderDesigntab);
 	}
 	
-	public void enter3rdHourtimingUnitunderDesigntab() throws InterruptedException {
+	public void enter3rdHourtimingUnitunderDesigntab() throws InterruptedException, IOException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, enter3rdHourtimingUnitunderDesigntab);
 		enter3rdHourtimingUnitunderDesigntab.clear();
-		enter3rdHourtimingUnitunderDesigntab.sendKeys("22");
+		enter3rdHourtimingUnitunderDesigntab.sendKeys(propertyData.getProperty("timing.unit.hour"));
 	}
 	
 	public void click4thTimingDropdownunderDesigntab() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, click4thTimingDropdownunderDesigntab);
-		click4thTimingDropdownunderDesigntab.click();
+		jse.executeScript("arguments[0].click();", click4thTimingDropdownunderDesigntab);
 	}
 	
-	public void enter4thTimingUnitunderDesigntab() throws InterruptedException {
+	public void enter4thTimingUnitunderDesigntab() throws InterruptedException, IOException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, enter4thTimingUnitunderDesigntab);
 		enter4thTimingUnitunderDesigntab.clear();
-		enter4thTimingUnitunderDesigntab.sendKeys("222");
+		enter4thTimingUnitunderDesigntab.sendKeys(propertyData.getProperty("timing.unit.day"));
 	}
 	
 	public boolean visibilityOfselect2ndHourDropdownunderDesigntab() {

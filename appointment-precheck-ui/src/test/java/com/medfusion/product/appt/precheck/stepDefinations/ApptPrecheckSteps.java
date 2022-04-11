@@ -5792,7 +5792,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		generalPage.clickOnAddnewProviderbutton();
 	}
 	@When("I click on choose image link,add providerId,provider firstname,middlename,lastname,title")
-	public void i_click_on_choose_image_link_add_provider_id_provider_firstname_middlename_lastname_title() throws InterruptedException, AWTException {
+	public void i_click_on_choose_image_link_add_provider_id_provider_firstname_middlename_lastname_title() throws InterruptedException, AWTException, IOException {
 		   generalPage.providerImage(propertyData.getProperty("upload.provider.image"));	   
 		   generalPage.providerId();
 		   generalPage.firstName();
@@ -6013,7 +6013,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	
 	@When("I click on cadence editor template page and select hours,min,day")
-	public void i_click_on_cadence_editor_template_page_and_select_hours_min_day() throws InterruptedException {
+	public void i_click_on_cadence_editor_template_page_and_select_hours_min_day() throws InterruptedException, IOException {
 		notifPage.clickTimingDropdownunderDesigntab();
 		notifPage.selectHourDropdownunderDesigntab();
 		notifPage.enterTimingUnitunderDesigntab();
@@ -6023,6 +6023,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.click3rdTimingDropdownunderDesigntab();
 		notifPage.selectDayDropdownunderDesigntab();
 		notifPage.enter3rdTimingUnitunderDesigntab();
+		notifPage.saveChangesButton();
 		
 	}
 	@Then("I verify system should allow to edit template as per user point of view")
@@ -6033,7 +6034,6 @@ public class ApptPrecheckSteps extends BaseTest {
 	    assertTrue(notifPage.visibilityOfenter2ndTimingUnitunderDesigntab());
 	    assertTrue(notifPage.visibilityOfselectDayTimingDropdownunderDesigntab());
 	    assertTrue(notifPage.visibilityOfenter3rdTimingUnitunderDesigntab());
-	    notifPage.clickOnBackArrow();
 	}
 	
 	@Then("I verify system should show timing units on template in proper format Days,Hours,Minutes")
@@ -6044,7 +6044,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	
 	@When("I click on cadence editor template page and select min,hours,day")
-	public void i_click_on_cadence_editor_template_page_and_select_min_hours_day() throws InterruptedException {
+	public void i_click_on_cadence_editor_template_page_and_select_min_hours_day() throws InterruptedException, IOException {
 		notifPage.clickTimingDropdownunderDesigntab(); 
 		notifPage.selectMinutesTimingDropdownunderDesigntab();
 		notifPage.enter1stMinutesTimingUnitunderDesigntab();
@@ -6064,11 +6064,10 @@ public class ApptPrecheckSteps extends BaseTest {
 	    assertTrue(notifPage.visibilityOfenter2ndHoursTimingUnitunderDesignTab());
 	    assertTrue(notifPage.visibilityOfselectDayTimingDropdownunderDesigntab());
 	    assertTrue(notifPage.visibilityOfenter3rdTimingUnitunderDesigntab());
-	    notifPage.clickOnBackArrow();
 	}
 	
 	@When("I click on cadence editor template page and select first hour,min,hour and Day")
-	public void i_click_on_cadence_editor_template_page_and_select_first_hour_min_hour_and_day() throws InterruptedException {
+	public void i_click_on_cadence_editor_template_page_and_select_first_hour_min_hour_and_day() throws InterruptedException, IOException {
 		notifPage.clickTimingDropdownunderDesigntab();
 		notifPage.selectHourDropdownunderDesigntab();
 		notifPage.enterTimingUnitunderDesigntab();
@@ -6095,6 +6094,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	    assertTrue(notifPage.visibilityOfenter3rdHourtimingUnitunderDesigntab());
 	    assertTrue(notifPage.visibilityOfselectDayDropdownunderDesigntab());
 	    assertTrue(notifPage.visibilityOfenter4thTimingUnitunderDesigntab());
+	
 	}
 	
 	@Then("I verify system should show timing units on template in proper format hours,minutes,hours and day")

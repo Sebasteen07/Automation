@@ -1727,39 +1727,39 @@ Feature: Test fuctionality of Appointment precheck
     And I enter curbside arrival instruction msg for spanish and add upto 100 characters
     Then I verify when 100 character are entered then total character count should should be 100/500
     And logout from practice provisioning portal
-    
+
   Scenario: verify if user is on notification reminder template and user select first Hours,min and then Day in timing units and save changes
-  	When I click on setting tab
-  	And I click on notification tab
-  	And I click on edit of hamburger button for email in appointment reminders
-  	And I click on cadence editor template page and select hours,min,day
-  	Then I verify system should allow to edit template as per user point of view
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on cadence editor template page and select hours,min,day
+    Then I verify system should allow to edit template as per user point of view
     And logout from practice provisioning portal
-    
+
   Scenario: verify user is on notification reminder template and user is able to see timing units in proper sequence
-  	When I click on setting tab
-  	And I click on notification tab
-  	Then I verify system should show timing units on template in proper format Days,Hours,Minutes
+    When I click on setting tab
+    And I click on notification tab
+    Then I verify system should show timing units on template in proper format Days,Hours,Minutes
     And logout from practice provisioning portal
-    
+
   Scenario: verify if user is on notification reminder template and user select first min,hour and then Day in timing units and save changes
-  	When I click on setting tab
-  	And I click on notification tab
-  	And I click on edit of hamburger button for email in appointment reminders
-  	And I click on cadence editor template page and select min,hours,day
-  	Then I verify system should show timing units on template properly
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on cadence editor template page and select min,hours,day
+    Then I verify system should show timing units on template properly
     And logout from practice provisioning portal
-    
+
   Scenario: verify if user is on notification reminder template and user select first hour,min,hour and then Day in timing units and save changes
-  	When I click on setting tab
-  	And I click on notification tab
-  	And I click on edit of hamburger button for email in appointment reminders
-  	And I click on cadence editor template page and select first hour,min,hour and Day
-  	Then I verify system should allow to edit template in proper format as per user point of view
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on cadence editor template page and select first hour,min,hour and Day
+    Then I verify system should allow to edit template in proper format as per user point of view
     And logout from practice provisioning portal
-    
+
   Scenario: verify user is on notification reminder template and user is able to see timing units in proper format
-  	When I click on setting tab
-  	And I click on notification tab
-  	Then I verify system should show timing units on template in proper format hours,minutes,hours and day
+    When I click on setting tab
+    And I click on notification tab
+    Then I verify system should show timing units on template in proper format hours,minutes,hours and day
     And logout from practice provisioning portal

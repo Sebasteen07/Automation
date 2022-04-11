@@ -6,6 +6,7 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -15,6 +16,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.appt.precheck.util.BaseTest;
 
 public class GeneralPage extends BaseTest {
@@ -90,8 +92,17 @@ public class GeneralPage extends BaseTest {
 	
 	@FindBy(how=How.XPATH, using ="(//span[@class='mf-icon mf-icon__x mf-color__negative'])[1]")
 	private WebElement deleteProvider;
-
 	
+	@FindBy(how=How.XPATH, using ="//label[contains(text(),'Choose file')]")
+	private WebElement chooseFile;
+	
+	@FindBy(how=How.XPATH, using ="//button[@id='undefinedRemove']")
+	private WebElement clickOnRemoveButton;
+	
+	@FindBy(how=How.XPATH, using ="//button[@class='mf-cta__secondary']")
+	private WebElement chooseFileforProvider;
+
+	PropertyFileLoader propertyData;
 	private static GeneralPage generalPage = new GeneralPage();
 
 	public GeneralPage() {
@@ -233,14 +244,11 @@ public class GeneralPage extends BaseTest {
 	public void clickOnlogoTab() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 5, logoTab);
 		logoTab.click();
-		log("On logo tab");
 	}
 	
 	public void chooseFileforLogo(String imagePath) throws InterruptedException, AWTException {
 		IHGUtil.PrintMethodName();
 		Actions act = new Actions(driver);
-		WebElement chooseFile = driver.findElement(By.xpath("//label[contains(text(),'Choose file')]"));
-		
 		act.moveToElement(chooseFile).click().perform();
 		Thread.sleep(2000);
 		uploadFile(System.getProperty("user.dir")+imagePath);
@@ -291,29 +299,29 @@ public class GeneralPage extends BaseTest {
 		clickOnAddnewProviderButton.click();
 	}
 	
-	public void providerId() {
+	public void providerId() throws IOException {
 		IHGUtil.waitForElement(driver, 10, providerId);
-		providerId.sendKeys("5555");
+		providerId.sendKeys(propertyData.getProperty("provider.id"));
 	}
 	
-	public void firstName() {
+	public void firstName() throws IOException {
 		IHGUtil.waitForElement(driver, 10, firstName);
-		firstName.sendKeys("James");
+		firstName.sendKeys(propertyData.getProperty("provider.first.name"));
 	}
 	
 	public void middleName() {
 		IHGUtil.waitForElement(driver, 10, middleName);
-		middleName.sendKeys("Steve");
+		middleName.sendKeys(propertyData.getProperty("provider.middle.name"));
 	}
 	
 	public void lastName() {
 		IHGUtil.waitForElement(driver, 10, lastName);
-		lastName.sendKeys("Bond");
+		lastName.sendKeys(propertyData.getProperty("provider.last.name"));
 	}
 	
 	public void title() {
 		IHGUtil.waitForElement(driver, 10, title);
-		title.sendKeys("Doctor");
+		title.sendKeys(propertyData.getProperty("provider.title"));
 	}
 	public void saveButton() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, saveButton);
@@ -331,8 +339,8 @@ public class GeneralPage extends BaseTest {
 	}
 	
 	public void clickOnRemoveButton() {
-	WebElement remove = driver.findElement(By.xpath("//button[@id='undefinedRemove']"));
-	remove.click();
+		IHGUtil.waitForElement(driver, 10, clickOnRemoveButton);
+		clickOnRemoveButton.click();
 	}
 	
 	public boolean visibilityofProviderfilter() {
@@ -364,9 +372,7 @@ public class GeneralPage extends BaseTest {
 	public void providerImage(String providerImagePath) throws InterruptedException, AWTException {
 		IHGUtil.PrintMethodName();
 		Actions act = new Actions(driver);
-		WebElement chooseFile = driver.findElement(By.xpath("//button[@class='mf-cta__secondary']"));
-		
-		act.moveToElement(chooseFile).click().perform();
+		act.moveToElement(chooseFileforProvider).click().perform();
 		Thread.sleep(2000);
 		uploadFile(System.getProperty("user.dir")+providerImagePath);
 	}
