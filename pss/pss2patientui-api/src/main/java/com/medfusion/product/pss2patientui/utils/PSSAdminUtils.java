@@ -1517,7 +1517,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		appointment.setAppointmentDuration(manageResource.appointmentDurationStatus());
 
 		if (appointment.isAppointmentDuration() == false) {
-			manageResource.appointmentDurationClick(appointmentDurationValue);
+			manageResource.enterAppointmentDuration(appointmentDurationValue);
 		} else {
 			log("AppointmentDuration Already On");
 		}
