@@ -39,7 +39,7 @@ public class JalapenoPatient {
 				IHGUtil.PrintMethodName();
 
 				username = PortalUtil2.generateUniqueUsername(testData.getUserId(),testData);
-				email = username + "@mailinator.com";
+				email = username + "@yopmail.com";
 				firstName = testData.getFirstName() + IHGUtil.createRandomNumber();
 				lastName = testData.getLastName();
 				password = testData.getPassword();

@@ -67,6 +67,13 @@
 			<scope>runtime</scope>
 			<version>${ihg.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>integrationplatform-api</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<plugins>
