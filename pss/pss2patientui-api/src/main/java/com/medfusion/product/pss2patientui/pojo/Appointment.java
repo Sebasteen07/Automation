@@ -165,6 +165,7 @@ public class Appointment {
 	private boolean accepttoggleStatus = false;
 	private boolean preventBacktoBackToggleStatus = false;
 	private boolean appointmentStacking= false;
+	private boolean appointmentDuration= false;
 
 	private boolean showCancellationRescheduleReason = false;
 	
@@ -271,6 +272,14 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
+	public boolean isAppointmentDuration() {
+		return appointmentDuration;
+	}
+
+	public void setAppointmentDuration(boolean appointmentDuration) {
+		this.appointmentDuration = appointmentDuration;
+	}
+	
 	public boolean isAppointmentStacking() {
 		return appointmentStacking;
 	}

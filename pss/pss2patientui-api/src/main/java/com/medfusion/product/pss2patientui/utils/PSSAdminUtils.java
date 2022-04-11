@@ -1558,4 +1558,65 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		pssPracticeConfig.logout();
 
 	}
+	
+	public void appointmentStackingEnableWihDuration(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName,String appointmentDurationValue) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		log("Status for OverBooking is " + manageResource.overBookingStatus());
+		appointment.setAppointmentStacking(manageResource.overBookingStatus());
+
+		if (appointment.isAppointmentStacking() == false) {
+			manageResource.overBookingClick();
+		} else {
+			log("OverBooking Already On");
+		}
+		
+		log("Status for AppointmentDuration is " + manageResource.appointmentDurationStatus());
+		appointment.setAppointmentDuration(manageResource.appointmentDurationStatus());
+
+		if (appointment.isAppointmentDuration() == false) {
+			manageResource.enterAppointmentDuration(appointmentDurationValue);
+		} else {
+			log("AppointmentDuration Already On");
+		}
+
+		
+		patientFlow.logout();
+		
+	}
+	
+	public void appointmentStackingDisableWihDuration(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		log("Status for OverBooking is " + manageResource.overBookingStatus());
+		appointment.setAppointmentStacking(manageResource.overBookingStatus());
+
+		if (appointment.isAppointmentStacking() == true) {
+			manageResource.overBookingClick();
+		} else {
+			log("OverBooking Already OFF");
+		}
+		
+		log("Status for AppointmentDuration is " + manageResource.appointmentDurationStatus());
+		appointment.setAppointmentDuration(manageResource.appointmentDurationStatus());
+
+		if (appointment.isAppointmentDuration() == true) {
+			manageResource.appointmentDurationClickForDisable();
+		} else {
+			log("AppointmentDuration Already OFF");
+		}
+		patientFlow.logout();
+	}
 }
