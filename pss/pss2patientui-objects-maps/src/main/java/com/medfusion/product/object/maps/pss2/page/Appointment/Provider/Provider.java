@@ -39,7 +39,7 @@ public class Provider extends PSS2MainPage {
 	@FindBy(how = How.ID, using = "providerserach")
 	private WebElement searchForProvider;
 	
-	@FindBy(how = How.ID, using = "//h5[@class='announcementmessages']/div")
+	@FindBy(how = How.XPATH, using = "//h5[@class='announcementmessages']/div")
 	private WebElement careTeamAnn;
 
 	@FindAll({ @FindBy(css = ".providerImage-width") })
@@ -210,6 +210,7 @@ public class Provider extends PSS2MainPage {
 	}
 	
 	public String getCareTeamAnn() {
+		IHGUtil.waitForElement(driver, 3, careTeamAnn);
 		String message=careTeamAnn.getText();
 		log("Care Team Announcement Message- "+message);
 		return message;
