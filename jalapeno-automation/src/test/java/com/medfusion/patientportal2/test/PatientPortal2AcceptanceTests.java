@@ -99,8 +99,6 @@ import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.tests.AppoitmentRequest;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
-import com.medfusion.qa.mailinator.Email;
-import com.medfusion.qa.mailinator.Mailer;
 
 public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
@@ -119,8 +117,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
 	private static final String WELCOME_EMAIL_BUTTON_TEXT = "Visit our patient portal now";
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
-	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with TestPracticeELE02";
-	private static final String WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE = "Thank you for creating an account with TestPracticeELE01";
+	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with Automated Practice ELEONE";
+	private static final String WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE = "Thank you for creating an account with Automated Practice ELETWO";
 	private static final String INVITE_LINK_FRAGMENT = "invite";
 	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
 	private static final String GUARDIAN_INVITE_SUBJECT = "You are invited to create a Patient Portal guardian account at ";
@@ -682,14 +680,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Set filter to default position and check page elements");
 		recordSummaries.setFilterToDefaultPositionAndCheckElements();
-		
+
 		log("Step Begins: Click on Request Health Record");
 		recordSummaries.selectHealthRecordRequestButton();
 		assertFalse(recordSummaries.isDateErrorMessageDisplayed());
 
 		log("Step Begins: Selecting the date range for the health Data Request");
-		recordSummaries.onDemandFilterCCDs(
-				recordSummaries.get3MonthsOldDateinYYYY_MM_DDFormat(),
+		recordSummaries.onDemandFilterCCDs(recordSummaries.get3MonthsOldDateinYYYY_MM_DDFormat(),
 				recordSummaries.getTodaysDateinYYYY_MM_DDFormat());
 		log(recordSummaries.get3MonthsOldDateinYYYY_MM_DDFormat());
 		log(recordSummaries.getTodaysDateinYYYY_MM_DDFormat());
@@ -1569,7 +1566,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInviteTrustedRepresentativeWithAccount() throws Exception {
 		createPatient();
-		String email = testData.getProperty("trusted.rep.email")+ "@yopmail.com";
+		String email = testData.getProperty("trusted.rep.email") + "@yopmail.com";
 
 		logStep("Go to account page");
 		JalapenoHomePage homePage = new JalapenoHomePage(driver);
@@ -2062,12 +2059,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testPatientActivationEnrollment() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
-		List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
+		String patientFirstName = "BetaDependent" + IHGUtil.createRandomNumericString();
 
 		logStep("Generating Activation Link of patient in First Practice Portal");
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-		String firstunlockLinkPortal = patientActivationSearchTest.getPatientActivationPracticeLink(driver, testData,
-				patientsEmail);
+		String firstunlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, patientsEmail,
+				testData.getProperty("doctor.login1"), testData.getProperty("doctor.password1"),
+				testData.getProperty("portal.url"));
 		logStep("Patient first practice unlockLinkPortal" + firstunlockLinkPortal);
 
 		logStep("Logging into yopmail and getting Patient Activation url for first Practice");
@@ -2088,8 +2086,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Generating Unlock link and  Activating patient on Seocnd Practice Portal");
 		PatientActivationSearchTest patientActivationSearchTest1 = new PatientActivationSearchTest();
-		String secondunlockLinkPortal = patientActivationSearchTest1.getPatientActivationPracticeLink(driver, testData,
-				patientsEmail);
+		String secondunlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, patientsEmail,
+				testData.getProperty("doctor.login.practice2"), testData.getProperty("doctor.password.practice2"),
+				testData.getProperty("portal.url"));
 
 		logStep("Logging into YOPmail and getting Patient Activation url for Seond Practice");
 
@@ -2115,8 +2114,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				JalapenoConstants.DATE_OF_BIRTH_DAY, JalapenoConstants.DATE_OF_BIRTH_YEAR);
 
 		logStep("Finishing of patient activation: step 2 - filling patient data");
-		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
-				patientActivationSearchTest1.getPatientIdString(), testData.getPassword(), testData);
+		System.out.println("Print the patient name :" + patientFirstName);
+		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(patientFirstName,
+				testData.getPassword(), testData);
 
 		logStep("Detecting if Home Page is opened");
 
@@ -2126,14 +2126,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(
 				jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.ZIP_CODE));
 
-		mails.add(new ExpectedEmail(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BODY_PATTERN_PRACTICE));
-		mails.add(new ExpectedEmail(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
-				WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE));
-		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 60));
-
 		logStep("Load login page for the auto enrolled practice");
-		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, testData.getProperty("practice.url1"));
-		loginPage.login(patientActivationSearchTest1.getPatientIdString(), testData.getPassword());
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,
+				testData.getProperty("enrol.practice.url2"));
+		loginPage.login(patientFirstName, testData.getPassword());
 
 	}
 
@@ -2185,26 +2181,18 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Waiting for welcome mail at patient inbox from second practice");
 
-		// Instant testStart = Instant.now();
-		String portalUrlLink = mail.getLinkFromEmail(firstPatientEmail,
-				WELCOME_EMAIL_SUBJECT_PATIENT + testData.getProperty("practice.name1").replace(" ", ""),
-				WELCOME_EMAIL_BUTTON_TEXT, 10);
-
-		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
-
-		if (!isWelcomeLinkFinal(portalUrlLink)) {
-			portalUrlLink = getRedirectUrl(portalUrlLink);
-		}
-
-		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,
+				testData.getProperty("enrol.practice.url1"));
 		loginPage.login(patientActivationSearchTest.getPatientIdString(), testData.getPassword());
 
-		logStep("Detecting if Home Page is opened");
-
 		logStep("Switching to Second Practice to verify auto enrollment");
-		jalapenoHomePage.switchPractice(testData.getProperty("practice.name1"));
+		jalapenoHomePage.switchPractice(testData.getProperty("practice.name2"));
+		jalapenoHomePage.clickOnLogout();
 
-		logStep("Auto Enrollment to Second Practice is completed");
+		logStep("Validating the welcome message from both the Practice");
+		assertTrue(mail.getEmailContent(firstPatientEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
+				WELCOME_EMAIL_BODY_PATTERN_PRACTICE, 10));
+
 	}
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2247,23 +2235,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPortalUrl(), dependentPatientFirstName);
 
 		log("Waiting for welcome mail at patient inbox from second practice");
-		Instant testStart = Instant.now();
-		Email visitPortal = new Mailer(patientsEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT, 60,
-				testSecondsTaken(testStart));
-		assertNotNull(visitPortal,
-				"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
+		YopMail mail = new YopMail(driver);
+		assertTrue(mail.getEmailContent(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
+				WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE, 10));
 
-		String portalUrlLink = Mailer.getLinkByText(visitPortal, WELCOME_EMAIL_BUTTON_TEXT);
-
-		System.out.println("patient portal url is " + portalUrlLink);
-
-		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
-
-		if (!isWelcomeLinkFinal(portalUrlLink)) {
-			portalUrlLink = getRedirectUrl(portalUrlLink);
-		}
-
-		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,
+				testData.getProperty("enrol.practice.url2"));
 		JalapenoHomePage jalapenoHomePage = loginPage.login(guardianPatientLogin, testData.getPassword());
 
 		logStep("Detecting if Home Page is opened");
@@ -2340,18 +2317,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPortalUrl(), patientFirstName);
 
 		logStep("Validate Welcome mail recieved by guardianpatient at Practice Portal2");
+		assertTrue(mail.getEmailContent(guardianpatientEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
+				WELCOME_EMAIL_BODY_PATTERN_PRACTICE, 10));
 
 		log("Waiting for welcome mail at patient inbox from second practice");
-		String portalUrlLink = mail.getLinkFromEmail(guardianpatientEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
-				WELCOME_EMAIL_BUTTON_TEXT, 10);
-
-		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
-
-		if (!isWelcomeLinkFinal(portalUrlLink)) {
-			portalUrlLink = getRedirectUrl(portalUrlLink);
-		}
-
-		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,
+				testData.getProperty("enrol.practice.url2"));
 		loginPage.login(guardianLogin, testData.getPassword());
 
 		logStep("Detecting if Home Page is opened");
@@ -3577,8 +3548,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getProperty("dob.year"));
 
 		logStep("Finishing of patient activation: step 2 - filling patient data");
-		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
-				patientActivationSearchTest.getPatientIdString(), testData.getPassword(), testData);
+		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(patientFirstName,
+				testData.getPassword(), testData);
 
 		logStep("Patient Activation on Second Practice Portal- Patient Activation link will not be present");
 		PatientActivationSearchTest patientActivationSearchTest12 = new PatientActivationSearchTest();
@@ -3586,26 +3557,18 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getProperty("doctor.login.practice2"), testData.getProperty("doctor.password.practice2"),
 				testData.getPortalUrl(), patientFirstName);
 
-		log("Waiting for welcome mail at patient inbox from second practice");
-		Instant testStart = Instant.now();
-		Email visitPortal = new Mailer(patientsEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT, 60,
-				testSecondsTaken(testStart));
-		assertNotNull(visitPortal,
-				"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
-		String portalUrlLink = Mailer.getLinkByText(visitPortal, WELCOME_EMAIL_BUTTON_TEXT);
-		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
-
-		if (!isWelcomeLinkFinal(portalUrlLink)) {
-			portalUrlLink = getRedirectUrl(portalUrlLink);
-		}
-
-		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
-		loginPage.login(patientActivationSearchTest.getPatientIdString(), testData.getPassword());
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,
+				testData.getProperty("enrol.practice.url1"));
+		loginPage.login(patientFirstName, testData.getPassword());
 
 		logStep("Switching to Second Practice to verify auto enrollment");
-		jalapenoHomePage.switchPractice(testData.getProperty("practice.name1"));
-
-		logStep("Auto Enrollment to Second Practice is completed");
+		jalapenoHomePage.switchPractice(testData.getProperty("practice.name2"));
+		jalapenoHomePage.clickOnLogout();
+		logStep("Validating the welcome message from both the Practice");
+		assertTrue(mail.getEmailContent(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
+				WELCOME_EMAIL_BODY_PATTERN_PRACTICE, 10));
+		assertTrue(mail.getEmailContent(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
+				WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE, 10));
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
@@ -6139,7 +6102,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		homePage.clickOnLogout();
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAccountlocked() throws Exception {
 		createCommonPatient();
@@ -6167,16 +6130,17 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertNotNull(url, "Url is null.");
 
 		JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
-		
-		logStep("Redirecting to patient portal, filling wrong secret answer as: " + testData.getProperty("wrong.secret.answer"));
+
+		logStep("Redirecting to patient portal, filling wrong secret answer as: "
+				+ testData.getProperty("wrong.secret.answer"));
 		logStep("Looking for account has been locked because you have entered an incorrect answer too many times message");
 		forgotPasswordPage3.fillInWrongSecretAnswer(testData.getProperty("wrong.secret.answer"));
 
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testIdentityLockOut() throws Exception {
-		
+
 		createCommonPatient();
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -6184,14 +6148,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Logging out");
 		loginPage = homePage.clickOnLogout();
-		
+
 		logStep("Attempt to login with wrong password and verify User lockout Error Message");
 		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
 		assertTrue(loginPage1.loginWithWrongPassword(patient.getUsername()));
-	
-		
+
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateSamePatientWithInVaildPhonenumber() throws Exception {
 		createCommonPatient();
@@ -6219,91 +6182,91 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	 */
 
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
-		    public void testSatementPreferenceUpdatingToElectronicFromPaper() throws Exception {
-			SiteGenLoginPage loginpage;
-			SiteGenHomePage pSiteGenHomePage;
-			SiteGenPracticeHomePage pSiteGenPracticeHomePage;
-			EstatementPage estatement;
-			JalapenoLoginPage loginPage;
-			JalapenoHomePage homePage;
-			JalapenoAccountPage accountPage;
-			JalapenoMyAccountPreferencesPage myAccountSecurityPage;
-			JalapenoMyAccountProfilePage myAccountPage;
+	public void testSatementPreferenceUpdatingToElectronicFromPaper() throws Exception {
+		SiteGenLoginPage loginpage;
+		SiteGenHomePage pSiteGenHomePage;
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
+		EstatementPage estatement;
+		JalapenoLoginPage loginPage;
+		JalapenoHomePage homePage;
+		JalapenoAccountPage accountPage;
+		JalapenoMyAccountPreferencesPage myAccountSecurityPage;
+		JalapenoMyAccountProfilePage myAccountPage;
 
-			logStep("Login to sitegen as Admin user");
-			loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-			pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
-					testData.getProperty("jalapeno.sitgen.password"));
+		logStep("Login to sitegen as Admin user");
+		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
+				testData.getProperty("jalapeno.sitgen.password"));
 
-			logStep("Navigate to SiteGen PracticeHomePage");
-			pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
-			logStep("Check if SiteGen Practice Homepage elements are present ");
-			assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
-					"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+		logStep("Navigate to SiteGen PracticeHomePage");
+		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Check if SiteGen Practice Homepage elements are present ");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
-			logStep("Click on online bill pay and Navigate to Estatement");
-			pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+		logStep("Click on online bill pay and Navigate to Estatement");
+		pSiteGenPracticeHomePage.clickOnOnlineBillPay();
 
-			logStep("Doing the configuration setting for estatement and setting up the default delivery option");
-			estatement = new EstatementPage(driver);
-			estatement.enableStatementDelivery("check");
-			estatement.bothPaperAndElectronic("uncheck");// check //uncheck//check
-			estatement.disablePaperOnly("uncheck");
-			Thread.sleep(5000);// Waiting for the update of default delivery options
-			estatement.defaultDeliveryOption("Paper statement");
-			estatement.submitButton();
+		logStep("Doing the configuration setting for estatement and setting up the default delivery option");
+		estatement = new EstatementPage(driver);
+		estatement.enableStatementDelivery("check");
+		estatement.bothPaperAndElectronic("uncheck");// check //uncheck//check
+		estatement.disablePaperOnly("uncheck");
+		Thread.sleep(5000);// Waiting for the update of default delivery options
+		estatement.defaultDeliveryOption("Paper statement");
+		estatement.submitButton();
 
-			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
-			patient = PatientFactory.createJalapenoPatient(username, testData);
-			patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 1);
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 1);
 
-			logStep("Load login page");
-			loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-			homePage = loginPage.loginWithPreference(patient.getUsername(), patient.getPassword());
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.loginWithPreference(patient.getUsername(), patient.getPassword());
 
-			logStep("Go to Account tab on my account page");
-			accountPage = homePage.clickOnAccount();
-			myAccountPage = accountPage.clickOnEditMyAccount();
+		logStep("Go to Account tab on my account page");
+		accountPage = homePage.clickOnAccount();
+		myAccountPage = accountPage.clickOnEditMyAccount();
 
-			logStep("Navigate to Preference page and validate the preferencer has been updated to Paper");
-			myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
-			assertEquals("In the mail (paper statements)", myAccountSecurityPage.getSelectedStatementPreference());
-			myAccountPage.clickOnLogout();
+		logStep("Navigate to Preference page and validate the preferencer has been updated to Paper");
+		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+		assertEquals("In the mail (paper statements)", myAccountSecurityPage.getSelectedStatementPreference());
+		myAccountPage.clickOnLogout();
 
-			logStep("Again login back to Sitegen for estamenet Setting ");
-			loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-			pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
-					testData.getProperty("jalapeno.sitgen.password"));
+		logStep("Again login back to Sitegen for estamenet Setting ");
+		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
+				testData.getProperty("jalapeno.sitgen.password"));
 
-			logStep("Navigate to SiteGen PracticeHomePage");
-			pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
-			logStep("Check if SiteGen Practice Homepage elements are present ");
-			assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
-					"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+		logStep("Navigate to SiteGen PracticeHomePage");
+		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Check if SiteGen Practice Homepage elements are present ");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
 
-			logStep("Clicking on online Bill Pay and Navigate to Estatement");
-			pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+		logStep("Clicking on online Bill Pay and Navigate to Estatement");
+		pSiteGenPracticeHomePage.clickOnOnlineBillPay();
 
-			logStep("Setting up the estatement configuration and setting the default delivery option to estatement");
-			estatement = new EstatementPage(driver);
-			estatement.enableStatementDelivery("check");
-			estatement.bothPaperAndElectronic("check");
-			estatement.disablePaperOnly("check");
-			Thread.sleep(5000);// Waiting for the update of default delivery options
-			estatement.defaultDeliveryOption("eStatement");
-			estatement.submitButton();
+		logStep("Setting up the estatement configuration and setting the default delivery option to estatement");
+		estatement = new EstatementPage(driver);
+		estatement.enableStatementDelivery("check");
+		estatement.bothPaperAndElectronic("check");
+		estatement.disablePaperOnly("check");
+		Thread.sleep(5000);// Waiting for the update of default delivery options
+		estatement.defaultDeliveryOption("eStatement");
+		estatement.submitButton();
 
-			logStep("Load login page");
-			loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-			homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
-			logStep("Go to security tab on my account page");
-			accountPage = homePage.clickOnAccount();
-			myAccountPage = accountPage.clickOnEditMyAccount();
+		logStep("Go to security tab on my account page");
+		accountPage = homePage.clickOnAccount();
+		myAccountPage = accountPage.clickOnEditMyAccount();
 
-			logStep("Navigate to Preference page and validate the preferencer has been updated to Electronically");
-			myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
-			assertEquals("Electronically", myAccountSecurityPage.getSelectedStatementPreference());
+		logStep("Navigate to Preference page and validate the preferencer has been updated to Electronically");
+		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+		assertEquals("Electronically", myAccountSecurityPage.getSelectedStatementPreference());
 
-		}
 	}
+}
