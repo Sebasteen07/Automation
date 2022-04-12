@@ -22,8 +22,10 @@ import com.medfusion.product.object.maps.appt.precheck.Main.ApptPrecheckMainPage
 import com.medfusion.product.object.maps.appt.precheck.page.Appointments.AppointmentsPage;
 import com.medfusion.product.object.maps.appt.precheck.page.CurbsideCheckIn.CurbsideCheckInPage;
 import com.medfusion.product.object.maps.appt.precheck.page.Login.AppointmentPrecheckLogin;
+import com.medfusion.product.object.maps.appt.precheck.page.Setting.FormsPage;
 import com.medfusion.product.object.maps.appt.precheck.page.Setting.GeneralPage;
 import com.medfusion.product.object.maps.appt.precheck.page.Setting.NotificationsPage;
+import com.medfusion.product.object.maps.appt.precheck.page.Setting.PreCheckPage;
 import com.medfusion.product.object.maps.appt.precheck.util.AccessToken;
 import com.medfusion.product.object.maps.appt.precheck.util.BaseTest;
 import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
@@ -46,6 +48,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	NotificationsPage notifPage;
 	CommonMethods commonMethod;
 	GeneralPage generalPage;
+	PreCheckPage precheckPage;
+	FormsPage formsPage;
 	PostAPIRequestMfAppointmentScheduler apptSched;
 	MfAppointmentSchedulerPayload payload;
 	HeaderConfig headerConfig;
@@ -65,6 +69,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		curbsidePage = new CurbsideCheckInPage(driver);
 		generalPage = new GeneralPage();
 		curbsidePage = new CurbsideCheckInPage(driver);
+		precheckPage = new PreCheckPage(driver);
+		formsPage = new FormsPage(driver);
 		apptSched = PostAPIRequestMfAppointmentScheduler.getPostAPIRequestMfAppointmentScheduler();
 		payload = MfAppointmentSchedulerPayload.getMfAppointmentSchedulerPayload();
 		headerConfig = HeaderConfig.getHeaderConfig();
@@ -5794,11 +5800,11 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("I click on choose image link,add providerId,provider firstname,middlename,lastname,title")
 	public void i_click_on_choose_image_link_add_provider_id_provider_firstname_middlename_lastname_title() throws InterruptedException, AWTException, IOException {
 		   generalPage.providerImage(propertyData.getProperty("upload.provider.image"));	   
-		   generalPage.providerId();
-		   generalPage.firstName();
-		   generalPage.middleName();
-		   generalPage.lastName();
-		   generalPage.title();
+		   generalPage.providerId(propertyData.getProperty("provider.id"));
+		   generalPage.firstName(propertyData.getProperty("provider.first.name"));
+		   generalPage.middleName(propertyData.getProperty("provider.middle.name"));
+		   generalPage.lastName(propertyData.getProperty("provider.last.name"));
+		   generalPage.title(propertyData.getProperty("provider.title"));
 	}
 	@When("I click on save button for provider")
 	public void i_click_on_save_button_for_provider() throws InterruptedException {
@@ -6016,13 +6022,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_click_on_cadence_editor_template_page_and_select_hours_min_day() throws InterruptedException, IOException {
 		notifPage.clickTimingDropdownunderDesigntab();
 		notifPage.selectHourDropdownunderDesigntab();
-		notifPage.enterTimingUnitunderDesigntab();
+		notifPage.enterTimingUnitunderDesigntab(propertyData.getProperty("timing.unit.hour.one"));
 		notifPage.click2ndTimingDropdownunderDesigntab();
 		notifPage.selectMinutesTimingDropdownunderDesigntab();
-		notifPage.enter2ndTimingUnitunderDesigntab();
+		notifPage.enter2ndTimingUnitunderDesigntab(propertyData.getProperty("timing.unit.minutes"));
 		notifPage.click3rdTimingDropdownunderDesigntab();
 		notifPage.selectDayDropdownunderDesigntab();
-		notifPage.enter3rdTimingUnitunderDesigntab();
+		notifPage.enter3rdTimingUnitunderDesigntab(propertyData.getProperty("timing.unit.day"));
 		notifPage.saveChangesButton();
 		
 	}
@@ -6047,13 +6053,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_click_on_cadence_editor_template_page_and_select_min_hours_day() throws InterruptedException, IOException {
 		notifPage.clickTimingDropdownunderDesigntab(); 
 		notifPage.selectMinutesTimingDropdownunderDesigntab();
-		notifPage.enter1stMinutesTimingUnitunderDesigntab();
+		notifPage.enter1stMinutesTimingUnitunderDesigntab(propertyData.getProperty("timing.unit.minutes"));
 		notifPage.click2ndTimingDropdownunderDesigntab();
 		notifPage.selectHourDropdownunderDesigntab();
-		notifPage.enter2ndHoursTimingUnitunderDesignTab();
+		notifPage.enter2ndHoursTimingUnitunderDesignTab(propertyData.getProperty("timing.unit.hour"));
 		notifPage.click3rdTimingDropdownunderDesigntab();
 		notifPage.selectDayDropdownunderDesigntab();
-		notifPage.enter3rdTimingUnitunderDesigntab();
+		notifPage.enter3rdTimingUnitunderDesigntab(propertyData.getProperty("timing.unit.day"));
 		notifPage.saveChangesButton();
 	}
 	@Then("I verify system should show timing units on template properly")
@@ -6070,17 +6076,17 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_click_on_cadence_editor_template_page_and_select_first_hour_min_hour_and_day() throws InterruptedException, IOException {
 		notifPage.clickTimingDropdownunderDesigntab();
 		notifPage.selectHourDropdownunderDesigntab();
-		notifPage.enterTimingUnitunderDesigntab();
+		notifPage.enterTimingUnitunderDesigntab(propertyData.getProperty("timing.unit.hour.one"));
 		notifPage.click2ndTimingDropdownunderDesigntab();
 		notifPage.selectMinutesTimingDropdownunderDesigntab();
-		notifPage.enter2ndTimingUnitunderDesigntab();
+		notifPage.enter2ndTimingUnitunderDesigntab(propertyData.getProperty("timing.unit.minutes"));
 		notifPage.click3rdTimingDropdownunderDesigntab();
 		notifPage.select2ndHourDropdownunderDesigntab();
-		notifPage.enter3rdHourtimingUnitunderDesigntab();
+		notifPage.enter3rdHourtimingUnitunderDesigntab(propertyData.getProperty("timing.unit.hour"));
 		notifPage.ClickonAddbutton();
 		notifPage.click4thTimingDropdownunderDesigntab();
 		notifPage.selectDayDropdownunderDesigntab();
-		notifPage.enter4thTimingUnitunderDesigntab();
+		notifPage.enter4thTimingUnitunderDesigntab(propertyData.getProperty("timing.unit.day"));
 		notifPage.saveChangesButton();
 		
 	}
@@ -6308,6 +6314,217 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(apptPage.getReminderLogStatus(Appointment.patientId, Appointment.apptId), "None",
 				"Remainder logs status does not shows blank value");
 	}
+	
+	@When("I click on notifications")
+	public void i_click_on_notifications() {
+	    notifPage.clickOnNotificationTab();
+	}
+	@When("I enable Curbside checkin reminder checkbox")
+	public void i_enable_curbside_checkin_reminder_checkbox() throws InterruptedException {
+	   notifPage.enableCurbsideCheckinRemCheckbox();
+	   notifPage.saveNotification();
+	}
+	@When("I schedule an appointment for curbside checkin reminder")
+	public void i_schedule_an_appointment_for_curbside_checkin_reminder() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@Then("I verify system should send curbside checkin reminder within next one hour")
+	public void i_verify_system_should_send_curbside_checkin_reminder_within_next_one_hour() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("curbside.checkin.mail.title"), 5));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I disable Curbside checkin reminder checkbox")
+	public void i_disable_curbside_checkin_reminder_checkbox() throws InterruptedException {
+	    notifPage.disableCurbsideCheckinRemCheckbox();
+	    notifPage.saveNotification();
+	}
+	@Then("I verify system should not send curbside reminder")
+	public void i_verify_system_should_not_send_curbside_reminder() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("curbside.checkin.mail.title"), 5));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I go to notifications tab")
+	public void i_go_to_notifications_tab() {
+	    notifPage.clickOnNotificationTab();
+	}
+	@When("I click on Curbside check-in of notification tab")
+	public void i_click_on_curbside_check_in_of_notification_tab() {
+	   notifPage.clickOnCurbsideCheckInTabInNotif();
+	}
+	@When("I add additional arrival instructions in English")
+	public void i_add_additional_arrival_instructions_in_english() throws InterruptedException {
+	    notifPage.clearAdditionalArrivalInstTextboxEn();
+	    notifPage.addArrivalInstructionTextInEnglish("hello welcome to curbside checkin");
+	    notifPage.saveNotification();
+	}
+	@When("I go to Appointment tab")
+	public void i_go_to_appointment_tab() {
+		mainPage.clickOnAppointmentsTab();
+	}
+	@When("I schedule an appointment and confirm the arrival from mail")
+	public void i_schedule_an_appointment_and_confirm_the_arrival_from_mail() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@Then("I verify user is able to see the arrival message after confirmation in mail")
+	public void i_verify_user_is_able_to_see_the_arrival_message_after_confirmation_in_mail() throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		yopMail.confirmArrivalFromEmail("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("email.title.in.en"));
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		Thread.sleep(10000);
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	@When("I clear additional arrival instructions in English")
+	public void i_clear_additional_arrival_instructions_in_english() throws InterruptedException {
+		 notifPage.clearAdditionalArrivalInstTextboxEn();
+		 notifPage.saveNotification();
+	}
+	@Then("I verify user is able to keep blank arrival instruction message after confirmation in mail")
+	public void i_verify_user_is_able_to_keep_blank_arrival_instruction_message_after_confirmation_in_mail() throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		yopMail.getMessageAfterArrival("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("email.title.in.en"), currentWindow);
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		Thread.sleep(10000);
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I click on precheck tab")
+	public void i_click_on_precheck_tab() {
+	   precheckPage.clickOnprecheckPage();
+	}
+	@When("I add patient mode completion message")
+	public void i_add_patient_mode_completion_message() {
+		precheckPage.clearPatientModeCompletionMessagetextboxarea();
+	    precheckPage.addPatientModeCompletionMessagetextboxarea("You may enter a custom message for patients to see after checking in at your office. For example,Thank you for completing the precheck process. Please hand the tablet back to the front desk.");
+	    precheckPage.clickOnsaveChanges();
+	}
+	@Then("I verify that user is able to add or edit patient mode completion message")
+	public void i_verify_that_user_is_able_to_add_or_edit_patient_mode_completion_message() {
+	    assertTrue(precheckPage.visibilityOfPatientmodecompletionmessage());
+	}
+	
+	@When("I click on general tab")
+	public void i_click_on_general_tab() throws InterruptedException {
+	    generalPage.clickOnGeneralTab();
+	}
+	@When("I add new practice display name and update changes")
+	public void i_add_new_practice_display_name_and_update_changes() throws InterruptedException {
+	    generalPage.clearPracticeDisplayName();
+	    generalPage.addPracticeDisplayName("PSS-GE-24333-PRACTICE");
+	    generalPage.clickOnUpdateSettingbutton();
+	}
+	@Then("I verify that practice display name is changed in appointment dashboard")
+	public void i_verify_that_practice_display_name_is_changed_in_appointment_dashboard() {
+	    assertEquals(apptPage.getPracticeName(),"PSS-GE-24333-PRACTICE","PSS-GE-24333-PRACTICE is not match");
+	}
+	@When("I add phone number")
+	public void i_add_phone_number() {
+		precheckPage.clearPhonenumber();
+		precheckPage.addPhonenumber();
+	}
+	@When("I edit phone number")
+	public void i_edit_phone_number() {
+		precheckPage.clearPhonenumber();
+		precheckPage.editPhonenumber();
+	}
+	@When("I click on save changes button")
+	public void i_click_on_save_changes_button() {
+	   precheckPage.clickOnsaveChanges();
+	}
+	@Then("I verify user is able to add or edit phone number")
+	public void i_verify_user_is_able_to_add_or_edit_phone_number() {
+		assertTrue(precheckPage.visbilityofaddPhonenumber());
+		assertTrue(precheckPage.visbilityofeditPhonenumber());
+	}
+	@When("I click on forms tab")
+	public void i_click_on_forms_tab() {
+	   formsPage.clickOnformsTab();
+	}
+	@When("I click on add form button")
+	public void i_click_on_add_form_button() {
+	   formsPage.clickOnAddForm();
+	   formsPage.clickOnMedfusionForm();
+	   formsPage.enterFormName(propertyData.getProperty("form.name"));
+	   formsPage.enterFormURL(propertyData.getProperty("form.url"));
+	   formsPage.clickOnAddformButton();
+	}
+	@Then("I verify user is able to add form in the forms grid")
+	public void i_verify_user_is_able_to_add_form_in_the_forms_grid() {
+	   assertTrue(formsPage.visibilityOfForms());
+	}
+	@When("I associate appointment type with form")
+	public void i_associate_appointment_type_with_form() throws InterruptedException {
+	   formsPage.clickOnAppointmenttypes();
+	   formsPage.selectAppointmentType();
+	   formsPage.clickOnbackarrow();
+	}
+	@Then("I verify user is able to associate appointment type to form")
+	public void i_verify_user_is_able_to_associate_appointment_type_to_form() {
+	   assertEquals(formsPage.countOfAppointmentType(),"1","1 is not match");
+	}
+	@When("I delete the form")
+	public void i_delete_the_form() throws InterruptedException {
+	   formsPage.clickOnDeleteForm();
+	   formsPage.clickDeleteButton();
+	}
+	@Then("I verify user is able to delete the form and form cannot be seen in form grid")
+	public void i_verify_user_is_able_to_delete_the_form_and_form_cannot_be_seen_in_form_grid() {
+	    assertFalse(formsPage.visibilityOfForms());
+	}
+	@When("I add instructions for primary,secondary,tertiary")
+	public void i_add_instructions_for_primary_secondary_tertiary() throws InterruptedException {
+		precheckPage.clearprimaryInstructionsmessage();
+	    precheckPage.primaryInstructionsmessage(propertyData.getProperty("primary.instruction.message.english"));
+	    precheckPage.clickprimaryInstructionsmessageinSpanish();
+	    precheckPage.clearprimaryInstructionsmessageinSpanish();
+	    precheckPage.primaryInstructionsmessageinSpanish(propertyData.getProperty("primary.instruction.message.spanish"));
+	    precheckPage.saveChangesbutton();
+	}
+	@Then("I verify that user is able to see instructions for primary,secondary,tertiary on UI")
+	public void i_verify_that_user_is_able_to_see_instructions_for_primary_secondary_tertiary_on_ui() throws InterruptedException {
+		assertTrue(precheckPage.visibilityofprimaryInstructionsmessageinEnglish());
+		precheckPage.clickprimaryInstructionsmessageinSpanish();
+		assertTrue(precheckPage.visibilityofprimaryInstructionsmessageinSpanish());
+	}
+
 
 
 

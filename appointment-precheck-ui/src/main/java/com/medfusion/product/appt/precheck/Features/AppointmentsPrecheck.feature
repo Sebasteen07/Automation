@@ -1763,7 +1763,7 @@ Feature: Test fuctionality of Appointment precheck
     And I click on notification tab
     Then I verify system should show timing units on template in proper format hours,minutes,hours and day
     And logout from practice provisioning portal
-    
+
   Scenario: verify after deleting all timing unit for mail in appointment reminder section timing and timing units fields system show null
     When from setting in notifications user click on email hamburgerButton section of appointment reminder
     And I hit edit button of "Email" for appointment reminder
@@ -1803,4 +1803,93 @@ Feature: Test fuctionality of Appointment precheck
     And I switch on practice provisioning url
     And again I schedule an appointment with same email and phone number
     Then I verify paper plane icon and logs shows blank value
+    And logout from practice provisioning portal
+
+  Scenario: verify system should send 1 hour prior curbside reminder if user enables Curbside checkin reminder checkbox
+    And I go to settings tab
+    And I click on notifications
+    And I enable Curbside checkin reminder checkbox
+    And I click on Appointment tab
+    And I schedule an appointment for curbside checkin reminder
+    Then I verify system should send curbside checkin reminder within next one hour
+    And logout from practice provisioning portal
+
+  Scenario: verify system should not send curbside reminder if user disables Curbside checkin reminder checkbox
+    And I go to settings tab
+    And I click on notifications
+    And I disable Curbside checkin reminder checkbox
+    And I click on Appointment tab
+    And I schedule an appointment for curbside checkin reminder
+    Then I verify system should not send curbside reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to add or edit arrival message for mail and it will reflect on mail
+    And I go to settings tab
+    And I go to notifications tab
+    And I click on Curbside check-in of notification tab
+    And I add additional arrival instructions in English
+    And I go to Appointment tab
+    And I schedule an appointment and confirm the arrival from mail
+    Then I verify user is able to add or edit the arrival message after confirmation in mail
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to keep blank arrival message for mail and it will reflect on mail
+    And I go to settings tab
+    And I go to notifications tab
+    And I click on Curbside check-in of notification tab
+    And I clear additional arrival instructions in English
+    And I go to Appointment tab
+    And I schedule an appointment and confirm the arrival from mail
+    Then I verify user is able to keep blank arrival instruction message after confirmation in mail
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to add or edit patient mode completion message
+    And I go to settings tab
+    And I click on precheck tab
+    And I add patient mode completion message
+    Then I verify that user is able to add or edit patient mode completion message
+    And logout from practice provisioning portal
+
+  Scenario: verify changed practice display name in appointment dashboard
+    And I go to settings tab
+    And I click on general tab
+    And I add new practice display name and update changes
+    Then I verify that practice display name is changed in appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user adds or edit phone number
+    And I go to settings tab
+    And I click on precheck tab
+    And I add phone number
+    And I edit phone number
+    And I click on save changes button
+    Then I verify user is able to add or edit phone number
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to add form in the forms grid
+    And I go to settings tab
+    And I click on forms tab
+    And I click on add form button
+    Then I verify user is able to add form in the forms grid
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to associate appointment type to form
+    And I go to settings tab
+    And I click on forms tab
+    And I associate appointment type with form
+    Then I verify user is able to associate appointment type to form
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to delete form
+    And I go to settings tab
+    And I click on forms tab
+    And I delete the form
+    Then I verify user is able to delete the form and form cannot be seen in form grid
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to add instructions for primary,secondary,tertiary insurance
+    And I go to settings tab
+    And I click on precheck tab
+    And I add instructions for primary,secondary,tertiary
+    Then I verify that user is able to see instructions for primary,secondary,tertiary on UI
     And logout from practice provisioning portal
