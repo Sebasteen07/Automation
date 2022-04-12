@@ -6438,7 +6438,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@Then("I verify that user is able to add or edit patient mode completion message")
 	public void i_verify_that_user_is_able_to_add_or_edit_patient_mode_completion_message() {
-	    assertTrue(precheckPage.visibilityOfPatientmodecompletionmessage());
+	    assertTrue(precheckPage.visibilityOfPatientModeCompletionMessage());
 	}
 	
 	@When("I click on general tab")
@@ -6471,8 +6471,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@Then("I verify user is able to add or edit phone number")
 	public void i_verify_user_is_able_to_add_or_edit_phone_number() {
-		assertTrue(precheckPage.visbilityofaddPhoneNumber());
-		assertTrue(precheckPage.visbilityofeditPhoneNumber());
+		assertTrue(precheckPage.visbilityofAddPhoneNumber());
+		assertTrue(precheckPage.visbilityofEditPhoneNumber());
 	}
 	@When("I click on forms tab")
 	public void i_click_on_forms_tab() {
@@ -6511,17 +6511,17 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@When("I add instructions for primary,secondary,tertiary")
 	public void i_add_instructions_for_primary_secondary_tertiary() throws InterruptedException {
-		precheckPage.clearprimaryInstructionsmessage();
+		precheckPage.clearPrimaryInstructionsMessage();
 	    precheckPage.primaryInstructionsMessage(propertyData.getProperty("primary.instruction.message.english"));
-	    precheckPage.clickprimaryInstructionsMessageinSpanish();
-	    precheckPage.clearprimaryInstructionsmessageinSpanish();
-	    precheckPage.primaryInstructionsmessageinSpanish(propertyData.getProperty("primary.instruction.message.spanish"));
+	    precheckPage.clickPrimaryInstructionsMessageInSpanish();
+	    precheckPage.clearPrimaryInstructionsMessageInSpanish();
+	    precheckPage.primaryInstructionsMessageinSpanish(propertyData.getProperty("primary.instruction.message.spanish"));
 	    precheckPage.saveChangesButton();
 	}
 	@Then("I verify that user is able to see instructions for primary,secondary,tertiary on UI")
 	public void i_verify_that_user_is_able_to_see_instructions_for_primary_secondary_tertiary_on_ui() throws InterruptedException {
-		assertTrue(precheckPage.visibilityofprimaryInstructionsMessageInEnglish());
-		precheckPage.clickprimaryInstructionsMessageinSpanish();
+		assertTrue(precheckPage.visibilityofPrimaryInstructionsMessageInEnglish());
+		precheckPage.clickPrimaryInstructionsMessageInSpanish();
 		assertTrue(precheckPage.visibilityofprimaryInstructionsMessageinSpanish());
 	}
 
