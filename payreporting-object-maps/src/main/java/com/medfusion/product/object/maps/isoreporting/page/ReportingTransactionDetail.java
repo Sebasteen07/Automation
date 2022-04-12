@@ -98,8 +98,6 @@ public class ReportingTransactionDetail {
 	@FindBy(how = How.XPATH, using = "//*[@id='void-refund-message']/div[1]/span")
 	private WebElement voidRefundMessage;
 
-
-
 	@FindBy(how = How.XPATH, using = "//*[@id='receiptContent']/dv/h5")
 	private WebElement refundTransaction;
 

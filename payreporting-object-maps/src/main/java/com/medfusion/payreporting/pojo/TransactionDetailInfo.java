@@ -141,7 +141,7 @@ public class TransactionDetailInfo {
 	public String toString(){
 		return new String("TransactionDetailInfo: activityDate: " + activityDate + " fundedDate: " + fundedDate + " paymentSource: " + paymentSource +
 				"location: " + location + " staffName: " + staffName + " patientName: " + patientName + " accountNumber: " +
-				accountNumber + " cardType: " + cardType + " cardholderName: " + cardholderName + " cardNumber: " + cardNumber + " transactionId: " + transactionId +
+				accountNumber + " cardType: " + cardType + " cardholderName: " + cardholderName + " cardNumber: " + cardNumber + "orderId: " + orderId +" transactionId: " + transactionId +
 				" transactionType: " + transactionType + " status: " + status + " paymentAmount: " + paymentAmount + " refundAmount: " +
 				refundAmount + " voidDisplayed: " + voidDisplayed + " refundDisplayed: " + refundDisplayed);
 	}
