@@ -1763,3 +1763,44 @@ Feature: Test fuctionality of Appointment precheck
     And I click on notification tab
     Then I verify system should show timing units on template in proper format hours,minutes,hours and day
     And logout from practice provisioning portal
+    
+  Scenario: verify after deleting all timing unit for mail in appointment reminder section timing and timing units fields system show null
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of "Email" for appointment reminder
+    And I delete all timing and timing unit and save configuration
+    Then I verify for mail on appointment reminder section timing and timing units fields system show blank
+    And logout from practice provisioning portal
+
+  Scenario: verify after deleting all timing unit for text in appointment reminder section timing and timing units fields system show null
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And I hit edit button of "SMS" for appointment reminder
+    And I delete all timing and timing unit and save configuration
+    Then I verify for text on appointment reminder section timing and timing units fields system show blank
+    And logout from practice provisioning portal
+
+  Scenario: Verify broadcast is sent after unsubscribe and resubscribe
+    When I enable Broadcast messaging checkbox from setting in notifications dashboard
+    And I schedule an appointment with valid email and phone number
+    And from mail I unsubscribe a patient
+    And I switch on practice provisioning url
+    And I select patient and send broadcast message from appointment dashboard
+    And I get count from email broadcast logs
+    And I resubscribe patient mail
+    Then I verify after sending broadcast message count will be increases
+    And logout from practice provisioning portal
+
+  Scenario: verify paper plane icon and logs shows red color when schedule an apt with invalid email and text
+    When from setting in notifications user turn on send notification radio button
+    And I schedule an appointment with invalid email and phone number
+    Then I verify paper plane icon and logs shows red colur and status is failed
+    And logout from practice provisioning portal
+
+  Scenario: verify paper plane icon and logs shows blank value when schedule an apt with valid email and text which are unsubscribed
+    When from setting in notifications user turn on send notification radio button
+    And I enable Broadcast messaging checkbox from setting in notifications dashboard
+    And I schedule an appointment with valid email and phone number
+    And from mail I unsubscribe a patient
+    And I switch on practice provisioning url
+    And again I schedule an appointment with same email and phone number
+    Then I verify paper plane icon and logs shows blank value
+    And logout from practice provisioning portal
