@@ -91,8 +91,9 @@ public class AddMerchantTest extends ProvisioningBaseTest{
                 testData.getProperty("country"), testData.getProperty("beneficial.ownership.type"));
 
         log("Fill Bank Account Info");
-        addNewMerchantPage.fillBankAccountDetails(testData.getProperty("account.type"), testData.getProperty("routing.number"),
-                testData.getProperty("bank.account.number"), testData.getProperty("federal.tax.id"));
+        addNewMerchantPage.fillBankAccountDetails(testData.getProperty("account.usage.combined"), testData.getProperty("account.type"),
+                testData.getProperty("routing.number"), testData.getProperty("bank.account.number"),
+                testData.getProperty("federal.tax.id"));
 
         log("Fill Rates and Fees Info");
         addNewMerchantPage.fillRatesAndFees(testData.getProperty("perTransactionAuthFee"), testData.getProperty("perTransactionRefundFee"),
