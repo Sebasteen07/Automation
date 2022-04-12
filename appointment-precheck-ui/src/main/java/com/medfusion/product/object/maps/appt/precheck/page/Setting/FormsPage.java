@@ -14,10 +14,10 @@ import com.medfusion.common.utils.IHGUtil;
 public class FormsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Forms')]")
-	private WebElement clickOnformsTab;
+	private WebElement clickOnFormsTab;
 	
 	@FindBy(how = How.XPATH, using = "//div[@id='actionDropdown']")
-	private WebElement clickOnAddForm;
+	private WebElement clickOnAddFormButton;
 	
 	@FindBy(how = How.XPATH, using = "//button[@id='medfusion-form-add']")
 	private WebElement clickOnMedfusionForm;
@@ -32,16 +32,16 @@ public class FormsPage extends BasePageObject {
 	private WebElement clickOnAddformButton;
 	
 	@FindBy(how = How.XPATH, using = "//p[contains(text(),'General Registration and Health History-2022')]")
-	private WebElement Forms;
+	private WebElement forms;
 	
 	@FindBy(how = How.XPATH, using = "//p[text()='General Registration and Health History-2022']/following::span[@class='mf-icon mf-icon__appointment-types mf-icon-pointer']")
-	private WebElement clickOnAppointmenttypes;
+	private WebElement clickOnAppointmentTypes;
 	
 	@FindBy(how = How.XPATH, using = "//input[@id='select-f40bdf17-fb57-4a78-bb7d-3290b016279b']")
 	private WebElement selectAppointmentType;
 	
 	@FindBy(how = How.XPATH, using = "//span[@class='mf-icon mf-icon__backarrow']")
-	private WebElement clickOnbackarrow;
+	private WebElement clickOnBackArrow;
 	
 	@FindBy(how = How.XPATH, using = "(//div[@class='mf-list__element--content'])[6]")
 	private WebElement countOfAppointmentType;
@@ -57,14 +57,14 @@ public class FormsPage extends BasePageObject {
 			PageFactory.initElements(driver, this);
 		}
 		
-		public void clickOnformsTab() {
-			IHGUtil.waitForElement(driver, 5, clickOnformsTab);
-			jse.executeScript("arguments[0].click();", clickOnformsTab);
+		public void clickOnFormsTab() {
+			IHGUtil.waitForElement(driver, 5, clickOnFormsTab);
+			jse.executeScript("arguments[0].click();", clickOnFormsTab);
 		}
 		
-		public void clickOnAddForm() {
-			IHGUtil.waitForElement(driver, 5, clickOnAddForm);
-			jse.executeScript("arguments[0].click();", clickOnAddForm);
+		public void clickOnAddFormButton() {
+			IHGUtil.waitForElement(driver, 5, clickOnAddFormButton);
+			jse.executeScript("arguments[0].click();", clickOnAddFormButton);
 		}
 		
 		public void clickOnMedfusionForm() {
@@ -89,8 +89,8 @@ public class FormsPage extends BasePageObject {
 		
 		public boolean visibilityOfForms() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, Forms);
-			if(Forms.isDisplayed()) {
+			IHGUtil.waitForElement(driver, 10, forms);
+			if(forms.isDisplayed()) {
 				log("Form is displayed in formgrid");
 				return true;
 			}
@@ -102,9 +102,9 @@ public class FormsPage extends BasePageObject {
 		
 		public void clickOnAppointmenttypes() throws InterruptedException {
 			Actions act = new Actions(driver);
-			act.moveToElement(Forms).perform();
+			act.moveToElement(forms).perform();
 			Thread.sleep(5000);
-			act.click(clickOnAppointmenttypes).perform();
+			act.click(clickOnAppointmentTypes).perform();
 			Thread.sleep(5000);
 		}
 		
@@ -114,9 +114,9 @@ public class FormsPage extends BasePageObject {
 			Thread.sleep(3000);
 		}
 		
-		public void clickOnbackarrow() {
-			IHGUtil.waitForElement(driver, 10, clickOnbackarrow);
-			jse.executeScript("arguments[0].click();", clickOnbackarrow);
+		public void clickOnBackArrow() {
+			IHGUtil.waitForElement(driver, 10, clickOnBackArrow);
+			jse.executeScript("arguments[0].click();", clickOnBackArrow);
 		}
 		
 		public String countOfAppointmentType() {
@@ -127,7 +127,7 @@ public class FormsPage extends BasePageObject {
 		
 		public void clickOnDeleteForm() throws InterruptedException {
 			Actions act = new Actions(driver);
-			act.moveToElement(Forms).perform();
+			act.moveToElement(forms).perform();
 			Thread.sleep(5000);
 			act.click(clickOnDeleteForm).perform();
 			Thread.sleep(5000);

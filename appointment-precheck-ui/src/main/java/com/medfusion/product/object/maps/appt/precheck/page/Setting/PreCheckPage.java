@@ -12,64 +12,64 @@ import com.medfusion.common.utils.IHGUtil;
 public class PreCheckPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'PreCheck')]")
-	private WebElement clickOnprecheckPage;
+	private WebElement clickOnPrecheckPage;
 	
 	@FindBy(how = How.XPATH, using = "(//textarea[@class='mf-form__input--text-area'])[1]")
-	private WebElement addPatientModeCompletionMessagetextboxarea;
+	private WebElement  addPatientModeCompletionMessageTextBoxArea;
 	
 	@FindBy(how = How.XPATH, using = "//button[@id='preCheckSettingsFormSubmitButton']")
 	private WebElement saveChanges;
 	
 	@FindBy(how = How.XPATH, using = "(//input[@class='mf-form__input--text'])[4]")
-	private WebElement addPhonenumber;
+	private WebElement addPhoneNumber;
 	
 	@FindBy(how = How.XPATH, using = "(//input[@class='mf-form__input--text'])[4]")
-	private WebElement editPhonenumber;
+	private WebElement editPhoneNumber;
 	
 	@FindBy(how = How.XPATH, using = "(//input[@class='mf-form__input--text'])[4]")
-	private WebElement clearPhonenumber;
+	private WebElement clearPhoneNumber;
 	
 	@FindBy(how = How.XPATH, using = "(//textarea[@class='mf-form__input--text-area'])[2]")
-	private WebElement primaryInstructionsmessage;
+	private WebElement primaryInstructionsMessage;
 	
 	@FindBy(how = How.XPATH, using = "//button[text()='English']")
-	private WebElement primaryInstructionsmessageinEnglish;
+	private WebElement primaryInstructionsMessageInEnglish;
 	
 	@FindBy(how = How.XPATH, using = "(//textarea[@class='mf-form__input--text-area'])[2]")
-	private WebElement clearprimaryInstructionsmessage;
+	private WebElement clearprimaryInstructionsMessage;
 	
 	@FindBy(how = How.XPATH, using = "//button[text()='Save changes']")
-	private WebElement saveChangesbutton;
+	private WebElement saveChangesButton;
 	
 	@FindBy(how = How.XPATH, using = "//button[text()='Spanish']")
-	private WebElement clickprimaryInstructionsmessageinSpanish;
+	private WebElement clickprimaryInstructionsMessageinSpanish;
 	
 	@FindBy(how = How.XPATH, using = "(//textarea[@class='mf-form__input--text-area'])[3]")
-	private WebElement primaryInstructionsmessageinSpanish;
+	private WebElement primaryInstructionsMessageinSpanish;
 	
 	@FindBy(how = How.XPATH, using = "(//textarea[@class='mf-form__input--text-area'])[3]")
-	private WebElement clearprimaryInstructionsmessageinSpanish;
+	private WebElement clearprimaryInstructionsMessageinSpanish;
 
 	public PreCheckPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 	
-	public void clickOnprecheckPage() {
-		IHGUtil.waitForElement(driver, 10, clickOnprecheckPage);
-		jse.executeScript("arguments[0].click();", clickOnprecheckPage);
+	public void clickOnPrecheckPage() {
+		IHGUtil.waitForElement(driver, 10, clickOnPrecheckPage);
+		jse.executeScript("arguments[0].click();", clickOnPrecheckPage);
 	}
 	
-	public void addPatientModeCompletionMessagetextboxarea(String patientmodeCompletionMessage) {
+	public void  addPatientModeCompletionMessageTextBoxArea(String patientmodeCompletionMessage) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 10, addPatientModeCompletionMessagetextboxarea);
-		addPatientModeCompletionMessagetextboxarea.sendKeys(patientmodeCompletionMessage);
+		IHGUtil.waitForElement(driver, 10,  addPatientModeCompletionMessageTextBoxArea);
+		 addPatientModeCompletionMessageTextBoxArea.sendKeys(patientmodeCompletionMessage);
 	}
 	
 	public void clearPatientModeCompletionMessagetextboxarea() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 10, addPatientModeCompletionMessagetextboxarea);
-		addPatientModeCompletionMessagetextboxarea.clear();
+		IHGUtil.waitForElement(driver, 10,  addPatientModeCompletionMessageTextBoxArea);
+		 addPatientModeCompletionMessageTextBoxArea.clear();
 	}
 	
 	public void clickOnsaveChanges() {
@@ -78,8 +78,8 @@ public class PreCheckPage extends BasePageObject {
 	}
 	
 	public boolean visibilityOfPatientmodecompletionmessage() {
-		IHGUtil.waitForElement(driver, 10,addPatientModeCompletionMessagetextboxarea);
-		if( addPatientModeCompletionMessagetextboxarea.isDisplayed()) {
+		IHGUtil.waitForElement(driver, 10, addPatientModeCompletionMessageTextBoxArea);
+		if(  addPatientModeCompletionMessageTextBoxArea.isDisplayed()) {
 			log("patient mode completion message is displayed");
 		return true;
 		}
@@ -89,24 +89,24 @@ public class PreCheckPage extends BasePageObject {
 		}
 	}
 	
-	public void clearPhonenumber() {
-		IHGUtil.waitForElement(driver, 10, clearPhonenumber);
-		clearPhonenumber.clear();
+	public void clearPhoneNumber() {
+		IHGUtil.waitForElement(driver, 10, clearPhoneNumber);
+		clearPhoneNumber.clear();
 	}
 	
-	public void addPhonenumber() {
-		IHGUtil.waitForElement(driver, 10, addPhonenumber);
-		addPhonenumber.sendKeys("9198822881");
+	public void addPhoneNumber(String phonenumber) {
+		IHGUtil.waitForElement(driver, 10, addPhoneNumber);
+		addPhoneNumber.sendKeys(phonenumber);
 	}
 	
-	public void editPhonenumber() {
-		IHGUtil.waitForElement(driver, 10, editPhonenumber);
-		editPhonenumber.sendKeys("9198822881");
+	public void editPhoneNumber(String phonenumber) {
+		IHGUtil.waitForElement(driver, 10, editPhoneNumber);
+		editPhoneNumber.sendKeys(phonenumber);
 	}
 	
-	public boolean visbilityofaddPhonenumber() {
-		IHGUtil.waitForElement(driver, 10, addPhonenumber);
-		if(editPhonenumber.isDisplayed()) {
+	public boolean visbilityofaddPhoneNumber() {
+		IHGUtil.waitForElement(driver, 10, addPhoneNumber);
+		if(editPhoneNumber.isDisplayed()) {
 			log("phone number is displayed");
 			return true;
 		}
@@ -116,9 +116,9 @@ public class PreCheckPage extends BasePageObject {
 		}
 	}
 	
-	public boolean visbilityofeditPhonenumber() {
-		IHGUtil.waitForElement(driver, 10, editPhonenumber);
-		if(editPhonenumber.isDisplayed()) {
+	public boolean visbilityofeditPhoneNumber() {
+		IHGUtil.waitForElement(driver, 10, editPhoneNumber);
+		if(editPhoneNumber.isDisplayed()) {
 			log("edited phone number is displayed");
 			return true;
 		}
@@ -128,45 +128,45 @@ public class PreCheckPage extends BasePageObject {
 		}
 	}
 	
-	public void primaryInstructionsmessage(String primaryinstructionmessage) {
-		IHGUtil.waitForElement(driver, 10, primaryInstructionsmessage);
-		primaryInstructionsmessage.sendKeys(primaryinstructionmessage);
+	public void primaryInstructionsMessage(String primaryinstructionmessage) {
+		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessage);
+		primaryInstructionsMessage.sendKeys(primaryinstructionmessage);
 	}
 	
-	public void primaryInstructionsmessageinEnglish() {
-		IHGUtil.waitForElement(driver, 10, primaryInstructionsmessageinEnglish);
-		primaryInstructionsmessageinEnglish.click();
+	public void primaryInstructionsMessageInEnglish() {
+		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessageInEnglish);
+		primaryInstructionsMessageInEnglish.click();
 	}
 	
 	public void clearprimaryInstructionsmessage() {
-		IHGUtil.waitForElement(driver, 10, primaryInstructionsmessage);
-		primaryInstructionsmessage.clear();
+		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessage);
+		primaryInstructionsMessage.clear();
 	}
 	
-	public void saveChangesbutton() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, saveChangesbutton);
-		saveChangesbutton.click();
+	public void saveChangesButton() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, saveChangesButton);
+		saveChangesButton.click();
 		Thread.sleep(20000);
 	}
 	
-	public void clickprimaryInstructionsmessageinSpanish() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, clickprimaryInstructionsmessageinSpanish);
-		clickprimaryInstructionsmessageinSpanish.click();
+	public void clickprimaryInstructionsMessageinSpanish() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, clickprimaryInstructionsMessageinSpanish);
+		clickprimaryInstructionsMessageinSpanish.click();
 	}
 	
 	public void primaryInstructionsmessageinSpanish(String primaryinstructionmessagespanish) {
-		IHGUtil.waitForElement(driver, 10, primaryInstructionsmessageinSpanish);
-		primaryInstructionsmessageinSpanish.sendKeys(primaryinstructionmessagespanish);
+		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessageinSpanish);
+		primaryInstructionsMessageinSpanish.sendKeys(primaryinstructionmessagespanish);
 	}
 	
 	public void clearprimaryInstructionsmessageinSpanish() {
-		IHGUtil.waitForElement(driver, 10, clearprimaryInstructionsmessageinSpanish);
-		clearprimaryInstructionsmessageinSpanish.clear();
+		IHGUtil.waitForElement(driver, 10, clearprimaryInstructionsMessageinSpanish);
+		clearprimaryInstructionsMessageinSpanish.clear();
 	}
 	
-	public boolean visibilityofprimaryInstructionsmessageinEnglish() {
-		IHGUtil.waitForElement(driver, 10, primaryInstructionsmessageinEnglish);
-		if(primaryInstructionsmessageinEnglish.isDisplayed()) {
+	public boolean visibilityofprimaryInstructionsMessageInEnglish() {
+		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessageInEnglish);
+		if(primaryInstructionsMessageInEnglish.isDisplayed()) {
 			log("primary instructions displayed in english");
 		return true;
 		}
@@ -177,9 +177,9 @@ public class PreCheckPage extends BasePageObject {
 		}
 	}
 	
-	public boolean visibilityofprimaryInstructionsmessageinSpanish() {
-		IHGUtil.waitForElement(driver, 10, primaryInstructionsmessageinSpanish);
-		if(primaryInstructionsmessageinSpanish.isDisplayed()) {
+	public boolean visibilityofprimaryInstructionsMessageinSpanish() {
+		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessageinSpanish);
+		if(primaryInstructionsMessageinSpanish.isDisplayed()) {
 			log("primary instructions displayed in spanish");
 			return true;
 		}

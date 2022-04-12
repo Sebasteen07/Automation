@@ -6428,12 +6428,12 @@ public class ApptPrecheckSteps extends BaseTest {
 	
 	@When("I click on precheck tab")
 	public void i_click_on_precheck_tab() {
-	   precheckPage.clickOnprecheckPage();
+	   precheckPage.clickOnPrecheckPage();
 	}
 	@When("I add patient mode completion message")
 	public void i_add_patient_mode_completion_message() {
 		precheckPage.clearPatientModeCompletionMessagetextboxarea();
-	    precheckPage.addPatientModeCompletionMessagetextboxarea("You may enter a custom message for patients to see after checking in at your office. For example,Thank you for completing the precheck process. Please hand the tablet back to the front desk.");
+	    precheckPage.addPatientModeCompletionMessageTextBoxArea("You may enter a custom message for patients to see after checking in at your office. For example,Thank you for completing the precheck process. Please hand the tablet back to the front desk.");
 	    precheckPage.clickOnsaveChanges();
 	}
 	@Then("I verify that user is able to add or edit patient mode completion message")
@@ -6457,13 +6457,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@When("I add phone number")
 	public void i_add_phone_number() {
-		precheckPage.clearPhonenumber();
-		precheckPage.addPhonenumber();
+		precheckPage.clearPhoneNumber();
+		precheckPage.addPhoneNumber(propertyData.getProperty("phone.number"));
 	}
 	@When("I edit phone number")
 	public void i_edit_phone_number() {
-		precheckPage.clearPhonenumber();
-		precheckPage.editPhonenumber();
+		precheckPage.clearPhoneNumber();
+		precheckPage.editPhoneNumber(propertyData.getProperty("phone.number"));
 	}
 	@When("I click on save changes button")
 	public void i_click_on_save_changes_button() {
@@ -6471,16 +6471,16 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@Then("I verify user is able to add or edit phone number")
 	public void i_verify_user_is_able_to_add_or_edit_phone_number() {
-		assertTrue(precheckPage.visbilityofaddPhonenumber());
-		assertTrue(precheckPage.visbilityofeditPhonenumber());
+		assertTrue(precheckPage.visbilityofaddPhoneNumber());
+		assertTrue(precheckPage.visbilityofeditPhoneNumber());
 	}
 	@When("I click on forms tab")
 	public void i_click_on_forms_tab() {
-	   formsPage.clickOnformsTab();
+	   formsPage.clickOnFormsTab();
 	}
 	@When("I click on add form button")
 	public void i_click_on_add_form_button() {
-	   formsPage.clickOnAddForm();
+	   formsPage.clickOnAddFormButton();
 	   formsPage.clickOnMedfusionForm();
 	   formsPage.enterFormName(propertyData.getProperty("form.name"));
 	   formsPage.enterFormURL(propertyData.getProperty("form.url"));
@@ -6494,7 +6494,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_associate_appointment_type_with_form() throws InterruptedException {
 	   formsPage.clickOnAppointmenttypes();
 	   formsPage.selectAppointmentType();
-	   formsPage.clickOnbackarrow();
+	   formsPage.clickOnBackArrow();
 	}
 	@Then("I verify user is able to associate appointment type to form")
 	public void i_verify_user_is_able_to_associate_appointment_type_to_form() {
@@ -6512,17 +6512,17 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("I add instructions for primary,secondary,tertiary")
 	public void i_add_instructions_for_primary_secondary_tertiary() throws InterruptedException {
 		precheckPage.clearprimaryInstructionsmessage();
-	    precheckPage.primaryInstructionsmessage(propertyData.getProperty("primary.instruction.message.english"));
-	    precheckPage.clickprimaryInstructionsmessageinSpanish();
+	    precheckPage.primaryInstructionsMessage(propertyData.getProperty("primary.instruction.message.english"));
+	    precheckPage.clickprimaryInstructionsMessageinSpanish();
 	    precheckPage.clearprimaryInstructionsmessageinSpanish();
 	    precheckPage.primaryInstructionsmessageinSpanish(propertyData.getProperty("primary.instruction.message.spanish"));
-	    precheckPage.saveChangesbutton();
+	    precheckPage.saveChangesButton();
 	}
 	@Then("I verify that user is able to see instructions for primary,secondary,tertiary on UI")
 	public void i_verify_that_user_is_able_to_see_instructions_for_primary_secondary_tertiary_on_ui() throws InterruptedException {
-		assertTrue(precheckPage.visibilityofprimaryInstructionsmessageinEnglish());
-		precheckPage.clickprimaryInstructionsmessageinSpanish();
-		assertTrue(precheckPage.visibilityofprimaryInstructionsmessageinSpanish());
+		assertTrue(precheckPage.visibilityofprimaryInstructionsMessageInEnglish());
+		precheckPage.clickprimaryInstructionsMessageinSpanish();
+		assertTrue(precheckPage.visibilityofprimaryInstructionsMessageinSpanish());
 	}
 
 
