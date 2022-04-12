@@ -817,7 +817,18 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "(//div[@class='table-data'])[15]")
 	private WebElement timingunit;
 	
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data'])[14]")
+	private WebElement timingForEmail;
 	
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data'])[15]")
+	private WebElement timingUnitForEmail;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data'])[20]")
+	private WebElement timingForSMS;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data'])[21]")
+	private WebElement timingUnitForSMS;
+
 	PropertyFileLoader propertyData;
 
 	public NotificationsPage(WebDriver driver) {
@@ -3220,6 +3231,90 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 	
-
+	public void removeTimingAndTimingUnitDev() {
+		IHGUtil.PrintMethodName();
+		for(int i=4;i>=1;i--) {
+		try {
+			driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + i + "]")).isDisplayed();
+			WebElement timeUnitMinus = driver
+					.findElement(By.xpath("(//div[@class='cadence-remove-icon'])[" + i + "]"));
+			timeUnitMinus.click();
+				log(i+ " Timing and timing unit textbox is removed");
+			} catch (NoSuchElementException e) {
+				log(i+ " Timing and timing unit textbox is not present");
+			}
+		}
+	}
+	
+	public void clickOnSaveChangesbutton() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, saveChangesButton);
+		jse.executeScript("arguments[0].click();", saveChangesButton);
+		Thread.sleep(5000);
+	}
+	
+	public void removeTimingAndTimingUnitDemo() {
+		IHGUtil.PrintMethodName();
+		for(int i=4;i>=1;i--) {
+		try {
+			driver.findElement(By.xpath("(//div[@class=' css-yk16xz-control'])[" + i + "]")).isDisplayed();
+			WebElement timeUnitMinus = driver
+					.findElement(By.xpath("(//div[@class='cadence-remove-icon'])[" + i + "]"));
+			timeUnitMinus.click();
+				log(i+ " Timing and timing unit textbox is removed");
+			} catch (NoSuchElementException e) {
+				log(i+ " Timing and timing unit textbox is not present");
+			}
+		}
+	}
+	
+	public String getTimingTextForEmail() {
+		IHGUtil.PrintMethodName();
+		log("Timing Text for Email : "+timingForEmail.getText());
+		return timingForEmail.getText();
+	}
+	
+	public String getTimingUnitTextForEmail() {
+		IHGUtil.PrintMethodName();
+		log("Timing Unit Text for Email: "+timingUnitForEmail.getText());
+		return timingUnitForEmail.getText();
+	}
+	
+	public void addTimingAndTimingUnit() {
+		for(int i=1;i<=3;i++) {
+		try {
+			driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + i + "]")).isDisplayed();
+				log(i+ " Timing and timing unit textbox is present");
+			} catch (NoSuchElementException e) {
+				log("Add"+ i+" timing and timing unit textbox");
+				addButtonInEdit.click();
+			}
+		}
+	}
+	
+	public void enterTimingAndTimingUnitDemo(int pathIndex, String timing, String timingUnit) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		log("Select timing and timing unit for: " + timing);
+		jse.executeScript("arguments[0].click();",
+				driver.findElement(By.xpath("(//div[@class=' css-yk16xz-control'])[" + pathIndex + "]")));
+		Actions action = new Actions(driver);
+		action.sendKeys(driver.findElement(By.xpath("(//div[@class=' css-yk16xz-control'])[" + pathIndex + "]")),
+				timing).sendKeys(Keys.ENTER).build().perform();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]")).clear();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]"))
+				.sendKeys(timingUnit);
+	}
+	
+	public String getTimingTextForSms() {
+		IHGUtil.PrintMethodName();
+		log("Timing Text for Email : "+timingForSMS.getText());
+		return timingForSMS.getText();
+	}
+	
+	public String getTimingUnitTextForSms() {
+		IHGUtil.PrintMethodName();
+		log("Timing Unit Text for Email: "+timingUnitForSMS.getText());
+		return timingUnitForSMS.getText();
+	}
 
 }

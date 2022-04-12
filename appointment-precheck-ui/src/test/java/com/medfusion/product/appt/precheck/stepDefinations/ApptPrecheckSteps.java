@@ -6103,6 +6103,212 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(notifPage.visibilityOfTiming());
 		assertTrue(notifPage.visibilityOfTimingUnit());
 	}
+	
+	@When("I hit edit button of {string} for appointment reminder")
+	public void i_hit_edit_button_of_for_appointment_reminder(String deliveryMethod) throws InterruptedException {
+		scrollAndWait(0, 1000, 3000);
+		notifPage.clickOnEditButtonHamburgerButton();
+		log("User redirect on edit template design page");
+		scrollAndWait(0, 200, 5000);
+		assertEquals(notifPage.getDeliveryMethod(), deliveryMethod, "Delivery method was not match");
+	}
+
+	@When("I delete all timing and timing unit and save configuration")
+	public void i_delete_all_timing_and_timing_unit_and_save_configuration() throws InterruptedException {
+		notifPage.checkingFourthTimingIfPresent();
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+			notifPage.removeTimingAndTimingUnitDev();
+		} else {
+			notifPage.removeTimingAndTimingUnitDemo();
+		}
+		notifPage.clickOnSaveChangesbutton();
+	}
+
+	@Then("I verify for mail on appointment reminder section timing and timing units fields system show blank")
+	public void i_verify_for_mail_on_appointment_reminder_section_timing_and_timing_units_fields_system_show_blank()
+			throws InterruptedException {
+
+		assertEquals(notifPage.getTimingTextForEmail(), "", "Blank value is not display for timing");
+		assertEquals(notifPage.getTimingUnitTextForEmail(), "", "Blank value is not display for timing unit");
+
+		scrollAndWait(0, 1000, 10000);
+		notifPage.clickApptReminderEmailHamburgerButton();
+		notifPage.clickOnEditButtonHamburgerButton();
+		notifPage.addTimingAndTimingUnit();
+
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+			notifPage.enterTimingAndTimingUnit(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnit(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnit(3, "Days", "5");
+		} else {
+			notifPage.enterTimingAndTimingUnitDemo(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnitDemo(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", "5");
+		}
+		notifPage.clickOnSaveChangesbutton();
+	}
+
+	@Then("I verify for text on appointment reminder section timing and timing units fields system show blank")
+	public void i_verify_for_text_on_appointment_reminder_section_timing_and_timing_units_fields_system_show_blank()
+			throws InterruptedException {
+		assertEquals(notifPage.getTimingTextForSms(), "", "Display blank value for timing");
+		assertEquals(notifPage.getTimingUnitTextForSms(), "", "Display blank value for timing unit");
+
+		scrollAndWait(0, 1000, 5000);
+		notifPage.clickApptReminderSmsHamburgerButton();
+		notifPage.clickOnEditButtonHamburgerButton();
+		notifPage.addTimingAndTimingUnit();
+
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+			notifPage.enterTimingAndTimingUnit(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnit(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnit(3, "Days", "5");
+		} else {
+			notifPage.enterTimingAndTimingUnitDemo(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnitDemo(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", "5");
+		}
+		notifPage.clickOnSaveChangesbutton();
+	}
+	
+	@When("from mail I unsubscribe a patient")
+	public void from_mail_i_unsubscribe_a_patient() throws NullPointerException, InterruptedException {
+		YopMail yopMail = new YopMail(driver);
+		String unsubscribeMessage = yopMail.unsubscribeEmail("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"));
+		assertEquals(unsubscribeMessage,
+				"You will no longer receive emails from PreCheck and reminder services. Please contact your practice if you wish to opt back in.",
+				"Message was nor correct");
+	}
+
+	@When("I get count from email broadcast logs")
+	public void i_get_count_from_email_broadcast_logs() throws InterruptedException {
+		assertEquals(apptPage.getBroadcastEmailCountForSelectedPatient(Appointment.patientId, Appointment.apptId), "0",
+				"Count for broadcast email logs was not match");
+	}
+
+	@When("I resubscribe patient mail")
+	public void i_resubscribe_patient_mail() throws NullPointerException, IOException, InterruptedException {
+		log("Delete Subscription Data");
+		Response response = subsManager.deleteAllSubscriptionDataUsingEmailId(
+				propertyData.getProperty("baseurl.mf.notif.subscription.manager"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
+				"jordan" + Appointment.randomNumber + "@YOPmail.com");
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		driver.navigate().refresh();
+		Thread.sleep(30000);
+	}
+
+	@Then("I verify after sending broadcast message count will be increases")
+	public void i_verify_after_sending_broadcast_message_count_will_be_increases()
+			throws NullPointerException, Exception {
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+		driver.navigate().refresh();
+		Thread.sleep(20000);
+		assertEquals(apptPage.getBroadcastEmailCountForSelectedPatient(Appointment.patientId, Appointment.apptId), "1",
+				"Count for broadcast email logs was not match");
+	}
+	
+	@When("I schedule an appointment with invalid email and phone number")
+	public void i_schedule_an_appointment_with_invalid_email_and_phone_number()
+			throws NullPointerException, IOException, InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		Thread.sleep(5000);
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, "4566778119", "abc@mm.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		apptPage.clickOnRefreshTab();
+	}
+	
+	@Then("I verify paper plane icon and logs shows red colur and status is failed")
+	public void i_verify_paper_plane_icon_and_logs_shows_red_colur_and_status_is_failed() throws InterruptedException {
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnActions();
+		apptPage.clickOnSendReminder();
+		Thread.sleep(10000);
+		apptPage.clickOnRefreshTab();
+		Thread.sleep(5000);
+		assertEquals(
+				apptPage.getColorForOneDayReminderStatus(Appointment.patientId, Appointment.apptId, 10,
+						propertyData.getProperty("one.day.reminder.status.color")),
+				propertyData.getProperty("one.day.reminder.status.color"), "Red color was not match");
+		assertEquals(
+				apptPage.getColorManualReminderStatus(Appointment.patientId, Appointment.apptId, 10,
+						propertyData.getProperty("manual.reminder.status.color")),
+				propertyData.getProperty("manual.reminder.status.color"), "Red color was not match");
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnViewAllForReminderStatus(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -2000, 5000);
+		assertEquals(apptPage.getFaildPriorDayIconColor(), propertyData.getProperty("one.day.reminder.status.color"),
+				"Red color was not match");
+		assertEquals(apptPage.getFaildManualIconColor(), propertyData.getProperty("one.day.reminder.status.color"),
+				"Red color was not match");
+		assertEquals(apptPage.getPriorDayReminderStatus(), "Failed", "Statue was not found as failed");
+		assertEquals(apptPage.getManualReminderStatus(), "Failed", "Statue was not found as failed");
+		apptPage.closeReminderStatusModal();
+	}
+	
+	@When("I schedule an appointment with valid email and phone number")
+	public void i_schedule_an_appointment_with_valid_email_and_phone_number() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+
+	@When("again I schedule an appointment with same email and phone number")
+	public void again_i_schedule_an_appointment_with_same_email_and_phone_number()
+			throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+
+	@Then("I verify paper plane icon and logs shows blank value")
+	public void i_verify_paper_plane_icon_and_logs_shows_blank_value() throws InterruptedException {
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnActions();
+		apptPage.clickOnSendReminder();
+		Thread.sleep(10000);
+		apptPage.clickOnRefreshTab();
+		Thread.sleep(5000);
+		assertEquals(apptPage.getReminderStatus(Appointment.patientId, Appointment.apptId), "",
+				"Remainder status does not shows blank value");
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		assertEquals(apptPage.getReminderLogStatus(Appointment.patientId, Appointment.apptId), "None",
+				"Remainder logs status does not shows blank value");
+	}
+
 
 
 

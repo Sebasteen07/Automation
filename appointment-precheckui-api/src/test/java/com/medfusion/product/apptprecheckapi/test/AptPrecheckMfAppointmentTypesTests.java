@@ -5,8 +5,6 @@ import static org.testng.Assert.assertEquals;
 import java.io.IOException;
 import java.util.Random;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.testng.ITestResult;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -19,6 +17,7 @@ import com.medfusion.product.appt.precheck.payload.MfAppointmentTypesPayload;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.util.APIVerification;
 import com.medfusion.product.object.maps.appt.precheck.util.AccessToken;
+import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentTypes;
 
@@ -34,6 +33,7 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 	public static HeaderConfig headerConfig;
 	public static Appointment testData;
 	APIVerification apiVerification = new APIVerification();
+	CommonMethods commonMtd;
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
@@ -46,6 +46,7 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 		testData = new Appointment();
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.mf.appointment.types"));
 		log("BASE URL-" + propertyData.getProperty("baseurl.mf.appointment.types"));
+		commonMtd = new CommonMethods();
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -63,9 +64,7 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETAppointmentsTypesUuid() throws IOException {
-		Random random = new Random();
-		int randamNo = random.nextInt(1000);
-		String integrationId = String.valueOf(randamNo);
+		String integrationId = commonMtd.generateRandomNum();
 		Response postApptTypeResponse = postAPIRequest.aptpostAppointmentTypes(
 				payload.apptTypePayload(propertyData.getProperty("mf.apt.scheduler.appt.type.id"), integrationId,
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),
@@ -96,44 +95,57 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPostCreateNewApptType() throws IOException {
-		Random random = new Random();
-		int randamNo = random.nextInt(1000);
-		String integrationId = String.valueOf(randamNo);
-		String appointmentTypeId = String.valueOf(randamNo);
+		String integrationId = commonMtd.generateRandomNum();
+		String appointmentTypeId = commonMtd.generateRandomNum();
+		
 		Response response = postAPIRequest.aptpostAppointmentTypes(
 				payload.apptTypePayload(appointmentTypeId, integrationId,
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
-
 		log("Verifying the response");
-		if (response.getStatusCode() == 200) {
-			log("Post Appointment Type");
 			assertEquals(response.getStatusCode(), 200);
 			apiVerification.verifyCreateNewApptType(response, appointmentTypeId,
 					propertyData.getProperty("mf.appt.type.name"),
 					propertyData.getProperty("mf.appt.type.category.id"));
-		}
-		if (response.getStatusCode() == 400) {
-			log("Appointment type already exists");
-			assertEquals(response.getStatusCode(), 400);
-			apiVerification.verifyAlreadyexistsAppt(response);
-		}
 		apiVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPostCreateRepeateApptType() throws IOException {
+		String integrationId = commonMtd.generateRandomNum();
+		String appointmentTypeId = commonMtd.generateRandomNum();
+		
+		Response response = postAPIRequest.aptpostAppointmentTypes(
+				payload.apptTypePayload(appointmentTypeId, integrationId,
+						propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
+		assertEquals(response.getStatusCode(), 200);
+		
+		Response repeateResponse = postAPIRequest.aptpostAppointmentTypes(
+				payload.apptTypePayload(appointmentTypeId, integrationId,
+						propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
+
+			log("Appointment type already exists");
+			assertEquals(repeateResponse.getStatusCode(), 400);
+			apiVerification.responseTimeValidation(repeateResponse);
+			apiVerification.verifyAlreadyexistsAppt(repeateResponse);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPostOneApptTypeUpdate() throws IOException {
+		String integrationId = commonMtd.generateRandomNum();
+		String appointmentTypeId = commonMtd.generateRandomNum();
 		Random random = new Random();
-		int randamNo = random.nextInt(1000);
-		String integrationId = String.valueOf(randamNo);
-		String appointmentTypeId = String.valueOf(integrationId);
+		int randomNum = random.nextInt(1000);
+		
 		Response postResponse = postAPIRequest.aptpostAppointmentTypes(
 				payload.oldApptTypePayload(appointmentTypeId, integrationId,
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
 		assertEquals(postResponse.getStatusCode(), 200);
 
-		int randomNum = random.nextInt(1000);
+		
 		String updateintegrationId = String.valueOf(randomNum);
 		Response response = postAPIRequest.aptpostUpdateAppointmentTypes(
 				propertyData.getProperty("mf.app.type.integration.id"),
@@ -148,8 +160,8 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPostMoreThanOneApptTypeUpdate() throws IOException {
 		Random random = new Random();
-		int randamNo = random.nextInt(1000);
-		String integrationId = String.valueOf(randamNo);
+		int randomNum = random.nextInt(1000);
+		String integrationId = commonMtd.generateRandomNum();
 
 		Response postResponse = postAPIRequest.aptpostUpdateAppointmentTypes(integrationId,
 				payload.updateMorethanOneApptTypePayload(integrationId,
@@ -157,7 +169,6 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
 		assertEquals(postResponse.getStatusCode(), 200);
 
-		int randomNum = random.nextInt(1000);
 		String updateIntId = String.valueOf(randomNum);
 
 		Response response = postAPIRequest.aptpostUpdateAppointmentTypes(updateIntId,
@@ -171,10 +182,8 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutApptTypesUuid() throws IOException {
-		Random random = new Random();
-		int randamNo = random.nextInt(1000);
-		String integrationId = String.valueOf(randamNo);
-		String appointmentTypeId = String.valueOf(randamNo);
+		String integrationId = commonMtd.generateRandomNum();
+		String appointmentTypeId = commonMtd.generateRandomNum();
 		Response postApptTypeResponse = postAPIRequest.aptpostAppointmentTypes(
 				payload.apptTypePayload(appointmentTypeId, integrationId,
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),
