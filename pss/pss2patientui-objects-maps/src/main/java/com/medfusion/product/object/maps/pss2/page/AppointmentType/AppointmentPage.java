@@ -37,6 +37,9 @@ public class AppointmentPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'The practice does not allow this appointment to be scheduled within')]")
 	private WebElement preventApptSchedPopUpMsg;
 	
+	@FindBy(how = How.XPATH, using = "(//a[@class='custombuttonexist'])[1]")
+	private WebElement preventApptSchedOkBtn;
+	
 	@FindBy(how = How.XPATH, using = "//div[@id='providerwizard']//div[2]//a[1]//div[1]//div[2]//span[1]")
 	private WebElement apptNextAvailable;
 	
@@ -165,6 +168,11 @@ public class AppointmentPage extends PSS2MainPage {
 	public String getNextAvailableOffText() {
 		IHGUtil.waitForElement(driver, 5, apptBox);
 		return apptBox.getText();
+	}
+	
+	public void pressOkBtn() {
+		IHGUtil.waitForElement(driver, 5, preventApptSchedOkBtn);
+		preventApptSchedOkBtn.click();
 	}
 	
 	public String selectTypeOfApp(String providerConfig, Boolean isPopUpSelected) {

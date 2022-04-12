@@ -192,6 +192,25 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		
 	}
 	
+	public void resetPrevSchedSettings(String aptType) throws InterruptedException {
+		
+		commonMethods.highlightElement(searchAppointment);
+		searchAppointment.sendKeys(aptType);
+		commonMethods.highlightElement(aptTypeLink);
+		aptTypeLink.click();
+		IHGUtil.waitForElement(driver, 10, editAptTypeHeading);
+		commonMethods.highlightElement(editAptTypeHeading);
+		scrollAndWait(0, 800, 1000);
+		commonMethods.highlightElement(prevSchedSettingLabel);
+		log("PrevSched Setting Label- "+prevSchedSettingLabel.getText());
+		
+		commonMethods.highlightElement(prevSchedSettingAdmin);
+		prevSchedSettingAdmin.click();
+		prevSchedSettingAdmin.clear();
+		commonMethods.highlightElement(aptTypeSettingSaveBtn);
+		aptTypeSettingSaveBtn.click();
+	}
+	
 	public void selectAppointment(String appointment) throws InterruptedException {
 		searchByAptTypeName(appointment);
 		IHGUtil.waitForElement(driver, 60, selectAppointment);

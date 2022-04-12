@@ -1095,7 +1095,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String reasonForAppointment1 = propertyData.getProperty("decision.tree.appointment.reason1.ge");
 		String decisionTreeAnswer1 = propertyData.getProperty("decision.tree.answer1.ge");
 		String appointmentType1 = propertyData.getProperty("decision.tree.appointment.type1.ge");
-		adminUtils.addAndEditAnswerFieldsInCategoryWithProviderOff(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
+		adminUtils.addAndEditAnswerFieldsInCategory(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
 				reasonForAppointment,questionForAppointment, decisionTreeAnswer, appointmentType1, reasonForAppointment1, decisionTreeAnswer1);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -1144,7 +1144,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String reasonForAppointment1 = propertyData.getProperty("decision.tree.appointment.reason1.gw");
 		String decisionTreeAnswer1 = propertyData.getProperty("decision.tree.answer1.gw");
 		String appointmentType1 = propertyData.getProperty("decision.tree.appointment.type1.gw");
-		adminUtils.addAndEditAnswerFieldsInCategoryWithProviderOff(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
+		adminUtils.addAndEditAnswerFieldsInCategory(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
 				reasonForAppointment,questionForAppointment, decisionTreeAnswer, appointmentType1, reasonForAppointment1, decisionTreeAnswer1);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -1176,5 +1176,51 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		logStep("Move to PSS admin Portal to login and then delete decision tree");
 		adminUtils.decisionTreeDeletion(driver, adminUser, testData, testData.getDecisionTreeName());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void preventSchedAppointmentTypeWithoutShowProviderNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		PSSNewPatient newPatient = new PSSNewPatient();
+		adminUtils.preventApptTypeScheduleWithProviderOff(driver, adminUser, testData);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		newPatient.createPatientDetails(testData);
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		patientUtils.bookAppointmentWithLTFlow(homepage, testData, driver);
+		homepage.logout();
+		HomePage homepage1 = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		if(homepage1.getFutureAppointmentListSize()>0) {
+			Assert.assertTrue(true);
+		}else {
+			Assert.assertTrue(false);
+		}
+		homepage1.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = homepage1.skipInsurance(driver);
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		String expPrevSchMsg ="The practice does not allow this appointment to be scheduled within "
+				+ testData.getPreSchedDays()
+				+ " days from your last visit for the same appointment type. Please look for a later date or call the practice if the schedule does not allow selecting a later date.";
+		String actPreventSchMsg = appointment.preventAppointmentTypeMsg(testData.getAppointmenttype());
+
+		assertEquals(actPreventSchMsg, expPrevSchMsg, "Prevent Scheduling Error message is not matches with expected message");
+		appointment.pressOkBtn();
+		adminUtils.resetPreventApptTypeScheduleWithProviderOff(driver, adminUser, testData);
 	}
 }
