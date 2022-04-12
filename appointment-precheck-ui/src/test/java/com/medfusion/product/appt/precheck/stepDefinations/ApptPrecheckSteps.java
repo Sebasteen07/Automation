@@ -6432,8 +6432,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@When("I add patient mode completion message")
 	public void i_add_patient_mode_completion_message() {
-		precheckPage.clearPatientModeCompletionMessagetextboxarea();
-	    precheckPage.addPatientModeCompletionMessageTextBoxArea("You may enter a custom message for patients to see after checking in at your office. For example,Thank you for completing the precheck process. Please hand the tablet back to the front desk.");
+		precheckPage.clearPatientModeCompletionMessageTextBoxArea();
+	    precheckPage.addPatientModeCompletionMessageTextBoxArea(propertyData.getProperty("patient.mode.completion.message"));
 	    precheckPage.clickOnsaveChanges();
 	}
 	@Then("I verify that user is able to add or edit patient mode completion message")
@@ -6448,7 +6448,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("I add new practice display name and update changes")
 	public void i_add_new_practice_display_name_and_update_changes() throws InterruptedException {
 	    generalPage.clearPracticeDisplayName();
-	    generalPage.addPracticeDisplayName("PSS-GE-24333-PRACTICE");
+	    generalPage.addPracticeDisplayName(propertyData.getProperty("practice.name.ge"));
 	    generalPage.clickOnUpdateSettingbutton();
 	}
 	@Then("I verify that practice display name is changed in appointment dashboard")
@@ -6492,7 +6492,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@When("I associate appointment type with form")
 	public void i_associate_appointment_type_with_form() throws InterruptedException {
-	   formsPage.clickOnAppointmenttypes();
+	   formsPage.clickOnAppointmentTypes();
 	   formsPage.selectAppointmentType();
 	   formsPage.clickOnBackArrow();
 	}
@@ -6515,14 +6515,14 @@ public class ApptPrecheckSteps extends BaseTest {
 	    precheckPage.primaryInstructionsMessage(propertyData.getProperty("primary.instruction.message.english"));
 	    precheckPage.clickPrimaryInstructionsMessageInSpanish();
 	    precheckPage.clearPrimaryInstructionsMessageInSpanish();
-	    precheckPage.primaryInstructionsMessageinSpanish(propertyData.getProperty("primary.instruction.message.spanish"));
+	    precheckPage.primaryInstructionsMessageInSpanish(propertyData.getProperty("primary.instruction.message.spanish"));
 	    precheckPage.saveChangesButton();
 	}
 	@Then("I verify that user is able to see instructions for primary,secondary,tertiary on UI")
 	public void i_verify_that_user_is_able_to_see_instructions_for_primary_secondary_tertiary_on_ui() throws InterruptedException {
 		assertTrue(precheckPage.visibilityofPrimaryInstructionsMessageInEnglish());
 		precheckPage.clickPrimaryInstructionsMessageInSpanish();
-		assertTrue(precheckPage.visibilityofprimaryInstructionsMessageinSpanish());
+		assertTrue(precheckPage.visibilityOfprimaryInstructionsMessageInSpanish());
 	}
 
 

@@ -48,7 +48,7 @@ public class PreCheckPage extends BasePageObject {
 	private WebElement clickPrimaryInstructionsMessageInSpanish;
 	
 	@FindBy(how = How.XPATH, using = "(//textarea[@class='mf-form__input--text-area'])[3]")
-	private WebElement primaryInstructionsMessageinSpanish;
+	private WebElement primaryInstructionsMessageInSpanish;
 	
 	@FindBy(how = How.XPATH, using = "(//textarea[@class='mf-form__input--text-area'])[3]")
 	private WebElement clearPrimaryInstructionsMessageInSpanish;
@@ -69,7 +69,7 @@ public class PreCheckPage extends BasePageObject {
 		 addPatientModeCompletionMessageTextBoxArea.sendKeys(patientmodeCompletionMessage);
 	}
 	
-	public void clearPatientModeCompletionMessagetextboxarea() {
+	public void clearPatientModeCompletionMessageTextBoxArea() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, clearPatientModeCompletionMessageTextBoxArea);
 		clearPatientModeCompletionMessageTextBoxArea.clear();
@@ -157,9 +157,9 @@ public class PreCheckPage extends BasePageObject {
 		clickPrimaryInstructionsMessageInSpanish.click();
 	}
 	
-	public void primaryInstructionsMessageinSpanish(String primaryinstructionmessagespanish) {
-		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessageinSpanish);
-		primaryInstructionsMessageinSpanish.sendKeys(primaryinstructionmessagespanish);
+	public void primaryInstructionsMessageInSpanish(String primaryinstructionmessagespanish) {
+		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessageInSpanish);
+		primaryInstructionsMessageInSpanish.sendKeys(primaryinstructionmessagespanish);
 	}
 	
 	public void clearPrimaryInstructionsMessageInSpanish() {
@@ -180,9 +180,9 @@ public class PreCheckPage extends BasePageObject {
 		}
 	}
 	
-	public boolean visibilityofprimaryInstructionsMessageinSpanish() {
-		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessageinSpanish);
-		if(primaryInstructionsMessageinSpanish.isDisplayed()) {
+	public boolean visibilityOfprimaryInstructionsMessageInSpanish() {
+		IHGUtil.waitForElement(driver, 10, primaryInstructionsMessageInSpanish);
+		if(primaryInstructionsMessageInSpanish.isDisplayed()) {
 			log("primary instructions displayed in spanish");
 			return true;
 		}

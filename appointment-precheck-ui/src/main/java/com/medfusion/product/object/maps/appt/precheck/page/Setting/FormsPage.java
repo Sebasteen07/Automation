@@ -100,7 +100,7 @@ public class FormsPage extends BasePageObject {
 			}
 		}
 		
-		public void clickOnAppointmenttypes() throws InterruptedException {
+		public void clickOnAppointmentTypes() throws InterruptedException {
 			Actions act = new Actions(driver);
 			act.moveToElement(forms).perform();
 			Thread.sleep(5000);
