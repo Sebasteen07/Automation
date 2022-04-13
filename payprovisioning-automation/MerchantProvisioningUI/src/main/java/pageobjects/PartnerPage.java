@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package pageobjects;
 
 import com.medfusion.common.utils.IHGUtil;
