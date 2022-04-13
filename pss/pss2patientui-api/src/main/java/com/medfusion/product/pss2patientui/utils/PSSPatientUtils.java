@@ -379,7 +379,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		Provider provider = appointment.selectTypeOfProvider(appointmentType,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verify Provider Page and Provider = " + book);
-		AppointmentDateTime aptDateTime = provider.getProviderandClick(book);
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(book);
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		log("Test Case Passed");
@@ -2301,7 +2301,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		logStep("Verfiy Appointment Page and appointment to be selected = " + appType);
 		Provider provider = appointment.selectTypeOfProvider(appType,Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verfiy Provider Page and Provider = " + providerName);
-		AppointmentDateTime aptDateTime = provider.getProviderandClick(providerName);
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(providerName);
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Date selected is for App" + date);
 		String time=aptDateTime.getFirstTimeWithHHMM();

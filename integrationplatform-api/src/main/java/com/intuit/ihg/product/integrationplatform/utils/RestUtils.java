@@ -167,7 +167,7 @@ public class RestUtils {
 		for (int i = 0; i < nodes.getLength(); i++) {
 
 			node = nodes.item(i);
-			System.out.println("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
 					+ (timestamp.toString()));
 			if (node.getChildNodes().item(0).getTextContent().contains(timestamp.toString())) {
 				Element ele = (Element) nodes.item(i).getParentNode();
@@ -527,20 +527,15 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		emptyFile(oAuthKeySStorePath);
 		OAuthPropertyManager.init(oAuthProperty);
-		System.out.println("appToken: " + appToken);
-		System.out.println("username: " + username);
-		System.out.println("password: " + password);
+		Log4jUtil.log("appToken: " + appToken);
+		Log4jUtil.log("username: " + username);
+		Log4jUtil.log("password: " + password);
 		try {
 			OAuth20TokenManager.initializeTokenStore(appToken, username, password);
 		} catch (Exception hException) {
 			// TODO Auto-generated catch block
-			hException.getCause().printStackTrace();
+			Log4jUtil.log(hException.toString());
 		}
-		// System.out.println("appToken: " +appToken);
-		// System.out.println("username: " +username);
-		// System.out.println("password: " +password);
-
-		// emptyFile(responsePath);
 	}
 
 	public static void emptyFile(String file) throws IOException {
@@ -3718,7 +3713,7 @@ public class RestUtils {
 	public static void isPatientDeactivatedorDeleted(String xmlFileName, String practicePatientId, String firstName,
 			String lastName, String patientID, String portalStatus)
 			throws ParserConfigurationException, SAXException, IOException {
-		System.out.println(xmlFileName + " " + practicePatientId + " " + firstName + " " + lastName + " " + patientID);
+		Log4jUtil.log(xmlFileName + " " + practicePatientId + " " + firstName + " " + lastName + " " + patientID);
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
 		boolean found = false;

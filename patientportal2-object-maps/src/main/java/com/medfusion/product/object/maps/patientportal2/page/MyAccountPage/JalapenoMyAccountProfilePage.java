@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.Keys;
@@ -55,6 +54,9 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.XPATH, using = "//input[@id='gender_unknown']")
 	private WebElement declineToAnswerRadioButton;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='gender_undifferentiated']")
+	private WebElement undifferentiatedGenderRadioButton;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='birthDate_year']")
 	private WebElement DOByear;
@@ -392,6 +394,13 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 			declineToAnswerRadioButton.click();
 			changeValue = "Decline to answer";
 			break;
+		case 'U':
+			new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(undifferentiatedGenderRadioButton));
+			undifferentiatedGenderRadioButton.click();
+			changeValue = "UNDIFFERENTIATED";
+			break;
+
+
 		default:
 
 			break;

@@ -28,7 +28,7 @@ public class ManageDecisionTree extends PSS2MainPage {
 	private WebElement importDecisiontreebtn;
 	
 	// Add Decision Tree
-	@FindBy(how = How.XPATH, using = "//a[@title='Add Decision Tree']//*[name()='svg']")
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Decision Tree']")
 	private WebElement addDecisionTree;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/ng-component/div/div[1]/section/header/div/a")
@@ -71,17 +71,20 @@ public class ManageDecisionTree extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//a[@title='Back']//*[local-name()='svg']")
 	private WebElement backtoManageDecisionTree;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[1]/a")
+	private WebElement editGeneralTab;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[2]/a")
-	private WebElement selectSpecialityTab;
+	private WebElement editSpecialityTab;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tab33']/table/tbody/tr/td[1]")
 	private WebElement selectSpecialityName;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='search-specialty']")
-	private WebElement searchForSpecialty;
+	private WebElement searchForSpeciality;
 
-	@FindBy(how = How.XPATH, using = "//tbody/tr/td/div[@class='display-inline-block checkbox-ios']/label")
-	private WebElement toggleSpecialtyONOFF;
+	@FindBy(how = How.XPATH, using = "//label[@class='switch']/i")
+	private WebElement toggleSpecialityONOFF;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/a")
 	private WebElement settingBtn;
@@ -95,27 +98,36 @@ public class ManageDecisionTree extends PSS2MainPage {
 		super(driver);
 	}
 	
-	public void searchSpecility(String specilityName) {
-		log("Enter the speciality name and Search speciality");
-		IHGUtil.waitForElement(driver, 6, searchForSpecialty);
-		searchForSpecialty.sendKeys(specilityName);
-	}
-
-	public void selectSpecility(String specilityName) {
-		searchSpecility(specilityName);
-		IHGUtil.waitForElement(driver, 60, searchForSpecialty);
-		toggleSpecialtyONOFF.click();
-		log("clicked on Specility");
+	public void clickOnGeneralTab() {
+		commonMethods.highlightElement(editGeneralTab);
+		editGeneralTab.click();
+		log("Clicked On General Tab From Decision Tree ");
 	}
 	
-	public void clickOnSpecialty() {
-		commonMethods.highlightElement(selectSpecialityTab);
-		selectSpecialityTab.click();
+	public void searchSpecility(String specilityName) {
+		log("Enter the speciality name and Search speciality");
+		IHGUtil.waitForElement(driver, 60, searchForSpeciality);
+		searchForSpeciality.sendKeys(specilityName);
+	}
+	
+	public void selectSpecility(String specilityName) throws InterruptedException {
+		clickOnSpecialtyTab();
+		Thread.sleep(2000);
+		searchSpecility(specilityName);
+		clickOnSpecialtyToggle();
+		log("clicked on Specility");
+		}
+	
+	public void clickOnSpecialtyTab() {
+		commonMethods.highlightElement(editSpecialityTab);
+		IHGUtil.waitForElement(driver, 60, editSpecialityTab);
+		editSpecialityTab.click();
 		log("Clicked On Specialty Tab From Decision Tree ");
 	}
 
-	public void clickSpecialtyToggle() {
-		toggleSpecialtyONOFF.click();
+	public void clickOnSpecialtyToggle() {
+		IHGUtil.waitForElement(driver, 60, toggleSpecialityONOFF);
+		toggleSpecialityONOFF.click();
 		log("Clicked on Specialty Toggle button");
 	}
 	
@@ -175,6 +187,15 @@ public class ManageDecisionTree extends PSS2MainPage {
 		searchByDecisionTreeName(decisionTreeName);
 		log("Decision tree selected is "+decisionTreeName);
 		Thread.sleep(5000);
+		deleteDecisionTree.click();
+		log(" Decision tree Removed");
+	}
+	
+	public void removedSpecialityFromDecisionTree(String decisionTreeName, String specilityName) throws InterruptedException {
+		selectDecisionTree(decisionTreeName);
+		selectSpecility(specilityName);
+		log(" Speciality Removed from Decision tree");
+		IHGUtil.waitForElement(driver, 60, deleteDecisionTree);
 		deleteDecisionTree.click();
 		log(" Decision tree Removed");
 	}

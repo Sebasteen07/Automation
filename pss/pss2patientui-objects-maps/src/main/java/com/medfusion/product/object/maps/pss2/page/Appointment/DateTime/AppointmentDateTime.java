@@ -83,7 +83,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
-
+	
 	public String selectDate(Boolean nextMonthBooking) {
 		String dt = null;
 		if (nextMonthBooking) {

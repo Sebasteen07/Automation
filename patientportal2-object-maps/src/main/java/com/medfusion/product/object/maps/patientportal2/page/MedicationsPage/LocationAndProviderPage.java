@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 
@@ -71,16 +72,17 @@ public class LocationAndProviderPage {
 	}
 
 	public String getPracticeProvider() {
+		String provider = "";
 		try {
-		String provider = selectedProvider.getText();
-		providerDropdown.click();
-		providerDropdown.sendKeys(provider);
-		btnContinue.click();
-		return provider;
-	} catch (Exception e) {
-		System.out.println(e);
-		return null;
-	}
+			provider = selectedProvider.getText();
+			providerDropdown.click();
+			providerDropdown.sendKeys(provider);
+		} catch (Exception e) {
+			Log4jUtil.log(e + "");
+		} finally {
+			btnContinue.click();
+			return provider;
+		}
 	}
 
 }

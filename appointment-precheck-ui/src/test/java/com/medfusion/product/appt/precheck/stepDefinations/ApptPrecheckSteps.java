@@ -7,6 +7,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.awt.AWTException;
 import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -5766,6 +5767,550 @@ public class ApptPrecheckSteps extends BaseTest {
 					propertyData.getProperty("patient2.fname.lname"), "Entry of patient was not correct");
 		}
 	}
+	
+	@When("I click on logo tab")
+	public void i_click_on_logo_tab() throws InterruptedException {
+	    generalPage.clickOnlogoTab();
+	}
+	@When("I upload new logo image")
+	public void i_upload_new_logo_image() throws InterruptedException, AWTException {
+		generalPage.chooseFileforLogo(propertyData.getProperty("upload.practice.logo"));
+		generalPage.clickOnuploadButton();
+	}
+	@Then("I verify on patient UI new logo image should be reflected after upload of new image")
+	public void i_verify_on_patient_ui_new_logo_image_should_be_reflected_after_upload_of_new_image() {
+		assertTrue(generalPage.visibilityOfLogoImage());
+	}
+	
+	
+	@When("I click on providers tab")
+	public void i_click_on_providers_tab() {
+		 generalPage.clickOnProvidersTab();
+	}
+	@When("I click on add a new provider button")
+	public void i_click_on_add_a_new_provider_button() {
+		generalPage.clickOnAddnewProviderbutton();
+	}
+	@When("I click on choose image link,add providerId,provider firstname,middlename,lastname,title")
+	public void i_click_on_choose_image_link_add_provider_id_provider_firstname_middlename_lastname_title() throws InterruptedException, AWTException, IOException {
+		   generalPage.providerImage(propertyData.getProperty("upload.provider.image"));	   
+		   generalPage.providerId();
+		   generalPage.firstName();
+		   generalPage.middleName();
+		   generalPage.lastName();
+		   generalPage.title();
+	}
+	@When("I click on save button for provider")
+	public void i_click_on_save_button_for_provider() throws InterruptedException {
+		generalPage.saveButton();
+	}
+	@When("I apply filter for provider")
+	public void i_apply_filter_for_provider() {
+		generalPage.Providerfilter();
+	}
+	@When("I delete the provider")
+	public void i_delete_the_provider() {
+		 generalPage.deleteProvider();
+	}
+	@Then("I verify user is able to add a provider and delete a provider")
+	public void i_verify_user_is_able_to_add_a_provider_and_delete_a_provider() {
+	    assertTrue(generalPage.visibilityofProviderfilter());
+	    assertTrue(generalPage.visibilityofdeletedProvider());
+	}
+
+	@When("I click on practice preference language and select English and Spanish language from dropdown")
+	public void i_click_on_practice_preference_language_and_select_english_and_spanish_language_from_dropdown() throws InterruptedException {
+		notifPage.selectPracticeLanguagePreference("English & Spanish");
+		notifPage.saveNotification();
+	}
+	@When("I schedule an appointment for English and Spanish language")
+	public void i_schedule_an_appointment_for_english_and_spanish_language() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com","en-es",
+						propertyData.getProperty("patient.name")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@Then("I verify system should send emails and text in English and Spanish language")
+	public void i_verify_system_should_send_emails_and_text_in_english_and_spanish_language() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appointment.email.subject"),"Appointment Scheduled Cita programada" , 5));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	@When("I click on practice preference language and select English language from dropdown")
+	public void i_click_on_practice_preference_language_and_select_english_language_from_dropdown() throws InterruptedException {
+		notifPage.selectPracticeLanguagePreference("English");
+		notifPage.saveNotification();
+	}
+	@When("I schedule an appointment for English language")
+	public void i_schedule_an_appointment_for_english_language() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com","en",
+						propertyData.getProperty("patient.name")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@Then("I verify system should send emails and text in English language")
+	public void i_verify_system_should_send_emails_and_text_in_english_language() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appointment.email.subject"),
+				propertyData.getProperty("appointment.email.title") , 5));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
+	@When("I enable display patients first name checkbox")
+	public void i_enable_display_patients_first_name_checkbox() throws InterruptedException {
+		notifPage.displayPatientFirstNameCheckbox();
+	}
+	@When("I switch on appointments tab")
+	public void i_switch_on_appointments_tab() {
+		mainPage.clickOnAppointmentsTab();
+	}
+	@When("I send manual reminder for the scheduled appointment")
+	public void i_send_manual_reminder_for_the_scheduled_appointment() throws InterruptedException {
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectFirstPatient();
+		apptPage.clickOnActions();
+		apptPage.clickOnSendReminder();
+	}
+	@Then("I verify user is able to see first name in manual reminder,scheduled reminder,confirmation reminder,curbside reminder in mail")
+	public void i_verify_user_is_able_to_see_first_name_in_manual_reminder_scheduled_reminder_confirmation_reminder_curbside_reminder_in_mail() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appointment.email.subject"),"jordan, your appointment has been scheduled" , 5));
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),"jordan, we provide curbside check-in. Click on the button below when you have arrived in the parking lot." , 5));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	@When("I send broadcast reminder for the scheduled appointment")
+	public void i_send_broadcast_reminder_for_the_scheduled_appointment() throws Exception {
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectFirstPatient();
+		apptPage.performAction();
+	}
+	@Then("I verify user is able to see first name in appointment scheduled reminder,appointment confirmation reminder , curbside reminder,broadcast in mail")
+	public void i_verify_user_is_able_to_see_first_name_in_appointment_scheduled_reminder_appointment_confirmation_reminder_curbside_reminder_broadcast_in_mail() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appointment.email.subject"),"jordan, your appointment has been scheduled" , 5));
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),"jordan, we provide curbside check-in. Click on the button below when you have arrived in the parking lot." , 5));
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("broadcast.email.subject"),
+				propertyData.getProperty("broadcast.email.title"), 5));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	@When("I disable display patients first name checkbox")
+	public void i_disable_display_patients_first_name_checkbox() throws InterruptedException {
+	   notifPage.disableDisplayPatientFirstNameCheckbox();
+	}
+	@Then("I verify user is not able to see first name in manual reminder,scheduled reminder,confirmation reminder,curbside reminderin mail")
+	public void i_verify_user_is_not_able_to_see_first_name_in_manual_reminder_scheduled_reminder_confirmation_reminder_curbside_reminderin_mail() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
+		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appointment.email.subject"),"jordan, your appointment has been scheduled" , 5));
+		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),"jordan, we provide curbside check-in. Click on the button below when you have arrived in the parking lot." , 5));
+		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("broadcast.email.subject"),
+				propertyData.getProperty("broadcast.email.title"), 5));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I enable broadcast messaging checkbox")
+	public void i_enable_broadcast_messaging_checkbox() throws InterruptedException {
+	    notifPage.enableBroadcastMessagingCheckbox();
+	    notifPage.saveNotification();
+	}
+	@When("I click on appointment dashboard")
+	public void i_click_on_appointment_dashboard() {
+	   mainPage.clickOnAppointmentsTab();
+	}
+	@When("I select the patient checkbox")
+	public void i_select_the_patient_checkbox() throws Exception {
+	   apptPage.filterPatientId(Appointment.patientId);
+	   apptPage.selectFirstPatient();
+	}
+	@Then("I verify that broadcast button is visible in actions dropdown in appointment dashboard")
+	public void i_verify_that_broadcast_button_is_visible_in_actions_dropdown_in_appointment_dashboard() {
+	    assertTrue(apptPage.broadcastMessage());
+	}
+	@When("I disable broadcast messaging checkbox")
+	public void i_disable_broadcast_messaging_checkbox() throws InterruptedException {
+	   notifPage.disableBroadcastMessagingCheckbox();
+	   notifPage.saveNotification();
+	}
+	@Then("I verify that broadcast button is not visible in actions dropdown in appointment dashboard")
+	public void i_verify_that_broadcast_button_is_not_visible_in_actions_dropdown_in_appointment_dashboard() {
+		 assertFalse(apptPage.broadcastMessage());
+	}
+	
+	@When("I click on curbside checkin")
+	public void i_click_on_curbside_checkin() {
+	   notifPage.clickOnCurbsideCheckInTabInNotif(); 
+	}
+	@When("I enter curbside arrival instruction msg for english and add {int} characters")
+	public void i_enter_curbside_arrival_instruction_msg_for_english_and_add_characters(Integer int1) {
+		notifPage.clickOnEnglishButton();
+		notifPage.clearAdditionalArrivalInstTextboxEn();
+		notifPage.addArrivalInstructionTextInEnglish("hello welcome to curbside check-in tab!!!!!!!!!!!hello welcome to curbside check-in tab!!!!!!!!!!.We will give you a message as soon as the doctor arrives .Sorry for the inconvenience happened to you.!!!!!!!!!We apologise for this. !!!!!!!!Thankyou for your cooperation...We will let you know this as soon as possible!!!!!!!!Please give us some time Once our Doctor arrives we will let you..!!!!!!!!!Please wait for some time...Thankyou for your patience....!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	}
+	@Then("I verify custom arrival instruction msg should allow to add up to {int} characters and in the left side corner it should show filled character count in left for spanish and english language after {int} character is filled system should not allow to update arrival instruction message")
+	public void i_verify_custom_arrival_instruction_msg_should_allow_to_add_up_to_characters_and_in_the_left_side_corner_it_should_show_filled_character_count_in_left_for_spanish_and_english_language_after_character_is_filled_system_should_not_allow_to_update_arrival_instruction_message(Integer int1, Integer int2) {
+	   assertEquals(notifPage.characterCount(),"(500/500 characters)");
+	   
+	}
+	@When("I enter curbside arrival instruction msg for spanish and add {int} characters")
+	public void i_enter_curbside_arrival_instruction_msg_for_spanish_and_add_characters(Integer int1) {
+		notifPage.clickOnSpanishButton();
+		notifPage.clearAdditionalArrivalInstTextboxEs();
+		notifPage.addArrivalInstructionTextInSpanish("¡Hola, bienvenido a la pestaña de registro en la acera! ¡Hola, bienvenido a la pestaña de registro en la acera! .Disculpe las molestias que le sucedieron.!!!!!!!!Le pedimos disculpas por esto. !!!!!!!!Gracias por su cooperación... ¡Le informaremos lo antes posible! !!!!!!!!Por favor, espere un momento... Gracias por su paciencia....!!!!!!!!!!!!!!!!!!!!!!!! !!!!!!!!!!!!!!!!¡Hola, bienvenido a la pestaña de registro en la acera! ¡Hola, bienvenido a la pestaña de registro en la acera! .Disculpe las");
+	}
+	@Then("I verify custom arrival instruction msg should allow to add up to {int} characters and in the left side corner it should show filled character count in left for spanish language after {int} character is filled system should not allow to update arrival instruction message")
+	public void i_verify_custom_arrival_instruction_msg_should_allow_to_add_up_to_characters_and_in_the_left_side_corner_it_should_show_filled_character_count_in_left_for_spanish_language_after_character_is_filled_system_should_not_allow_to_update_arrival_instruction_message(Integer int1, Integer int2) {
+		assertEquals(notifPage.characterCount(),"(500/500 characters)");
+	}
+	@When("I enter curbside arrival instruction msg for english and add upto {int} characters")
+	public void i_enter_curbside_arrival_instruction_msg_for_english_and_add_upto_characters(Integer int1) {
+		notifPage.clickOnEnglishButton();
+		notifPage.clearAdditionalArrivalInstTextboxEn();
+		notifPage.addArrivalInstructionTextInEnglish("hello welcome to curbside check-in tab!!!!!!!!!!!hello welcome to curbside check-in tab...!!!!!!!!!!");
+	}
+	@Then("I verify when {int} character are entered then total character count should should be {int}\\/{int}")
+	public void i_verify_when_character_are_entered_then_total_character_count_should_should_be(Integer int1, Integer int2, Integer int3) {
+		 assertEquals(notifPage.characterCount(),"(100/500 characters)");
+	}
+	
+	@When("I click on cadence editor template page and select hours,min,day")
+	public void i_click_on_cadence_editor_template_page_and_select_hours_min_day() throws InterruptedException, IOException {
+		notifPage.clickTimingDropdownunderDesigntab();
+		notifPage.selectHourDropdownunderDesigntab();
+		notifPage.enterTimingUnitunderDesigntab();
+		notifPage.click2ndTimingDropdownunderDesigntab();
+		notifPage.selectMinutesTimingDropdownunderDesigntab();
+		notifPage.enter2ndTimingUnitunderDesigntab();
+		notifPage.click3rdTimingDropdownunderDesigntab();
+		notifPage.selectDayDropdownunderDesigntab();
+		notifPage.enter3rdTimingUnitunderDesigntab();
+		notifPage.saveChangesButton();
+		
+	}
+	@Then("I verify system should allow to edit template as per user point of view")
+	public void i_verify_system_should_allow_to_edit_template_as_per_user_point_of_view() throws InterruptedException {
+		assertTrue(notifPage.visibilityOfselectHourDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenterTimingUnitunderDesigntab());
+	    assertTrue(notifPage.visibilityOfselectMinutesTimingDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenter2ndTimingUnitunderDesigntab());
+	    assertTrue(notifPage.visibilityOfselectDayTimingDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenter3rdTimingUnitunderDesigntab());
+	}
+	
+	@Then("I verify system should show timing units on template in proper format Days,Hours,Minutes")
+	public void i_verify_system_should_show_timing_units_on_template_in_proper_format_days_hours_minutes() throws InterruptedException {
+		scrollAndWait(200, 300, 5000);
+		assertTrue(notifPage.visibilityOfTiming());
+		assertTrue(notifPage.visibilityOfTimingUnit());
+	}
+	
+	@When("I click on cadence editor template page and select min,hours,day")
+	public void i_click_on_cadence_editor_template_page_and_select_min_hours_day() throws InterruptedException, IOException {
+		notifPage.clickTimingDropdownunderDesigntab(); 
+		notifPage.selectMinutesTimingDropdownunderDesigntab();
+		notifPage.enter1stMinutesTimingUnitunderDesigntab();
+		notifPage.click2ndTimingDropdownunderDesigntab();
+		notifPage.selectHourDropdownunderDesigntab();
+		notifPage.enter2ndHoursTimingUnitunderDesignTab();
+		notifPage.click3rdTimingDropdownunderDesigntab();
+		notifPage.selectDayDropdownunderDesigntab();
+		notifPage.enter3rdTimingUnitunderDesigntab();
+		notifPage.saveChangesButton();
+	}
+	@Then("I verify system should show timing units on template properly")
+	public void i_verify_system_should_show_timing_units_on_template_properly() throws InterruptedException {
+		assertTrue(notifPage.visibilityOfselectMinutesTimingDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenter1stMinutesTimingUnitunderDesigntab());
+	    assertTrue(notifPage.visibilityOfselectHourDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenter2ndHoursTimingUnitunderDesignTab());
+	    assertTrue(notifPage.visibilityOfselectDayTimingDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenter3rdTimingUnitunderDesigntab());
+	}
+	
+	@When("I click on cadence editor template page and select first hour,min,hour and Day")
+	public void i_click_on_cadence_editor_template_page_and_select_first_hour_min_hour_and_day() throws InterruptedException, IOException {
+		notifPage.clickTimingDropdownunderDesigntab();
+		notifPage.selectHourDropdownunderDesigntab();
+		notifPage.enterTimingUnitunderDesigntab();
+		notifPage.click2ndTimingDropdownunderDesigntab();
+		notifPage.selectMinutesTimingDropdownunderDesigntab();
+		notifPage.enter2ndTimingUnitunderDesigntab();
+		notifPage.click3rdTimingDropdownunderDesigntab();
+		notifPage.select2ndHourDropdownunderDesigntab();
+		notifPage.enter3rdHourtimingUnitunderDesigntab();
+		notifPage.ClickonAddbutton();
+		notifPage.click4thTimingDropdownunderDesigntab();
+		notifPage.selectDayDropdownunderDesigntab();
+		notifPage.enter4thTimingUnitunderDesigntab();
+		notifPage.saveChangesButton();
+		
+	}
+	@Then("I verify system should allow to edit template in proper format as per user point of view")
+	public void i_verify_system_should_allow_to_edit_template_in_proper_format_as_per_user_point_of_view() throws InterruptedException {
+		assertTrue(notifPage.visibilityOfselectHourDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenterTimingUnitunderDesigntab());
+	    assertTrue(notifPage.visibilityOfselectMinutesTimingDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenter2ndTimingUnitunderDesigntab());
+	    assertTrue(notifPage.visibilityOfselect2ndHourDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenter3rdHourtimingUnitunderDesigntab());
+	    assertTrue(notifPage.visibilityOfselectDayDropdownunderDesigntab());
+	    assertTrue(notifPage.visibilityOfenter4thTimingUnitunderDesigntab());
+	
+	}
+	
+	@Then("I verify system should show timing units on template in proper format hours,minutes,hours and day")
+	public void i_verify_system_should_show_timing_units_on_template_in_proper_format_hours_minutes_hours_and_day() throws InterruptedException {
+		scrollAndWait(0, -3000, 10000);
+		assertTrue(notifPage.visibilityOfTiming());
+		assertTrue(notifPage.visibilityOfTimingUnit());
+	}
+	
+	@When("I hit edit button of {string} for appointment reminder")
+	public void i_hit_edit_button_of_for_appointment_reminder(String deliveryMethod) throws InterruptedException {
+		scrollAndWait(0, 1000, 3000);
+		notifPage.clickOnEditButtonHamburgerButton();
+		log("User redirect on edit template design page");
+		scrollAndWait(0, 200, 5000);
+		assertEquals(notifPage.getDeliveryMethod(), deliveryMethod, "Delivery method was not match");
+	}
+
+	@When("I delete all timing and timing unit and save configuration")
+	public void i_delete_all_timing_and_timing_unit_and_save_configuration() throws InterruptedException {
+		notifPage.checkingFourthTimingIfPresent();
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+			notifPage.removeTimingAndTimingUnitDev();
+		} else {
+			notifPage.removeTimingAndTimingUnitDemo();
+		}
+		notifPage.clickOnSaveChangesbutton();
+	}
+
+	@Then("I verify for mail on appointment reminder section timing and timing units fields system show blank")
+	public void i_verify_for_mail_on_appointment_reminder_section_timing_and_timing_units_fields_system_show_blank()
+			throws InterruptedException {
+
+		assertEquals(notifPage.getTimingTextForEmail(), "", "Blank value is not display for timing");
+		assertEquals(notifPage.getTimingUnitTextForEmail(), "", "Blank value is not display for timing unit");
+
+		scrollAndWait(0, 1000, 10000);
+		notifPage.clickApptReminderEmailHamburgerButton();
+		notifPage.clickOnEditButtonHamburgerButton();
+		notifPage.addTimingAndTimingUnit();
+
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+			notifPage.enterTimingAndTimingUnit(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnit(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnit(3, "Days", "5");
+		} else {
+			notifPage.enterTimingAndTimingUnitDemo(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnitDemo(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", "5");
+		}
+		notifPage.clickOnSaveChangesbutton();
+	}
+
+	@Then("I verify for text on appointment reminder section timing and timing units fields system show blank")
+	public void i_verify_for_text_on_appointment_reminder_section_timing_and_timing_units_fields_system_show_blank()
+			throws InterruptedException {
+		assertEquals(notifPage.getTimingTextForSms(), "", "Display blank value for timing");
+		assertEquals(notifPage.getTimingUnitTextForSms(), "", "Display blank value for timing unit");
+
+		scrollAndWait(0, 1000, 5000);
+		notifPage.clickApptReminderSmsHamburgerButton();
+		notifPage.clickOnEditButtonHamburgerButton();
+		notifPage.addTimingAndTimingUnit();
+
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+			notifPage.enterTimingAndTimingUnit(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnit(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnit(3, "Days", "5");
+		} else {
+			notifPage.enterTimingAndTimingUnitDemo(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnitDemo(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", "5");
+		}
+		notifPage.clickOnSaveChangesbutton();
+	}
+	
+	@When("from mail I unsubscribe a patient")
+	public void from_mail_i_unsubscribe_a_patient() throws NullPointerException, InterruptedException {
+		YopMail yopMail = new YopMail(driver);
+		String unsubscribeMessage = yopMail.unsubscribeEmail("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"));
+		assertEquals(unsubscribeMessage,
+				"You will no longer receive emails from PreCheck and reminder services. Please contact your practice if you wish to opt back in.",
+				"Message was nor correct");
+	}
+
+	@When("I get count from email broadcast logs")
+	public void i_get_count_from_email_broadcast_logs() throws InterruptedException {
+		assertEquals(apptPage.getBroadcastEmailCountForSelectedPatient(Appointment.patientId, Appointment.apptId), "0",
+				"Count for broadcast email logs was not match");
+	}
+
+	@When("I resubscribe patient mail")
+	public void i_resubscribe_patient_mail() throws NullPointerException, IOException, InterruptedException {
+		log("Delete Subscription Data");
+		Response response = subsManager.deleteAllSubscriptionDataUsingEmailId(
+				propertyData.getProperty("baseurl.mf.notif.subscription.manager"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
+				"jordan" + Appointment.randomNumber + "@YOPmail.com");
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		driver.navigate().refresh();
+		Thread.sleep(30000);
+	}
+
+	@Then("I verify after sending broadcast message count will be increases")
+	public void i_verify_after_sending_broadcast_message_count_will_be_increases()
+			throws NullPointerException, Exception {
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+		driver.navigate().refresh();
+		Thread.sleep(20000);
+		assertEquals(apptPage.getBroadcastEmailCountForSelectedPatient(Appointment.patientId, Appointment.apptId), "1",
+				"Count for broadcast email logs was not match");
+	}
+	
+	@When("I schedule an appointment with invalid email and phone number")
+	public void i_schedule_an_appointment_with_invalid_email_and_phone_number()
+			throws NullPointerException, IOException, InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		Thread.sleep(5000);
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, "4566778119", "abc@mm.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		apptPage.clickOnRefreshTab();
+	}
+	
+	@Then("I verify paper plane icon and logs shows red colur and status is failed")
+	public void i_verify_paper_plane_icon_and_logs_shows_red_colur_and_status_is_failed() throws InterruptedException {
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnActions();
+		apptPage.clickOnSendReminder();
+		Thread.sleep(10000);
+		apptPage.clickOnRefreshTab();
+		Thread.sleep(5000);
+		assertEquals(
+				apptPage.getColorForOneDayReminderStatus(Appointment.patientId, Appointment.apptId, 10,
+						propertyData.getProperty("one.day.reminder.status.color")),
+				propertyData.getProperty("one.day.reminder.status.color"), "Red color was not match");
+		assertEquals(
+				apptPage.getColorManualReminderStatus(Appointment.patientId, Appointment.apptId, 10,
+						propertyData.getProperty("manual.reminder.status.color")),
+				propertyData.getProperty("manual.reminder.status.color"), "Red color was not match");
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnViewAllForReminderStatus(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -2000, 5000);
+		assertEquals(apptPage.getFaildPriorDayIconColor(), propertyData.getProperty("one.day.reminder.status.color"),
+				"Red color was not match");
+		assertEquals(apptPage.getFaildManualIconColor(), propertyData.getProperty("one.day.reminder.status.color"),
+				"Red color was not match");
+		assertEquals(apptPage.getPriorDayReminderStatus(), "Failed", "Statue was not found as failed");
+		assertEquals(apptPage.getManualReminderStatus(), "Failed", "Statue was not found as failed");
+		apptPage.closeReminderStatusModal();
+	}
+	
+	@When("I schedule an appointment with valid email and phone number")
+	public void i_schedule_an_appointment_with_valid_email_and_phone_number() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+
+	@When("again I schedule an appointment with same email and phone number")
+	public void again_i_schedule_an_appointment_with_same_email_and_phone_number()
+			throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+
+	@Then("I verify paper plane icon and logs shows blank value")
+	public void i_verify_paper_plane_icon_and_logs_shows_blank_value() throws InterruptedException {
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnActions();
+		apptPage.clickOnSendReminder();
+		Thread.sleep(10000);
+		apptPage.clickOnRefreshTab();
+		Thread.sleep(5000);
+		assertEquals(apptPage.getReminderStatus(Appointment.patientId, Appointment.apptId), "",
+				"Remainder status does not shows blank value");
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		assertEquals(apptPage.getReminderLogStatus(Appointment.patientId, Appointment.apptId), "None",
+				"Remainder logs status does not shows blank value");
+	}
+
+
+
 
 }
 

@@ -9,7 +9,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AdminPatientMatching extends SettingsTab {
@@ -46,6 +49,33 @@ public class AdminPatientMatching extends SettingsTab {
 
 	@FindBy(xpath = "//tbody/tr[4]/td[1]/div[1]/label[1]/i[1]")
 	private WebElement genderbox3click;
+	
+	@FindBy(xpath = "//div[@class='row profile']/div[4]/div/a")
+	private WebElement addCustomFields;
+	
+	@FindBy(xpath = "//tbody[@role='rowgroup']/tr/td[4]/a")
+	private WebElement removeCustomFields;
+
+	@FindBy(xpath = "(//*[@id='entityMap'])[1]")
+	private WebElement setFieldNameInEngLanguage;
+	
+	@FindBy(xpath = "(//*[@id='entityMap'])[2]")
+	private WebElement setFieldNameInEsLanguage;
+			
+	@FindBy(xpath = "//a[@title='Add Custom Field']")
+	private WebElement saveCustomField;
+	
+	@FindBy(xpath = "//app-patientmatch/div/div[3]/div/button")
+	private WebElement saveButton1;
+	
+	@FindBy(xpath = "//div[@class='col-md-12 pt-4 ng-star-inserted']/div/button")
+	private WebElement saveButton2;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/a")
+	private WebElement settingBtn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/ul")
+	private WebElement logoutBtn;
 
 	public AdminPatientMatching(WebDriver driver) {
 		super(driver);
@@ -133,5 +163,30 @@ public class AdminPatientMatching extends SettingsTab {
 			genderbox2click.click();
 		}
 		log("Successfully On the all gender map toggle button");
+	}
+	
+	public void addCustomField(String customFieldName) {
+		IHGUtil.waitForElement(driver, 60, addCustomFields);
+		addCustomFields.click();
+		Select Select = new Select(driver.findElement(By.name("customfield")));
+		Select.selectByIndex(1);
+		setFieldNameInEngLanguage.sendKeys(customFieldName);
+		setFieldNameInEsLanguage.sendKeys(customFieldName);
+		Select Select1 = new Select(driver.findElement(By.name("custommetadata")));
+		Select1.selectByIndex(2);
+		saveCustomField.click();
+		javascriptClick(saveButton2);
+		javascriptClick(saveButton1);
+		log("Custom Field added as Alternate Number");
+	}
+	
+	public void removeCustomField() {
+		javascriptClick(removeCustomFields);
+		log("Custom Field removed");
+	}
+	
+	public void logout() {
+		settingBtn.click();
+		logoutBtn.click();
 	}
 }
