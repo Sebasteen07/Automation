@@ -1,5 +1,6 @@
 package provisioningtests;
 
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
@@ -13,7 +14,7 @@ public class VerifyPartnerTests extends ProvisioningBaseTest{
 
     protected static String partnerName;
 
-    @Test
+    @Test(enabled = true, groups = { "MerchantProvisioningAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
     public void testVerifyAddPartnerToMerchant() throws IOException, NullPointerException, InterruptedException {
 
         PropertyFileLoader testData = new PropertyFileLoader();
@@ -55,7 +56,7 @@ public class VerifyPartnerTests extends ProvisioningBaseTest{
         partnerPage.verifyDeletePartner();
     }
 
-    @Test
+    @Test(enabled = true, groups = { "MerchantProvisioningAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
     public void testVerifyEditPartnerOfMerchant() throws IOException, NullPointerException, InterruptedException {
 
         PropertyFileLoader testData = new PropertyFileLoader();
