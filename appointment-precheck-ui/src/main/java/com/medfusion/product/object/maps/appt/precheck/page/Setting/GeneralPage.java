@@ -102,7 +102,6 @@ public class GeneralPage extends BaseTest {
 	@FindBy(how=How.XPATH, using ="//button[@class='mf-cta__secondary']")
 	private WebElement chooseFileforProvider;
 
-	PropertyFileLoader propertyData;
 	private static GeneralPage generalPage = new GeneralPage();
 
 	public GeneralPage() {
@@ -299,29 +298,29 @@ public class GeneralPage extends BaseTest {
 		clickOnAddnewProviderButton.click();
 	}
 	
-	public void providerId() throws IOException {
+	public void providerId(String providerid) throws IOException {
 		IHGUtil.waitForElement(driver, 10, providerId);
-		providerId.sendKeys(propertyData.getProperty("provider.id"));
+		providerId.sendKeys(providerid);
 	}
 	
-	public void firstName() throws IOException {
+	public void firstName(String firstname) throws IOException {
 		IHGUtil.waitForElement(driver, 10, firstName);
-		firstName.sendKeys(propertyData.getProperty("provider.first.name"));
+		firstName.sendKeys(firstname);
 	}
 	
-	public void middleName() {
+	public void middleName(String middlename) {
 		IHGUtil.waitForElement(driver, 10, middleName);
-		middleName.sendKeys(propertyData.getProperty("provider.middle.name"));
+		middleName.sendKeys(middlename);
 	}
 	
-	public void lastName() {
+	public void lastName(String lastname) {
 		IHGUtil.waitForElement(driver, 10, lastName);
-		lastName.sendKeys(propertyData.getProperty("provider.last.name"));
+		lastName.sendKeys(lastname);
 	}
 	
-	public void title() {
+	public void title(String providertitle) {
 		IHGUtil.waitForElement(driver, 10, title);
-		title.sendKeys(propertyData.getProperty("provider.title"));
+		title.sendKeys(providertitle);
 	}
 	public void saveButton() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, saveButton);
@@ -375,6 +374,12 @@ public class GeneralPage extends BaseTest {
 		act.moveToElement(chooseFileforProvider).click().perform();
 		Thread.sleep(2000);
 		uploadFile(System.getProperty("user.dir")+providerImagePath);
+	}
+	
+	public void addPracticeDisplayName(String practiceName) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, practiceDisplayName);
+		practiceDisplayName.sendKeys(practiceName);
 	}
 
 
