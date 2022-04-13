@@ -379,7 +379,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		Provider provider = appointment.selectTypeOfProvider(appointmentType,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verify Provider Page and Provider = " + book);
-		AppointmentDateTime aptDateTime = provider.getProviderandClick(book);
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(book);
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		log("Test Case Passed");

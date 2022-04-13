@@ -50,7 +50,7 @@ public class AdminPatientMatching extends SettingsTab {
 	@FindBy(xpath = "//tbody/tr[4]/td[1]/div[1]/label[1]/i[1]")
 	private WebElement genderbox3click;
 	
-	@FindBy(xpath = "//*[@id='tab41']/app-patientmatch/div/div[4]/div/a")
+	@FindBy(xpath = "//div[@class='row profile']/div[4]/div/a")
 	private WebElement addCustomFields;
 	
 	@FindBy(xpath = "//tbody[@role='rowgroup']/tr/td[4]/a")
