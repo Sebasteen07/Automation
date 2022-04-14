@@ -65,6 +65,9 @@ locals {
     dev3-integrations2-regression1       = "dev3-integrations2-regression1"
     dev3-integrations2-regression2       = "dev3-integrations2-regression2"
     dev3-integrations2-regression3       = "dev3-integrations2-regression3"
+    dev3-integrations-acceptance-oauth10 = "dev3-integrations-acceptance-oauth10"
+    dev3-integrations1-acceptance        = "dev3-integrations1-acceptance"
+    dev3-integrations1-regression        = "dev3-integrations1-regression"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
