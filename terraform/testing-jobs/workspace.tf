@@ -61,6 +61,10 @@ locals {
     qa1-pi-integration-regression        = "qa1-pi-integration-regression"
     qa1-practice-portal-acceptance       = "qa1-practice-portal-acceptance"
     qa1-sitegen-regression               = "qa1-sitegen-regression"
+    dev3-integrations2-acceptance        = "dev3-integrations2-acceptance"
+    dev3-integrations2-regression1       = "dev3-integrations2-regression1"
+    dev3-integrations2-regression2       = "dev3-integrations2-regression2"
+    dev3-integrations2-regression3       = "dev3-integrations2-regression3"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
