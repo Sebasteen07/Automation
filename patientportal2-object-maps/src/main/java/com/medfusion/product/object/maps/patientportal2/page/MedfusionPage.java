@@ -56,14 +56,14 @@ public abstract class MedfusionPage extends BasePageObject {
 		public MedfusionPage(WebDriver driver, String url) {
 				super(driver);
 				log("Loading page");
-
+				System.out.println("Size of window before maximizing: " + driver.manage().window().getSize());
 				if (url != null) {
 						String sanitizedUrl = url.trim();
 						log("URL: " + sanitizedUrl);
 						driver.get(sanitizedUrl);
 						driver.manage().window().maximize();
 				}
-				System.out.println("Size of window before maximizing: " + driver.manage().window().getSize());
+				System.out.println("Size of window after maximizing: " + driver.manage().window().getSize());
 				/*
 				 * there's an issue related to hudson slave's resolution 1024x768 - can't click.
 				 * Changing the dimension of window as for the specific resolution 1032,
@@ -106,8 +106,7 @@ public abstract class MedfusionPage extends BasePageObject {
 					while (isElementVisible(weNeedToConfirmSomethingModal, 6)) {
 						log("We need to confirm something modal window shown");
 						if (new IHGUtil(driver).exists(weNeedToConfirmSomethingModal)) {
-							Thread.sleep(5000);
-							statementPreferenceRadioButton.click();
+							IHGUtil.exists(driver, 5, okButton);
 							okButton.click();
 						} else {
 							okButton.click();
