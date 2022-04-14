@@ -3159,7 +3159,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String workingDir = System.getProperty("user.dir");
 		workingDir = workingDir + testData.csvFilePath;
 		aDUtils.csvFileReader(testData, workingDir);
-		;
 
 		log("Step 7: Post New AppointMentData with MFPatientID");
 		testData.FirstName = patient.getFirstName();
