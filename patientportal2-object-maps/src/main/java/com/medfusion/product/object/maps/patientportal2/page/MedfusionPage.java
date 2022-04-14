@@ -56,14 +56,14 @@ public abstract class MedfusionPage extends BasePageObject {
 		public MedfusionPage(WebDriver driver, String url) {
 				super(driver);
 				log("Loading page");
-				System.out.println("Size of window before maximizing: " + driver.manage().window().getSize());
+				log("Size of window before maximizing: " + driver.manage().window().getSize());
 				if (url != null) {
 						String sanitizedUrl = url.trim();
 						log("URL: " + sanitizedUrl);
 						driver.get(sanitizedUrl);
 						driver.manage().window().maximize();
 				}
-				System.out.println("Size of window after maximizing: " + driver.manage().window().getSize());
+				log("Size of window after maximizing: " + driver.manage().window().getSize());
 				/*
 				 * there's an issue related to hudson slave's resolution 1024x768 - can't click.
 				 * Changing the dimension of window as for the specific resolution 1032,
