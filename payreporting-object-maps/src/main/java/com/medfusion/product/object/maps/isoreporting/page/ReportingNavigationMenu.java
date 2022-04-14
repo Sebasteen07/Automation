@@ -97,16 +97,16 @@ public class ReportingNavigationMenu {
 		return PageFactory.initElements(driver, ReportingFeeReportPage.class);		
 	}
 
-	public ReportingPOSPage navigateSummaryReport() throws InterruptedException {
+	public ReportingSummaryReportPage navigateSummaryReport() throws InterruptedException {
 		openMenuIfNotOpened();
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();", menuSummaryReport);
-		return PageFactory.initElements(driver, ReportingPOSPage.class);
+		return PageFactory.initElements(driver, ReportingSummaryReportPage.class);
 	}
 
-	public ReportingPOSPage navigateMakeAPayment() throws InterruptedException {
+	public ReportingMakeAPaymentPage navigateMakeAPayment() throws InterruptedException {
 		openMenuIfNotOpened();
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();", menuMakeAPayment);
-		return PageFactory.initElements(driver, ReportingPOSPage.class);
+		return PageFactory.initElements(driver, ReportingMakeAPaymentPage.class);
 	}
 	
 	public ReportingLoginPage clickLogout(){

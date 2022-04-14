@@ -15,6 +15,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -464,6 +465,21 @@ public class AppointmentsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[@class='rt-td history-medium-cell status-cell']")
 	private WebElement messageStatus;
+	
+	@FindBy(how = How.XPATH, using = "(//td[text()='Failed'])[1]")
+	private WebElement priorDayReminderStatus;
+	
+	@FindBy(how = How.XPATH, using = "(//td[text()='Failed'])[2]")
+	private WebElement manualReminderStatus;
+	
+	@FindBy(how = How.XPATH, using = "//button[@id='closeReminderStatusesModal']")
+	private WebElement closeReminderStatusesModal;
+	
+	@FindBy(how = How.XPATH, using = "(//td/span[@class='mf-icon mf-icon__item--error--small mf-color__negative'])[1]")
+	private WebElement faildPriorDayReminderIcon;
+
+	@FindBy(how = How.XPATH, using = "(//td/span[@class='mf-icon mf-icon__item--error--small mf-color__negative'])[2]")
+	private WebElement faildManualReminderIcon;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -1963,5 +1979,137 @@ public class AppointmentsPage extends BasePageObject {
 			scrollAndWait(2000, 1000, 6000);
 			jse.executeScript("arguments[0].scrollIntoView(true);", reminderLogsPopupTitle);
 			return messageStatus.getText();
+		}
+		
+		public void selectPatientCheckbox(String patientId, String practiceId) {
+			WebElement selectPatient = driver
+					.findElement(By.xpath("//*[@id='select-" + patientId + "-" + practiceId + "'" + "]"));
+			selectPatient.click();
+		}
+		
+		public String getBroadcastEmailCountForSelectedPatient(String patientId, String apptId)
+				throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			WebElement patientBroadcastCount = driver.findElement(By.xpath(
+					"//input[@id='select-" + patientId + "-" + apptId + "']/following::span[@class='broadcast-count']"));
+			return patientBroadcastCount.getText();
+		}
+		
+		public String getColorForOneDayReminderStatus(String patientId, String apptId, int retries, String value) {
+			IHGUtil.PrintMethodName();
+			int TIME_TO_WAIT_MS = 10000;
+			String color = null;
+
+			try {
+				for (int j = 1; j <= retries; j++) {
+					WebElement oneDayReminderStatus = driver.findElement(By.xpath("(//input[@id='select-" + patientId + "-"
+							+ apptId + "']/following::span[@class='status-icons']/span/span)[1]"));
+					String cssValue = oneDayReminderStatus.getCssValue("color");
+					color = Color.fromString(cssValue).asHex();
+					if (color.equals(value)) {
+						log("Color is :" + color);
+						return color;
+					}
+					log(("Color was") + " not retrieved. Trial number " + j + "/" + retries + "."
+							+ (j != retries
+									? " Waiting for Color" + (false ? "s" : "") + " to arrive for "
+											+ TIME_TO_WAIT_MS / 1000 + " s."
+									: ""));
+					jse.executeScript("arguments[0].click();", refreshTab);
+					Thread.sleep(60000);
+					if (j != retries) {
+						Thread.sleep(TIME_TO_WAIT_MS);
+					}
+				}
+			} catch (Exception e) {
+				log("unable to find Color" + e);
+			}
+			return color;
+		}
+
+		public String getColorManualReminderStatus(String patientId, String apptId, int retries, String value) {
+			IHGUtil.PrintMethodName();
+			int TIME_TO_WAIT_MS = 10000;
+			String color = null;
+			try {
+				for (int j = 1; j <= retries; j++) {
+					WebElement manualReminderStatus = driver.findElement(By.xpath("(//input[@id='select-" + patientId + "-"
+							+ apptId + "']/following::span[@class='manual-status-icon-and-count']/span)[1]"));
+					String cssValue = manualReminderStatus.getCssValue("color");
+					color = Color.fromString(cssValue).asHex();
+					if (color.equals(value)) {
+						log("Color is :" + color);
+						return color;
+					}
+					log(("Color was") + " not retrieved. Trial number " + j + "/" + retries + "."
+							+ (j != retries
+									? " Waiting for Color" + (false ? "s" : "") + " to arrive for "
+											+ TIME_TO_WAIT_MS / 1000 + " s."
+									: ""));
+					jse.executeScript("arguments[0].click();", refreshTab);
+					Thread.sleep(60000);
+					if (j != retries) {
+						Thread.sleep(TIME_TO_WAIT_MS);
+					}
+				}
+			} catch (Exception e) {
+				log("unable to find Color" + e);
+			}
+			return color;
+		}
+		
+		public void clickOnViewAllForReminderStatus(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			WebElement viewAll = driver.findElement(
+					By.xpath("//input[@id='select-" + patientId + "-" + apptId + "']/following::a[text()='View all']"));
+			viewAll.click();
+		}
+
+		public String getFaildPriorDayIconColor() {
+			IHGUtil.PrintMethodName();
+			String cssValue = faildPriorDayReminderIcon.getCssValue("color");
+			String color = Color.fromString(cssValue).asHex();
+			log("Color is :" + color);
+			return color;
+		}
+
+		public String getFaildManualIconColor() {
+			IHGUtil.PrintMethodName();
+			String cssValue = faildManualReminderIcon.getCssValue("color");
+			String color = Color.fromString(cssValue).asHex();
+			log("Color is :" + color);
+			return color;
+		}
+
+		public String getPriorDayReminderStatus() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, priorDayReminderStatus);
+			return priorDayReminderStatus.getText();
+		}
+
+		public String getManualReminderStatus() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, manualReminderStatus);
+			return manualReminderStatus.getText();
+		}
+		
+		public void closeReminderStatusModal() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, closeReminderStatusesModal);
+			closeReminderStatusesModal.click();
+		}
+		
+		public String getReminderStatus(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			WebElement reminderStatus = driver.findElement(By.xpath(
+					"(//input[@id='select-" + patientId + "-" + apptId + "']/following::span[@class='status-icons'])[1]"));
+			return reminderStatus.getText();
+		}
+		
+		public String getReminderLogStatus(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			WebElement reminderStatus = driver.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId
+					+ "']/following::div[@class='reminders-expanded-status'])[1]"));
+			return reminderStatus.getText();
 		}
 }

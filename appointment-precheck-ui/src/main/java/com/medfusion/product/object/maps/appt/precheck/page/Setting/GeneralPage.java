@@ -1,12 +1,22 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.appt.precheck.util.BaseTest;
 
 public class GeneralPage extends BaseTest {
@@ -44,6 +54,54 @@ public class GeneralPage extends BaseTest {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Forms')]")
 	private WebElement formsTab;
 	
+	@FindBy(how=How.XPATH, using ="//li[text() ='Logo']")
+	private WebElement logoTab;
+	
+	@FindBy(how=How.XPATH, using ="(//label[@class='mf-file-input'])[2]")
+	private WebElement uploadButton;
+
+	@FindBy(how=How.XPATH, using ="//img[@class='cadence-img']")
+	private WebElement logoImage;
+	
+	@FindBy(how=How.XPATH, using ="//li[text()='Providers']")
+	private WebElement clickOnProvidersTab;
+	
+	@FindBy(how=How.XPATH, using ="//button[@id='primaryAddanewprovider']")
+	private WebElement clickOnAddnewProviderButton;
+	
+	@FindBy(how=How.XPATH, using ="//input[@id='providerId']")
+	private WebElement providerId;
+	
+	@FindBy(how=How.XPATH, using ="//input[@id='firstName']")
+	private WebElement firstName;
+	
+	@FindBy(how=How.XPATH, using ="//input[@id='middleName']")
+	private WebElement middleName;
+	
+	@FindBy(how=How.XPATH, using ="//input[@id='lastName']")
+	private WebElement lastName;
+	
+	@FindBy(how=How.XPATH, using ="//input[@id='title']")
+	private WebElement title;
+	
+	@FindBy(how=How.XPATH, using ="//input[@value='Save']")
+	private WebElement saveButton;
+	
+	@FindBy(how=How.XPATH, using ="//input[@class='mf-form__input--text']")
+	private WebElement Providerfilter;
+	
+	@FindBy(how=How.XPATH, using ="(//span[@class='mf-icon mf-icon__x mf-color__negative'])[1]")
+	private WebElement deleteProvider;
+	
+	@FindBy(how=How.XPATH, using ="//label[contains(text(),'Choose file')]")
+	private WebElement chooseFile;
+	
+	@FindBy(how=How.XPATH, using ="//button[@id='undefinedRemove']")
+	private WebElement clickOnRemoveButton;
+	
+	@FindBy(how=How.XPATH, using ="//button[@class='mf-cta__secondary']")
+	private WebElement chooseFileforProvider;
+
 	private static GeneralPage generalPage = new GeneralPage();
 
 	public GeneralPage() {
@@ -181,5 +239,149 @@ public class GeneralPage extends BaseTest {
 		practiceDisplayName.sendKeys(" ");
 		
 	}
+	
+	public void clickOnlogoTab() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 5, logoTab);
+		logoTab.click();
+	}
+	
+	public void chooseFileforLogo(String imagePath) throws InterruptedException, AWTException {
+		IHGUtil.PrintMethodName();
+		Actions act = new Actions(driver);
+		act.moveToElement(chooseFile).click().perform();
+		Thread.sleep(2000);
+		uploadFile(System.getProperty("user.dir")+imagePath);
+	}
+	
+	public void setClipboard(String file) {
+		StringSelection obj = new StringSelection(file);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(obj, null);
+	}
+	
+	public void uploadFile(String filePath) throws AWTException {
+		setClipboard(filePath);
+		Robot rb = new Robot();
+		rb.keyPress(KeyEvent.VK_CONTROL);
+		rb.keyPress(KeyEvent.VK_V);
+		rb.keyRelease(KeyEvent.VK_CONTROL);
+		rb.keyRelease(KeyEvent.VK_V);
+		rb.keyPress(KeyEvent.VK_ENTER);
+		rb.keyRelease(KeyEvent.VK_ENTER);
+	}
+	
+	public void clickOnuploadButton() {
+		IHGUtil.waitForElement(driver, 10, uploadButton);
+		uploadButton.click();
+	}
+	
+	public boolean visibilityOfLogoImage() {
+		IHGUtil.PrintMethodName();
+		if(logoImage.isDisplayed()) {
+			log("logo image is changed");
+			return true;
+		}
+		else {
+			log("logo image is not changed");
+			return false;
+			
+		}
+		
+	}
+	
+	public void clickOnProvidersTab() {
+		IHGUtil.waitForElement(driver, 10, clickOnProvidersTab);
+		clickOnProvidersTab.click();
+	}
+	
+	public void clickOnAddnewProviderbutton() {
+		IHGUtil.waitForElement(driver, 10, clickOnAddnewProviderButton);
+		clickOnAddnewProviderButton.click();
+	}
+	
+	public void providerId(String providerid) throws IOException {
+		IHGUtil.waitForElement(driver, 10, providerId);
+		providerId.sendKeys(providerid);
+	}
+	
+	public void firstName(String firstname) throws IOException {
+		IHGUtil.waitForElement(driver, 10, firstName);
+		firstName.sendKeys(firstname);
+	}
+	
+	public void middleName(String middlename) {
+		IHGUtil.waitForElement(driver, 10, middleName);
+		middleName.sendKeys(middlename);
+	}
+	
+	public void lastName(String lastname) {
+		IHGUtil.waitForElement(driver, 10, lastName);
+		lastName.sendKeys(lastname);
+	}
+	
+	public void title(String providertitle) {
+		IHGUtil.waitForElement(driver, 10, title);
+		title.sendKeys(providertitle);
+	}
+	public void saveButton() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, saveButton);
+		saveButton.click();
+		Thread.sleep(5000);
+	}
+	
+	public void Providerfilter() {
+		IHGUtil.waitForElement(driver, 10, Providerfilter);
+		Providerfilter.sendKeys("James");
+	}
+	public void deleteProvider() {
+		IHGUtil.waitForElement(driver, 10, deleteProvider);
+		deleteProvider.click();
+	}
+	
+	public void clickOnRemoveButton() {
+		IHGUtil.waitForElement(driver, 10, clickOnRemoveButton);
+		clickOnRemoveButton.click();
+	}
+	
+	public boolean visibilityofProviderfilter() {
+		IHGUtil.waitForElement(driver, 10, Providerfilter);
+		if(Providerfilter.isDisplayed())
+		{
+			log("new provider is added");
+			return true;
+		}
+		else {
+			log("new provider not added");
+			return false;
+		}
+	}
+	
+	public boolean visibilityofdeletedProvider() {
+		IHGUtil.waitForElement(driver, 10, Providerfilter);
+		if(Providerfilter.isDisplayed())
+		{
+			log("provider deleted");
+			return true;
+		}
+		else {
+			log("provider is not deleted");
+			return false;
+		}
+	}
+
+	public void providerImage(String providerImagePath) throws InterruptedException, AWTException {
+		IHGUtil.PrintMethodName();
+		Actions act = new Actions(driver);
+		act.moveToElement(chooseFileforProvider).click().perform();
+		Thread.sleep(2000);
+		uploadFile(System.getProperty("user.dir")+providerImagePath);
+	}
+	
+	public void addPracticeDisplayName(String practiceName) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, practiceDisplayName);
+		practiceDisplayName.sendKeys(practiceName);
+	}
+
+
 	
 }
