@@ -144,7 +144,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']")
 	private WebElement overBookingToggle;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[1]/div[12]/div/label[1]/i")
+	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']/following-sibling::i")
 	private WebElement overBookingToggleClick;
 
 	public ManageAppointmentType(WebDriver driver) {
