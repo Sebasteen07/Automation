@@ -871,7 +871,7 @@ locals {
       PollForSourceChanges  = false
       execution_folder      = "pi-integration-platform-acceptance"
       test_environment      = "qa1"
-      suite_xml             = "integration-platform-acceptance.xml"
+      suite_xml             = "integration-platform-regression.xml"
       pxp_application       = "Portal"
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
