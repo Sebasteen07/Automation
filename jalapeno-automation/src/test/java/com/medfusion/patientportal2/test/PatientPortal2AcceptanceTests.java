@@ -4557,8 +4557,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 
 		logStep("Load login page and login");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
-		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"), testData.getProperty("med.wf.password"));
 
 		logStep("Switching to Dependent Account");
 		homePage.faChangePatient();
@@ -4605,11 +4605,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Proceed in Practice Portal");
 		AppoitmentRequest practicePortal = new AppoitmentRequest();
 		long tsPracticePortal = practicePortal.ProceedAppoitmentRequest(driver, true, appointmentReason,
-				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
+				testData.getProperty("portal.url"), testData.getProperty("med.wf.doc.user.id"), testData.getProperty("med.wf.doc.password"));
 
 		logStep("Login back to patient portal");
-		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
-		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		homePage = loginPage.login(testData.getProperty("med.wf.user.id"), testData.getProperty("med.wf.password"));
 
 		logStep("Switching to Dependent Account");
 		homePage.faChangePatient();
@@ -6108,6 +6108,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBanner() throws Exception {
 		String message = IHGUtil.createRandomNumericString(8);
 

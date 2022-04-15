@@ -193,6 +193,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAppointmentRequestV2Step1 clickOnAppointmentV2(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, appointments);
 		javascriptClick(appointments);
 		return PageFactory.initElements(driver, JalapenoAppointmentRequestV2Step1.class);
 	}
