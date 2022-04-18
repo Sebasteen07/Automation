@@ -46,6 +46,7 @@ public class ReportingE2EUtil {
 		TransactionDetailInfo tInfo1 = null;
 		TransactionDetailInfo tInfo2 = null;
 		String detailTID = "";
+		String orderID = "";
 		boolean pass = false;
 		try
 		{
@@ -115,7 +116,7 @@ public class ReportingE2EUtil {
 			ReportingTransactionDetail detail = dailyPage.openLastTransaction();
 			detail.waitForDetailActivityDate();
 			tInfo1 = new TransactionDetailInfo(null, null, "VCS", location, testData.getProperty("doctor.full.name"), (testData.getFirstName()+" "+testData.getLastName()), accountNumber,
-					testData.getCardType(), testData.getFirstName(), testData.getCardNumber().substring(testData.getCardNumber().length() - 4), null, "Payment", "Pending",
+					testData.getCardType(), testData.getFirstName(), testData.getCardNumber().substring(testData.getCardNumber().length() - 4), null, null, "Payment", "Pending",
 					"$" + amount, "$0.00", true, isElement);
 			
 			if (tInfo1.verifyIgnoreLeftBlanks(detail.getTransactionDetailInfo())){
@@ -176,11 +177,11 @@ public class ReportingE2EUtil {
 					if (refundGWR){
 						//Location empty!
 						tInfo2 = new TransactionDetailInfo(null, null, "VCS", location, testData.getProperty("doctor.full.name"), (testData.getFirstName()+" "+testData.getLastName()),accountNumber,
-								null, null,testData.getCardNumber().substring(testData.getCardNumber().length() - 4), null, "Refund", "Pending",
+								null, null,testData.getCardNumber().substring(testData.getCardNumber().length() - 4), null, null, "Refund", "Pending",
 								"$0.00", "$"+amount, true, false);
 					} else if(voidGWR){
 						tInfo2 = new TransactionDetailInfo(null, null, "VCS", location, testData.getProperty("doctor.full.name"),(testData.getFirstName()+" "+testData.getLastName()),accountNumber,
-								testData.getCardType(), testData.getFirstName(),testData.getCardNumber().substring(testData.getCardNumber().length() - 4), detailTID, "Void",
+								testData.getCardType(), testData.getFirstName(),testData.getCardNumber().substring(testData.getCardNumber().length() - 4), orderID, detailTID, "Void",
 								"Void", "$"+amount, "$"+amount, false, false);
 					}					
 					
@@ -234,8 +235,9 @@ public class ReportingE2EUtil {
 					break;
 				}
 			}	
-			Log4jUtil.log("Step 7: Get the transaction id of the OLBP payment");		
+			Log4jUtil.log("Step 7: Get the order id and transaction id of the OLBP payment");		
 			String transactionId = dailyPage.getTransactionReportTransactionId();
+			String orderId = dailyPage.getOrderId();
 			Log4jUtil.log("Transaction id:"+transactionId);
 			
 			if (detailed){
@@ -251,7 +253,7 @@ public class ReportingE2EUtil {
 			detail.waitForDetailActivityDate();
 			tInfo1 = new TransactionDetailInfo("", "", "OLBP", location, "", testData.getProperty("last.name") + ", " + testData.getProperty("first.name"),
 					accountNumber, creditCard.getType().toString(),
-					testData.getProperty("first.name") + " " + testData.getProperty("last.name"), creditCard.getLastFourDigits(), transactionId, "Payment", "Pending",
+					testData.getProperty("first.name") + " " + testData.getProperty("last.name"), creditCard.getLastFourDigits(), orderId, transactionId, "Payment", "Pending",
 					"$" + amount, "$0.00", true, isElement);
 			if (tInfo1.verifyIgnoreLeftBlanks(detail.getTransactionDetailInfo())){
 				Log4jUtil.log("Transaction detail verified successfuly");
@@ -343,9 +345,9 @@ public class ReportingE2EUtil {
 					detail.waitForDetailActivityDate();
 					if (refundGWR){
 						//Location empty!
-						tInfo2 = new TransactionDetailInfo(null, null, "OLBP", location, null,  testData.getProperty("last.name") + ", " + testData.getProperty("first.name"), accountNumber, creditCard.getType().toString(), "", creditCard.getLastFourDigits(), null, "Refund", "Pending", "$0.00", "$"+amount, true, false);
+						tInfo2 = new TransactionDetailInfo(null, null, "OLBP", location, null,  testData.getProperty("last.name") + ", " + testData.getProperty("first.name"), accountNumber, creditCard.getType().toString(), "", creditCard.getLastFourDigits(), null, null, "Refund", "Pending", "$0.00", "$"+amount, true, false);
 					} else if(voidGWR){
-						tInfo2 = new TransactionDetailInfo(null, null, "OLBP", location, null, testData.getProperty("last.name") + ", " + testData.getProperty("first.name"), accountNumber, creditCard.getType().toString(), testData.getProperty("first.name") + " " + testData.getProperty("last.name"), creditCard.getLastFourDigits(), null, "Void", "Void", "$"+amount, "$"+amount, false, false);
+						tInfo2 = new TransactionDetailInfo(null, null, "OLBP", location, null, testData.getProperty("last.name") + ", " + testData.getProperty("first.name"), accountNumber, creditCard.getType().toString(), testData.getProperty("first.name") + " " + testData.getProperty("last.name"), creditCard.getLastFourDigits(), null, null, "Void", "Void", "$"+amount, "$"+amount, false, false);
 					}					
 					
 					if (tInfo2.verifyIgnoreLeftBlanks(detail.getTransactionDetailInfo())){
