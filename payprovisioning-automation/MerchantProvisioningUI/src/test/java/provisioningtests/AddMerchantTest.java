@@ -1,5 +1,7 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package provisioningtests;
 
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.support.PageFactory;
@@ -27,7 +29,7 @@ public class AddMerchantTest extends ProvisioningBaseTest{
             "54321", "43215", "1000",
             "Medfusion", "TestUserPaypal", "AutomationUser");
 
-    @Test
+    @Test(enabled = true, groups = { "MerchantProvisioningAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
     public void testAddPaypalMerchant() throws IOException, InterruptedException {
 
         testData = new PropertyFileLoader();
@@ -51,7 +53,7 @@ public class AddMerchantTest extends ProvisioningBaseTest{
         log("Merchant successfully created");
     }
 
-    @Test
+    @Test(enabled = true, groups = { "MerchantProvisioningAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
     public void testAddElementMerchant() throws IOException, InterruptedException {
 
         testData = new PropertyFileLoader();
@@ -91,8 +93,9 @@ public class AddMerchantTest extends ProvisioningBaseTest{
                 testData.getProperty("country"), testData.getProperty("beneficial.ownership.type"));
 
         log("Fill Bank Account Info");
-        addNewMerchantPage.fillBankAccountDetails(testData.getProperty("account.type"), testData.getProperty("routing.number"),
-                testData.getProperty("bank.account.number"), testData.getProperty("federal.tax.id"));
+        addNewMerchantPage.fillBankAccountDetails(testData.getProperty("account.usage.combined"), testData.getProperty("account.type"),
+                testData.getProperty("routing.number"), testData.getProperty("bank.account.number"),
+                testData.getProperty("federal.tax.id"));
 
         log("Fill Rates and Fees Info");
         addNewMerchantPage.fillRatesAndFees(testData.getProperty("perTransactionAuthFee"), testData.getProperty("perTransactionRefundFee"),
