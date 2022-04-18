@@ -125,7 +125,7 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 		try {
 			return rdoVideoVisit.isDisplayed();
 		} catch (NoSuchElementException e) {
-			log("Live Chat is not displayed");
+			log("Video Visit Radio Button is not displayed");
 			return false;
 		}
 	}
