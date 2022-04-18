@@ -1606,3 +1606,290 @@ Feature: Test fuctionality of Appointment precheck
     And I received curbside message on email and confirm arrival
     Then I verify latest patient arrived goes to the end of the line that is row is added to the bottom
     And logout from practice provisioning portal
+
+  Scenario: verify if user upload logo then on mail(Scheduled,Reminder,Curbside,Curbside checkin,Broadcast,Manual reminder)On UI should be reflected
+    And I go to settings tab
+    And I click on logo tab
+    And I upload new logo image
+    Then I verify on patient UI new logo image should be reflected after upload of new image
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to add an image to a particular provider
+    And I go to settings tab
+    And I click on providers tab
+    And I click on add a new provider button
+    And I click on choose image link,add providerId,provider firstname,middlename,lastname,title
+    And I click on save button for provider
+    And I apply filter for provider
+    And I delete the provider
+    Then I verify user is able to add a provider and delete a provider
+    And logout from practice provisioning portal
+
+  Scenario: verify if system send email in English and Spanish language
+    And I go to settings tab
+    And I click on notifications tab
+    And I click on practice preference language and select English and Spanish language from dropdown
+    And I click on save button
+    And I schedule an appointment for English and Spanish language
+    Then I verify system should send emails and text in English and Spanish language
+    And logout from practice provisioning portal
+
+  Scenario: verify if system send email in English language
+    And I go to settings tab
+    And I click on notifications tab
+    And I click on practice preference language and select English language from dropdown
+    And I click on save button
+    And I schedule an appointment for English language
+    Then I verify system should send emails and text in English language
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to see appt manual reminder,scheduled reminder,confirmation reminder,curbside reminder in mail after display patient first name is enable
+    And I go to settings tab
+    And I click on notifications tab
+    And I enable display patients first name checkbox
+    And I switch on appointments tab
+    And I schedule an appointment for English language
+    And I send manual reminder for the scheduled appointment
+    Then I verify user is able to see first name in manual reminder,scheduled reminder,confirmation reminder,curbside reminder in mail
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to see appt scheduled reminder,confirmation reminder,curbside reminder,broadcast reminder in mail after display patient first name is enable
+    And I go to settings tab
+    And I click on notifications tab
+    And I enable display patients first name checkbox
+    And I switch on appointments tab
+    And I schedule an appointment for English language
+    And I send broadcast reminder for the scheduled appointment
+    Then I verify user is able to see first name in appointment scheduled reminder,appointment confirmation reminder , curbside reminder,broadcast in mail
+    And logout from practice provisioning portal
+
+  Scenario: verify user is not able to see manual reminder,scheduled reminder,confirmation reminder,curbside reminder in mail after display patient first name is disable
+    And I go to settings tab
+    And I click on notifications tab
+    And I disable display patients first name checkbox
+    And I click on save button
+    And I switch on appointments tab
+    And I schedule an appointment for English language
+    And I send manual reminder for the scheduled appointment
+    Then I verify user is not able to see first name in manual reminder,scheduled reminder,confirmation reminder,curbside reminderin mail
+    And logout from practice provisioning portal
+
+  Scenario: verify broadcast button is visible in appointment dashboard if user enable broadcast button
+    And I go to settings tab
+    And I click on notifications tab
+    And I enable broadcast messaging checkbox
+    And I click on appointment dashboard
+    And I schedule an appointment
+    And I select the patient checkbox
+    And I click on Actions button
+    Then I verify that broadcast button is visible in actions dropdown in appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify broadcast button is not visible in appointment dashboard if user disable broadcast button
+    And I go to settings tab
+    And I click on notifications tab
+    And I disable broadcast messaging checkbox
+    And I click on appointment dashboard
+    And I schedule an appointment
+    And I select the patient checkbox
+    And I click on Actions button
+    Then I verify that broadcast button is not visible in actions dropdown in appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enter curbside arrival instruction msg for English and add up to 500 character & >500 character
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside checkin
+    And I enter curbside arrival instruction msg for english and add 500 characters
+    Then I verify custom arrival instruction msg should allow to add up to 500 characters and in the left side corner it should show filled character count in left for english language after 500 character is filled system should not allow to update arrival instruction message
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enter curbside arrival instruction msg for Spanish and add up to 500 character & >500 character
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside checkin
+    And I enter curbside arrival instruction msg for spanish and add 500 characters
+    Then I verify custom arrival instruction msg should allow to add up to 500 characters and in the left side corner it should show filled character count in left for spanish language after 500 character is filled system should not allow to update arrival instruction message
+    And logout from practice provisioning portal
+
+  Scenario: verify if characters count are getting decremented when arrival instruction message is entered for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside checkin
+    And I enter curbside arrival instruction msg for english and add upto 100 characters
+    Then I verify when 100 character are entered then total character count should should be 100/500
+    And logout from practice provisioning portal
+
+  Scenario: verify if characters count are getting decremented when arrival instruction message is entered for Spanish language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside checkin
+    And I enter curbside arrival instruction msg for spanish and add upto 100 characters
+    Then I verify when 100 character are entered then total character count should should be 100/500
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is on notification reminder template and user select first Hours,min and then Day in timing units and save changes
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on cadence editor template page and select hours,min,day
+    Then I verify system should allow to edit template as per user point of view
+    And logout from practice provisioning portal
+
+  Scenario: verify user is on notification reminder template and user is able to see timing units in proper sequence
+    When I click on setting tab
+    And I click on notification tab
+    Then I verify system should show timing units on template in proper format Days,Hours,Minutes
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is on notification reminder template and user select first min,hour and then Day in timing units and save changes
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on cadence editor template page and select min,hours,day
+    Then I verify system should show timing units on template properly
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is on notification reminder template and user select first hour,min,hour and then Day in timing units and save changes
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on cadence editor template page and select first hour,min,hour and Day
+    Then I verify system should allow to edit template in proper format as per user point of view
+    And logout from practice provisioning portal
+
+  Scenario: verify user is on notification reminder template and user is able to see timing units in proper format
+    When I click on setting tab
+    And I click on notification tab
+    Then I verify system should show timing units on template in proper format hours,minutes,hours and day
+    And logout from practice provisioning portal
+
+  Scenario: verify after deleting all timing unit for mail in appointment reminder section timing and timing units fields system show null
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of "Email" for appointment reminder
+    And I delete all timing and timing unit and save configuration
+    Then I verify for mail on appointment reminder section timing and timing units fields system show blank
+    And logout from practice provisioning portal
+
+  Scenario: verify after deleting all timing unit for text in appointment reminder section timing and timing units fields system show null
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And I hit edit button of "SMS" for appointment reminder
+    And I delete all timing and timing unit and save configuration
+    Then I verify for text on appointment reminder section timing and timing units fields system show blank
+    And logout from practice provisioning portal
+
+  Scenario: Verify broadcast is sent after unsubscribe and resubscribe
+    When I enable Broadcast messaging checkbox from setting in notifications dashboard
+    And I schedule an appointment with valid email and phone number
+    And from mail I unsubscribe a patient
+    And I switch on practice provisioning url
+    And I select patient and send broadcast message from appointment dashboard
+    And I get count from email broadcast logs
+    And I resubscribe patient mail
+    Then I verify after sending broadcast message count will be increases
+    And logout from practice provisioning portal
+
+  Scenario: verify paper plane icon and logs shows red color when schedule an apt with invalid email and text
+    When from setting in notifications user turn on send notification radio button
+    And I schedule an appointment with invalid email and phone number
+    Then I verify paper plane icon and logs shows red colur and status is failed
+    And logout from practice provisioning portal
+
+  Scenario: verify paper plane icon and logs shows blank value when schedule an apt with valid email and text which are unsubscribed
+    When from setting in notifications user turn on send notification radio button
+    And I enable Broadcast messaging checkbox from setting in notifications dashboard
+    And I schedule an appointment with valid email and phone number
+    And from mail I unsubscribe a patient
+    And I switch on practice provisioning url
+    And again I schedule an appointment with same email and phone number
+    Then I verify paper plane icon and logs shows blank value
+    And logout from practice provisioning portal
+
+  Scenario: verify system should send 1 hour prior curbside reminder if user enables Curbside checkin reminder checkbox
+    And I go to settings tab
+    And I click on notifications
+    And I enable Curbside checkin reminder checkbox
+    And I click on Appointment tab
+    And I schedule an appointment for curbside checkin reminder
+    Then I verify system should send curbside checkin reminder within next one hour
+    And logout from practice provisioning portal
+
+  Scenario: verify system should not send curbside reminder if user disables Curbside checkin reminder checkbox
+    And I go to settings tab
+    And I click on notifications
+    And I disable Curbside checkin reminder checkbox
+    And I click on Appointment tab
+    And I schedule an appointment for curbside checkin reminder
+    Then I verify system should not send curbside reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to add or edit arrival message for mail and it will reflect on mail
+    And I go to settings tab
+    And I go to notifications tab
+    And I click on Curbside check-in of notification tab
+    And I add additional arrival instructions in English
+    And I go to Appointment tab
+    And I schedule an appointment and confirm the arrival from mail
+    Then I verify user is able to add or edit the arrival message after confirmation in mail
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to keep blank arrival message for mail and it will reflect on mail
+    And I go to settings tab
+    And I go to notifications tab
+    And I click on Curbside check-in of notification tab
+    And I clear additional arrival instructions in English
+    And I go to Appointment tab
+    And I schedule an appointment and confirm the arrival from mail
+    Then I verify user is able to keep blank arrival instruction message after confirmation in mail
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to add or edit patient mode completion message
+    And I go to settings tab
+    And I click on precheck tab
+    And I add patient mode completion message
+    Then I verify that user is able to add or edit patient mode completion message
+    And logout from practice provisioning portal
+
+  Scenario: verify changed practice display name in appointment dashboard
+    And I go to settings tab
+    And I click on general tab
+    And I add new practice display name and update changes
+    Then I verify that practice display name is changed in appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user adds or edit phone number
+    And I go to settings tab
+    And I click on precheck tab
+    And I add phone number
+    And I edit phone number
+    And I click on save changes button
+    Then I verify user is able to add or edit phone number
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to add form in the forms grid
+    And I go to settings tab
+    And I click on forms tab
+    And I click on add form button
+    Then I verify user is able to add form in the forms grid
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to associate appointment type to form
+    And I go to settings tab
+    And I click on forms tab
+    And I associate appointment type with form
+    Then I verify user is able to associate appointment type to form
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to delete form
+    And I go to settings tab
+    And I click on forms tab
+    And I delete the form
+    Then I verify user is able to delete the form and form cannot be seen in form grid
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to add instructions for primary,secondary,tertiary insurance
+    And I go to settings tab
+    And I click on precheck tab
+    And I add instructions for primary,secondary,tertiary
+    Then I verify that user is able to see instructions for primary,secondary,tertiary on UI
+    And logout from practice provisioning portal

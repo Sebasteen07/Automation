@@ -113,6 +113,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber,
 				int statementPreference) throws InterruptedException {
+			    IHGUtil.PrintMethodName();
 			    Thread.sleep(5000);
 				IHGUtil.PrintMethodName();
 				try {
@@ -140,7 +141,6 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		private void fillAccountDetails(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber, int statementPreference) throws InterruptedException {
 				log("Setting User Name and Password as " + userId + "/" + password);
-				Thread.sleep(10000);
 				inputUserId.sendKeys(userId);
 				inputPassword.sendKeys(password);
 				IHGUtil.waitForElement(driver, 10, selectSecretQuestion);
