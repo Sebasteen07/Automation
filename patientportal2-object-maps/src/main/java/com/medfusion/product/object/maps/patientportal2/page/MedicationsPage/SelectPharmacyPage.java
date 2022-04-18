@@ -111,6 +111,12 @@ public class SelectPharmacyPage extends MedfusionPage {
 	
 	@FindBy(how = How.XPATH, using = "//div[@id='pharmacy_list']//ol")
 	private WebElement listOfPharmacies;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class=\"pharmacy-radio-button selected\"]/ancestor::li/div//*[contains(text(),'Edit')]")
+	private WebElement btnEditPharmacy;
+
+	@FindBy(how = How.XPATH, using = "//span[@class=\"pharmacy-radio-button selected\"]/ancestor::li/div//*[@class=\"pharmacy-name\"]")
+	private WebElement rdoEditedPharmacyName;
 
 	WebDriverWait wait=new WebDriverWait(driver, 60);
 	private boolean areBasicPopUpPageElementsPresent() {
@@ -287,6 +293,54 @@ public class SelectPharmacyPage extends MedfusionPage {
 		return true;
 		
 	}
+
+	
+	public void addEditNewPharmacy(WebDriver driver) throws IOException, InterruptedException {
+	PropertyFileLoader testData = new PropertyFileLoader();
+	IHGUtil.PrintMethodName();
+	log("Click on Add a Pharmacy button");
+	Thread.sleep(2000);
+	addPharmacy.click();
+	log("Click on Add Your Pharmacy button from the popup");
+	Thread.sleep(2000);
+	addYourPharmacy.click();
+	log("Verify all the popup elements are present");
+	assertTrue(arePopupPageElementsPresent());
+	log("Enter Pharmacy Details");
+	String ab = testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4);
+	pharmacyName.sendKeys(ab);
+	System.out.println(ab);
+	pharmacyFax.sendKeys(IHGUtil.createRandomNumericString(10));
+	pharmacyAddress.sendKeys(testData.getProperty("address1"));
+	pharmacyCity.sendKeys(testData.getProperty("city"));
+	pharmacyState.sendKeys(testData.getProperty("state"));
+	pharmacyState.sendKeys(Keys.ENTER);
+	pharmacyZip.sendKeys(testData.getProperty("zip.code"));;
+	log("Verifying continue button is disabled since Phone number is mandatory");
+	assertFalse(popupContinueBtn.isEnabled(), "Continue button is disabled");
+	pharmacyPhone1.sendKeys(IHGUtil.createRandomNumericString(3));
+	pharmacyPhone2.sendKeys(IHGUtil.createRandomNumericString(3));
+	pharmacyPhone3.sendKeys(IHGUtil.createRandomNumericString(4));
+	new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(popupContinueBtn));
+	popupContinueBtn.click();
+	log("Pharmacy is added");
+	Thread.sleep(2000);// need to sleep because of modal disappearing time
+	btnEditPharmacy.click();
+	assertTrue(arePopupPageElementsPresent());
+	log("Enter Pharmacy Details");
+	String ab1 = testData.getProperty("updated.pharmacy.name") + IHGUtil.createRandomNumericString(4);
+	pharmacyName.clear();
+	pharmacyName.sendKeys(ab1);
+	Thread.sleep(2000);
+	popupContinueBtn.click();
+	}
+	
+	public String getUpdatedPharmcyName() {
+	String pharmcyName= rdoEditedPharmacyName.getText();
+	btnContinue.click();
+	return pharmcyName;
+	}
+
 
 }
 
