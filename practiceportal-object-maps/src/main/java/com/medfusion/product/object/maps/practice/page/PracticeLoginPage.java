@@ -56,7 +56,6 @@ public class PracticeLoginPage extends BasePageObject {
 
 		IHGUtil.PrintMethodName();
 		log("Practice Portal Login Credentials: " + providerUsername + " / " + providerPassword);
-		Thread.sleep(10000);
 		log("Waiting for the Username element, max wait time is 60 seconds");
 		IHGUtil.waitForElement(driver, 60, userName);
 		userName.sendKeys(providerUsername);
