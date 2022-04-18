@@ -1324,12 +1324,12 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 				"", "");
 		homePage.btnStartSchedClick();
 		String Patient1FirstTime = pssPatientUtils.bookLTWithTime(homePage, testData, driver, locationName, appType);
-		log("Time of First Patient First Time Booking is  " + Patient1FirstTime);
+		log("Patient 1 Booking Time Is " + Patient1FirstTime);
 		logStep("going to Book Apppointment For Second Patient");
 		homePage = loginlessPatientInformation.fillNewPatientForm(firstNameP2, lastNameP2, dobP2, "", genderP2, "", "");
 		homePage.btnStartSchedClick();
 		String secondPatientTime = pssPatientUtils.bookLTWithTime(homePage, testData, driver, locationName, appType);
-		log("Patient 2 Time Is " + secondPatientTime);
+		log("Patient 2 Booking Time Is " + secondPatientTime);
 		assertNotEquals(secondPatientTime, Patient1FirstTime);
 	}
 
