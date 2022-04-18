@@ -1576,6 +1576,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
 		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
 		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		Thread.sleep(2000);
 		manageAppointmentType.selectAppointment(appointmentType);
 		manageAppointmentType.gotoConfiguration();
 		log("Status for OverBooking is " + manageAppointmentType.overBookingStatus());
