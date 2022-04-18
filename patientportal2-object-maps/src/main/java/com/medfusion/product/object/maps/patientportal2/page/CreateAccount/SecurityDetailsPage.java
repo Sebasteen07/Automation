@@ -59,6 +59,9 @@ public class SecurityDetailsPage extends MedfusionPage {
 		@FindBy(how = How.ID, using = "finishStep")
 		private WebElement buttonFinishStep;
 		
+		@FindBy(how = How.XPATH, using = "//button[@id='next']")
+		private WebElement nextButton;
+		
 		@FindBy(how = How.ID, using = "updateMissingInformationForm")
 		private WebElement statementDailougeBox;
 		
@@ -112,6 +115,14 @@ public class SecurityDetailsPage extends MedfusionPage {
 				int statementPreference) throws InterruptedException {
 			    IHGUtil.PrintMethodName();
 			    Thread.sleep(5000);
+				IHGUtil.PrintMethodName();
+				try {
+					IHGUtil.waitForElement(driver, 60, nextButton);
+					nextButton.click();
+				}
+				catch(Exception e){
+					log("NextButton Not available");
+				}
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
 				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
 				scrollAndWait(0,300,3000);
@@ -122,7 +133,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 				handleWeNeedToConfirmSomethingModal();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
-
+		
 		public void fillAccountDetailsAndContinueWithError(String userId, String password, PropertyFileLoader testData) throws InterruptedException {
 				fillAccountDetails(userId, password, testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber(), 3);
 				javascriptClick(buttonFinishStep);
@@ -130,10 +141,9 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		private void fillAccountDetails(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber, int statementPreference) throws InterruptedException {
 				log("Setting User Name and Password as " + userId + "/" + password);
-				Thread.sleep(3000);
 				inputUserId.sendKeys(userId);
 				inputPassword.sendKeys(password);
-				IHGUtil.waitForElement(driver, 3, selectSecretQuestion);
+				IHGUtil.waitForElement(driver, 10, selectSecretQuestion);
 				selectSecretQuestion.sendKeys(secretQuestion);
 				inputSecretAnswer.sendKeys(secretAnswer);
 				scrollAndWait(0,300,2000);
