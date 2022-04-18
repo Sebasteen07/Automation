@@ -2191,7 +2191,7 @@ public class AppointmentsPage extends BasePageObject {
 			IHGUtil.PrintMethodName();
 			IHGUtil.waitForElement(driver, 5, continueButton);
 			continueButton.click();
-			Thread.sleep(20000);
+			Thread.sleep(10000);
 		}
 
 		public void addPatientDetailsFromPrecheck(String precheckPageTitle, String firstName, String middleName,
@@ -2217,12 +2217,10 @@ public class AppointmentsPage extends BasePageObject {
 				phoneNo.sendKeys(Keys.chord(Keys.CONTROL, "a"));
 				phoneNo.sendKeys(Keys.BACK_SPACE);
 				phoneNo.sendKeys(PhoneNo);
-				Thread.sleep(5000);
 
 				mail.sendKeys(Keys.chord(Keys.CONTROL, "a"));
 				mail.sendKeys(Keys.BACK_SPACE);
 				mail.sendKeys(email);
-				Thread.sleep(5000);
 				submit.click();
 				
 				log("Completing precheck");
