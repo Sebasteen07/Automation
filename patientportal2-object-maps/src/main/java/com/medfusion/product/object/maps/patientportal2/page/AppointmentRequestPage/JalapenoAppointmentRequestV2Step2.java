@@ -4,6 +4,8 @@ package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequest
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -71,6 +73,9 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "continue_button")
 	private WebElement requestAppointmentButton;
+	
+	@FindBy(how = How.XPATH, using = "//label[@for='videoPreference']")
+	private WebElement rdoVideoVisit;
 
 	public JalapenoAppointmentRequestV2Step2(WebDriver driver) {
 		super(driver);
@@ -106,5 +111,22 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 		js.executeScript("arguments[0].scrollIntoView();", requestAppointmentButton);
 		requestAppointmentButton.click();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+	
+	public void fillAppointmentRequestReasonForm(String appointmentReason) {
+		IHGUtil.PrintMethodName();
+		javascriptClick(videoVisit);
+		log("Reason for visit: " + appointmentReason);
+		appointmentReasonTextArea.sendKeys(appointmentReason);
+	}
+
+	public boolean isVideoVisitDisplayed() throws TimeoutException {
+		log("Verify Video Visit Radio Button");
+		try {
+			return rdoVideoVisit.isDisplayed();
+		} catch (NoSuchElementException e) {
+			log("Live Chat is not displayed");
+			return false;
+		}
 	}
 }
