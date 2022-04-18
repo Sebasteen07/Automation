@@ -102,7 +102,7 @@ public class PartnerPage extends MerchantDetailsPage{
         return row;
     }
 
-    public void clickOnDelete() throws InterruptedException {
+    public void deleteLastRowOfPartners() throws InterruptedException {
 
         String row = getLastRowOfPartners();
         String xpath = row + "/td[4]/button[3]";
@@ -129,7 +129,7 @@ public class PartnerPage extends MerchantDetailsPage{
         deleteSuccessMessage.isDisplayed();
     }
 
-    public void clickOnEditButton() {
+    public void editLastRowOfPartners() {
         String row = getLastRowOfPartners();
         String xpathEditButton = row + "/td[4]/button[1]";
 
