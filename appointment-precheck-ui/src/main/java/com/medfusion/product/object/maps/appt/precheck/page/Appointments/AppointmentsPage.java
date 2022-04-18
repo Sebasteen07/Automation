@@ -480,6 +480,60 @@ public class AppointmentsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "(//td/span[@class='mf-icon mf-icon__item--error--small mf-color__negative'])[2]")
 	private WebElement faildManualReminderIcon;
+	
+	@FindBy(how = How.XPATH, using = "//button[@id='launchPatientModeButton']")
+	private WebElement launchPatientModeButton;
+
+	@FindBy(how = How.XPATH, using = "//button[text()='Continue']")
+	private WebElement continueButton;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='firstName']")
+	private WebElement fName;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='middleName']")
+	private WebElement midName;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='lastName']")
+	private WebElement lName;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='phone']")
+	private WebElement phoneNo;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='email']")
+	private WebElement mail;
+
+	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
+	private WebElement submit;
+
+	@FindBy(how = How.CSS, using = "#root > div > div:nth-child(1) > div > div > ul > li:nth-child(5)")
+	private WebElement signOutbutton;
+	
+	@FindBy(how = How.XPATH, using = "(//button[@type='button'])[1]")
+	private WebElement yesLogMeOut;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='patient-name']")
+	private WebElement patientNamefromBroadcastLogs;
+	
+	@FindBy(how = How.XPATH, using = "//button[text()='OK']")
+	private WebElement okButton;
+	  
+	@FindBy(how = How.XPATH, using = "//button[text()='Save & Continue']")
+	private WebElement saveAndContinueButton;
+	
+	@FindBy(how = How.XPATH, using = "//button[text()='Pay in office']")
+	private WebElement payInOfficeButton;
+
+	@FindBy(how = How.XPATH, using = "//button[text()=\"I'm done\"]")
+	private WebElement iAmDoneButton;
+	 
+	@FindBy(how = How.XPATH, using = "//button[text()=\"Log out\"]")
+	private WebElement logOutButton;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='Skip and pay in office']")
+	private WebElement skipAndPayInOffice;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='Skip and finish later']")
+	private WebElement skipAndFinishLater;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -2112,4 +2166,174 @@ public class AppointmentsPage extends BasePageObject {
 					+ "']/following::div[@class='reminders-expanded-status'])[1]"));
 			return reminderStatus.getText();
 		}
+		
+		public void clickOnPatientName(String patientId, String apptId) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+				WebElement patientName = driver
+						.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::td)[3]"));
+				patientName.click();
+			}else {
+					WebElement patientName = driver
+							.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::span)[3]"));
+					patientName.click();
+			}
+		}
+		
+		public void clickOnLaunchPatientModeButton() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, launchPatientModeButton);
+			launchPatientModeButton.click();
+
+		}
+
+		public void clickOnContinueButton() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, continueButton);
+			continueButton.click();
+			Thread.sleep(20000);
+		}
+
+		public void addPatientDetailsFromPrecheck(String precheckPageTitle, String firstName, String middleName,
+				String lastName, String email, String PhoneNo) throws InterruptedException {
+
+			IHGUtil.waitForElement(driver, 40, driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")));
+			String patientInfoText = driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")).getText();
+			if (patientInfoText.equals(precheckPageTitle)) {
+
+				fName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+				fName.sendKeys(Keys.BACK_SPACE);
+				fName.sendKeys(firstName);
+
+				midName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+				midName.sendKeys(Keys.BACK_SPACE);
+				midName.sendKeys(middleName);
+
+				lName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+				lName.sendKeys(Keys.BACK_SPACE);
+				lName.sendKeys(lastName);
+				log("Enter first name , middle name and last name");
+
+				phoneNo.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+				phoneNo.sendKeys(Keys.BACK_SPACE);
+				phoneNo.sendKeys(PhoneNo);
+				Thread.sleep(5000);
+
+				mail.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+				mail.sendKeys(Keys.BACK_SPACE);
+				mail.sendKeys(email);
+				Thread.sleep(5000);
+				submit.click();
+				
+				log("Completing precheck");
+				try {
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, okButton);
+					okButton.click();
+				}
+			
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+			
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+					skipAndPayInOffice.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+					payInOfficeButton.click();
+				}
+				
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+					skipAndPayInOffice.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+					payInOfficeButton.click();
+				}
+
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
+					skipAndFinishLater.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}
+					
+				iAmDoneButton.click();
+				IHGUtil.waitForElement(driver, 5, logOutButton);
+				logOutButton.click();
+				}	
+		}
+		
+		public String getPatientNameFromApptDashboard(String patientId, String apptId) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+				WebElement patientName = driver
+						.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::td)[3]"));
+				return patientName.getText();
+			}else {
+					WebElement patientName = driver
+							.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::span)[3]"));
+					return patientName.getText();
+			}
+		}
+
+		public void clickOnBroadcastEmailLogForSelectedPatient(String patientId, String apptId)
+				throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			WebElement broadcastMsg = driver.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId
+					+ "']//following::div[@class='reminders-cell-content'])[3]"));
+			broadcastMsg.click();
+		}
+		
+		public String getPatientNameFromBroadcastEmailLogs(String patientId, String apptId) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			scrollAndWait(2000, -1000, 5000);
+			jse.executeScript("arguments[0].scrollIntoView(true);", patientNamefromBroadcastLogs);
+			return patientNamefromBroadcastLogs.getText();
+		}
+		
+		public void clickOnBroadcastPhoneLogForSelectedPatient(String patientId, String apptId)
+				throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			WebElement broadcastMsg = driver.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId
+					+ "']//following::div[@class='reminders-cell-content'])[4]"));
+			broadcastMsg.click();
+		}
+		
+		public String getPatientNameFromBroadcastTextLogs(String patientId, String apptId) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			scrollAndWait(2000, -1000, 6000);
+			jse.executeScript("arguments[0].scrollIntoView(true);", patientNamefromBroadcastLogs);
+			return patientNamefromBroadcastLogs.getText();
+		}
+		
+		public String getPatientEmailFromApptDashboard(String patientId, String apptId) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+				WebElement patientName = driver
+						.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::td)[7]"));
+				return patientName.getText();
+			}else {
+				WebElement patientName = driver
+						.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::span)[7]"));
+				return patientName.getText();
+		   }	
+		}
+		
+		public String getPatientPhoneFromApptDashboard(String patientId, String apptId) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			if (IHGUtil.getEnvironmentType().equals("DEV3")) {
+			WebElement patientName = driver
+					.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::td)[8]"));
+			return patientName.getText();
+			}else {
+				WebElement patientName = driver
+						.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::span)[8]"));
+				return patientName.getText();
+		   }
+		}
+		
 }
