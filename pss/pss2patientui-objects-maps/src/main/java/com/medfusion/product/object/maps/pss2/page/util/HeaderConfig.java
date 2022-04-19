@@ -19,6 +19,14 @@ public class HeaderConfig {
 		return df;
 	}
 	
+	public Map<String, String> HeaderwithTokenES(String s) {
+		Map<String, String> df = new HashMap<String, String>();
+		df.put("content-type", "application/json");
+		df.put("Authorization", "Bearer " + s);
+		df.put("Language", "ES");
+		return df;
+	}
+	
 	public Map<String, String> HeaderwithTokenMulti(String s) {
 		Map<String, String> df = new HashMap<String, String>();
 		df.put("Authorization", "Bearer " + s);

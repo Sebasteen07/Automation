@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -25,21 +26,16 @@ public class FormMedicationsPage extends PortalFormPage {
 
 	@FindBy(xpath = ".//*[@id='section5']/section/div[2]/a")
 	private WebElement btnSubmit;
-	
 
 	@FindBy(id = "medications_other_field_autocomplete")
 	private WebElement medications;
-	
+
 	@FindBy(id = "medications_other_field_frequency")
 	private WebElement taken;
-	
+
 	@FindBy(xpath = "//div[@id='autocomplete']/ul/li")
 	WebElement autoComplete;
 
-	/**
-	 * @Description:Set No Medications
-	 * @throws Exception
-	 */
 	public void setNoMedications() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 20, noMedications);
@@ -53,33 +49,22 @@ public class FormMedicationsPage extends PortalFormPage {
 		IHGUtil.waitForElement(driver, 30, saveAndContinuebtn);
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver, FormAllergiesPage.class);
-
 	}
-	/**
-	 * @Description:Set Medication Form Fields
-	 * @return FormAllergiesPage
-	 * @throws Exception
-	 */
+
 	public FormAllergiesPage setMedicationFormFields() throws Exception {
 		setNoMedications();
 
 		return clickSaveContinue(FormAllergiesPage.class);
-
 	}
 
-	/**
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	public void fillMedicationFormFields() throws Exception {
 		setNoMedications();
 		saveAndContinuebtn.click();
 
 		IHGUtil.waitForElement(driver, 10, btnSubmit);
 		btnSubmit.click();
-		// return PageFactory.initElements(driver, MyPatientPage.class);
 	}
+
 	public void fillMedicationFormFields_new(String medicine) throws Exception {
 		IHGUtil.waitForElement(driver, 10, medications);
 		medications.clear();
@@ -88,8 +73,8 @@ public class FormMedicationsPage extends PortalFormPage {
 		IHGUtil.waitForElement(driver, 40, autoComplete);
 		autoComplete.click();
 	}
-	public void setTakenInterval(String input) throws InterruptedException
-	{
+
+	public void setTakenInterval(String input) throws InterruptedException {
 		IHGUtil.waitForElement(driver, 20, taken);
 		taken.clear();
 		taken.sendKeys(input);

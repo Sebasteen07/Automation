@@ -1,13 +1,13 @@
-# Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+# Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 
 ###################################################################################
 # CodeBuild project                                                               #
 ###################################################################################
-module "qa_automation_utils_rel_codebuild" {
+module "object_maps_codebuild" {
   source = "git::ssh://git@bitbucket.nextgen.com:7999/dope/codebuild?ref=4.3.0"
 
   artifact_bucket_arns = [local.pipeline_artifact_bucket_arn]
-  name                 = local.qa_automation_utils_rel.name
+  name                 = local.object_maps.name
   kms_key_id           = local.kms_key_id
   artifact_kms_key_ids = []
   artifacts_type       = var.codebuild_artifacts_type
@@ -15,12 +15,12 @@ module "qa_automation_utils_rel_codebuild" {
   environment_variables = [
     {
       name  = "maven_command"
-      value = "${local.qa_automation_utils_rel.maven_parameter} -Dmaven.test.skip=${local.qa_automation_utils_rel.maven_test_skip}"
+      value = "${local.object_maps.maven_parameter} -Dmaven.test.skip=${local.object_maps.maven_test_skip}"
       type  = "PLAINTEXT"
     },
     {
       name  = "execution_folder"
-      value = local.qa_automation_utils_rel.execution_folder
+      value = local.object_maps.execution_folder
       type  = "PLAINTEXT"
     },
     {
@@ -37,8 +37,8 @@ module "qa_automation_utils_rel_codebuild" {
 
   source_buildspec = var.source_buildspec
   source_type      = var.codebuild_source_type
-  build_timeout    = local.qa_automation_utils_rel.build_timeout
-  queued_timeout   = local.qa_automation_utils_rel.queued_timeout
+  build_timeout    = local.object_maps.build_timeout
+  queued_timeout   = local.object_maps.queued_timeout
 
   environment_privileged_mode             = var.codebuild_privileged_override
   environment_compute_type                = var.codebuild_compute_type
@@ -52,16 +52,18 @@ module "qa_automation_utils_rel_codebuild" {
     security_group_ids = [data.aws_security_group.codebuild_sg.id]
   }]
 
-  common_tags = {}
+    common_tags = {
+      "pxp.application" = local.object_maps.pxp_application
+    }
 }
 
 ###################################################################################
 # CodePipeline job                                                                #
 ###################################################################################
-resource "aws_codepipeline" "qa_automation_utils_rel_codepipeline" {
+resource "aws_codepipeline" "object_maps_codepipeline" {
 
-  name     = local.qa_automation_utils_rel.name
-  role_arn = aws_iam_role.qa_automation_utils_rel.arn
+  name     = local.object_maps.name
+  role_arn = aws_iam_role.object_maps.arn
 
   artifact_store {
     location = local.pipeline_artifact_bucket_name
@@ -80,9 +82,9 @@ resource "aws_codepipeline" "qa_automation_utils_rel_codepipeline" {
       output_artifacts = ["SourceZip"]
 
       configuration = {
-        BranchName           = local.qa_automation_utils_rel.codecommit_branch
+        BranchName           = local.object_maps.codecommit_branch
         RepositoryName       = var.repository_name
-        PollForSourceChanges = local.qa_automation_utils_rel.PollForSourceChanges
+        PollForSourceChanges = local.object_maps.PollForSourceChanges
       }
     }
   }
@@ -100,18 +102,22 @@ resource "aws_codepipeline" "qa_automation_utils_rel_codepipeline" {
       version          = "1"
 
       configuration = {
-        ProjectName = module.qa_automation_utils_rel_codebuild.codebuild_project.name
+        ProjectName = module.object_maps_codebuild.codebuild_project.name
       }
     }
+  }
+
+  tags = {
+    "pxp.application" = local.object_maps.pxp_application
   }
 }
 
 ###################################################################################
 # Pipeline trigger                                                                #
 ###################################################################################
-resource "aws_cloudwatch_event_rule" "trigger_qa_automation_utils_rel_codepipeline" {
-  name        = "${local.qa_automation_utils_rel.name}-trigger"
-  description = "Trigger pipeline execution for ${local.qa_automation_utils_rel.name} when changes are pushed to ${local.qa_automation_utils_rel.codecommit_branch} branch in CodeCommit repo ${var.repository_name}."
+resource "aws_cloudwatch_event_rule" "trigger_object_maps_codepipeline" {
+  name        = "${local.object_maps.name}-trigger"
+  description = "Trigger pipeline execution for ${local.object_maps.name} when changes are pushed to ${local.object_maps.codecommit_branch} branch in CodeCommit repo ${var.repository_name}."
 
   event_pattern = <<EOF
 {
@@ -120,18 +126,22 @@ resource "aws_cloudwatch_event_rule" "trigger_qa_automation_utils_rel_codepipeli
   "resources": ["arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.repository_name}"],
   "detail": {
     "referenceType": ["branch"],
-    "referenceName": ["${local.qa_automation_utils_rel.codecommit_branch}"],
+    "referenceName": ["${local.object_maps.codecommit_branch}"],
     "event": ["referenceDeleted", "referenceCreated"]
   }
 }
 EOF
+
+  tags = {
+    "pxp.application" = local.object_maps.pxp_application
+  }
 }
 
-resource "aws_cloudwatch_event_target" "trigger_qa_automation_utils_rel_codepipeline" {
-  rule      = aws_cloudwatch_event_rule.trigger_qa_automation_utils_rel_codepipeline.name
-  target_id = "${local.qa_automation_utils_rel.name}-event-target"
-  role_arn  = aws_iam_role.qa_automation_utils_rel_cwevent.arn
-  arn       = aws_codepipeline.qa_automation_utils_rel_codepipeline.arn
+resource "aws_cloudwatch_event_target" "trigger_object_maps_codepipeline" {
+  rule      = aws_cloudwatch_event_rule.trigger_object_maps_codepipeline.name
+  target_id = "${local.object_maps.name}-event-target"
+  role_arn  = aws_iam_role.object_maps_cwevent.arn
+  arn       = aws_codepipeline.object_maps_codepipeline.arn
 }
 
 ###################################################################################
@@ -139,37 +149,41 @@ resource "aws_cloudwatch_event_target" "trigger_qa_automation_utils_rel_codepipe
 ###################################################################################
 
 # IAM policies and roles for setting up Codepipeline triggers
-resource "aws_iam_role" "qa_automation_utils_rel_cwevent" {
-  name               = "${local.qa_automation_utils_rel.name}-cwevent"
+resource "aws_iam_role" "object_maps_cwevent" {
+  name               = "${local.object_maps.name}-cwevent"
   assume_role_policy = data.aws_iam_policy_document.cwevent_assume_role_policy.json
+
+  tags = {
+    "pxp.application" = local.object_maps.pxp_application
+  }
 }
 
-data "aws_iam_policy_document" "qa_automation_utils_rel_cwevent" {
+data "aws_iam_policy_document" "object_maps_cwevent" {
   statement {
     actions = [
       "codepipeline:StartPipelineExecution",
     ]
 
     resources = [
-      aws_codepipeline.qa_automation_utils_rel_codepipeline.arn,
+      aws_codepipeline.object_maps_codepipeline.arn,
     ]
   }
 }
 
-resource "aws_iam_role_policy" "qa_automation_utils_rel_cw_events_policy" {
-  name   = "${local.qa_automation_utils_rel.name}-cwevents-policy"
-  role   = aws_iam_role.qa_automation_utils_rel_cwevent.name
-  policy = data.aws_iam_policy_document.qa_automation_utils_rel_cwevent.json
+resource "aws_iam_role_policy" "object_maps_cw_events_policy" {
+  name   = "${local.object_maps.name}-cwevents-policy"
+  role   = aws_iam_role.object_maps_cwevent.name
+  policy = data.aws_iam_policy_document.object_maps_cwevent.json
 }
 
 # IAM policies and roles for CodePipeline
-resource "aws_iam_role" "qa_automation_utils_rel" {
+resource "aws_iam_role" "object_maps" {
 
-  name               = "${local.qa_automation_utils_rel.name}-role"
+  name               = "${local.object_maps.name}-role"
   assume_role_policy = data.aws_iam_policy_document.pipeline_assume_role_policy.json
 }
 
-data "aws_iam_policy_document" "qa_automation_utils_rel_codebuild" {
+data "aws_iam_policy_document" "object_maps_codebuild" {
 
   statement {
     sid = "Builds"
@@ -181,12 +195,12 @@ data "aws_iam_policy_document" "qa_automation_utils_rel_codebuild" {
     ]
 
     resources = [
-      module.qa_automation_utils_rel_codebuild.codebuild_project.arn
+      module.object_maps_codebuild.codebuild_project.arn
     ]
   }
 }
 
-data "aws_iam_policy_document" "codeartifact_token" {
+data "aws_iam_policy_document" "object_maps_codeartifact_token" {
 # CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
 
   statement {
@@ -195,7 +209,7 @@ data "aws_iam_policy_document" "codeartifact_token" {
       "sts:GetServiceBearerToken"
     ]
     resources = [
-      "arn:aws:sts::${data.aws_caller_identity.current.id}:assumed-role/${module.qa_automation_utils_rel_codebuild.codebuild_role.name}/*"
+      "arn:aws:sts::${data.aws_caller_identity.current.id}:assumed-role/${module.object_maps_codebuild.codebuild_role.name}/*"
     ]
     condition {
       test     = "StringEquals"
@@ -234,39 +248,43 @@ data "aws_iam_policy_document" "codeartifact_token" {
   }
 }
 
-resource "aws_iam_role_policy" "qa_automation_utils_rel_pipeline" {
+resource "aws_iam_role_policy" "object_maps_pipeline" {
 
-  name   = "${local.qa_automation_utils_rel.name}-pipeline-policy"
-  role   = aws_iam_role.qa_automation_utils_rel.name
+  name   = "${local.object_maps.name}-pipeline-policy"
+  role   = aws_iam_role.object_maps.name
   policy = data.aws_iam_policy_document.common_codepipeline_permissions.json
 }
 
-resource "aws_iam_role_policy" "qa_automation_utils_rel_codebuild" {
+resource "aws_iam_role_policy" "object_maps_codebuild" {
 
-  name   = "${local.qa_automation_utils_rel.name}-codebuild-policy"
-  role   = aws_iam_role.qa_automation_utils_rel.name
-  policy = data.aws_iam_policy_document.qa_automation_utils_rel_codebuild.json
+  name   = "${local.object_maps.name}-codebuild-policy"
+  role   = aws_iam_role.object_maps.name
+  policy = data.aws_iam_policy_document.object_maps_codebuild.json
 }
 
-resource "aws_iam_role_policy" "qa_automation_utils_rel_codeartifact_token_inline_policy" {
-  name   = "${local.qa_automation_utils_rel.name}-codeartifact-token-inline-policy"
-  role   = module.qa_automation_utils_rel_codebuild.codebuild_role.name
-  policy = data.aws_iam_policy_document.codeartifact_token.json
+resource "aws_iam_role_policy" "object_maps_codeartifact_token_inline_policy" {
+  name   = "${local.object_maps.name}-codeartifact-token-inline-policy"
+  role   = module.object_maps_codebuild.codebuild_role.name
+  policy = data.aws_iam_policy_document.object_maps_codeartifact_token.json
 }
 
 ###################################################################################
 # Notifications                                                                   #
 ###################################################################################
-resource "aws_codestarnotifications_notification_rule" "qa_automation_utils_rel" {
+resource "aws_codestarnotifications_notification_rule" "object_maps" {
 
   detail_type = var.notification_detail_type
   event_type_ids = var.event_type_ids
 
-  name     = "${local.qa_automation_utils_rel.name}-notification"
-  resource = aws_codepipeline.qa_automation_utils_rel_codepipeline.arn
+  name     = "${local.object_maps.name}-notification"
+  resource = aws_codepipeline.object_maps_codepipeline.arn
 
   target {
     address = var.aws_chatbot_channel_arn
     type    = "AWSChatbotSlack"
+  }
+
+  tags = {
+    "pxp.application" = local.object_maps.pxp_application
   }
 }

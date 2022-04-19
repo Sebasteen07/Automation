@@ -142,24 +142,37 @@ public class MerchantInfo extends BaseRest {
 		return given().spec(requestSpec).when().get(getmerchant).then().spec(responseSpec).extract().response();
 
 	}
-	
+
 	public Response editAccountDetails(String mmid, String acceptedCards, String accountNumber, String accountType,
 			String checkingDeposit, String feeAccountNumber, String feeAccountType, String feeRoutingNumber,
 			String preferredProcessor, String seprateFunding, String routingNumber, String merchantName,
 			String maxTransactionLimit) throws IOException {
 
-		Map<String, Object> accountDetails = AccountDetails.editAccountDetailsMap(
-				Arrays.asList(acceptedCards), accountNumber, accountType, checkingDeposit, feeAccountNumber,
-				feeAccountType, feeRoutingNumber, preferredProcessor, seprateFunding, routingNumber, merchantName,
-				maxTransactionLimit);
+		Map<String, Object> accountDetails = AccountDetails.editAccountDetailsMap(Arrays.asList(acceptedCards),
+				accountNumber, accountType, checkingDeposit, feeAccountNumber, feeAccountType, feeRoutingNumber,
+				preferredProcessor, seprateFunding, routingNumber, merchantName, maxTransactionLimit);
 
-		
 		String updateMerchantAccountDetails = ProvisioningUtils.postMerchant + "/" + mmid
 				+ "/wpSubMerchant?updateType=BANK_ACCOUNT";
 		Response response = given().spec(requestSpec).body(accountDetails).when().put(updateMerchantAccountDetails)
 				.then().spec(responseSpec).extract().response();
 
 		return response;
+
+	}
+
+	public Response createInstamedMerchant(String merchantName, String externalMerchantId, String customerAccountNumber,
+			Double midQfeePercent, Double nonQFeePercent, Double authFee, Double qualifiedFeePercent,
+			String preferredProcessor, String merchantId, String storeId, String virtualVisit, String patientPortal,
+			String preCheck) throws IOException {
+
+		testData = new PropertyFileLoader();
+		Map<String, Object> merchantdetails = Merchant.createInstamedMerchantAccMap(merchantName, externalMerchantId,
+				customerAccountNumber, midQfeePercent, nonQFeePercent, authFee, qualifiedFeePercent, preferredProcessor,
+				merchantId, storeId, virtualVisit, patientPortal, preCheck);
+
+		return given().spec(requestSpec).log().all().body(merchantdetails).when().post(ProvisioningUtils.postMerchant)
+				.then().spec(responseSpec).and().extract().response();
 
 	}
 

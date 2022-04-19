@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-parent-pom</artifactId>
-		<version>22.1.0</version>
+		<version>22.2.0</version>
 	</parent>
 	
 	<artifactId>integration-support-team-automation</artifactId>
@@ -17,8 +17,7 @@
 		<repository>
 			<id>IHG-nexus</id>
 			<name>IHG-nexus</name>
-			<url>https://nexus.dev.medfusion.net/nexus/content/groups/qhg-dev/ </url>
-			<!-- <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url> -->
+			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
 		</repository>
 		<repository>
 			<snapshots>
@@ -31,8 +30,8 @@
 	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!--<qa-automation-utils.version>22.1.0</qa-automation-utils.version> -->
-		<ihg.version>22.1.0</ihg.version>
+		<!--<qa-automation-utils.version>22.2.0</qa-automation-utils.version> -->
+		<ihg.version>22.2.0</ihg.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -40,10 +39,6 @@
 			<artifactId>qa-automation-utils</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
-		<!-- <dependency> <groupId>com.intuit.ihg</groupId> <artifactId>patient-portal-automation</artifactId> 
-			<version>${ihg.version}</version> </dependency> -->
-		<!-- <dependency> <groupId>com.intuit.ihg</groupId> <artifactId>phr-portal-automation</artifactId> 
-			<version>${ihg.version}</version> </dependency> -->
 		<dependency>
 			<groupId>net.medfusion</groupId>
 			<artifactId>integrations</artifactId>
@@ -87,8 +82,6 @@
 					<execution>
 						<phase>integration-test</phase>
 						<configuration>
-							<failBuild>false</failBuild>
-							<!-- <groups>${testGroups}</groups> -->
 							<suiteXmlFiles>
 								<suiteXmlFile>support-testng.xml</suiteXmlFile>
 							</suiteXmlFiles>

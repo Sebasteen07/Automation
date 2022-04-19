@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page.messages;
 
 import org.openqa.selenium.WebDriver;
@@ -13,22 +14,16 @@ public class PhrMessagesPage extends BasePageObject {
 
 	public PhrMessagesPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
-
 
 	@FindBy(id = "inboxTab")
 	private WebElement inboxTab;
 
-	// @FindBy(xpath = ".//*[@id='msgInboxList']/div[5]/div/div[1]/div[3]")
 	@FindBy(xpath = ".//*[@id='row']/tbody/tr[1]/td[6]/a")
 	private WebElement firstMessageRow;
 
-
 	/**
 	 * Gives indication if the Inbox page loaded correctly
-	 * 
-	 * @return true or false
 	 */
 	public boolean isInboxLoaded() {
 		IHGUtil.PrintMethodName();
@@ -40,16 +35,9 @@ public class PhrMessagesPage extends BasePageObject {
 		} catch (Exception e) {
 			// Catch no element found error
 		}
-
 		return result;
 	}
 
-
-
-	/**
-	 * 
-	 * @Descripton:Click on first row
-	 */
 	public PhrInboxMessage clickOnFirstMessage() {
 		PhrUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
@@ -60,5 +48,3 @@ public class PhrMessagesPage extends BasePageObject {
 	}
 
 }
-
-

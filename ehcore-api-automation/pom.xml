@@ -3,28 +3,24 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<!-- Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved. -->
-
+	<!-- Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved. -->
 	<parent>
 		<artifactId>ihg-depot-parent-pom</artifactId>
 		<groupId>com.intuit.ihg</groupId>
-		<version>22.1.0</version>
+		<version>22.2.0</version>
 	</parent>
-
 	<artifactId>ehcore-api-automation</artifactId>
 	<name>ehcore-api-automation</name>
 	<description>Ehcore Api Automation</description>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>22.1.0</ihg.version>
-		<dcf-version>22.1.0</dcf-version>
-		<eh-core-version>22.1.0</eh-core-version>
-		<messages-version>22.1.0</messages-version>
+		<ihg.version>22.2.0</ihg.version>
+		<dcf-version>22.2.0</dcf-version>
+		<eh-core-version>22.2.0</eh-core-version>
+		<messages-version>22.2.0</messages-version>
 		<resteasy-version>2.2.2.GA</resteasy-version>
 		<codification-version>13.6.0.5</codification-version>
 	</properties>
-
 	<repositories>
 		<repository>
 			<id>IHG-nexus</id>
@@ -40,24 +36,12 @@
 			<url>http://dl.bintray.com/epam/reportportal</url>
 		</repository>
 	</repositories>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>qa-automation-utils</artifactId>
 			<version>${ihg.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.commons</groupId>
-					<artifactId>commons-io</artifactId>
-				</exclusion>
-
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-jdk14</artifactId>
-				</exclusion>
-
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
@@ -68,27 +52,16 @@
 					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-io</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
 			</exclusions>
-
 		</dependency>
-
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client-bootstrap</artifactId>
 			<version>${dcf-version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.intuit.api.security</groupId>
-			<artifactId>oauth-core-client</artifactId>
-			<version>${dcf-version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.commons</groupId>
-					<artifactId>commons-io</artifactId>
-				</exclusion>
-			</exclusions>
-
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.internal.objectstore</groupId>
@@ -96,35 +69,21 @@
 			<version>1.3.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-scratchpad</artifactId>
-			<version>3.7</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>xmlunit</groupId>
 			<artifactId>xmlunit</artifactId>
 			<version>1.3</version>
 		</dependency>
-
 		<dependency>
 			<groupId>jdom</groupId>
 			<artifactId>jdom</artifactId>
 			<version>1.1</version>
 		</dependency>
-
-		<!-- Kavitha's ccd project START -->
-		<!-- Message Hub Publisher dependencies START -->
 		<dependency>
 			<groupId>com.intuit.qhg.hub.schemas</groupId>
 			<artifactId>Messages</artifactId>
 			<version>${messages-version}</version>
 			<type>jar</type>
 		</dependency>
-		<!-- Message Hub Publisher dependencies END -->
-
-		<!-- Codification Dependency Start -->
 		<dependency>
 			<groupId>com.intuit.health</groupId>
 			<artifactId>codification-client</artifactId>
@@ -135,8 +94,6 @@
 			<artifactId>codification-dto</artifactId>
 			<version>${codification-version}</version>
 		</dependency>
-		<!-- Codification Dependency End -->
-		<!-- DataChannelFramework dependency START -->
 		<dependency>
 			<groupId>com.intuit.framework.dc</groupId>
 			<artifactId>datachannel-framework-core</artifactId>
@@ -167,13 +124,6 @@
 			<version>${dcf-version}</version>
 			<type>jar</type>
 		</dependency>
-		<!-- DataChannelFramework dependency END -->
-		<!-- IHG internal dependencies START -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.1</version>
-		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-xjc</artifactId>
@@ -189,69 +139,29 @@
 			<artifactId>jaxb-impl</artifactId>
 			<version>2.1.3</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>jdbc</artifactId>
 			<version>11g</version>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>xmlunit</groupId>
-			<artifactId>xmlunit</artifactId>
-			<version>1.3</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-		</dependency>
-
-		<!-- RESTEasy dependency START -->
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jaxrs</artifactId>
-			<version>${resteasy-version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-httpclient</groupId>
-					<artifactId>commons-httpclient</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>jaxrs-api</artifactId>
-			<version>${resteasy-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jaxb-provider</artifactId>
-			<version>${resteasy-version}</version>
-		</dependency>
-		<!-- RESTEasy dependency END -->
-
-		<!-- EH-CORE dependency START -->
-		<dependency>
-			<groupId>com.intuit.eh.core</groupId>
-			<artifactId>eh-core-dto</artifactId>
-			<version>${eh-core-version}</version>
-		</dependency>
 		<dependency>
 			<groupId>com.intuit.eh.core</groupId>
 			<artifactId>eh-core-services</artifactId>
 			<version>${eh-core-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>apache-log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		<!-- EH-CORE dependency END -->
-
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>object-maps</artifactId>
-			<version>22.1.0</version>
+			<version>22.2.0</version>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>

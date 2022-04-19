@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.onlinebillpay;
 
 import java.util.List;
@@ -28,10 +29,10 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 
 	@FindBy(id = "MfAjaxFallbackDefaultDataTable")
 	private WebElement searchResults;
-	
+
 	@FindBy(id = "id2a")
 	private WebElement billpaydetail;
-	
+
 	@FindBy(name = "searchParams:0:input:Date Begin:month")
 	private WebElement startMonth;
 
@@ -43,7 +44,6 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 
 	@FindBy(name = "searchParams:0:input:Date End:year")
 	private WebElement endYear;
-
 
 	@FindBy(xpath = "//input[@name='secureComm:subject']")
 	private WebElement setSubject;
@@ -79,10 +79,6 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * @throws InterruptedException
-	 * @Description:Search ForBillPay Today
-	 */
 	public void searchForBillPayToday() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -102,11 +98,6 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 
 	}
 
-	/**
-	 * @Description:Search For BillPayment
-	 * @param SaccountNumber
-	 * @return
-	 */
 	public OnlineBillPayDetailPage searchForBillPayment(String SaccountNumber) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -117,11 +108,6 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, OnlineBillPayDetailPage.class);
 	}
 
-	/**
-	 * @Description:Get BillPay Details
-	 * @return
-	 * @throws Exception
-	 */
 	public OnlineBillPayDetailPage getBillPayDetails() throws Exception {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -130,10 +116,12 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 			IHGUtil.waitForElement(driver, 30, searchResults);
 			searchResults.isDisplayed();
 		} catch (Exception e) {
-			throw new Exception("Online Bill pay search result table is not found. Ensure a search was completed first.");
+			throw new Exception(
+					"Online Bill pay search result table is not found. Ensure a search was completed first.");
 		}
-		// Selecting the first one due the fact that the filter is setup to day and number which is generated during the test
-		
+		// Selecting the first one due the fact that the filter is setup to day and
+		// number which is generated during the test
+
 		IHGUtil.waitForElement(driver, 30, billpaydetail);
 		billpaydetail.click();
 		driver.switchTo().defaultContent();
@@ -143,9 +131,6 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 
 	}
 
-	/**
-	 * @Description:Set Payment Communication Details
-	 */
 	public void setPaymentCommunicationDetails() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -156,7 +141,6 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 		sendCommunicationbtn.click();
 	}
 
-
 	public PatientSearchPage clickOnPatientSearchLink() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElementInDefaultFrame(driver, 30, patientSearchLink);
@@ -164,13 +148,6 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
 
-
-
-	/**
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	public String getBillDetails() throws Exception {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -180,19 +157,14 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 		} catch (Exception e) {
 			throw new Exception("Ask A Staff search result table is not found. Ensure a search was completed first.");
 		}
-		// Selecting the first one due the fact that the filter is setup to day and number which is generated during the test
+		// Selecting the first one due the fact that the filter is setup to day and
+		// number which is generated during the test
 		Thread.sleep(10000);
 		String title = post.getAttribute("title").toString();
 		return title;
 
 	}
 
-	/**
-	 * 
-	 * @param value
-	 * @return
-	 * @throws Exception
-	 */
 	public OnlineBillPayDetailPage searchForBillStatus(int value) throws Exception {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -202,9 +174,7 @@ public class OnlineBillPaySearchPage extends BasePageObject {
 				pstatus.click();
 			}
 		}
-
 		return PageFactory.initElements(driver, OnlineBillPayDetailPage.class);
 	}
-
 
 }

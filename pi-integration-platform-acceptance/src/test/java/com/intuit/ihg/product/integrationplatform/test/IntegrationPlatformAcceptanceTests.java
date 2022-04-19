@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
@@ -18,8 +18,6 @@ import com.intuit.ihg.product.integrationplatform.utils.Appointment;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.BalancePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.CancelInvitePayLoad;
-import com.intuit.ihg.product.integrationplatform.utils.EHDC;
-import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.MailinatorUtils;
@@ -40,7 +38,6 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
@@ -61,13 +58,6 @@ import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
-
-/**
- * @author dsalaskar
- * @Date 28/Aug/2015
- * @Description :-
- * @Note :
- */
 
 public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -321,98 +311,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.isReplyPresent(testData.getResponsePath(), messageIdentifier);
 		 
 	}
-
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testEHDCsendCCD() throws Exception {
-
-		log("Test Case: send a CCD and check in patient Portal");
-		EHDC EHDCData = new EHDC();
-		EHDCTestData testData = new EHDCTestData(EHDCData);
-
-		log("UserName: " + testData.getUserName());
-		log("Password:" + testData.getPassword());
-		log("Rest Url: " + testData.getRestUrl());
-		log("CCD Path: " + testData.getCCDPath());
-		log("Response Path: " + testData.getResponsePath());
-		log("OAuthProperty: " + testData.getOAuthProperty());
-		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-		log("OAuthAppToken: " + testData.getOAuthAppToken());
-		log("OAuthUsername: " + testData.getOAuthUsername());
-		log("OAuthPassword: " + testData.getOAuthPassword());
-
-		log("Step 1: Setup Oauth client");
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
-				testData.getOAuthUsername(), testData.getOAuthPassword());
-
-		String ccd = RestUtils.prepareCCD(testData.getCCDPath());
-
-		log("Step 2: Do Message Post Request");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());
-
-		log("Processing URL: " + processingUrl);
-		log("Step 3: Get processing status until it is completed");
-		Thread.sleep(60000);
-
-		log("Step 4: Login to Patient Portal");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getURL());
-		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
-
-		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
-
-		log("Click on messages solution");
-		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-
-		log("Step 5: Validate message subject and send date");
-		Thread.sleep(1000);
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
-		log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
-
-		log("Step 6: Click on link View health data");
-		JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
-
-		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
-		messagesPage = jalapenoCcdPage.closeCcd(driver);
-
-		log("Step 8: Logging out");
-		homePage = messagesPage.backToHomePage(driver);
-		loginPage = homePage.clickOnLogout();
-		/*
-		 * log("Step 10: Go to patient page"); pMyPatientPage =
-		 * pMessage.clickMyPatientPage();
-		 * 
-		 * log("Step 11: Click PHR"); pMyPatientPage.clickPHRWithoutInit(driver);
-		 * PhrHomePage phrPage = PageFactory.initElements(driver, PhrHomePage.class);
-		 * 
-		 * log("Step 12: Go to PHR Inbox"); PhrMessagesPage phrMessagesPage =
-		 * phrPage.clickOnMyMessages(); // assertTrue(phrMessagesPage.isInboxLoaded(),
-		 * // "Inbox failed to load properly.");
-		 * 
-		 * log("Step 13: Click first message"); PhrInboxMessage phrInboxMessage =
-		 * phrMessagesPage.clickOnFirstMessage();
-		 * 
-		 * log("Step 14: Validate message subject and send date"); Thread.sleep(1000);
-		 * assertEquals(phrInboxMessage.getPhrMessageSubject(),
-		 * IntegrationConstants.CCD_MESSAGE_SUBJECT,
-		 * "### Assertion failed for Message subject"); log("######  Message Date :: " +
-		 * IHGUtil.getEstTiming()); assertTrue(verifyTextPresent(driver,
-		 * IHGUtil.getEstTiming()));
-		 * 
-		 * log("Step 15: Click on link ReviewHealthInformation"); PhrDocumentsPage
-		 * phrDocuments = phrInboxMessage .clickBtnReviewHealthInformationPhr();
-		 * 
-		 * log("step 16:Click on View health data");
-		 * phrDocuments.clickViewHealthInformation();
-		 * 
-		 * log("step 17:click Close Viewer"); phrDocuments.closeViewer();
-		 * 
-		 * log("step 18:Click Logout"); phrDocuments.clickLogout();
-		 */
-		// driver.switchTo().defaultContent();
-
-	}
-
 	
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)

@@ -11,7 +11,7 @@ variable "role_arn" {
 
 variable "environment" {
   type        = string
-  default     = "dev"
+  default     = "build"
   description = "The name of environment. Used to differentiate costs between stacks or pipelines including those of the same type"
 }
 
@@ -24,7 +24,7 @@ variable "environment_type" {
 variable "component" {
   type        = string
   description = "Component defination"
-  default     = "PXP"
+  default     = "qa-automation"
 }
 
 variable "data_classification" {

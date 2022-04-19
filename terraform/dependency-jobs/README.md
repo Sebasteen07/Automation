@@ -46,9 +46,9 @@ The following resources must be created using the `common` folder
 
 | Name | Description |
 |------|-------------|
-| qa_automation_utils_rel_codebuild_project_role | The codebuild project role for git-maven-build-qa-automation-utils-rel |
-| qa_automation_utils_rel_codepipeline_name | The codepipeline id created for test execution of git-maven-build-qa-automation-utils-rel |
-| qa_automation_utils_rel_cloudwatch_event_rule_name | Cloudwatch event rule name created for triggering pipeline execution of git-maven-build-qa-automation-utils-rel |
+| qa_automation_utils_codebuild_project_role | The codebuild project role for git-maven-build-qa-automation-utils-rel |
+| qa_automation_utils_codepipeline_name | The codepipeline id created for test execution of git-maven-build-qa-automation-utils-rel |
+| qa_automation_utils_cloudwatch_event_rule_name | Cloudwatch event rule name created for triggering pipeline execution of git-maven-build-qa-automation-utils-rel |
 
 ## Locals
 The following locals are configured as an Inputs to the testing-job terraform code, if required can be modified.
@@ -65,7 +65,7 @@ The following locals are configured as an Inputs mapping to each specific depend
 For example, the job git-maven-build-qa-automation-utils-rel implemented by `git-maven-build-qa-automation-utils-rel.tf` has the following inputs that are defined in the `locals.tf`:
 
 ```
-qa_automation_utils_rel = {
+qa_automation_utils = {
     name                  = "git-maven-build-qa-automation-utils-rel"
     codecommit_branch     = "development"
     PollForSourceChanges  = true
@@ -77,9 +77,9 @@ qa_automation_utils_rel = {
 }
 ```
 When creating a new dependency job:
-1. Add new job's corresponding inputs in the `local.tf` as in the above example for `qa_automation_utils_rel`
+1. Add new job's corresponding inputs in the `local.tf` as in the above example for `qa_automation_utils`
 1. Copy the `example.tf` from the `example-job` directory and rename it with the actual job name.
-1. Open the renamed tf file and search all occurences of `dependency_jobname` and replace it with the actual job's name (with `_` instead of `-`). For example, in `git-maven-build-qa-automation-utils-rel.tf`, all occurences of `dependency_jobname` were replaced with `qa_automation_utils_rel`
+1. Open the renamed tf file and search all occurences of `dependency_jobname` and replace it with the actual job's name (with `_` instead of `-`). For example, in `git-maven-build-qa-automation-utils-rel.tf`, all occurences of `dependency_jobname` were replaced with `qa_automation_utils`
 1. Create a plan and apply
 1. Test as per requirements and make necessary changes (if needed)
 

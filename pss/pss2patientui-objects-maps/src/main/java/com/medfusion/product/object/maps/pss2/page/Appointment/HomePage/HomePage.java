@@ -190,7 +190,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[@class='value-wizard']//div")
 	private WebElement locationPreSelected;
 	
-	@FindBy(how = How.XPATH, using = "//li[2]/div[1]/div[1]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='wizardwebview']/ol/li[4]/div/div[1]/div")
 	private WebElement providerPreSelected;
 	
 	@FindBy(how = How.XPATH, using = "//div[@id='patientmatch']//span[contains(text(),'Message')]")
@@ -202,7 +202,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.CSS, using = "div[id='alertModalheader'] div[class='modal-body'] div")
 	private WebElement alertPopUpMsg;
 	
-	@FindBy(how = How.XPATH, using = "//div[@id='patientmatch']//div[@class='modal-body']/p/pre")
+	@FindBy(how = How.XPATH, using = "//*[@id='patientmatch']/div/div/div[2]/p/pre")
 	private WebElement lockoutPopUpMsg;
 	
 	@FindBy(how = How.ID, using = "closeAlertPopup")

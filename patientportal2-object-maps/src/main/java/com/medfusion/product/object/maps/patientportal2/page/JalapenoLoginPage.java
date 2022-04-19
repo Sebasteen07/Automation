@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
@@ -59,6 +59,13 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Your account is no longer active. Please contact our practice in order re-activate it.')]")
 	private WebElement msgInactivePatientError;
+	
+	@FindBy(how = How.ID, using = "diff")
+	private WebElement msgAlreadyHaveAnAccountError;
+	
+	@FindBy(how = How.ID, using = "link")
+	private WebElement invalidPasswordResetLink;
+	
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -180,6 +187,21 @@ public class JalapenoLoginPage extends MedfusionPage {
 		} catch (Exception e) {
 		}
 		return false;
+	}
+	
+	public String getAlreadyHaveAnAccountErrorText() {
+		return msgAlreadyHaveAnAccountError.getText();
+	}
+
+	public boolean checkResetPasswordError(String resetUrl) throws InterruptedException {
+		driver.get(resetUrl);
+		try {
+			log("Looking for Invalid password reset link");
+			return invalidPasswordResetLink.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
+		
 	}
 
 }

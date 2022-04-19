@@ -19,6 +19,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.Mailinator;
+import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
@@ -55,10 +56,10 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	String enterprisebaseURL;
 	NGAPIFlows ngAPIFlows;
 
-	private static final String NEWDEPENDENT_ACTIVATION_MESSAGE = "You are invited to create a Patient Portal guardian account at ";
+	private static final String NEWDEPENDENT_ACTIVATION_MESSAGE = "You are invited to create a Patient Portal guardian account at";
 	private static final String MEMBER_CONFIRMATION_MESSAGE = "New Member Confirmation";
 	private static final String PORTAL_URL = "Visit our patient portal now";
-	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
+	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
 	private static final String WELCOME_EMAIL_BUTTON_TEXT = "Visit our patient portal now";
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
@@ -229,7 +230,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		CommonUtils.VerifyTwoValues(enrollment_status, "equals", "1");
 		log("Step End: Enrollment status is " + enrollment_status);
 
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE
 				+ "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
@@ -554,8 +555,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
 				dependentperson_id.trim(), propertyLoaderObj.getProperty("ng.enterprise1.practice1"),
 				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
-
-		Mailinator mail = new Mailinator();
+		
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		logStep("Verify the Guardian mail");
 		Thread.sleep(15000);
@@ -618,7 +619,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 				createdependent.getFirstName(), createdependent.getLastName(), "Registered",
 				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
 
-		logStep("Using mailinator Mailer to retrieve the latest emails for patient and guardian");
+		logStep("Using YopMail Mailer to retrieve the latest emails for patient and guardian");
 		Thread.sleep(15000);
 		Log4jUtil.log(
 				createPatient.getEmailAddress() + "   :    " + MEMBER_CONFIRMATION_MESSAGE + "     :   " + PORTAL_URL);
@@ -692,7 +693,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		String guardianFirstName = "Guardian" + (new Date()).getTime();
 		String guardianLastName = "Guardian" + (new Date()).getTime();
-		System.setProperty("ParentEmailAddress", guardianFirstName + "@mailinator.com");
+		System.setProperty("ParentEmailAddress", guardianFirstName + "@yopmail.com");
 
 		ObjectMapper objMap = new ObjectMapper();
 		apiRoutes personURL = apiRoutes.valueOf("AddEnterprisePerson");
@@ -745,7 +746,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 				dependentperson_id.trim(), propertyLoaderObj.getProperty("ng.main.practice.id"),
 				propertyLoaderObj.getIntegrationPracticeID());
 
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		logStep("Verify the dependent mail");
 		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NEWDEPENDENT_ACTIVATION_MESSAGE + "     :   "
@@ -867,7 +868,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 				person_id.trim(), propertyLoaderObj.getProperty("ng.main.practice.id"),
 				propertyLoaderObj.getIntegrationPracticeID());
 
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE
 				+ "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
@@ -918,7 +919,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 				trustedPatient.getEmailAddress());
 
 		log("Waiting for invitation email");
-		String patientTrustedRepresentativeUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
+		String patientTrustedRepresentativeUrl = new YopMail(driver).getLinkFromEmail(trustedPatient.getEmailAddress(),
 				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
 		assertNotNull(patientTrustedRepresentativeUrl, "Error: Activation patients link not found.");
 
@@ -1242,7 +1243,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		log("Step End: Enrollment status is " + enrollment_status);
 
 		Thread.sleep(60000);
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE
 				+ "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
@@ -1689,7 +1690,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
 				dependentperson_id.trim(), practiceId, integrationPracticeID);
 
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		logStep("Verify the Guardian mail");
 		Thread.sleep(15000);
@@ -1878,8 +1879,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   "
 				+ WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);
-		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-		String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(),
+		logStep("Logging into YopMail and getting Patient Activation url for first Practice");
+		String visitPortal = new YopMail(driver).getLinkFromEmail(createPatient.getEmailAddress(),
 				WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(visitPortal, "Error: Portal link not found.");
 		log("Patient portal url is " + visitPortal);
@@ -1898,7 +1899,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 				trustedPatient.getEmailAddress());
 
 		log("Waiting for invitation email");
-		String patientTrustedRepresentativeUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
+		String patientTrustedRepresentativeUrl = new YopMail(driver).getLinkFromEmail(trustedPatient.getEmailAddress(),
 				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(patientTrustedRepresentativeUrl, "Error: Activation patients link not found.");
 

@@ -5,15 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-        <groupId>com.intuit.ihg</groupId>
-        <artifactId>ihg-depot-parent-pom</artifactId>
-        <version>22.1.0</version>
-    </parent>
-	
-	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-parent-pom</artifactId>
-		<version>22.1.0</version>
+		<version>22.2.0</version>
 	</parent>
 
 	<artifactId>ng-integration</artifactId>
@@ -38,7 +32,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>22.1.0</ihg.version>
+		<ihg.version>22.2.0</ihg.version>
 	</properties>
 
 	<dependencies>

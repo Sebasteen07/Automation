@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -32,12 +32,6 @@ public class FormPastMedicalHistoryPage extends PortalFormPage {
 	@FindBy(id = "howmanypregnancies_condition_femalespecific")
 	private WebElement countOfPregnancies;
 
-
-	/**
-	 * @Description:Set No Conditions
-	 * @return
-	 * @throws Exception
-	 */
 	public void setNoConditions() throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
@@ -48,7 +42,7 @@ public class FormPastMedicalHistoryPage extends PortalFormPage {
 		if (monoCheckbox.isSelected() == false)
 			monoCheckbox.click();
 	}
-	
+
 	public void checkMononucleosis_20() throws Exception {
 		if (monoCheckbox.isSelected() == false) {
 			monoCheckbox.click();
@@ -56,11 +50,6 @@ public class FormPastMedicalHistoryPage extends PortalFormPage {
 		saveAndContinuebtn.click();
 	}
 
-	/**
-	 * @Description:Set Illness Condition Form Fields
-	 * @return FormFamilyHistoryPage
-	 * @throws Exception
-	 */
 	public FormFamilyHistoryPage setIllnessConditionFormFields() throws Exception {
 		setNoConditions();
 		return clickSaveContinue(FormFamilyHistoryPage.class);
@@ -79,6 +68,7 @@ public class FormPastMedicalHistoryPage extends PortalFormPage {
 
 	@Override
 	public boolean isPageLoaded() {
-		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Past Medical History"))).isDisplayed();
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Past Medical History")))
+				.isDisplayed();
 	}
 }

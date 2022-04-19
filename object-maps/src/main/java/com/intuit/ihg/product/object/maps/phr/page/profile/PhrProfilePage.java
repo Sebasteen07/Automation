@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page.profile;
 
 import static org.testng.Assert.assertEquals;
@@ -35,19 +35,12 @@ public class PhrProfilePage extends BasePageObject {
 	@FindBy(css = "img[alt='SAVE CHANGES']")
 	private WebElement btnSaveChanges;
 
-
-
 	public PhrProfilePage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 *
 	 * The method asserts patient data in the PHR site After modification in the Portal site
-	 * 
-	 * @param city
-	 * @param zip
 	 */
 	public void assertDataCityAndZip(String city, String zip) {
 		IHGUtil.PrintMethodName();
@@ -75,12 +68,7 @@ public class PhrProfilePage extends BasePageObject {
 
 	/**
 	 * The method will modify data in the PHR site with Primary User Data ie from Portal sheet
-	 * 
-	 * @param secondayCity [the data is from Portal sheet]
-	 * @param secondaryzip [the data is from Portal sheet]
-	 * @throws Exception
 	 */
-
 	public void setCityZip(String portalCity, String portalZip) throws Exception {
 		IHGUtil.PrintMethodName();
 		log("Setting the City to " + portalCity);
@@ -108,12 +96,6 @@ public class PhrProfilePage extends BasePageObject {
 		saveChanges();
 	}
 
-
-	/**
-	 * Click on log out button and return PHR LogIn page
-	 * 
-	 * @return
-	 */
 	public PhrLoginPage clickLogout() {
 
 		IHGUtil.PrintMethodName();

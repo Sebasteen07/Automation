@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.mu2.utils;
 
 import java.sql.Connection;
@@ -13,17 +14,10 @@ import com.jayway.awaitility.Awaitility;
 public class TrackingDBHandler extends Awaitility {
 
 	public static Connection dbConnPs = null;
-	public static String getLatestSubjectID =
-			"select * from (select * from msg where msg_type = ? and processing_status_type = ? and subject_id like ? order by CREATED_TS desc) where rownum <=3";
+	public static String getLatestSubjectID = "select * from (select * from msg where msg_type = ? and processing_status_type = ? and subject_id like ? order by CREATED_TS desc) where rownum <=3";
 
-
-	/**
-	 * Use this function to get connection to an oracle DB whose details are given in Excel
-	 * 
-	 * @return The connection established
-	 */
-
-	public static Connection getConnectionOracle(String dbHost, String dbName, String dbUser, String dbPassword, String dbSID) {
+	public static Connection getConnectionOracle(String dbHost, String dbName, String dbUser, String dbPassword,
+			String dbSID) {
 
 		try {
 			if (dbConnPs == null || dbConnPs.isClosed()) {
@@ -42,36 +36,15 @@ public class TrackingDBHandler extends Awaitility {
 		return dbConnPs;
 	}
 
-
-
-	/**
-	 * Use this function to establish a connection to the tracking DB
-	 */
-
-	public static void establishConnection(String dbHost, String dbName, String dbUser, String dbPassword, String dbSID) {
+	public static void establishConnection(String dbHost, String dbName, String dbUser, String dbPassword,
+			String dbSID) {
 		dbConnPs = getConnectionOracle(dbHost, dbName, dbUser, dbPassword, dbSID);
 	}
 
-
-	/**
-	 * Use this function to close the connection established
-	 * 
-	 * @throws SQLException
-	 */
 	public static void closeConnection() throws SQLException {
 		if (dbConnPs != null && !dbConnPs.isClosed())
 			dbConnPs.close();
-
 	}
-
-	/**
-	 * Use this Method to find latest SubjectID from DB
-	 * 
-	 * @param msgType
-	 * @param processingType
-	 * @param pushEventPracticeid
-	 * @return
-	 */
 
 	public static String getLatetSubjectIDFromDB(String msgType, String processingType, String pushEventPracticeid) {
 		boolean status = false;
@@ -89,7 +62,8 @@ public class TrackingDBHandler extends Awaitility {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				if (rs.getString("PROCESSING_STATUS_TYPE").equalsIgnoreCase("ERROR")) {
-					Log4jUtil.log("SUBJECTID--> " + rs.getString("SUBJECT_ID") + "Time Stamp -->" + rs.getString("PROCESSING_START_DT"));
+					Log4jUtil.log("SUBJECTID--> " + rs.getString("SUBJECT_ID") + "Time Stamp -->"
+							+ rs.getString("PROCESSING_START_DT"));
 					subjectId = rs.getString("SUBJECT_ID");
 					subject = subjectId.split(":")[3];
 					Log4jUtil.log("SUBJECT ID ---->" + subject);
@@ -105,6 +79,4 @@ public class TrackingDBHandler extends Awaitility {
 		return subject;
 	}
 
-
 }
-

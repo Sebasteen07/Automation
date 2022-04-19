@@ -161,6 +161,13 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 				.get(practiceid + APIPath.apiPath.demographicNG).then().log().all().extract().response();
 		return response;
 	}
+	
+	public Response demographicsNGE(String practiceid,String patientId) {
+
+		Response response = given().spec(requestSpec).log().all().queryParam("patientId", patientId).when()
+				.get(practiceid + APIPath.apiPath.demographicNG).then().log().all().extract().response();
+		return response;
+	}
 
 	public Response lockout(String practiceid) {
 

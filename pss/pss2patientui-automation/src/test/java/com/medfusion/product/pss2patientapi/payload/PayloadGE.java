@@ -200,7 +200,7 @@ public class PayloadGE {
 				+ "    \"appointmentCategoryId\": null,\r\n"
 				+ "    \"appointmentTypeId\": \"158\",\r\n"
 				+ "    \"resourceCategoryId\": null,\r\n"
-				+ "    \"resourceId\": \"466\",\r\n"
+				+ "    \"resourceId\": \"581\",\r\n"
 				+ "    \"preferredDuration\": null,\r\n"
 				+ "    \"duration\": null,\r\n"
 				+ "    \"startDate\": \""+date+"\",\r\n"

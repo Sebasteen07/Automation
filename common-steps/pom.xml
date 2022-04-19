@@ -6,19 +6,19 @@
   <parent>
     <groupId>com.intuit.ihg</groupId>
     <artifactId>ihg-depot-parent-pom</artifactId>
-    <version>22.1.0</version>
+    <version>22.2.0</version>
   </parent>
   <artifactId>common-steps</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>com.intuit.ihg</groupId>
   		<artifactId>qa-automation-utils</artifactId>
-  		<version>22.1.0</version>
+  		<version>22.2.0</version>
   	</dependency>
   	<dependency>
   		<groupId>com.intuit.ihg</groupId>
   		<artifactId>object-maps</artifactId>
-  		<version>22.1.0</version>
+  		<version>22.2.0</version>
   	</dependency>
   </dependencies>
   <properties>

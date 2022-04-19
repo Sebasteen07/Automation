@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.customforms;
 
 import org.openqa.selenium.WebDriver;
@@ -38,14 +39,8 @@ public class CustomFormAddCategoriesPage extends BasePageObject {
 
 	public CustomFormAddCategoriesPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -61,13 +56,6 @@ public class CustomFormAddCategoriesPage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Select custom form category and give staff permissions
-	 * 
-	 * @param formcategory
-	 * @return
-	 * @throws Exception
-	 */
 	public AddQuestionsToCategoryPage addCategoriesDetails(String formcategory) throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -99,9 +87,6 @@ public class CustomFormAddCategoriesPage extends BasePageObject {
 		btnSave.click();
 
 		return PageFactory.initElements(driver, AddQuestionsToCategoryPage.class);
-
 	}
-
-
 }
 

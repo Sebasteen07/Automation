@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.tests;
 
 import com.medfusion.payment_modulator.pojos.Transactions;
@@ -55,7 +55,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 		JsonPath jsonpath = new JsonPath(response.asString());
 		Assert.assertTrue(response.getStatusCode() == 401);
-		Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+		Assert.assertEquals("Authentication Failed", jsonpath.get("message"));
 	}
 
 	@Test(dataProvider = "txn_data_for_proxy_sale", dataProviderClass = GatewayProxyTestData.class, enabled = true)
@@ -192,7 +192,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 		JsonPath jsonpath = new JsonPath(response.asString());
 		Assert.assertTrue(response.getStatusCode() == 401);
-		Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+		Assert.assertEquals("Authentication Failed", jsonpath.get("message"));
 	}
 
 	@Test(dataProvider = "txn_data_for_http_400_statuscodes", dataProviderClass = GatewayProxyTestData.class, enabled = true)
@@ -252,7 +252,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 		JsonPath jsonpathCapture = new JsonPath(captureResponse.asString());
 		Assert.assertTrue(captureResponse.getStatusCode() == 401);
-		Assert.assertEquals("Unauthorized", jsonpathCapture.get("message"));
+		Assert.assertEquals("Authentication Failed", jsonpathCapture.get("message"));
 	}
 
 	@Test(dataProvider = "txn_data_for_http_400_statuscodes", dataProviderClass = GatewayProxyTestData.class, enabled = true)
@@ -310,7 +310,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 		JsonPath jsonpathVoid = new JsonPath(voidResponse.asString());
 		Assert.assertTrue(voidResponse.getStatusCode() == 401);
-		Assert.assertEquals("Unauthorized", jsonpathVoid.get("message"));
+		Assert.assertEquals("Authentication Failed", jsonpathVoid.get("message"));
 
 	}
 
@@ -378,7 +378,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 				testData.getProperty("order.id"));
 		JsonPath jsonForGet = new JsonPath(response.asString());
 		Assert.assertTrue(response.getStatusCode() == 401);
-		Assert.assertEquals("Unauthorized", jsonForGet.get("message"));
+		Assert.assertEquals("Authentication Failed", jsonForGet.get("message"));
 
 	}
 
@@ -447,7 +447,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 		JsonPath jsonpath = new JsonPath(response.asString());
 		Assert.assertTrue(response.getStatusCode() == 401);
-		Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+		Assert.assertEquals("Authentication Failed", jsonpath.get("message"));
 	}
 
 	@Test(dataProvider = "get_txn", dataProviderClass = GatewayProxyTestData.class, enabled = true)
@@ -516,7 +516,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 		JsonPath jsonpath = new JsonPath(response.asString());
 		Assert.assertTrue(response.getStatusCode() == 401);
-		Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+		Assert.assertEquals("Authentication Failed", jsonpath.get("message"));
 	}
 
 	@Test(dataProvider = "get_txns_for_receipt_data", dataProviderClass = GatewayProxyTestData.class, enabled = true)

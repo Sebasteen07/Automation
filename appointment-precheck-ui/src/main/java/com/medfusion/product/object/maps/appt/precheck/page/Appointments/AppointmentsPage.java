@@ -1,7 +1,11 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Appointments;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.openqa.selenium.By;
@@ -11,6 +15,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -349,12 +354,90 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id='minus']")
 	private WebElement previousPage;
 
+	@FindBy(how = How.XPATH, using = "//div[@class='navbar-right-arrivals-number']")
+	private WebElement notificationIcon;
+
+	@FindBy(how = How.CSS, using = "#alert > p")
+	private WebElement selectBannerMesssage;
+
+	@FindBy(how = How.XPATH, using = "//h2[@class='modal-title']")
+	private WebElement broadcastMessagePopup;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='appintments-broadcast-heading']")
+	private WebElement broadcastMsgPopupInstruction;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='appointment-broadcast-modal-body'])[1]")
+	private WebElement broadcastMsgPopupSartTime;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='appointment-broadcast-modal-body'])[2]")
+	private WebElement broadcastMsgPopupEndTime;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='appointment-broadcast-modal-body'])[3]")
+	private WebElement broadcastMsgPopupPrivider;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='appointment-broadcast-modal-body'])[4]")
+	private WebElement broadcastMsgPopupLocation;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='Broadcast Message (English)']")
+	private WebElement broadcastMsgPopupEnglishLabel;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='Broadcast Message (Spanish)']")
+	private WebElement broadcastMsgPopupSpanishLabel;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='mf-notification-checkbox__container']")
+	private WebElement confirmThisMsgLabel;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='mf-notification-checkbox__container']/span")
+	private WebElement confirmThisMsgCheckboxLabel;
+
+	@FindBy(how = How.XPATH, using = "//button[text()='Close']")
+	private WebElement broadcastMsgPopupCloseButton;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='appointment-broadcast-modal-buttons']/button[2]")
+	private WebElement broadcastMsgPopupSendButton;
+
+	@FindBy(how = How.XPATH, using = "//span[@class='mf-icon mf-icon__x']")
+	private WebElement broadcastMsgPopupCrossButton;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='Broadcast Message (English)']/following-sibling::label[1]")
+	private WebElement englishIncrDecrChar;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='Broadcast Message (Spanish)']/following-sibling::label[1]")
+	private WebElement spanishIncrDecrChar;
+
+	@FindBy(how = How.XPATH, using = "//p[@class='ribbon']")
+	private WebElement selectedPatientBanner;
+
+	@FindBy(how = How.XPATH, using = "(//a[@class='close'])[1]")
+	private WebElement bannerCloseButton;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='tooltiptext']")
+	private WebElement broadcastEmailMsg;
+	
+	@FindBy(how = How.ID, using = "filter-start-time")
+	private WebElement filterStartTime;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/header/div[2]/div[1]/div[2]/div[2]/div/div/div[3]/div[2]/div/ul/li[6]//following-sibling::li")})
+	private List<WebElement> startDateTime;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/header/div[2]/div[2]/div[2]/div[2]/div/div/div[3]/div[2]/div/ul/li")})
+	private List<WebElement> endDateTime;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
+	private WebElement selectFirstPatient;
+	
+    @FindBy(how = How.CSS, using = "#alert > p>span>a")
+	private WebElement bannerMesssageBaseOnAppointment;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
+	public List<WebElement> allAppointment;
+
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
-	CommonMethods commonMethods = new CommonMethods(driver);
+	CommonMethods commonMethods = new CommonMethods();
 
 	public void enterStartTimeWithinMonth() throws InterruptedException {
 		log("Select month and date within month");
@@ -1223,22 +1306,6 @@ public class AppointmentsPage extends BasePageObject {
 		return selectBannerMessage.getText();
 	}
 
-	public String jumbToNextPage() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, jumpToNextPage);
-		jse.executeScript("arguments[0].click();", jumpToNextPage);
-		Thread.sleep(10000);
-		String pageNo = jumpToPage.getAttribute("value");
-		return pageNo;
-	}
-
-	public String jumbToPreviousPage() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, previousPage);
-		jse.executeScript("arguments[0].click();", previousPage);
-		Thread.sleep(10000);
-		String pageNo = jumpToPage.getAttribute("value");
-		return pageNo;
-	}
-
 	public String getBroadcastMessageButtonText() {
 		IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
 		return broadcastMessageButton.getText();
@@ -1267,6 +1334,436 @@ public class AppointmentsPage extends BasePageObject {
 			log("Create button is not disabled.");
 			return false;
 		}
+	}
+
+	public void clickOnNotifIcon() throws InterruptedException {
+		driver.navigate().refresh();
+		Thread.sleep(10000);
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, notificationIcon);
+		jse.executeScript("arguments[0].click();", notificationIcon);
+	}
+
+	public boolean visibilityBannerMessage() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectBannerMesssage);
+		boolean visibility = false;
+		visibility = selectBannerMesssage.isDisplayed();
+		return visibility;
+	}
+
+	public boolean visibilityOfBannerMessageBaseOnFilter() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, bannerMessage);
+		boolean visibility = false;
+		visibility = bannerMessage.isDisplayed();
+		return visibility;
+	}
+
+	public boolean visibilityPatient(String patientId) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, driver.findElement(By.xpath("//span[text()='" + patientId + "']")));
+		boolean visibility = false;
+		visibility = driver.findElement(By.xpath("//span[text()='" + patientId + "']")).isDisplayed();
+		return visibility;
+	}
+
+	public String getBroadcastMessagePopupText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMessagePopup);
+		return broadcastMessagePopup.getText();
+	}
+
+	public String getBroadcastMessagePopupInstr() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupInstruction);
+		return broadcastMsgPopupInstruction.getText();
+	}
+
+	public String getBroadcastMessagePopupStartTime() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupSartTime);
+		return broadcastMsgPopupSartTime.getText();
+	}
+
+	public String currentDate() {
+		DateFormat dateFormat = new SimpleDateFormat("M/d/yy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		return dateFormat.format(c.getTime());
+	}
+
+	public String futureDate(int date) throws InterruptedException {
+		DateFormat dateFormat = new SimpleDateFormat("M/d/yy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DATE, +date);
+		return dateFormat.format(c.getTime());
+	}
+
+	public String getBroadcastMessagePopupEndTime() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupEndTime);
+		return broadcastMsgPopupEndTime.getText();
+	}
+
+	public String getBroadcastMessagePopupProvider() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupPrivider);
+		return broadcastMsgPopupPrivider.getText();
+	}
+
+	public String getBroadcastMessagePopupLoaction() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupLocation);
+		return broadcastMsgPopupLocation.getText();
+	}
+
+	public String getBroadcastMsgPopupEnglishLabel() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupEnglishLabel);
+		return broadcastMsgPopupEnglishLabel.getText();
+	}
+
+	public String getBroadcastMsgPopupSpanishLabel() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupSpanishLabel);
+		return broadcastMsgPopupSpanishLabel.getText();
+	}
+
+	public String getBroadcastMsgPopupConfirmThisMsgLabel() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, confirmThisMsgLabel);
+		return confirmThisMsgLabel.getText();
+	}
+
+	public boolean checkConfirmThisMsgCheckbox() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, confirmThisMsgCheckboxLabel);
+		boolean selected = false;
+		selected = confirmThisMsgCheckboxLabel.isSelected();
+		return selected;
+	}
+
+	public String getBroadcastMsgPopupCloseButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupCloseButton);
+		return broadcastMsgPopupCloseButton.getText();
+	}
+
+	public void hoverOnCloseButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupCloseButton);
+		Actions action = new Actions(driver);
+		action.moveToElement(broadcastMsgPopupCloseButton);
+	}
+
+	public String getBroadcastMsgPopupSendButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupSendButton);
+		return broadcastMsgPopupSendButton.getText();
+	}
+
+	public boolean visibilityOfBroadcastMsgCrossButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupCrossButton);
+		boolean visibility = false;
+		visibility = broadcastMsgPopupCrossButton.isDisplayed();
+		return visibility;
+	}
+
+	public String getBroadcastMsgPopupEnIncrDecrChar() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, englishIncrDecrChar);
+		return englishIncrDecrChar.getText();
+	}
+
+	public String getBroadcastMsgPopupEsIncrDecrChar() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, spanishIncrDecrChar);
+		return spanishIncrDecrChar.getText();
+	}
+
+	public boolean closeButtonFromBroadcastMsgPopup() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupCloseButton);
+		boolean enable = false;
+		enable = broadcastMsgPopupCloseButton.isEnabled();
+		return enable;
+	}
+	
+	public void clickOnSendForBroadcastMsg() throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, sendMessageButton);
+		jse.executeScript("arguments[0].click();", sendMessageButton);
+	}
+	
+	public void closeSelectedPatientBanner() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, bannerCloseButton);
+		bannerCloseButton.click();
+	}
+	
+	public boolean sendButtonFromBroadcastMsgPopup() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMsgPopupSendButton);
+		boolean enable = false;
+		enable = broadcastMsgPopupSendButton.isEnabled();
+		return enable;
+	}
+	
+	public boolean visibilitySelectedPatientBanner() {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+			IHGUtil.waitForElement(driver, 10, selectedPatientBanner);
+			visibility = selectedPatientBanner.isDisplayed();
+			return visibility;
+		} catch (NoSuchElementException exp) {
+			return visibility;
+		}
+	}
+
+	public void clickOnBroadcastEmailForSelectedPatient(String patientId, String apptId) {
+		driver.navigate().refresh();
+		IHGUtil.waitForElement(driver, 10, driver
+				.findElement(By.xpath("//*[@id='select-" + patientId + "-" + apptId + "'" + "]/following::div[29]")));
+		WebElement selectBroadCastEmail = driver
+				.findElement(By.xpath("//*[@id='select-" + patientId + "-" + apptId + "'" + "]/following::div[29]"));
+		selectBroadCastEmail.click();
+	}
+
+	public String getBroadcastMessage() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastEmailMsg);
+		return broadcastEmailMsg.getText();
+	}
+
+	public void EnterBroadcastMessageEnEs(String messageEn, String messageEs) throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, broadcastMessageInEn);
+		broadcastMessageInEn.sendKeys(messageEn);
+		broadcastMessageInEs.sendKeys(messageEs);
+		jse.executeScript("arguments[0].click();", confirmThisMsgCheckbox);
+	}
+	
+	public String getStartTime() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, filterStartTime);
+		return filterStartTime.getAttribute("value");
+	}
+
+	public String getEndTime() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, endTime);
+		return endTime.getAttribute("value");
+	}
+	
+	public void selectCurrentDateInEndDateFilter() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, endTime);
+		endTime.click();
+		log("click on end date filter");
+		
+		log("Select Month");
+		IHGUtil.waitForElement(driver, 10, months);
+		DateFormat monthFormat = new SimpleDateFormat("M");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		String currentMonth=monthFormat.format(cal.getTime());
+		Integer month = Integer.valueOf(currentMonth);
+		String monthValue=String.valueOf(month-1); 
+		Select selectMonth = new Select(months);
+		selectMonth.selectByValue(monthValue);
+		
+		log("Select Year");
+		IHGUtil.waitForElement(driver, 10, years);
+		int yyyy = cal.get(Calendar.YEAR);
+		String year = Integer.toString(yyyy);
+		Select selectYear = new Select(years);
+		selectYear.selectByVisibleText(year);
+		log("Year : " + (cal.get(Calendar.YEAR)));
+		
+		log("Select Date");
+		DateFormat dateFormat = new SimpleDateFormat("d");
+		cal.setTime(new Date());
+		String currentDate=dateFormat.format(cal.getTime());
+		WebElement date = driver.findElement(By.xpath(
+				"(//*[@id=\"page-content-container\"]/div/header/div[2]/div[2]/div[2]/div[2]/div/div/div[2]/div[2]/div//div[text()="
+						+ "'" + currentDate + "'" + "])[1]"));
+		date.click();
+		log("click on current date");
+		Thread.sleep(10000);
+	}
+	
+	public void selectEndTime(String time) throws InterruptedException {
+		WebElement selectEndTime=driver.findElement(By.xpath("//*[@id=\"page-content-container\"]/div/header/div[2]/div[2]/div[2]/div[2]/div/div/div[3]/div[2]/div/ul/li[text()="
+	                  +"'"+time+"'"+"]"));
+		selectEndTime.click();
+		Thread.sleep(10000);
+	}
+	
+	public void clickOnStartDateFilter(){
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, startTime);
+		startTime.click();
+	}
+	
+	public void selectStartTime(String time) throws InterruptedException {
+		WebElement selectStartTime=driver.findElement(By.xpath("//*[@id='page-content-container']/div/header/div[2]/div[1]/div[2]/div[2]/div/div/div[3]/div[2]/div/ul/li[text()="
+	                  +"'"+time+"'"+"]"));
+		selectStartTime.click();
+		Thread.sleep(10000);
+	}
+	
+    public boolean selectStartDate() {
+    	clickOnStartDateFilter();
+    	IHGUtil.PrintMethodName();
+		int DateAndTimeSize = startDateTime.size();
+		boolean visibility = false;
+		log("Total patient size: "+DateAndTimeSize);
+		for (int i = 1; i < DateAndTimeSize; i++) {
+			WebElement time = startDateTime.get(i);
+			visibility = time.isSelected();
+		}
+		return visibility;
+	}
+	
+    public void clickOnEndTimeFilter() {
+    	IHGUtil.PrintMethodName();
+    	IHGUtil.waitForElement(driver, 5, endTime);
+    	endTime.click();
+	}
+    
+    public boolean selectEndDate() {
+    	clickOnEndTimeFilter();
+    	IHGUtil.PrintMethodName();
+		int DateAndTimeSize = endDateTime.size();
+		boolean visibility = false;
+		log("Total patient size: "+DateAndTimeSize);
+		for (int i = 1; i < DateAndTimeSize-42; i++) {
+			WebElement time = endDateTime.get(i);
+			visibility = time.isSelected();
+		}
+		return visibility;
+	}
+    
+    public void selectStartDate(int backMonth) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, endTime);
+		startTime.click();
+		log("click on start date filter");
+		
+		log("Select Month");
+		IHGUtil.waitForElement(driver, 10, months);
+		DateFormat monthFormat = new SimpleDateFormat("M");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		String currentMonth=monthFormat.format(cal.getTime());
+		Integer month = Integer.valueOf(currentMonth);
+		String monthValue=String.valueOf(month+backMonth); 
+		Select selectMonth = new Select(months);
+		selectMonth.selectByValue(monthValue);
+		
+		log("Select Year");
+		IHGUtil.waitForElement(driver, 10, years);
+		int yyyy = cal.get(Calendar.YEAR);
+		String year = Integer.toString(yyyy-1);
+		Select selectYear = new Select(years);
+		selectYear.selectByVisibleText(year);
+		log("Year : " + (cal.get(Calendar.YEAR)));
+		
+		log("Select Date");
+		DateFormat dateFormat = new SimpleDateFormat("d");
+		cal.setTime(new Date());
+		String currentDate=dateFormat.format(cal.getTime());
+		WebElement date = driver.findElement(By.xpath(
+				"//*[@id=\"page-content-container\"]/div/header/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/div/div[text()="
+						+ "'" + currentDate + "'" + "]"));
+		date.click();
+		log("click on date");
+		Thread.sleep(10000);
+	}
+    
+    public void selectRequiredPage(int reqPageNo) throws InterruptedException{
+		IHGUtil.PrintMethodName();
+		for(int i=1;i<=10;i++) {
+			String getPageNo=jumpToNextPage();
+			int page=Integer.parseInt(getPageNo);
+			Thread.sleep(3000);
+			if(reqPageNo==page) {
+				log("User is on page no: "+page);
+				break;
+			}
+		}
+		Thread.sleep(5000);
+    }
+    
+    public void selectFirstPatient() {
+    	IHGUtil.PrintMethodName();
+    	IHGUtil.waitForElement(driver, 5, selectFirstPatient);
+    	jse.executeScript("arguments[0].click();", selectFirstPatient);
+	}
+    
+    public String jumpToPreviousPage() throws InterruptedException {
+    	IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, previousPage);
+		jse.executeScript("arguments[0].click();", previousPage);
+		Thread.sleep(10000);
+		String pageNo = jumpToPage.getAttribute("value");
+		return pageNo;
+	}
+
+    public boolean getBannerMessageBaseOnAppt() {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+			visibility=bannerMesssageBaseOnAppointment.isDisplayed();
+			log("Banner message succuss status is displayed");
+			return visibility;
+		} catch (NoSuchElementException e) {
+			log("Banner message succuss status is not displayed");
+			return visibility;
+		}
+	}
+
+	public boolean visibilityOfBannerMessage() {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+			visibility=selectBannerMesssage.isDisplayed();
+			log("Banner message succuss status is displayed");
+			return visibility;
+		} catch (NoSuchElementException e) {
+			log("Banner message succuss status is not displayed");
+			return visibility;
+		}
+	}
+	
+	public void selectMultipleAppointments(int selectPatients) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		for (int i = 1; i <= selectPatients; i++) {
+			WebElement patients = allAppointment.get(i);
+			jse.executeScript("arguments[0].click();", patients);
+		}
+	}
+	
+	public String jumpToNextPage(int pageNumber) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, jumpToNextPage);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", jumpToNextPage);
+		log("Click on jump to page and move to "+pageNumber+" page");
+		jse.executeScript("arguments[0].click();", jumpToNextPage);
+		IHGUtil.waitForElement(driver, 5, jumpToPage);
+		String pageNo = jumpToPage.getAttribute("value");
+		jse.executeScript("arguments[0].scrollIntoView(true);", appointmentsTab);
+		return pageNo;
+	}
+	
+	public String getBannerMessageSelectAppAppt() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, selectBannerMesssage);
+		return selectBannerMesssage.getText();
 	}
 
 }

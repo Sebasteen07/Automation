@@ -466,6 +466,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("click on Budget Payment pLan to serach the Budget Payment done ");
 		practiceHome.budgetPaymentPlanSearch();
+		
+		logStep("Set the Enrollment date ");
+		pPayMyBillOnlinePage.setTheEnrollmentDate();
 
 		logStep("Searching of Budget Payment plan with patient firstName and lastName ");
 		pPayMyBillOnlinePage.budgetPaymentPlanSearchPatient(testData.getProperty("online.bill.pay.first.name"),

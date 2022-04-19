@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage;
 
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
@@ -7,7 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 
@@ -45,9 +47,11 @@ public class JalapenoForgotPasswordPage extends MedfusionPage {
 
 				log("Setting email address as " + email);
 				inputEmail.sendKeys(email);
+				
 
 				log("Clicking on Continue button");
-
+				WebDriverWait wait = new WebDriverWait(driver, 5);
+				wait.until(ExpectedConditions.elementToBeClickable(continueButton));
 				continueButton.click();
 
 				return PageFactory.initElements(driver, JalapenoForgotPasswordPage2.class);
@@ -73,5 +77,7 @@ public class JalapenoForgotPasswordPage extends MedfusionPage {
 			}
 			return PageFactory.initElements(driver, JalapenoForgotPasswordPage2.class);
 	}
+		
+		
 
 }
