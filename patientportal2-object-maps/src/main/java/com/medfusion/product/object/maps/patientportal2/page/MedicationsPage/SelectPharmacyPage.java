@@ -307,9 +307,8 @@ public class SelectPharmacyPage extends MedfusionPage {
 	log("Verify all the popup elements are present");
 	assertTrue(arePopupPageElementsPresent());
 	log("Enter Pharmacy Details");
-	String ab = testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4);
-	pharmacyName.sendKeys(ab);
-	System.out.println(ab);
+	String pharmaName = testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4);
+	pharmacyName.sendKeys(pharmaName);
 	pharmacyFax.sendKeys(IHGUtil.createRandomNumericString(10));
 	pharmacyAddress.sendKeys(testData.getProperty("address1"));
 	pharmacyCity.sendKeys(testData.getProperty("city"));
