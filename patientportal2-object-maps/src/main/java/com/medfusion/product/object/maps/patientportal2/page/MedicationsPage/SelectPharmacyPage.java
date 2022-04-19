@@ -295,7 +295,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 	}
 
 	
-	public void addEditNewPharmacy(WebDriver driver) throws IOException, InterruptedException {
+	public void addPharmacy(WebDriver driver) throws IOException, InterruptedException {
 	PropertyFileLoader testData = new PropertyFileLoader();
 	IHGUtil.PrintMethodName();
 	log("Click on Add a Pharmacy button");
@@ -325,14 +325,19 @@ public class SelectPharmacyPage extends MedfusionPage {
 	popupContinueBtn.click();
 	log("Pharmacy is added");
 	Thread.sleep(2000);// need to sleep because of modal disappearing time
-	btnEditPharmacy.click();
-	assertTrue(arePopupPageElementsPresent());
-	log("Enter Pharmacy Details");
-	String ab1 = testData.getProperty("updated.pharmacy.name") + IHGUtil.createRandomNumericString(4);
-	pharmacyName.clear();
-	pharmacyName.sendKeys(ab1);
-	Thread.sleep(2000);
-	popupContinueBtn.click();
+	}
+	
+	public void editPharmacy() throws IOException, InterruptedException{
+		PropertyFileLoader testData = new PropertyFileLoader();
+		IHGUtil.waitForElement(driver, 50, btnEditPharmacy);
+		btnEditPharmacy.click();
+		assertTrue(arePopupPageElementsPresent());
+		log("Enter Pharmacy Details");
+		String editedPharmacyName = testData.getProperty("updated.pharmacy.name") + IHGUtil.createRandomNumericString(4);
+		pharmacyName.clear();
+		pharmacyName.sendKeys(editedPharmacyName);
+		Thread.sleep(2000);
+		popupContinueBtn.click();
 	}
 	
 	public String getUpdatedPharmcyName() {
@@ -340,7 +345,5 @@ public class SelectPharmacyPage extends MedfusionPage {
 	btnContinue.click();
 	return pharmcyName;
 	}
-
-
 }
 

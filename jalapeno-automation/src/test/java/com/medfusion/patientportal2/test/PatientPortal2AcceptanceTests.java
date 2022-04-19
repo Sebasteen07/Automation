@@ -6291,11 +6291,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Select a pharmacy");
 		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
-		pharmaPage.addEditNewPharmacy(driver);
+		pharmaPage.addPharmacy(driver);
+		pharmaPage.editPharmacy();
 		String editedPhName=pharmaPage.getUpdatedPharmcyName();
-		System.out.println(editedPhName);
 		Thread.sleep(2000);
-
+		
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
 		selectMedPage.selectMedications();
