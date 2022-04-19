@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>ihg-depot-parent-pom</artifactId>
 		<groupId>com.intuit.ihg</groupId>
-		<version>22.3.0-SNAPSHOT</version>
+		<version>22.3.0rc-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.mfpay</groupId>
@@ -19,7 +19,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>22.3.0-SNAPSHOT</ihg.version>
+		<ihg.version>22.3.0rc-SNAPSHOT</ihg.version>
 	</properties>
 	
 	<repositories>
