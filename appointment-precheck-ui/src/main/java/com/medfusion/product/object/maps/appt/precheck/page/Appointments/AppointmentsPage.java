@@ -2191,7 +2191,6 @@ public class AppointmentsPage extends BasePageObject {
 			IHGUtil.PrintMethodName();
 			IHGUtil.waitForElement(driver, 5, continueButton);
 			continueButton.click();
-			Thread.sleep(10000);
 		}
 
 		public void addPatientDetailsFromPrecheck(String precheckPageTitle, String firstName, String middleName,
