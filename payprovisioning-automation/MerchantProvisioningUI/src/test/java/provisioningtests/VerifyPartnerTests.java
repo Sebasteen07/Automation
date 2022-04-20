@@ -48,7 +48,7 @@ public class VerifyPartnerTests extends ProvisioningBaseTest{
         partnerPage.verifyAddPartner();
 
         logStep("Click on delete button");
-        partnerPage.clickOnDelete();
+        partnerPage.deleteLastRowOfPartners();
 
         logStep("Click on delete confirmation button");
         partnerPage.clickOnDeleteDialogue();
@@ -90,7 +90,7 @@ public class VerifyPartnerTests extends ProvisioningBaseTest{
         partnerPage.verifyAddPartner();
 
         logStep("Click on edit partner Button");
-        partnerPage.clickOnEditButton();
+        partnerPage.editLastRowOfPartners();
 
         logStep("Edit username & click on edit button");
         partnerPage.editUsernameClickOnEdit();
@@ -99,7 +99,7 @@ public class VerifyPartnerTests extends ProvisioningBaseTest{
         partnerPage.verifyEditedPartner();
 
         logStep("Click on delete button");
-        partnerPage.clickOnDelete();
+        partnerPage.deleteLastRowOfPartners();
 
         logStep("Click on delete confirmation button");
         partnerPage.clickOnDeleteDialogue();
