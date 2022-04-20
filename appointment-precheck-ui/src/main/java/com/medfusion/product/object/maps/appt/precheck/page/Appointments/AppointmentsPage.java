@@ -24,6 +24,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 
 public class AppointmentsPage extends BasePageObject {
@@ -2331,6 +2332,88 @@ public class AppointmentsPage extends BasePageObject {
 						.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::span)[8]"));
 				return patientName.getText();
 		   }
+		}
+		
+		public boolean visibilityOfDefaultIconForEmailReminder(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			WebElement reminderEmailIcon = driver.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId
+					+ "']/following::span[@class='mf-icon mf-icon__negative--small mf-color__default'])[1]"));
+			return reminderEmailIcon.isDisplayed();
+		}
+
+		public boolean visibilityOfDefaultIconForTextReminder(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			WebElement reminderTextIcon = driver.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId
+					+ "']/following::span[@class='mf-icon mf-icon__negative--small mf-color__default'])[2]"));
+			return reminderTextIcon.isDisplayed();
+		}
+
+		public boolean visibilityOfPaperPlaneIconForEmailReminder(String patientId, String apptId, int retries)
+				throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			int TIME_TO_WAIT_MS = 10000;
+			boolean visibility = false;
+			for (int j = 1; j <= retries; j++) {
+				patientIdFilter.clear();
+				filterPatientId(Appointment.patientId);
+				driver.navigate().refresh();
+				Thread.sleep(10000);
+				try {
+					WebElement paperPlaneIconForReminder = driver
+							.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId
+									+ "']/following::span[@class='mf-icon mf-icon__sent--small mf-color__positive'])[1]"));
+					visibility = paperPlaneIconForReminder.isDisplayed();
+					return visibility;
+
+				} catch (Exception e) {
+					log(("Paper plane Icon") + " not retrieved. Trial number " + j + "/" + retries + "."
+							+ (j != retries	? " Waiting for Paper plane Icon" + (false ? "s" : "") + " to arrive for "
+											+ TIME_TO_WAIT_MS / 1000 + " s.": ""));
+					log("unable to find Paper plane Icon" + e);
+				}
+			}
+			return false;
+		}
+
+		public boolean visibilityOfPaperPlaneIconForTextReminder(String patientId, String apptId, int retries)
+				throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			int TIME_TO_WAIT_MS = 10000;
+			boolean visibility = false;
+			for (int j = 1; j <= retries; j++) {
+				patientIdFilter.clear();
+				filterPatientId(Appointment.patientId);
+				driver.navigate().refresh();
+				Thread.sleep(10000);
+				try {
+					WebElement paperPlaneIconForReminder = driver
+							.findElement(By.xpath("(//input[@id='select-" + patientId + "-" + apptId
+									+ "']/following::span[@class='mf-icon mf-icon__sent--small mf-color__positive'])[1]"));
+					visibility = paperPlaneIconForReminder.isDisplayed();
+					return visibility;
+
+				} catch (Exception e) {
+					log(("Paper plane Icon") + " not retrieved. Trial number " + j + "/" + retries + "."
+							+ (j != retries ? " Waiting for Paper plane Icon" + (false ? "s" : "") + " to arrive for "
+											+ TIME_TO_WAIT_MS / 1000 + " s.": ""));
+					log("unable to find Paper plane Icon" + e);
+				}
+			}
+			return visibility;
+		}
+
+		public String getCountForEmailReminder(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			WebElement reminderTextIcon = driver.findElement(By.xpath(
+					"(//input[@id='select-" + patientId + "-" + apptId + "']/following::span[@class='manual-count'])[1]"));
+			return reminderTextIcon.getText();
+		}
+
+		public String getCountForTextReminder(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			WebElement reminderTextIcon = driver.findElement(By.xpath(
+					"(//input[@id='select-" + patientId + "-" + apptId + "']/following::span[@class='manual-count'])[2]"));
+			return reminderTextIcon.getText();
 		}
 		
 }

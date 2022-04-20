@@ -6681,6 +6681,31 @@ public class ApptPrecheckSteps extends BaseTest {
 				10));
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 	}
+		
+		@When("I am able to click on > expand icon")
+		public void i_am_able_to_click_on_expand_icon() throws InterruptedException {
+			driver.navigate().refresh();
+			apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		}
+
+		@When("on appointment dashboard default icon should be display")
+		public void on_appointment_dashboard_default_icon_should_be_display() throws InterruptedException {
+			apptPage.filterPatientId(Appointment.patientId);
+			scrollAndWait(0, 3000, 5000);
+			assertTrue(apptPage.visibilityOfDefaultIconForEmailReminder(Appointment.patientId, Appointment.apptId));
+			assertTrue(apptPage.visibilityOfDefaultIconForTextReminder(Appointment.patientId, Appointment.apptId));
+		}
+
+		@Then("I verify after getting cadance reminder default icon is replace with paper plane and on that paper plane icon count {int} will display")
+		public void i_verify_after_getting_cadance_reminder_default_icon_is_replace_with_paper_plane_and_on_that_paper_plane_icon_count_will_display(
+				Integer int1) throws InterruptedException {
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForEmailReminder(Appointment.patientId, Appointment.apptId, 10));
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForTextReminder(Appointment.patientId, Appointment.apptId, 10));
+			assertEquals(apptPage.getCountForEmailReminder(Appointment.patientId, Appointment.apptId), "1",
+					"Email count not match");
+			assertEquals(apptPage.getCountForTextReminder(Appointment.patientId, Appointment.apptId), "1",
+					"Email count not match");
+		}
 
 }
 
