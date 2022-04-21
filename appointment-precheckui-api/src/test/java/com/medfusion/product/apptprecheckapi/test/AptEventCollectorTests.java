@@ -163,7 +163,6 @@ public class AptEventCollectorTests extends BaseTestNG {
 
 	}
 
-	/////////////////////////////
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLongtermAggregationPost() throws IOException {
 		Response response = postAPIRequest.aptPostLongtermAggregation(propertyData.getProperty("event.practice.id"),
