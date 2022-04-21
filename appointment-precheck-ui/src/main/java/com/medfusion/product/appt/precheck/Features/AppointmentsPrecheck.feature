@@ -1914,3 +1914,9 @@ Feature: Test fuctionality of Appointment precheck
     And on appointment dashboard default icon should be display
     Then I verify after getting cadance reminder default icon is replace with paper plane and on that paper plane icon count 1 will display
     And logout from practice provisioning portal
+
+  Scenario: Verify for both manual and cadence reminder single history pop up will display
+    When I schedule an appointment in "en"
+    And I select patient and send manual reminder
+    Then I verify for email and text reminder system should show all manual and cadence reminder log on mails history  pop up
+    And logout from practice provisioning portal
