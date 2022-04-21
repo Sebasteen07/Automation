@@ -73,6 +73,9 @@ import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 
+import de.redsix.pdfcompare.CompareResult;
+import de.redsix.pdfcompare.PdfComparator;
+
 public class RestUtils {
 
 	static Random random = new Random();
@@ -3186,16 +3189,18 @@ public class RestUtils {
 	}
 
 	public static void comparePDFfiles(String file1, String file2) throws Exception {
-		String pdfFromPortal = ExternalFileReader.base64Encoder(file1, false);
-		String pdfFromGet = ExternalFileReader.base64Encoder(file2, false);
-		Log4jUtil.log("pdfFromPortal----------------");
-		Log4jUtil.log(pdfFromPortal);
-		Log4jUtil.log("pdfFromGet----------------");
-		Log4jUtil.log(pdfFromGet);
+		Log4jUtil.log("Comparing PDFs in locations: " + file1.toString() + " and " + file2.toString());
 		Log4jUtil.log("----------------------------");
-		Boolean pdfMatch = matchBase64String(pdfFromPortal, pdfFromGet);
-		Log4jUtil.log("Is Pdf Matched : " + pdfMatch);
-		assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
+
+		final CompareResult result = new PdfComparator(file1, file2).compare();
+		if (result.isNotEqual()) {
+			Log4jUtil.log("Differences found in PDFs!");
+			assertTrue(false);
+		}
+		if (result.isEqual()) {
+			Log4jUtil.log("PDFs matched..!");
+			assertTrue(true);
+		}
 	}
 
 	public static int setupHttpDeleteRequestExceptOauth(String strUrl, String responseFilePath, String token)

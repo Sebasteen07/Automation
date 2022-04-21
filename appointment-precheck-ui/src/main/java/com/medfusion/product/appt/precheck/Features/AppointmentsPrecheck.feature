@@ -1893,3 +1893,24 @@ Feature: Test fuctionality of Appointment precheck
     And I add instructions for primary,secondary,tertiary
     Then I verify that user is able to see instructions for primary,secondary,tertiary on UI
     And logout from practice provisioning portal
+
+  Scenario: verify while doing precheck change the first name and last name then verify updated first name should be reflected on appt dashboard, broadcast email notification logs and on email
+    When I schedule an appointment with valid email and phone number
+    And appointment should be scheduled and reminder & confirmation email should be received to patient
+    And I do the precheck and update first name, middle name, last name
+    Then I verify updated first name, middle name, last name should be reflect on appt dashboard, broadcast email notification logs and on email
+    And logout from practice provisioning portal
+
+  Scenario: verify while doing precheck change the first name, last name, email and phone number then verify updated first name, last name, email and phone number should be reflected on appt dashboard, broadcast email notification logs and on email
+    When I schedule an appointment with valid email and phone number
+    And appointment should be scheduled and reminder & confirmation email should be received to patient
+    And I do the precheck and update first name, middle name, last name, email and phone number
+    Then I verify updated first name, middle name, last name, email should be reflect on appt dashboard, broadcast email notification logs and on email
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to see paperplane icon on in reminders text and mails section
+    When I schedule an appointment in "en"
+    And I am able to click on > expand icon
+    And on appointment dashboard default icon should be display
+    Then I verify after getting cadance reminder default icon is replace with paper plane and on that paper plane icon count 1 will display
+    And logout from practice provisioning portal

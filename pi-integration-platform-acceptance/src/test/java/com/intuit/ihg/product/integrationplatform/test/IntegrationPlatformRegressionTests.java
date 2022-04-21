@@ -1797,7 +1797,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long timestamp = System.currentTimeMillis();
 
 		Log4jUtil.log("Step 2: Fill in Pre check form 14 pages");
-		String firstName = testData.patientFirstName_FE + randomString;
+		String firstName = testData.patientFirstName_FE;
 		log("firstName " + firstName);
 		driver.get(testData.preCheckURL);
 		driver.manage().window().maximize();
@@ -3159,7 +3159,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String workingDir = System.getProperty("user.dir");
 		workingDir = workingDir + testData.csvFilePath;
 		aDUtils.csvFileReader(testData, workingDir);
-		;
 
 		log("Step 7: Post New AppointMentData with MFPatientID");
 		testData.FirstName = patient.getFirstName();

@@ -6525,9 +6525,187 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(precheckPage.visibilityOfprimaryInstructionsMessageInSpanish());
 	}
 
+	@When("appointment should be scheduled and reminder & confirmation email should be received to patient")
+	public void appointment_should_be_scheduled_and_reminder_confirmation_email_should_be_received_to_patient()
+			throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.schedule.subject"), propertyData.getProperty("appt.schedule.title"),10));
 
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.title"), 10));
+	}
 
+	@When("I do the precheck and update first name, middle name, last name")
+	public void i_do_the_precheck_and_update_first_name_middle_name_last_name() throws NullPointerException, Exception {
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnLaunchPatientModeButton();
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnContinueButton();
+		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.page.title"),
+				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
+				propertyData.getProperty("precheck.last.name"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.number"));
+	}
 
+	@Then("I verify updated first name, middle name, last name should be reflect on appt dashboard, broadcast email notification logs and on email")
+	public void i_verify_updated_first_name_middle_name_last_name_should_be_reflect_on_appt_dashboard_broadcast_email_notification_logs_and_on_email()
+			throws NullPointerException, Exception {
+
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+		scrollAndWait(200, -300, 5000);
+		String practiceName = apptPage.getPracticeName();
+
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from appointment dashboard: "
+				+ apptPage.getPatientNameFromApptDashboard(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromApptDashboard(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnBroadcastEmailLogForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from Broadcast Email Log: "
+				+ apptPage.getPatientNameFromBroadcastEmailLogs(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromBroadcastEmailLogs(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+		apptPage.closeBroadcastEmailandTextBox();
+		Thread.sleep(3000);
+
+		apptPage.clickOnBroadcastPhoneLogForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from Broadcast Email Log: "
+				+ apptPage.getPatientNameFromBroadcastTextLogs(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromBroadcastTextLogs(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+		apptPage.closeBroadcastEmailandTextBox();
+
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		Thread.sleep(20000);
+
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", practiceName,
+				propertyData.getProperty("precheck.first.name") + "," + " "+ propertyData.getProperty("broadcast.message.en"),10));
+
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
+	@When("I do the precheck and update first name, middle name, last name, email and phone number")
+	public void i_do_the_precheck_and_update_first_name_middle_name_last_name_email_and_phone_number()
+			throws InterruptedException {
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnLaunchPatientModeButton();
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnContinueButton();
+		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.page.title"),
+				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
+				propertyData.getProperty("precheck.last.name"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.number"));
+	}
+
+		@Then("I verify updated first name, middle name, last name, email should be reflect on appt dashboard, broadcast email notification logs and on email")
+	public void i_verify_updated_first_name_middle_name_last_name_email_should_be_reflect_on_appt_dashboard_broadcast_email_notification_logs_and_on_email()
+			throws NullPointerException, Exception {
+		
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+		scrollAndWait(200, -300, 5000);
+		String practiceName = apptPage.getPracticeName();
+		
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from appointment dashboard: "
+				+ apptPage.getPatientNameFromApptDashboard(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromApptDashboard(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+
+		assertEquals(apptPage.getPatientEmailFromApptDashboard(Appointment.patientId, Appointment.apptId),
+				"jordan" + Appointment.randomNumber + "@YOPmail.com", "Patient email was not match");
+
+		assertEquals(apptPage.getPatientPhoneFromApptDashboard(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.phone"), "Patient phone was not match");
+
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnBroadcastEmailLogForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from Broadcast Email Log: "
+				+ apptPage.getPatientNameFromBroadcastEmailLogs(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromBroadcastEmailLogs(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+		apptPage.closeBroadcastEmailandTextBox();
+
+		apptPage.clickOnBroadcastPhoneLogForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from Broadcast Email Log: "
+				+ apptPage.getPatientNameFromBroadcastTextLogs(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromBroadcastTextLogs(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+		apptPage.closeBroadcastEmailandTextBox();
+
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		Thread.sleep(20000);
+
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", practiceName,
+				propertyData.getProperty("precheck.first.name") + "," + " "
+						+ propertyData.getProperty("broadcast.message.en"),
+				10));
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+		
+		@When("I am able to click on > expand icon")
+		public void i_am_able_to_click_on_expand_icon() throws InterruptedException {
+			driver.navigate().refresh();
+			apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		}
+
+		@When("on appointment dashboard default icon should be display")
+		public void on_appointment_dashboard_default_icon_should_be_display() throws InterruptedException {
+			apptPage.filterPatientId(Appointment.patientId);
+			scrollAndWait(0, 3000, 5000);
+			assertTrue(apptPage.visibilityOfDefaultIconForEmailReminder(Appointment.patientId, Appointment.apptId));
+			assertTrue(apptPage.visibilityOfDefaultIconForTextReminder(Appointment.patientId, Appointment.apptId));
+		}
+
+		@Then("I verify after getting cadance reminder default icon is replace with paper plane and on that paper plane icon count {int} will display")
+		public void i_verify_after_getting_cadance_reminder_default_icon_is_replace_with_paper_plane_and_on_that_paper_plane_icon_count_will_display(
+				Integer int1) throws InterruptedException {
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForEmailReminder(Appointment.patientId, Appointment.apptId, 10));
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForTextReminder(Appointment.patientId, Appointment.apptId, 10));
+			assertEquals(apptPage.getCountForEmailReminder(Appointment.patientId, Appointment.apptId), "1",
+					"Email count not match");
+			assertEquals(apptPage.getCountForTextReminder(Appointment.patientId, Appointment.apptId), "1",
+					"Email count not match");
+		}
 
 }
 

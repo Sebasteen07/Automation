@@ -31,7 +31,7 @@ public class FormSocialHistoryPage extends PortalFormPage {
 	@FindBy(id = "exercise_healthhabits_type")
 	private WebElement exerciseFrequency;
 	
-	@FindBy(xpath = "//div[@id='section15']/section/div[2]/a")
+	@FindBy(xpath = "//div[@class='done_frame']/a")
 	private WebElement submitSocialForm;
 
 	public void fillOutDefaultExerciseLength() {
