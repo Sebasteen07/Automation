@@ -6706,6 +6706,72 @@ public class ApptPrecheckSteps extends BaseTest {
 			assertEquals(apptPage.getCountForTextReminder(Appointment.patientId, Appointment.apptId), "1",
 					"Email count not match");
 		}
+		
+		@When("I select patient and send manual reminder")
+		public void i_select_patient_and_send_manual_reminder() throws InterruptedException {
+			mainPage.clickOnAppointmentsTab();
+			Thread.sleep(5000);
+			apptPage.filterPatientId(Appointment.patientId);
+			apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+			scrollAndWait(-1000, 0, 20000);
+			apptPage.clickOnActions();
+			apptPage.clickOnSendReminder();
+		}
+		
+		@Then("I verify for email and text reminder system should show all manual and cadence reminder log on mails history  pop up")
+		public void i_verify_for_email_and_text_reminder_system_should_show_all_manual_and_cadence_reminder_log_on_mails_history_pop_up()
+				throws InterruptedException {
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForEmailReminder(Appointment.patientId, Appointment.apptId, 10));
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForTextReminder(Appointment.patientId, Appointment.apptId, 10));
+			apptPage.filterPatientId(Appointment.patientId);
+			apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+			scrollAndWait(-3000, 0, 5000);
+			apptPage.clickOnViewAllForEmailReminder(Appointment.patientId, Appointment.apptId);
+			log("Get details for email reminder logs");
+			assertTrue(apptPage.visibilityOfMailReminderLogTitle(Appointment.patientId, Appointment.apptId));
+			log("Cadence reminder histroy detals");
+			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 1));
+			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
+					propertyData.getProperty("one.day.prior.logs")),
+					propertyData.getProperty("one.day.prior.logs"), "1 hour prior entry was not match");
+			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 3));
+			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
+					propertyData.getProperty("one.day.prior.logs.status")), propertyData.getProperty("one.day.prior.logs.status"),
+					"Status was not match");
+			log("Manual reminder histroy detals");
+			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 5));
+			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId,
+					propertyData.getProperty("one.day.prior.logs")),
+					propertyData.getProperty("one.day.prior.logs"), "1 hour prior entry was not match");
+			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 7));
+			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId,
+					propertyData.getProperty("one.day.prior.logs.status")), propertyData.getProperty("one.day.prior.logs.status"),
+					"Status was not match");
+			apptPage.closeReminderLogPopup();
+
+			log("Get details for text remonder logs");
+			apptPage.clickOnViewAllForTextReminder(Appointment.patientId, Appointment.apptId);
+			log("Manual reminder histroy detals");
+			assertTrue(apptPage.visibilityOfTextReminderLogTitle(Appointment.patientId, Appointment.apptId));
+			assertTrue(apptPage.visibilityOfTextReminderLogs(Appointment.patientId, Appointment.apptId, 1));
+			assertEquals(apptPage.getTextFromTextRemLogs(Appointment.patientId, Appointment.apptId, 
+					propertyData.getProperty("one.day.prior.logs")),
+					propertyData.getProperty("one.day.prior.logs"), "1 hour prior entry was not match");
+			assertTrue(apptPage.visibilityOfTextReminderLogs(Appointment.patientId, Appointment.apptId, 3));
+			assertEquals(apptPage.getTextFromTextRemLogs(Appointment.patientId, Appointment.apptId, 
+					propertyData.getProperty("one.day.prior.logs.status")), propertyData.getProperty("one.day.prior.logs.status"),
+					"Status was not match");
+
+			assertTrue(apptPage.visibilityOfTextReminderLogs(Appointment.patientId, Appointment.apptId, 5));
+			assertEquals(apptPage.getTextFromTextRemLogs(Appointment.patientId, Appointment.apptId, 
+					propertyData.getProperty("one.day.prior.logs")),
+					propertyData.getProperty("one.day.prior.logs"), "1 hour prior entry was not match");
+			assertTrue(apptPage.visibilityOfTextReminderLogs(Appointment.patientId, Appointment.apptId, 7));
+			assertEquals(apptPage.getTextFromTextRemLogs(Appointment.patientId, Appointment.apptId,
+					propertyData.getProperty("one.day.prior.logs.status")), propertyData.getProperty("one.day.prior.logs.status"),
+					"Status was not match");
+			apptPage.closeReminderLogPopup();
+		}
 
 }
 
