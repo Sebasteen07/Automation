@@ -9,6 +9,8 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.medfusion.common.utils.IHGUtil;
+
 public class PSS2PracticeConfiguration extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[1]/div[1]/div[1]/img")
@@ -28,6 +30,9 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 
 	@FindBy(how = How.ID, using = "simple-select")
 	private WebElement partnerName;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='basic']/form/div[3]/div/div[2]/input")
+	private WebElement spanishLanguageLabel;
 
 	@FindAll({ @FindBy(xpath = "//*[@id=\"simple-select\"]/option") })
 	private List<WebElement> partnerOptionValue;
@@ -41,6 +46,9 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"basic\"]/fieldset/div/div/button")
 	private WebElement saveButton;
 
+	@FindBy(how = How.XPATH, using = "(//div[@class='pull-right']/button)[1]")
+	private WebElement saveButton1;		
+			
 	public PSS2PracticeConfiguration(WebDriver driver) {
 		super(driver);
 	}
@@ -107,4 +115,11 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 		return endtime;
 
 	}
+	
+	public void clickOnSpanishLanguage() throws InterruptedException {
+		Thread.sleep(3000);
+		javascriptClick(spanishLanguageLabel);
+		javascriptClick(saveButton1);
+	}
+
 }

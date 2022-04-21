@@ -50,6 +50,9 @@ public class ManageDecisionTree extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[@id='category.displayNamesEN']/textarea")
 	private WebElement editEnglishDecisionTreeName;
 	
+	@FindBy(how = How.XPATH, using = "//textarea[@id='displayName']")
+	private WebElement editEnglishDecisionTreeName1;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='tab13']/form/fieldset[1]/div[2]/div/ul/li[2]/a")
 	private WebElement clickEspanolDecisionTreeName;
 	
@@ -143,6 +146,16 @@ public class ManageDecisionTree extends PSS2MainPage {
 		log("Decision Tree is added successfully.");	
 	}
 	
+	public void addDecisionTreeWhenSpanishIsDisabled(String decisionTreeName) {
+		IHGUtil.waitForElement(driver, 60, addDecisionTree);
+		addDecisionTree.click();
+		log("Add Decision tree Button clicked");
+		editDecisionTreeName.sendKeys(decisionTreeName);
+		editEnglishDecisionTreeName1.sendKeys(decisionTreeName);
+		buttonSaveDecisionTree.click();
+		log("Decision Tree is added successfully.");	
+	}
+	
 	public ManageGeneralInformation goToGeneralInformation() {
 		javascriptClick(generalInformationTab);
 		log("General Information Tab clicked.....");
@@ -166,7 +179,7 @@ public class ManageDecisionTree extends PSS2MainPage {
 	}
 
 	String getFile(String decisionTreeName) {
-		return new File("D://usr//Decision Tree//"+decisionTreeName+".json").getAbsolutePath();
+		return new File("E://usr//Decision Tree//"+decisionTreeName+".json").getAbsolutePath();
 	}
 	
 	public void searchByDecisionTreeName(String decisionTreeName) throws InterruptedException {

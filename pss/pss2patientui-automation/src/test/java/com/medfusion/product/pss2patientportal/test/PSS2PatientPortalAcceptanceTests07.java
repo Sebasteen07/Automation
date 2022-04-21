@@ -12,6 +12,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.decisionTree.ManageDecisionTree;
 import com.medfusion.product.object.maps.pss2.decisionTree.ManageGeneralInformation;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
+import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.PatientIdentificationPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
@@ -22,6 +23,8 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Specia
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentQuestionsPage;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
+import com.medfusion.product.object.maps.pss2.page.settings.AdminReseller;
+import com.medfusion.product.object.maps.pss2.page.settings.AnnouncementsTab;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -1222,5 +1225,229 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		assertEquals(actPreventSchMsg, expPrevSchMsg, "Prevent Scheduling Error message is not matches with expected message");
 		appointment.pressOkBtn();
 		adminUtils.resetPreventApptTypeScheduleWithProviderOff(driver, adminUser, testData);
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyAnnouncementsAndCategoryWhenSpanishIsDisabledNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		String footerText = propertyData.getProperty("footer.text.ng");
+		String greetingsText = propertyData.getProperty("greetings.announcement.ng");
+		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.ng");
+		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.ng");
+		String questionForAppointment = propertyData.getProperty("decision.tree.appointment.question.ng");
+		adminUtils.verifyAnnouncementsAndCategoryWhenSpanishIsDisabled(driver, adminUser, testData, testData.getDecisionTreeName(), 
+				testData.getAppointmenttype(), reasonForAppointment, questionForAppointment, decisionTreeAnswer, footerText, greetingsText);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		if(dismissPage.getGreetingsText(greetingsText).equals(greetingsText)) {
+			Assert.assertTrue(true);
+			log("Greetings announcement is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		
+		if(patientIdentificationPage.footertextadding(footerText).equals(footerText)) {
+			Assert.assertTrue(true);
+			log("Footer Text is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = homepage.skipInsurance(driver);
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getDecisionTreeName());
+		AppointmentQuestionsPage apptQuestion = appointment.selectApptTypeDecisionTree(testData.getDecisionTreeName());
+		Provider provider = apptQuestion.selectAnswerFromQue(decisionTreeAnswer,
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
+		if(aptDateTime.chooseAppttypeText(reasonForAppointment).equals(reasonForAppointment)) {
+			Assert.assertTrue(true);
+			log("Reason for appointment is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		adminUtils.spanishLanguageAndCategorysettingsDeletion(driver, adminUser, testData, testData.getDecisionTreeName());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyAnnouncementsAndCategoryWhenSpanishIsDisabledGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		String footerText = propertyData.getProperty("footer.text.ge");
+		String greetingsText = propertyData.getProperty("greetings.announcement.ge");
+		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.ge");
+		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.ge");
+		String questionForAppointment = propertyData.getProperty("decision.tree.appointment.question.ge");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		pssPracticeConfig.clickOnSpanishLanguage();
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		AnnouncementsTab announcementsTab = pssPracticeConfig.goToAnnouncementTab();
+		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, greetingsText);
+		AdminReseller adminReseller = pssPracticeConfig.gotoResellerTab();
+		adminReseller.setFooterTextWhenSpanishIsDisabled(footerText);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.addDecisionTreeWhenSpanishIsDisabled(testData.getDecisionTreeName());
+		manageDecisionTree.selectDecisionTree(testData.getDecisionTreeName());
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.addQuestionInDecisionTreeWhenSpanishIsDisabled(questionForAppointment);
+		manageGeneralInformation.addAnswerOneInDecisionTreeWhenSpanishIsDisabled(decisionTreeAnswer);
+		manageGeneralInformation.setApptTypeDecisionTreeSet2(testData.getAppointmenttype());
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.publishGeneralInfo();
+		adminUtils.pageRefresh(driver);
+		manageDecisionTree.logout();
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		if(dismissPage.getGreetingsText(greetingsText).equals(greetingsText)) {
+			Assert.assertTrue(true);
+			log("Greetings announcement is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		
+		if(patientIdentificationPage.footertextadding(footerText).equals(footerText)) {
+			Assert.assertTrue(true);
+			log("Footer Text is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = homepage.skipInsurance(driver);
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getDecisionTreeName());
+		AppointmentQuestionsPage apptQuestion = appointment.selectApptTypeDecisionTree(testData.getDecisionTreeName());
+		Provider provider = apptQuestion.selectAnswerFromQue(decisionTreeAnswer,
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
+		if(aptDateTime.chooseAppttypeText(reasonForAppointment).equals(reasonForAppointment)) {
+			Assert.assertTrue(true);
+			log("Reason for appointment is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		adminUtils.spanishLanguageAndCategorysettingsDeletion(driver, adminUser, testData, testData.getDecisionTreeName());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyAnnouncementsAndCategoryWhenSpanishIsDisabledGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		String footerText = propertyData.getProperty("footer.text.gw");
+		String greetingsText = propertyData.getProperty("greetings.announcement.gw");
+		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.gw");
+		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.gw");
+		String questionForAppointment = propertyData.getProperty("decision.tree.appointment.question.gw");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		pssPracticeConfig.clickOnSpanishLanguage();
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		AnnouncementsTab announcementsTab = pssPracticeConfig.goToAnnouncementTab();
+		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, greetingsText);
+		AdminReseller adminReseller = pssPracticeConfig.gotoResellerTab();
+		adminReseller.setFooterTextWhenSpanishIsDisabled(footerText);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.addDecisionTreeWhenSpanishIsDisabled(testData.getDecisionTreeName());
+		manageDecisionTree.selectDecisionTree(testData.getDecisionTreeName());
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.addQuestionInDecisionTreeWhenSpanishIsDisabled(questionForAppointment);
+		manageGeneralInformation.addAnswerOneInDecisionTreeWhenSpanishIsDisabled(decisionTreeAnswer);
+		manageGeneralInformation.setApptTypeDecisionTreeSet2(testData.getAppointmenttype());
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.publishGeneralInfo();
+		adminUtils.pageRefresh(driver);
+		manageDecisionTree.logout();
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		if(dismissPage.getGreetingsText(greetingsText).equals(greetingsText)) {
+			Assert.assertTrue(true);
+			log("Greetings announcement is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		
+		if(patientIdentificationPage.footertextadding(footerText).equals(footerText)) {
+			Assert.assertTrue(true);
+			log("Footer Text is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = homepage.skipInsurance(driver);
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getDecisionTreeName());
+		AppointmentQuestionsPage apptQuestion = appointment.selectApptTypeDecisionTree(testData.getDecisionTreeName());
+		Provider provider = apptQuestion.selectAnswerFromQue(decisionTreeAnswer,
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
+		if(aptDateTime.chooseAppttypeText(reasonForAppointment).equals(reasonForAppointment)) {
+			Assert.assertTrue(true);
+			log("Reason for appointment is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		adminUtils.spanishLanguageAndCategorysettingsDeletion(driver, adminUser, testData, testData.getDecisionTreeName());
 	}
 }

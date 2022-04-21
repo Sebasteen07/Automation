@@ -23,6 +23,7 @@ import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
 import com.medfusion.product.object.maps.pss2.page.settings.AccessRules;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
+import com.medfusion.product.object.maps.pss2.page.settings.AdminReseller;
 import com.medfusion.product.object.maps.pss2.page.settings.AnnouncementsTab;
 import com.medfusion.product.object.maps.pss2.page.settings.InsuranceCarrier;
 import com.medfusion.product.object.maps.pss2.page.settings.LinkTab;
@@ -1033,6 +1034,33 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
+	public void verifyAnnouncementsAndCategoryWhenSpanishIsDisabled(WebDriver driver, AdminUser adminUser, 
+			Appointment appointment, String decisionTreeName, String appointmentType, String reasonForAppointment, 
+			String questionForAppointment, String decisionTreeAnswer, String footerText, String greetingsText) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		pssPracticeConfig.clickOnSpanishLanguage();
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		AnnouncementsTab announcementsTab = pssPracticeConfig.goToAnnouncementTab();
+		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, greetingsText);
+		AdminReseller adminReseller = pssPracticeConfig.gotoResellerTab();
+		adminReseller.setFooterTextWhenSpanishIsDisabled(footerText);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.addDecisionTreeWhenSpanishIsDisabled(decisionTreeName);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.addQuestionInDecisionTreeWhenSpanishIsDisabled(questionForAppointment);
+		manageGeneralInformation.addAnswerOneInDecisionTreeWhenSpanishIsDisabled(decisionTreeAnswer);
+		manageGeneralInformation.setApptTypeDecisionTreeSet2(appointmentType);
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.publishGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
 	public void addAndEditAnswerFieldsInCategoryWithProviderOn(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
 			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer,
 			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
@@ -1100,6 +1128,16 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	public void decisionTreeDeletion(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName) 
 			throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.removedDecisionTree(decisionTreeName);
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
+	public void spanishLanguageAndCategorysettingsDeletion(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName) 
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		pssPracticeConfig.clickOnSpanishLanguage();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.removedDecisionTree(decisionTreeName);
 		pageRefresh(driver);
