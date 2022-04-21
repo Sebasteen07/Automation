@@ -119,7 +119,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		apiVerification.verifyWithoutDeliveryMethod(response);
 	}
 
-//testReminderSettingGet
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testReminderSettingGet() throws IOException {
 		Response getReminderResponse = postAPIRequest.retrieveSettingForSpecificPractice(

@@ -83,7 +83,6 @@ public class AptEventCollectorTests extends BaseTestNG {
 		apiVerification.verifyEventIncorrectTime(response);
 		apiVerification.responseTimeValidation(response);
 	}
-	//
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMissingDataEventType() throws IOException {
