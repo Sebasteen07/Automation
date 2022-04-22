@@ -828,6 +828,37 @@ public class NotificationsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "(//div[@class='table-data'])[21]")
 	private WebElement timingUnitForSMS;
+	
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[1]")
+	private WebElement defaultTiming1forDay;
+	
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[2]")
+	private WebElement defaultTiming2forDay;
+
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[3]")
+	private WebElement defaultTiming3forDay;
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='1']")
+	private WebElement defaultTimingUnit1forDay;
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='3']")
+	private WebElement defaultTimingUnit2forDay;
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='5']")
+	private WebElement defaultTimingUnit3forDay;
+	
+	@FindBy(how = How.XPATH, using = "//div[text()='Hours']")
+	private WebElement selectHourforTiming;
+	
+	@FindBy(how = How.XPATH, using = "//div[text() = 'Minutes']")
+	private WebElement selectMinutesforTiming;
+
+	@FindBy(how = How.XPATH, using = "(//input[@value='12345678904567889990432225566771117656884323456777'])[1]")
+	private WebElement timingUnitTextUnderDesignTab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[1]")
+	private WebElement enterTimingUnit;
+
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -3313,6 +3344,170 @@ public class NotificationsPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		log("Timing Unit Text for Email: "+timingUnitForSMS.getText());
 		return timingUnitForSMS.getText();
+	}
+	
+	public boolean visibilityOfdefaultTiming1forDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, defaultTiming1forDay);
+		if (defaultTiming1forDay.isDisplayed()) {
+			log("Default time Days is displayed");
+			return true;
+		} else {
+			log("Default time Days is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfdefaultTiming2forDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, defaultTiming2forDay);
+		if (defaultTiming2forDay.isDisplayed()) {
+			log("Default time Days is displayed");
+			return true;
+		} else {
+			log("Default time Days is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfdefaultTiming3forDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, defaultTiming3forDay);
+		if (defaultTiming3forDay.isDisplayed()) {
+			log("Default time Days is displayed");
+			return true;
+		} else {
+			log("Default time Days is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfdefaultTimingUnit1forDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, defaultTimingUnit1forDay);
+		if (defaultTimingUnit1forDay.isDisplayed()) {
+			log("Default time unit 1 is displayed");
+			return true;
+		} else {
+			log("Default time unit 1 is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfdefaultTimingUnit2forDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTimingUnit2forDay);
+		if (defaultTimingUnit2forDay.isDisplayed()) {
+			log("Default time unit 3 is displayed");
+			return true;
+		} else {
+			log("Default time unit 3 is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfdefaultTimingUnit3forDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTimingUnit3forDay);
+		if (defaultTimingUnit3forDay.isDisplayed()) {
+			log("Default time unit 5 is displayed");
+			return true;
+		} else {
+			log("Default time unit 5 is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfselectDayforTiming() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTiming1forDay);
+		if (defaultTiming1forDay.isDisplayed()) {
+			log("Default time day is displayed");
+			return true;
+		} else {
+			log("Default time day is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfselectHourforTiming() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectHourforTiming);
+		if (selectHourforTiming.isDisplayed()) {
+			log("Default time Hour is displayed");
+			return true;
+		} else {
+			log("Default time Hour is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfselectMinutesforTiming() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectMinutesforTiming);
+		if (selectMinutesforTiming.isDisplayed()) {
+			log("Default time Minutes is displayed");
+			return true;
+		} else {
+			log("Default time Minutes is not displayed");
+			return false;
+		}
+	}
+	
+	public void enterTimingUnitUnderDesignTab(String timingunit) {
+		IHGUtil.waitForElement(driver, 10, timingUnitstextUnderdesignTab);
+		timingUnitstextUnderdesignTab.clear();
+		timingUnitstextUnderdesignTab.sendKeys(timingunit);
+		
+	}
+	
+	public boolean visibilityTimingUnitTextUnderDesignTab() {
+		IHGUtil.waitForElement(driver, 10, timingUnitTextUnderDesignTab);
+		if(timingUnitTextUnderDesignTab.isDisplayed()) {
+		log("timing units is displayed");
+		return true;
+		}
+		else {
+			log("timing units is not displayed displayed");
+			return false;
+		}
+	}
+	
+	public void enterTimingUnit(String timing) {
+		IHGUtil.waitForElement(driver, 10, enterTimingUnit);
+		enterTimingUnit.clear();
+		enterTimingUnit.sendKeys(timing);
+		
+	}
+	
+	public boolean visibilityofenterTimingUnit() {
+		IHGUtil.waitForElement(driver, 10, enterTimingUnit);
+		if(enterTimingUnit.isDisplayed()) {
+			log("timing unit is displayed ");
+			return true;
+		}
+		else {
+			log("timing unit is not displayed ");
+			return false;
+		}
+	}
+	
+	public void selectHourforTiming() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, selectHourforTiming);
+		selectHourforTiming.click();
+		
+	}
+	
+	public void selectMinutesforTiming() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, selectMinutesforTiming);
+		selectMinutesforTiming.click();
+		
+	}
+	
+	public void enterTimingUnitforMinutes(String minutes) {
+		IHGUtil.waitForElement(driver, 10, enterTimingUnit);
+		enterTimingUnit.clear();
+		enterTimingUnit.sendKeys(minutes);
 	}
 
 }
