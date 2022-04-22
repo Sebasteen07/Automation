@@ -1914,8 +1914,8 @@ Feature: Test fuctionality of Appointment precheck
     And on appointment dashboard default icon should be display
     Then I verify after getting cadance reminder default icon is replace with paper plane and on that paper plane icon count 1 will display
     And logout from practice provisioning portal
-    
-    Scenario: Verify if display first name is off then appointment scheduled confirmation mail does not show first name
+
+  Scenario: Verify if display first name is off then appointment scheduled confirmation mail does not show first name
     When I go to settings tab and click on notifications tab
     And I disable the display patient first name and save the notifications
     And I schedule an appointment and I receive the appointment scheduled confirmation mail
@@ -1998,4 +1998,9 @@ Feature: Test fuctionality of Appointment precheck
     And I select minutes and enter 59 number in timing unit
     Then I verify system should allow only 59 integer in the timing unit section
     And logout from practice provisioning portal
-    
+
+  Scenario: Verify for both manual and cadence reminder single history pop up will display
+    When I schedule an appointment in "en"
+    And I select patient and send manual reminder
+    Then I verify for email and text reminder system should show all manual and cadence reminder log on mails history  pop up
+    And logout from practice provisioning portal
