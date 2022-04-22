@@ -47,7 +47,7 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	private WebElement saveButton;
 
 	@FindBy(how = How.XPATH, using = "(//div[@class='pull-right']/button)[1]")
-	private WebElement saveButton1;		
+	private WebElement savePracticeConfigBtn;		
 			
 	public PSS2PracticeConfiguration(WebDriver driver) {
 		super(driver);
@@ -119,7 +119,7 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	public void clickOnSpanishLanguage() throws InterruptedException {
 		Thread.sleep(3000);
 		javascriptClick(spanishLanguageLabel);
-		javascriptClick(saveButton1);
+		javascriptClick(savePracticeConfigBtn);
 	}
 
 }
