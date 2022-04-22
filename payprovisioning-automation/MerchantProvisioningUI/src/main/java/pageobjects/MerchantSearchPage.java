@@ -12,13 +12,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-
 import static org.testng.Assert.assertFalse;
 
 public class MerchantSearchPage extends NavigationMenu {
@@ -49,9 +44,6 @@ public class MerchantSearchPage extends NavigationMenu {
 
 	@FindAll({ @FindBy(how = How.XPATH, using = "//tbody/tr") })
 	private List<WebElement> mmidRow;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='top-nav']/div/div[2]/div[2]")
-	private WebElement merchantDetailsPageTitle;
 
 	public MerchantSearchPage(WebDriver driver) {
 		super(driver);
