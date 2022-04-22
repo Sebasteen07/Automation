@@ -6741,6 +6741,9 @@ public class ApptPrecheckSteps extends BaseTest {
 				   propertyData.getProperty("patient.name"),5));
 		   
 		   loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		   mainPage.clickOnSettingTab();
+		   notifPage.clickOnNotificationTab();
+		   notifPage.displayPatientFirstNameCheckbox();
 		}
 		@When("I schedule an appointment and I receive the appointment reminder in mail")
 		public void i_schedule_an_appointment_and_i_receive_the_appointment_reminder_in_mail() throws NullPointerException, IOException {
@@ -6766,6 +6769,9 @@ public class ApptPrecheckSteps extends BaseTest {
 					   propertyData.getProperty("patient.name"),5));
 			   
 			   loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+			   mainPage.clickOnSettingTab();
+			   notifPage.clickOnNotificationTab();
+			   notifPage.displayPatientFirstNameCheckbox();
 		}
 		@When("I schedule an appointment and I receive the broadcast message in mail")
 		public void i_schedule_an_appointment_and_i_receive_the_broadcast_message_in_mail() throws NullPointerException, IOException {
@@ -6798,6 +6804,9 @@ public class ApptPrecheckSteps extends BaseTest {
 					   propertyData.getProperty("patient.name"),5));
 			   
 			   loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+			   mainPage.clickOnSettingTab();
+			   notifPage.clickOnNotificationTab();
+			   notifPage.displayPatientFirstNameCheckbox();
 		}
 		@When("I schedule an appointment and I receive the curbside reminder in mail")
 		public void i_schedule_an_appointment_and_i_receive_the_curbside_reminder_in_mail() throws NullPointerException, IOException {
@@ -6823,6 +6832,9 @@ public class ApptPrecheckSteps extends BaseTest {
 					   propertyData.getProperty("patient.name"),5));
 			   
 			   loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+			   mainPage.clickOnSettingTab();
+			   notifPage.clickOnNotificationTab();
+			   notifPage.displayPatientFirstNameCheckbox();
 		}
 		@When("I schedule an appointment and I receive the manual reminder in mail")
 		public void i_schedule_an_appointment_and_i_receive_the_manual_reminder_in_mail() throws NullPointerException, IOException {
@@ -6855,16 +6867,19 @@ public class ApptPrecheckSteps extends BaseTest {
 					   propertyData.getProperty("patient.name"),5));
 			   
 			   loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+			   mainPage.clickOnSettingTab();
+			   notifPage.clickOnNotificationTab();
+			   notifPage.displayPatientFirstNameCheckbox();
 		}
 		
 		@Then("I verify system should show by default days configured in days section and in timing units {double} configured")
 		public void i_verify_system_should_show_by_default_days_configured_in_days_section_and_in_timing_units_configured(Double double1) throws InterruptedException {
-		    assertTrue(notifPage.visibilityOfdefaultTiming1forDay());
-		    assertTrue(notifPage.visibilityOfdefaultTiming2forDay());
-		    assertTrue(notifPage.visibilityOfdefaultTiming3forDay());
-		    assertTrue(notifPage.visibilityOfdefaultTimingUnit1forDay());
-		    assertTrue(notifPage.visibilityOfdefaultTimingUnit2forDay());
-		    assertTrue(notifPage.visibilityOfdefaultTimingUnit3forDay());
+		    assertTrue(notifPage.visibilityOfDefaultTiming1ForDay());
+		    assertTrue(notifPage.visibilityOfDefaultTiming2ForDay());
+		    assertTrue(notifPage.visibilityOfDefaultTiming3ForDay());
+		    assertTrue(notifPage.visibilityOfDefaultTimingUnit1ForDay());
+		    assertTrue(notifPage.visibilityOfDefaultTimingUnit2ForDay());
+		    assertTrue(notifPage.visibilityOfDefaultTimingUnit3ForDay());
 		    notifPage.clickOnBackArrow();
 		}
 		@When("I click on dropdown of timing")
@@ -6873,7 +6888,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		}
 		@Then("I verify system should show only {int} fields in dropdown of timing that is Day,hours,minutes")
 		public void i_verify_system_should_show_only_fields_in_dropdown_of_timing_that_is_day_hours_minutes(Integer int1) throws InterruptedException {
-			assertTrue(notifPage.visibilityOfselectDayforTiming());
+			assertTrue(notifPage.visibilityOfselectDayForTiming());
 			notifPage.clickTimingDropdownunderDesigntab();
 		    assertTrue(notifPage.visibilityOfselectHourforTiming());
 		    notifPage.clickTimingDropdownunderDesigntab();

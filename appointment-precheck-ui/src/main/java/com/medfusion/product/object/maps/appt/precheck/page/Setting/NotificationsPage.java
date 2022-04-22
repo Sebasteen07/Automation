@@ -830,22 +830,22 @@ public class NotificationsPage extends BasePageObject {
 	private WebElement timingUnitForSMS;
 	
 	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[1]")
-	private WebElement defaultTiming1forDay;
+	private WebElement defaultTiming1ForDay;
 	
 	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[2]")
-	private WebElement defaultTiming2forDay;
+	private WebElement defaultTiming2ForDay;
 
 	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[3]")
-	private WebElement defaultTiming3forDay;
+	private WebElement defaultTiming3ForDay;
 	
 	@FindBy(how = How.XPATH, using = "//input[@value='1']")
-	private WebElement defaultTimingUnit1forDay;
+	private WebElement defaultTimingUnit1ForDay;
 	
 	@FindBy(how = How.XPATH, using = "//input[@value='3']")
-	private WebElement defaultTimingUnit2forDay;
+	private WebElement defaultTimingUnit2ForDay;
 	
 	@FindBy(how = How.XPATH, using = "//input[@value='5']")
-	private WebElement defaultTimingUnit3forDay;
+	private WebElement defaultTimingUnit3ForDay;
 	
 	@FindBy(how = How.XPATH, using = "//div[text()='Hours']")
 	private WebElement selectHourforTiming;
@@ -3346,10 +3346,10 @@ public class NotificationsPage extends BasePageObject {
 		return timingUnitForSMS.getText();
 	}
 	
-	public boolean visibilityOfdefaultTiming1forDay() throws InterruptedException {
+	public boolean visibilityOfDefaultTiming1ForDay() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 5, defaultTiming1forDay);
-		if (defaultTiming1forDay.isDisplayed()) {
+		IHGUtil.waitForElement(driver, 5, defaultTiming1ForDay);
+		if (defaultTiming1ForDay.isDisplayed()) {
 			log("Default time Days is displayed");
 			return true;
 		} else {
@@ -3358,10 +3358,10 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 	
-	public boolean visibilityOfdefaultTiming2forDay() throws InterruptedException {
+	public boolean visibilityOfDefaultTiming2ForDay() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 5, defaultTiming2forDay);
-		if (defaultTiming2forDay.isDisplayed()) {
+		IHGUtil.waitForElement(driver, 5, defaultTiming2ForDay);
+		if (defaultTiming2ForDay.isDisplayed()) {
 			log("Default time Days is displayed");
 			return true;
 		} else {
@@ -3370,10 +3370,10 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 	
-	public boolean visibilityOfdefaultTiming3forDay() throws InterruptedException {
+	public boolean visibilityOfDefaultTiming3ForDay() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 5, defaultTiming3forDay);
-		if (defaultTiming3forDay.isDisplayed()) {
+		IHGUtil.waitForElement(driver, 5, defaultTiming3ForDay);
+		if (defaultTiming3ForDay.isDisplayed()) {
 			log("Default time Days is displayed");
 			return true;
 		} else {
@@ -3382,10 +3382,10 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 	
-	public boolean visibilityOfdefaultTimingUnit1forDay() throws InterruptedException {
+	public boolean visibilityOfDefaultTimingUnit1ForDay() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 5, defaultTimingUnit1forDay);
-		if (defaultTimingUnit1forDay.isDisplayed()) {
+		IHGUtil.waitForElement(driver, 5, defaultTimingUnit1ForDay);
+		if (defaultTimingUnit1ForDay.isDisplayed()) {
 			log("Default time unit 1 is displayed");
 			return true;
 		} else {
@@ -3394,10 +3394,10 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 	
-	public boolean visibilityOfdefaultTimingUnit2forDay() throws InterruptedException {
+	public boolean visibilityOfDefaultTimingUnit2ForDay() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 10, defaultTimingUnit2forDay);
-		if (defaultTimingUnit2forDay.isDisplayed()) {
+		IHGUtil.waitForElement(driver, 10, defaultTimingUnit2ForDay);
+		if (defaultTimingUnit2ForDay.isDisplayed()) {
 			log("Default time unit 3 is displayed");
 			return true;
 		} else {
@@ -3406,10 +3406,10 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 	
-	public boolean visibilityOfdefaultTimingUnit3forDay() throws InterruptedException {
+	public boolean visibilityOfDefaultTimingUnit3ForDay() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 10, defaultTimingUnit3forDay);
-		if (defaultTimingUnit3forDay.isDisplayed()) {
+		IHGUtil.waitForElement(driver, 10, defaultTimingUnit3ForDay);
+		if (defaultTimingUnit3ForDay.isDisplayed()) {
 			log("Default time unit 5 is displayed");
 			return true;
 		} else {
@@ -3418,10 +3418,10 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 	
-	public boolean visibilityOfselectDayforTiming() throws InterruptedException {
+	public boolean visibilityOfselectDayForTiming() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 10, defaultTiming1forDay);
-		if (defaultTiming1forDay.isDisplayed()) {
+		IHGUtil.waitForElement(driver, 10, defaultTiming1ForDay);
+		if (defaultTiming1ForDay.isDisplayed()) {
 			log("Default time day is displayed");
 			return true;
 		} else {
