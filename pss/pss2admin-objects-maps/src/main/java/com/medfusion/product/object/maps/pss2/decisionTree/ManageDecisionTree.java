@@ -51,7 +51,7 @@ public class ManageDecisionTree extends PSS2MainPage {
 	private WebElement editEnglishDecisionTreeName;
 	
 	@FindBy(how = How.XPATH, using = "//textarea[@id='displayName']")
-	private WebElement editEnglishDecisionTreeName1;
+	private WebElement editDecisionTreeWhenESDisabled;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tab13']/form/fieldset[1]/div[2]/div/ul/li[2]/a")
 	private WebElement clickEspanolDecisionTreeName;
@@ -151,7 +151,7 @@ public class ManageDecisionTree extends PSS2MainPage {
 		addDecisionTree.click();
 		log("Add Decision tree Button clicked");
 		editDecisionTreeName.sendKeys(decisionTreeName);
-		editEnglishDecisionTreeName1.sendKeys(decisionTreeName);
+		editDecisionTreeWhenESDisabled.sendKeys(decisionTreeName);
 		buttonSaveDecisionTree.click();
 		log("Decision Tree is added successfully.");	
 	}
@@ -179,7 +179,7 @@ public class ManageDecisionTree extends PSS2MainPage {
 	}
 
 	String getFile(String decisionTreeName) {
-		return new File("E://usr//Decision Tree//"+decisionTreeName+".json").getAbsolutePath();
+		return new File(".//src//test//resources//"+decisionTreeName+".json").getAbsolutePath();
 	}
 	
 	public void searchByDecisionTreeName(String decisionTreeName) throws InterruptedException {

@@ -564,9 +564,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.ge");
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(testData.getDecisionTreeName());
 		manageDecisionTree.selectDecisionTree(testData.getDecisionTreeName());
@@ -621,9 +621,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.gw");
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(testData.getDecisionTreeName());
 		manageDecisionTree.selectDecisionTree(testData.getDecisionTreeName());
@@ -725,9 +725,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String questionForAppointment = propertyData.getProperty("decision.tree.appointment.question.ge");
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.addDecisionTree(testData.getDecisionTreeName());
 		manageDecisionTree.selectDecisionTree(testData.getDecisionTreeName());
@@ -785,9 +785,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String questionForAppointment = propertyData.getProperty("decision.tree.appointment.question.gw");
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.addDecisionTree(testData.getDecisionTreeName());
 		manageDecisionTree.selectDecisionTree(testData.getDecisionTreeName());
@@ -933,9 +933,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.ge");
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet3(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		adminUtils.setRulesNoSpecialitySet3(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(testData.getDecisionTreeName());
 		manageDecisionTree.selectSpecility(testData.getSpeciality());
@@ -990,9 +990,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.ge");
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet3(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		adminUtils.setRulesNoSpecialitySet3(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(testData.getDecisionTreeName());
 		manageDecisionTree.selectSpecility(testData.getSpeciality());
@@ -1237,12 +1237,13 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		PSSPatientUtils patientUtils = new PSSPatientUtils();
 		String footerText = propertyData.getProperty("footer.text.ng");
+		String announcementTypeText = propertyData.getProperty("greetings.announcement.type.ng");
 		String greetingsText = propertyData.getProperty("greetings.announcement.ng");
 		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.ng");
 		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.ng");
 		String questionForAppointment = propertyData.getProperty("decision.tree.appointment.question.ng");
-		adminUtils.verifyAnnouncementsAndCategoryWhenSpanishIsDisabled(driver, adminUser, testData, testData.getDecisionTreeName(), 
-				testData.getAppointmenttype(), reasonForAppointment, questionForAppointment, decisionTreeAnswer, footerText, greetingsText);
+		adminUtils.verifyAnnouncementsAndCategoryWhenSpanishIsDisabled(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), 
+				reasonForAppointment, questionForAppointment, decisionTreeAnswer, footerText, announcementTypeText, greetingsText);
 		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver);
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -1299,6 +1300,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		PSSPatientUtils patientUtils = new PSSPatientUtils();
 		String footerText = propertyData.getProperty("footer.text.ge");
+		String announcementTypeText = propertyData.getProperty("greetings.announcement.type.ng");
 		String greetingsText = propertyData.getProperty("greetings.announcement.ge");
 		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.ge");
 		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.ge");
@@ -1306,11 +1308,11 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
 		pssPracticeConfig.clickOnSpanishLanguage();
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		AnnouncementsTab announcementsTab = pssPracticeConfig.goToAnnouncementTab();
-		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, greetingsText);
+		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, announcementTypeText, greetingsText);
 		AdminReseller adminReseller = pssPracticeConfig.gotoResellerTab();
 		adminReseller.setFooterTextWhenSpanishIsDisabled(footerText);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
@@ -1380,6 +1382,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		PSSPatientUtils patientUtils = new PSSPatientUtils();
 		String footerText = propertyData.getProperty("footer.text.gw");
+		String announcementTypeText = propertyData.getProperty("greetings.announcement.type.ng");
 		String greetingsText = propertyData.getProperty("greetings.announcement.gw");
 		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.gw");
 		String decisionTreeAnswer = propertyData.getProperty("decision.tree.answer.gw");
@@ -1387,11 +1390,11 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
 		pssPracticeConfig.clickOnSpanishLanguage();
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		AnnouncementsTab announcementsTab = pssPracticeConfig.goToAnnouncementTab();
-		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, greetingsText);
+		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, announcementTypeText, greetingsText);
 		AdminReseller adminReseller = pssPracticeConfig.gotoResellerTab();
 		adminReseller.setFooterTextWhenSpanishIsDisabled(footerText);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();

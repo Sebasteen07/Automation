@@ -103,15 +103,15 @@ public class AnnouncementsTab extends SettingsTab  {
 		
 	}
 	
-	public void addAnnouncementWhenSpanishISDisabled(WebDriver driver,String greetingsText) throws InterruptedException {
+	public void addAnnouncementWhenSpanishISDisabled(WebDriver driver, String announcementTypeText, String greetingsText) throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, addAnnouncementBtn);
 		commonMethods.highlightElement(addAnnouncementBtn);
 		addAnnouncementBtn.click();
 		
 		IHGUtil.waitForElement(driver, 10, announcementType);
 		Select announcementList = new Select(announcementType);
-		
-		announcementList.selectByIndex(7);
+		Thread.sleep(2000);
+		announcementList.selectByVisibleText(announcementTypeText);
 		log("Greetings from Dropdown is selected");
 		IHGUtil.waitForElement(driver, 10, editMessage);
 		commonMethods.highlightElement(editMessage);

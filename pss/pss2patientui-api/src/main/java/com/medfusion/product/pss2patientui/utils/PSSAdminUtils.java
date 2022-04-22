@@ -956,11 +956,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType, String reasonForAppointment) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.turnOnProvider();
 		setRulesNoProviderSet1(patientflow);
 		patientflow.turnOffProvider();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -976,10 +976,10 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType, String reasonForAppointment) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -995,11 +995,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType, String reasonForAppointment, String specialtyName) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.removeAllRules();
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet3(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(decisionTreeName);
 		manageDecisionTree.selectSpecility(specialtyName);
@@ -1016,11 +1016,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.removeAllRules();
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.addDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -1034,18 +1034,18 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
-	public void verifyAnnouncementsAndCategoryWhenSpanishIsDisabled(WebDriver driver, AdminUser adminUser, 
-			Appointment appointment, String decisionTreeName, String appointmentType, String reasonForAppointment, 
-			String questionForAppointment, String decisionTreeAnswer, String footerText, String greetingsText) throws Exception {
+	public void verifyAnnouncementsAndCategoryWhenSpanishIsDisabled(WebDriver driver, AdminUser adminUser, Appointment appointment, 
+			String decisionTreeName, String appointmentType, String reasonForAppointment, String questionForAppointment, 
+			String decisionTreeAnswer, String footerText, String announcementTypeText,String greetingsText) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		pssPracticeConfig.clickOnSpanishLanguage();
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		AnnouncementsTab announcementsTab = pssPracticeConfig.goToAnnouncementTab();
-		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, greetingsText);
+		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, announcementTypeText, greetingsText);
 		AdminReseller adminReseller = pssPracticeConfig.gotoResellerTab();
 		adminReseller.setFooterTextWhenSpanishIsDisabled(footerText);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
@@ -1066,11 +1066,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.removeAllRules();
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.addDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -1099,9 +1099,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		setRulesNoSpecialitySet1(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		setRulesNoSpecialitySet1(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.addDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
