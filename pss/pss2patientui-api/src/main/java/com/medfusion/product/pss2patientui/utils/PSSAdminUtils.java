@@ -359,7 +359,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
 		patientflow.saveRule();
-		Thread.sleep(1000);
+		Thread.sleep(3000);
 		log("--------------------------------WAIT FOR RULE TLB TO BE ADDED--------------------------------");
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("Location");
@@ -392,10 +392,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	public void addRuleWithoutBook(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
-		patientflow.removeAllRules();
-		Thread.sleep(2000);
+		patientflow.turnOnProvider();
+		setRulesNoProviderSet1(patientflow);
 		patientflow.turnOffProvider();
-		setRulesNoProviderSet2(patientflow);
 		Log4jUtil.log("Logging out of PSS 2.0 admin UI");
 		patientflow.logout();
 	}
@@ -940,6 +939,8 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
 		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
 		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOnProvider();
+		setRulesNoProviderSet1(patientFlow);
 		patientFlow.turnOffProvider();
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();
@@ -956,10 +957,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		patientflow.removeAllRules();
-		Thread.sleep(2000);
+		patientflow.turnOnProvider();
+		setRulesNoProviderSet1(patientflow);
 		patientflow.turnOffProvider();
-		setRulesNoProviderSet2(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -1066,7 +1066,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
-	public void addAndEditAnswerFieldsInCategoryWithProviderOff(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+	public void addAndEditAnswerFieldsInCategory(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
 			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer,
 			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
@@ -1122,6 +1122,37 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		pageRefresh(driver);
 		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
 		manageAppointmentType.resetExcludeBtn();
+		manageAppointmentType.logout();
+	}
+	
+	public void preventApptTypeScheduleWithProviderOff(WebDriver driver, AdminUser adminUser, Appointment appointment
+			) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		if (adminAppointment.toggleNextAvailableStatus() == true) {
+			adminAppointment.toggleNextavailableClick();
+		}
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOnProvider();
+		setRulesNoProviderSet1(patientFlow);
+		patientFlow.turnOffProvider();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.prevSchedSettings(appointment.getAppointmenttype(), appointment.getPreSchedDays());
+		log("Prevent Scheduling settings are turn on successfully for "+appointment.getPreSchedDays());
+		pageRefresh(driver);
+		manageAppointmentType.logout();
+	}
+	
+	public void resetPreventApptTypeScheduleWithProviderOff(WebDriver driver, AdminUser adminUser, Appointment appointment
+			) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.resetPrevSchedSettings(appointment.getAppointmenttype());
+		log("Prevent Scheduling settings are turned off");
 		manageAppointmentType.logout();
 	}
 	
@@ -1545,6 +1576,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
 		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
 		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		Thread.sleep(2000);
 		manageAppointmentType.selectAppointment(appointmentType);
 		manageAppointmentType.gotoConfiguration();
 		log("Status for OverBooking is " + manageAppointmentType.overBookingStatus());

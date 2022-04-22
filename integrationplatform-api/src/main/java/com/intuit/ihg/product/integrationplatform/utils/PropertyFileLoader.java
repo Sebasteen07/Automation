@@ -1225,7 +1225,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getpatientFirstName_FE() {
-		return property.getProperty("patientfirstname.fe");
+		return property.getProperty("precheckpatientfirstname.fe");
 	}
 
 	public String getpatientLastName_FE() {

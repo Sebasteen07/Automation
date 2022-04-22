@@ -332,8 +332,8 @@ public class FormsExportUtils {
 		pFormInsurancePage.fillfirstInsurance(testData.NameofPrimaryInsurance, firstName);
 
 		Log4jUtil.log("Step 17: Fill in Secondary Insurance Details");
-		FormSecondaryInsurancePage pFormSecondaryInsurancePage= PageFactory.initElements(driver, FormSecondaryInsurancePage.class);
-		pFormSecondaryInsurancePage.fillSecondInsurance(testData.NameofsecondaryInsurance,firstName);
+		FormSecondaryInsurancePage pFormSecondaryInsurancePage = PageFactory.initElements(driver, FormSecondaryInsurancePage.class);
+		pFormSecondaryInsurancePage.fillSecondInsurance(testData.NameofsecondaryInsurance, firstName);
 
 		Log4jUtil.log("Step 18: Set Providers Details");
 		FormOtherProvidersPage pFormOtherProvidersPage=PageFactory.initElements(driver, FormOtherProvidersPage.class);

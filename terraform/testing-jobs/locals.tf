@@ -871,7 +871,7 @@ locals {
       PollForSourceChanges  = false
       execution_folder      = "pi-integration-platform-acceptance"
       test_environment      = "qa1"
-      suite_xml             = "integration-platform-acceptance.xml"
+      suite_xml             = "integration-platform-regression.xml"
       pxp_application       = "Portal"
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
@@ -909,6 +909,141 @@ locals {
       google_chrome_version = "99.0.4844.82-1"
       chrome_driver_version = "99.0.4844.51"
       cron_shedule          = "cron(40 2 ? * 1 *)"
+    }
+
+    "dev3-integrations2-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "dev3"
+      suite_xml             = "integration-platform-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.60-1"
+      chrome_driver_version = "99.0.4844.51"
+      cron_shedule          = "cron(15 20 ? * 1-5 *)"
+    }
+
+    "dev3-integrations2-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "dev3"
+      suite_xml             = "integration-platform-regression.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.60-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+    }
+
+    "dev3-integrations2-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "dev3"
+      suite_xml             = "integration-platform-regression2.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.60-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+    }
+
+    "dev3-integrations2-regression3" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "dev3"
+      suite_xml             = "integration-platform-regression3.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.60-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+    }
+
+    "dev3-integrations-acceptance-oauth10" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "integration-platform-acceptance"
+      test_environment      = "dev3"
+      suite_xml             = "integration-platform-acceptance10.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.88-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(15 18 ? * 1-5 *)"
+    }
+
+    "dev3-integrations1-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "integration-platform-acceptance"
+      test_environment      = "dev3"
+      suite_xml             = "integration-platform-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.88-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(0 19 ? * 1-5 *)"
+    }
+
+    "dev3-integrations1-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "integration-platform-acceptance"
+      test_environment      = "dev3"
+      suite_xml             = "integration-platform-regression.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.75-1"
+      chrome_driver_version = "99.0.4844.51"
+      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+    }
+
+    "dev3-payreporting-e2e-element" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automationE2E"
+      test_environment      = "dev3"
+      suite_xml             = "payreporting-acceptance.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.88-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+    }
+
+    "dev3-payreporting-payments" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automation"
+      test_environment      = "dev3"
+      suite_xml             = "payreporting-payments-acceptance-tests.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.88-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(0 20 ? * 1-5 *)"
     }
   }
 

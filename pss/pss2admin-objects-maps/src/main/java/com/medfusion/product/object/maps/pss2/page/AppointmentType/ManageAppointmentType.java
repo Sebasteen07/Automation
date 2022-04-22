@@ -144,7 +144,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']")
 	private WebElement overBookingToggle;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[1]/div[12]/div/label[1]/i")
+	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']/following-sibling::i")
 	private WebElement overBookingToggleClick;
 
 	public ManageAppointmentType(WebDriver driver) {
@@ -190,6 +190,25 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		log("Appointment Type Saved Message- "+appointmentTypeSavedMsg);
 		log("Length of Saved Message- "+appointmentTypeSavedMsg.length());
 		
+	}
+	
+	public void resetPrevSchedSettings(String aptType) throws InterruptedException {
+		
+		commonMethods.highlightElement(searchAppointment);
+		searchAppointment.sendKeys(aptType);
+		commonMethods.highlightElement(aptTypeLink);
+		aptTypeLink.click();
+		IHGUtil.waitForElement(driver, 10, editAptTypeHeading);
+		commonMethods.highlightElement(editAptTypeHeading);
+		scrollAndWait(0, 800, 1000);
+		commonMethods.highlightElement(prevSchedSettingLabel);
+		log("PrevSched Setting Label- "+prevSchedSettingLabel.getText());
+		
+		commonMethods.highlightElement(prevSchedSettingAdmin);
+		prevSchedSettingAdmin.click();
+		prevSchedSettingAdmin.clear();
+		commonMethods.highlightElement(aptTypeSettingSaveBtn);
+		aptTypeSettingSaveBtn.click();
 	}
 	
 	public void selectAppointment(String appointment) throws InterruptedException {

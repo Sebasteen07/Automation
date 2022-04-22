@@ -1,16 +1,14 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package provisioningtests;
 
-import java.io.IOException;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-
-import pageobjects.LoginPage;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
+import org.testng.annotations.BeforeMethod;
+import pageobjects.LoginPage;
+
+import java.io.IOException;
 
 public class ProvisioningBaseTest extends BaseTestNGWebDriver {
 
