@@ -133,4 +133,6 @@ public class InstaMedMerchantDetailsPage extends NavigationMenu{
         return nQTierFee.getText();
     }
 
+    public String getAmexFee(){return amexFee.getText();}
+
 }

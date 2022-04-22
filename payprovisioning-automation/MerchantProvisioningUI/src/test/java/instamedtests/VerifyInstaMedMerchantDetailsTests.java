@@ -1,5 +1,6 @@
 package instamedtests;
 
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
@@ -7,12 +8,11 @@ import org.testng.annotations.Test;
 import pageobjects.InstaMedMerchantDetailsPage;
 import pageobjects.MerchantSearchPage;
 import provisioningtests.ProvisioningBaseTest;
-
 import java.io.IOException;
 
 public class VerifyInstaMedMerchantDetailsTests  extends ProvisioningBaseTest {
 
-    @Test
+    @Test(enabled = true, groups = {"MerchantProvisioningAcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
     public void testVerifyMerchant() throws IOException, NullPointerException, InterruptedException {
 
         PropertyFileLoader testData = new PropertyFileLoader();
@@ -20,7 +20,6 @@ public class VerifyInstaMedMerchantDetailsTests  extends ProvisioningBaseTest {
         MerchantSearchPage merchantSearchPage = PageFactory.initElements(driver, MerchantSearchPage.class);
         merchantSearchPage.findByMerchantId(testData.getProperty("instamed.merchant.id.get"));
         merchantSearchPage.searchButtonClick();
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         logStep("Going to click on view Merchant details page");
         merchantSearchPage.viewDetailsButtonClick();
@@ -31,26 +30,29 @@ public class VerifyInstaMedMerchantDetailsTests  extends ProvisioningBaseTest {
         Assert.assertTrue(instaMedMerchantDetailsPage.verifyMmidPresent());
 
         logStep("Going to verify General Merchant Info");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getMerchantName(),"InstaMed - Pay");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getPracticeID(),"24109");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getAccountNumber(),"12345");
+        Assert.assertEquals(instaMedMerchantDetailsPage.getMerchantName(), testData.getProperty("instamed.merchant.name.get"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getPracticeID(),testData.getProperty("instamed.practice.id.get"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getAccountNumber(),testData.getProperty("instamed.account.number.get"));
 
         logStep("Going to verify InstaMed AccountDetails");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getMIDText(),"10212021");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getClientID(),"34cbb6dd5c6f405fa73c3e8abe54e34f");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getClientSecret(),"PbuTeWqEmD+b1uFM");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getStoreID(),"0001");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getTerminalIdPatientPortal(),"0001");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getTerminalIdPreCheck(),"0001");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getTerminalIdVirtualVisits(),"0001");
+        Assert.assertEquals(instaMedMerchantDetailsPage.getMIDText(), testData.getProperty("instamed.mid"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getClientID(), testData.getProperty("instamed.clientid"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getClientSecret(),testData.getProperty("instamed.secret"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getStoreID(), testData.getProperty("instamed.storeid"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getTerminalIdPatientPortal(), testData.getProperty("instamed.terminalid.portal"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getTerminalIdPreCheck(), testData.getProperty("instamed.terminalid.precheck"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getTerminalIdVirtualVisits(),
+                testData.getProperty("instamed.terminalid.virtualvisits"));
 
         logStep("Going to verify Rates and Contract Information");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getPlatformFeeAuth(),"$ 10");
+        Assert.assertEquals(instaMedMerchantDetailsPage.getPlatformFeeAuth(), testData.getProperty("instamed.perTransactionAuthFee.get"));
 
         logStep("Going to verify Percentage Fee Tiers");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getQTierQFee(),"10");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getMidTierQFee(),"10");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getNonTierQFee(),"10");
+        Assert.assertEquals(instaMedMerchantDetailsPage.getQTierQFee(), testData.getProperty("instamed.qTierFee"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getMidTierQFee(), testData.getProperty("instamed.mTierFee"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getNonTierQFee(), testData.getProperty("instamed.nTierFee"));
+        Assert.assertNotNull(instaMedMerchantDetailsPage.getAmexFee());
+        Assert.assertEquals(instaMedMerchantDetailsPage.getAmexFee(), testData.getProperty("instamed.amex.fee.get"));
 
     }
 }

@@ -30,25 +30,33 @@ public class CreateInstaMedMerchant extends ProvisioningBaseTest {
         AddNewMerchantPage addNewMerchantPage = navigationMenu.openAddMerchantPage();
         AddInstaMedMerchantPage addInstaMedMerchantPage = addNewMerchantPage.pageForAddingNewInstaMedMerchant("InstaMed");
 
-        logStep("Create Element Merchant");
+        logStep("Select Preferred Vendor and add General Merchant Information");
          addInstaMedMerchantPage.addVendorAndGeneralMerchantInfo("InstaMed",
                 testData.getProperty("instamed.merchant.name") + " - " + IHGUtil.createRandomNumericString(3),
                 testData.getProperty("instamed.practice.id"),
                 testData.getProperty("instamed.customer.account"));
+
+        logStep("Add Payment Processor Information");
         addInstaMedMerchantPage.addPaymentProcessorInformation(
                 testData.getProperty("instamed.clientid"),
                 testData.getProperty("instamed.secret"),
                 testData.getProperty("instamed.mid"),
                 testData.getProperty("instamed.storeid"));
+
+        logStep("Add Terminal Information");
         addInstaMedMerchantPage.addTerminalInformation(
                 testData.getProperty("instamed.terminalid.portal"),
                 testData.getProperty("instamed.terminalid.precheck"),
                 testData.getProperty("instamed.terminalid.virtualvisits"));
+
+        logStep("Add Rates and Fees Information");
         addInstaMedMerchantPage.addRatesAndFees(
                 testData.getProperty("instamed.perTransactionAuthFee"),
                 testData.getProperty("instamed.qTierFee"),
                 testData.getProperty("instamed.mTierFee"),
                 testData.getProperty("instamed.nTierFee"));
+
+        logStep("Select Visa card");
         addInstaMedMerchantPage.selectAnAcceptedCard(1);
 
         log("Click Create Merchant Button");
