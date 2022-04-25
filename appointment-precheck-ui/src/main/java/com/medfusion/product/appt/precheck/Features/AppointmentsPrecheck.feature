@@ -2004,3 +2004,105 @@ Feature: Test fuctionality of Appointment precheck
     And I select patient and send manual reminder
     Then I verify for email and text reminder system should show all manual and cadence reminder log on mails history  pop up
     And logout from practice provisioning portal
+  
+  Scenario: verify if user is able to see latest reminder status in mail and text section either for cadence reminder.
+    When I click on setting tab
+    And I click on notification tab
+    And I am on the reminder section of the appointment reminder
+    And I click on appointments tabs
+    And I schedule an appointment for English language
+    And I go to appointment dashboard and select one user from appointment dashboard
+    And I click on '>' icon of the selected patient from dashboard
+    Then I verify system should show latest cadence reminder status on page
+    And logout from practice provisioning portal
+     
+  Scenario: verify if user is able to see manual reminder status in mail and text section either for manual reminder.
+    When I click on setting tab
+    And I click on notification tab
+    And I am on the reminder section of the appointment reminder
+    And I click on appointments tab
+    And I schedule an appointment for English language
+    And I select one user from appointment dashboard and send manual reminder
+    And I click on '>' icon of the selected patient from dashboard
+    Then I verify system should show manual reminder status on page
+    And logout from practice provisioning portal
+  
+  Scenario: Verify if display first name is on then appointment scheduled confirmation mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the appointment scheduled confirmation in mail
+    Then I verify appointment scheduled confirmation mail recieved should show first name
+    And logout from practice provisioning portal
+     
+  Scenario: Verify if display first name is on then appointment reminder in mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the appointment reminder in mail
+    Then I verify appointment reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+    
+  Scenario: Verify if display first name is on then broadcast message in mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the broadcast message reminder in mail
+    And I send broadcast message to patient
+    Then I verify broadcast message recieved in mail should show first name
+    And logout from practice provisioning portal
+    
+  Scenario: Verify if display first name is on then curbside reminder in mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the curbside reminder in mail
+    Then I verify curbside reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+    
+  Scenario: Verify if display first name is on then manual reminder in mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the manual reminder in mail
+    And I send manual reminder for that appointment
+    Then I verify manual reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user delete 4th timing unit by click on (-) button from page
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on 4th timing unit
+  	And I click on delete button of 4th timing unit 
+  	Then I verify that system should allow user to delete timing units from page
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to see (+) add in enable format after deleting 4th timing unit
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on 4th timing unit
+  	And I click on delete button of 4th timing unit 
+  	Then I verify add button should display in enable format
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to see add button in enable format when I delete 2 more timing units
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on 4th timing unit
+  	And I click on delete button of 4th and 3rd timing unit 
+  	Then I verify add button should display in enable format if I delete 2 timing units
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to delete all timing units fields on cadence editor template page by clicking on (-) button
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders 
+  	And I click on delete button of all timing unit fields
+  	Then I verify system should allow user to delete all timing units fields and in notification tab the timing and timing unit section blank space should display
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to add again timing units field by clicking on (+) add button on cadence editor template page
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on add button on cadence editor template page
+  	Then I verify system should allow user to add timing fields on cadence editor template page
+    And logout from practice provisioning portal

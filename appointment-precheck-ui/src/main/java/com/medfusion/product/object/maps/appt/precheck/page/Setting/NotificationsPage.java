@@ -859,6 +859,18 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[1]")
 	private WebElement enterTimingUnit;
 
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-icon mf-icon__cadence-setting-remove mf-icon-pointer'])[3]")
+	private WebElement removeButtonInEditFor3rdTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-icon mf-icon__cadence-setting-remove mf-icon-pointer'])[2]")
+	private WebElement removeButtonInEditFor2ndTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-icon mf-icon__cadence-setting-remove mf-icon-pointer'])[1]")
+	private WebElement removeButtonInEditFor1stTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text() ,'Timing Units')]")
+	private WebElement timingUnitsInNotifpage;
+
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -3509,5 +3521,61 @@ public class NotificationsPage extends BasePageObject {
 		enterTimingUnit.clear();
 		enterTimingUnit.sendKeys(minutes);
 	}
+	
+	public boolean visibilityOfremoveTimingUnit() {
+		IHGUtil.PrintMethodName();
+		if(removeButtonInEditFor3rdTimingUnit.isDisplayed()) {
+			log("remove button of 3rd timing unit is displayed");
+			return true;
+		}
+		else {
+			log("remove button of 3rd timing unit is not displayed");
+			return false;
+		}
+		
+	}
+	
+	public void removeButtonInEditFor3rdTimingUnit() {
+		IHGUtil.waitForElement(driver, 5, removeButtonInEditFor3rdTimingUnit);
+		removeButtonInEditFor3rdTimingUnit.click();
+		
+	}
+	
+	public void removeButtonInEditFor2ndTimingUnit() {
+		IHGUtil.waitForElement(driver, 5, removeButtonInEditFor2ndTimingUnit);
+		removeButtonInEditFor2ndTimingUnit.click();
+		
+	}
+	
+	public void removeButtonInEditFor1stTimingUnit() {
+		IHGUtil.waitForElement(driver, 5, removeButtonInEditFor1stTimingUnit);
+		removeButtonInEditFor1stTimingUnit.click();
+		
+	}
+	
+	public boolean visibilityOftimingUnitsInNotifpage() {
+		IHGUtil.PrintMethodName();
+		if(timingUnitsInNotifpage.isDisplayed()) {
+			log("timing units are blank");
+			return true;
+		}
+		else {
+			log("timing units are not blank");
+			return false;
+		}
+	}
+	
+	public void defaultTiming2ForDay() {
+		IHGUtil.waitForElement(driver, 5, defaultTiming2ForDay);
+		defaultTiming2ForDay.click();
+		
+	}
+	
+	public void defaultTiming3ForDay() {
+		IHGUtil.waitForElement(driver, 5, defaultTiming3ForDay);
+		defaultTiming3ForDay.click();
+		
+	}
+	
 
 }
