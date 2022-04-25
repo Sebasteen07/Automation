@@ -1893,3 +1893,216 @@ Feature: Test fuctionality of Appointment precheck
     And I add instructions for primary,secondary,tertiary
     Then I verify that user is able to see instructions for primary,secondary,tertiary on UI
     And logout from practice provisioning portal
+
+  Scenario: verify while doing precheck change the first name and last name then verify updated first name should be reflected on appt dashboard, broadcast email notification logs and on email
+    When I schedule an appointment with valid email and phone number
+    And appointment should be scheduled and reminder & confirmation email should be received to patient
+    And I do the precheck and update first name, middle name, last name
+    Then I verify updated first name, middle name, last name should be reflect on appt dashboard, broadcast email notification logs and on email
+    And logout from practice provisioning portal
+
+  Scenario: verify while doing precheck change the first name, last name, email and phone number then verify updated first name, last name, email and phone number should be reflected on appt dashboard, broadcast email notification logs and on email
+    When I schedule an appointment with valid email and phone number
+    And appointment should be scheduled and reminder & confirmation email should be received to patient
+    And I do the precheck and update first name, middle name, last name, email and phone number
+    Then I verify updated first name, middle name, last name, email should be reflect on appt dashboard, broadcast email notification logs and on email
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to see paperplane icon on in reminders text and mails section
+    When I schedule an appointment in "en"
+    And I am able to click on > expand icon
+    And on appointment dashboard default icon should be display
+    Then I verify after getting cadance reminder default icon is replace with paper plane and on that paper plane icon count 1 will display
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then appointment scheduled confirmation mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the appointment scheduled confirmation mail
+    Then I verify appointment scheduled confirmation mail recieved should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then appointment reminder in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the appointment reminder in mail
+    Then I verify appointment reminder recieved in mail should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then broadcast message in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the broadcast message in mail
+    And I send broadcast message to patient
+    Then I verify broadcast message recieved in mail should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then curbside reminder in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the curbside reminder in mail
+    Then I verify curbside reminder recieved in mail should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then manual reminder in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the manual reminder in mail
+    And I send manual reminder for that appointment
+    Then I verify manual reminder recieved in mail should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: verify by default in timing textbox user is able to see days configured and timing units 1,3,5 days configured
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    Then I verify system should show by default days configured in days section and in timing units 1,3,5 configured
+    And logout from practice provisioning portal
+
+  Scenario: verify if user click on dropdown in timing section then there is 3 fields display in dropdown that is Day,hours,minutes
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on dropdown of timing
+    Then I verify system should show only 3 fields in dropdown of timing that is Day,hours,minutes
+    And logout from practice provisioning portal
+
+  Scenario: verify if user select Days from timing section then in timing units user is able to enter 1 to unlimited numbers
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I enter 1 to unlimited numbers in timing units
+    Then I verify system should allow user to enter values from 1 to no limit
+    And logout from practice provisioning portal
+
+  Scenario: verify if user select Hours from timing section then in timing units user is able to enter only 1 to 23 number.
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I select Hours and enter 1 to 23 number in timing units
+    Then I verify system should allow only 1 to 23 number in the timing units section
+    And logout from practice provisioning portal
+
+  Scenario: verify if user select minutes from timing section then in timing units user is able to enter only 10 integer
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I select minutes and enter 10 number in timing units
+    Then I verify system should allow only 10 integer in the timing units section
+    And logout from practice provisioning portal
+
+  Scenario: verify if user select minutes from timing section then in timing units user is able to enter only 59 number
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I select minutes and enter 59 number in timing unit
+    Then I verify system should allow only 59 integer in the timing unit section
+    And logout from practice provisioning portal
+
+  Scenario: Verify for both manual and cadence reminder single history pop up will display
+    When I schedule an appointment in "en"
+    And I select patient and send manual reminder
+    Then I verify for email and text reminder system should show all manual and cadence reminder log on mails history  pop up
+    And logout from practice provisioning portal
+  
+  Scenario: verify if user is able to see latest reminder status in mail and text section either for cadence reminder.
+    When I click on setting tab
+    And I click on notification tab
+    And I am on the reminder section of the appointment reminder
+    And I click on appointments tabs
+    And I schedule an appointment for English language
+    And I go to appointment dashboard and select one user from appointment dashboard
+    And I click on '>' icon of the selected patient from dashboard
+    Then I verify system should show latest cadence reminder status on page
+    And logout from practice provisioning portal
+     
+  Scenario: verify if user is able to see manual reminder status in mail and text section either for manual reminder.
+    When I click on setting tab
+    And I click on notification tab
+    And I am on the reminder section of the appointment reminder
+    And I click on appointments tab
+    And I schedule an appointment for English language
+    And I select one user from appointment dashboard and send manual reminder
+    And I click on '>' icon of the selected patient from dashboard
+    Then I verify system should show manual reminder status on page
+    And logout from practice provisioning portal
+  
+  Scenario: Verify if display first name is on then appointment scheduled confirmation mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the appointment scheduled confirmation in mail
+    Then I verify appointment scheduled confirmation mail recieved should show first name
+    And logout from practice provisioning portal
+     
+  Scenario: Verify if display first name is on then appointment reminder in mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the appointment reminder in mail
+    Then I verify appointment reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+    
+  Scenario: Verify if display first name is on then broadcast message in mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the broadcast message reminder in mail
+    And I send broadcast message to patient
+    Then I verify broadcast message recieved in mail should show first name
+    And logout from practice provisioning portal
+    
+  Scenario: Verify if display first name is on then curbside reminder in mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the curbside reminder in mail
+    Then I verify curbside reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+    
+  Scenario: Verify if display first name is on then manual reminder in mail show first name 
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the manual reminder in mail
+    And I send manual reminder for that appointment
+    Then I verify manual reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user delete 4th timing unit by click on (-) button from page
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on 4th timing unit
+  	And I click on delete button of 4th timing unit 
+  	Then I verify that system should allow user to delete timing units from page
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to see (+) add in enable format after deleting 4th timing unit
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on 4th timing unit
+  	And I click on delete button of 4th timing unit 
+  	Then I verify add button should display in enable format
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to see add button in enable format when I delete 2 more timing units
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on 4th timing unit
+  	And I click on delete button of 4th and 3rd timing unit 
+  	Then I verify add button should display in enable format if I delete 2 timing units
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to delete all timing units fields on cadence editor template page by clicking on (-) button
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders 
+  	And I click on delete button of all timing unit fields
+  	Then I verify system should allow user to delete all timing units fields and in notification tab the timing and timing unit section blank space should display
+    And logout from practice provisioning portal
+    
+  Scenario: verify if user is able to add again timing units field by clicking on (+) add button on cadence editor template page
+  	When I click on setting tab
+  	And I click on notification tab
+  	And I click on edit of hamburger button for email in appointment reminders
+  	And I click on add button on cadence editor template page
+  	Then I verify system should allow user to add timing fields on cadence editor template page
+    And logout from practice provisioning portal

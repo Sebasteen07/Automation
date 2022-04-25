@@ -8,8 +8,13 @@
   <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
 </listeners>
   <test thread-count="5" name="Test">
+      <groups>
+          <run>
+              <include name="MerchantProvisioningAcceptanceTests" />
+          </run>
+      </groups>
   <classes>
-   
+      <class name="provisioningtests.VerifyPartnerTests" />
       <class name="provisioningtests.VerifyMerchantDetailsTest" />
       <class name="provisioningtests.SearchMerchantTest" />
       <class name="provisioningtests.AddMerchantTest" />

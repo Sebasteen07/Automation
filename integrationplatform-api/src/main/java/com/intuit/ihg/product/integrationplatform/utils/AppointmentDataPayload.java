@@ -364,6 +364,7 @@ public class AppointmentDataPayload {
 			Element mainRootElement = doc.createElementNS(schema, "ns2:AppointmentData");
 			doc.appendChild(mainRootElement);
 
+			testData.Time = this.getCalculatedDate("YYYY-MM-dd", 30) + "T00:00:00.000Z";
 			String[] time = { testData.Time, testData.appointmentDetailList.get(2).getTime() };
 			String[] status = { testData.Status, testData.appointmentDetailList.get(2).getStatus() };
 
@@ -631,6 +632,7 @@ try {
 	Element mainRootElement = doc.createElementNS(schema, "ns2:AppointmentData");
 	doc.appendChild(mainRootElement);
 
+	testData.Time = this.getCalculatedDate("YYYY-MM-dd", 30) + "T00:00:00.000Z";
 	String[] time = { testData.Time, testData.appointmentDetailList.get(2).getTime() };
 	String[] status = { testData.Status, testData.appointmentDetailList.get(2).getStatus() };
 
