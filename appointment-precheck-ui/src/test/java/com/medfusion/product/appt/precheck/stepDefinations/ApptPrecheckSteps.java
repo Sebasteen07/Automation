@@ -7152,7 +7152,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		}
 		@Then("I verify that system should allow user to delete timing units from page")
 		public void i_verify_that_system_should_allow_user_to_delete_timing_units_from_page() throws InterruptedException {
-			 assertTrue(notifPage.visibilityOfremoveTimingUnit());
+			 assertTrue(notifPage.visibilityOfRemoveTimingUnit());
 			 notifPage.clickOnBackArrow();
 		}
 		@Then("I verify add button should display in enable format")
@@ -7179,7 +7179,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		}
 		@Then("I verify system should allow user to delete all timing units fields and in notification tab the timing and timing unit section blank space should display")
 		public void i_verify_system_should_allow_user_to_delete_all_timing_units_fields_and_in_notification_tab_the_timing_and_timing_unit_section_blank_space_should_display() {
-			assertTrue(notifPage.visibilityOftimingUnitsInNotifpage());
+			assertTrue(notifPage.visibilityOfTimingUnitsInNotifpage());
 		}
 		@When("I click on add button on cadence editor template page")
 		public void i_click_on_add_button_on_cadence_editor_template_page() throws NullPointerException, InterruptedException, IOException {

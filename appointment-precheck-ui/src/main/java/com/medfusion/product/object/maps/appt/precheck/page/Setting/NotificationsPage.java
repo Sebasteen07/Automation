@@ -3522,7 +3522,7 @@ public class NotificationsPage extends BasePageObject {
 		enterTimingUnit.sendKeys(minutes);
 	}
 	
-	public boolean visibilityOfremoveTimingUnit() {
+	public boolean visibilityOfRemoveTimingUnit() {
 		IHGUtil.PrintMethodName();
 		if(removeButtonInEditFor3rdTimingUnit.isDisplayed()) {
 			log("remove button of 3rd timing unit is displayed");
@@ -3553,7 +3553,7 @@ public class NotificationsPage extends BasePageObject {
 		
 	}
 	
-	public boolean visibilityOftimingUnitsInNotifpage() {
+	public boolean visibilityOfTimingUnitsInNotifpage() {
 		IHGUtil.PrintMethodName();
 		if(timingUnitsInNotifpage.isDisplayed()) {
 			log("timing units are blank");
