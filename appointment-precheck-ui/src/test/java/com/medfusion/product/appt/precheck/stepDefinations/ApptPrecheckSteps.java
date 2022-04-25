@@ -6713,59 +6713,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		   notifPage.clickOnEditButtonHamburgerButton();
 		   notifPage.clickOnBackArrow();
 		}
-		@When("I click on appointments tabs")
-		public void i_click_on_appointments_tabs() {
-			mainPage.clickOnAppointmentsTab();
-		}
-		@When("I go to appointment dashboard and select one user from appointment dashboard")
-		public void i_go_to_appointment_dashboard_and_select_one_user_from_appointment_dashboard() throws InterruptedException {
-		   apptPage.filterPatientId(Appointment.patientId);
-		}
-		@When("I click on {string} icon of the selected patient from dashboard")
-		public void i_click_on_icon_of_the_selected_patient_from_dashboard(String string) throws InterruptedException {
-			driver.navigate().refresh();
-			apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
-		}
-		@Then("I verify system should show latest cadence reminder status on page")
-		public void i_verify_system_should_show_latest_cadence_reminder_status_on_page() throws InterruptedException {
-			assertTrue(apptPage.visibilityOfPaperPlaneIconForEmailReminder(Appointment.patientId, Appointment.apptId, 10));
-			assertTrue(apptPage.visibilityOfPaperPlaneIconForTextReminder(Appointment.patientId, Appointment.apptId, 10));
-			apptPage.filterPatientId(Appointment.patientId);
-			apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
-			apptPage.clickOnViewAllForEmailReminder(Appointment.patientId, Appointment.apptId);
-			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 1));
-			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
-					propertyData.getProperty("one.day.prior.logs")),
-					propertyData.getProperty("one.day.prior.logs"), "1 hour prior entry was not match");
-			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 3));
-			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
-					propertyData.getProperty("one.day.prior.logs.status")), propertyData.getProperty("one.day.prior.logs.status"),
-					"Status was not match");
-		}
-		@When("I select one user from appointment dashboard and send manual reminder")
-		public void i_select_one_user_from_appointment_dashboard_and_send_manual_reminder() throws InterruptedException {
-			apptPage.filterPatientId(Appointment.patientId);
-			apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
-			apptPage.clickOnActions();
-			apptPage.clickOnSendReminder();
-		}
-		@Then("I verify system should show manual reminder status on page")
-		public void i_verify_system_should_show_manual_reminder_status_on_page() throws InterruptedException {
-			assertTrue(apptPage.visibilityOfPaperPlaneIconForEmailReminder(Appointment.patientId, Appointment.apptId, 10));
-			assertTrue(apptPage.visibilityOfPaperPlaneIconForTextReminder(Appointment.patientId, Appointment.apptId, 10));
-			apptPage.filterPatientId(Appointment.patientId);
-			apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
-			apptPage.clickOnViewAllForEmailReminder(Appointment.patientId, Appointment.apptId);
-			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 1));
-			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
-					propertyData.getProperty("manual.log")),
-					propertyData.getProperty("manual.log"), "Manual was not match");
-			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 3));
-			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
-					propertyData.getProperty("one.day.prior.logs.status")), propertyData.getProperty("one.day.prior.logs.status"),
-					"Status was not match");
-		}
-
+		
 		
 		
 		@When("I go to settings tab and click on notifications tab")
@@ -7067,6 +7015,7 @@ public class ApptPrecheckSteps extends BaseTest {
 			apptPage.closeReminderLogPopup();
 		}
 		
+		
 		@When("I enable the display patient first name and save the notifications")
 		public void i_enable_the_display_patient_first_name_and_save_the_notifications() throws InterruptedException {
 		   notifPage.displayPatientFirstNameCheckbox();
@@ -7256,6 +7205,60 @@ public class ApptPrecheckSteps extends BaseTest {
 			assertTrue(notifPage.visibilityOfClickonAddbutton());
 			notifPage.saveChangesButton();
 		}
+		
+		@When("I click on appointments tabs")
+		public void i_click_on_appointments_tabs() {
+			mainPage.clickOnAppointmentsTab();
+		}
+		@When("I go to appointment dashboard and select one user from appointment dashboard")
+		public void i_go_to_appointment_dashboard_and_select_one_user_from_appointment_dashboard() throws InterruptedException {
+		   apptPage.filterPatientId(Appointment.patientId);
+		}
+		@When("I click on {string} icon of the selected patient from dashboard")
+		public void i_click_on_icon_of_the_selected_patient_from_dashboard(String string) throws InterruptedException {
+			driver.navigate().refresh();
+			apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		}
+		@Then("I verify system should show latest cadence reminder status on page")
+		public void i_verify_system_should_show_latest_cadence_reminder_status_on_page() throws InterruptedException {
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForEmailReminder(Appointment.patientId, Appointment.apptId, 10));
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForTextReminder(Appointment.patientId, Appointment.apptId, 10));
+			apptPage.filterPatientId(Appointment.patientId);
+			apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+			apptPage.clickOnViewAllForEmailReminder(Appointment.patientId, Appointment.apptId);
+			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 1));
+			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
+					propertyData.getProperty("one.day.prior.logs")),
+					propertyData.getProperty("one.day.prior.logs"), "1 hour prior entry was not match");
+			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 3));
+			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
+					propertyData.getProperty("one.day.prior.logs.status")), propertyData.getProperty("one.day.prior.logs.status"),
+					"Status was not match");
+		}
+		@When("I select one user from appointment dashboard and send manual reminder")
+		public void i_select_one_user_from_appointment_dashboard_and_send_manual_reminder() throws InterruptedException {
+			apptPage.filterPatientId(Appointment.patientId);
+			apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+			apptPage.clickOnActions();
+			apptPage.clickOnSendReminder();
+		}
+		@Then("I verify system should show manual reminder status on page")
+		public void i_verify_system_should_show_manual_reminder_status_on_page() throws InterruptedException {
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForEmailReminder(Appointment.patientId, Appointment.apptId, 10));
+			assertTrue(apptPage.visibilityOfPaperPlaneIconForTextReminder(Appointment.patientId, Appointment.apptId, 10));
+			apptPage.filterPatientId(Appointment.patientId);
+			apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+			apptPage.clickOnViewAllForEmailReminder(Appointment.patientId, Appointment.apptId);
+			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 1));
+			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
+					propertyData.getProperty("manual.log")),
+					propertyData.getProperty("manual.log"), "Manual was not match");
+			assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 3));
+			assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId, 
+					propertyData.getProperty("one.day.prior.logs.status")), propertyData.getProperty("one.day.prior.logs.status"),
+					"Status was not match");
+		}
+
 		
 
 
