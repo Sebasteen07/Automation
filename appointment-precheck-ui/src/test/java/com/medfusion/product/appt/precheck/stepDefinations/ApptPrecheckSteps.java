@@ -6707,15 +6707,6 @@ public class ApptPrecheckSteps extends BaseTest {
 					"Email count not match");
 		}
 		
-		@When("I am on the reminder section of the appointment reminder")
-		public void i_am_on_the_reminder_section_of_the_appointment_reminder() throws InterruptedException {
-		   notifPage.clickApptReminderEmailHamburgerButton();
-		   notifPage.clickOnEditButtonHamburgerButton();
-		   notifPage.clickOnBackArrow();
-		}
-		
-		
-		
 		@When("I go to settings tab and click on notifications tab")
 		public void i_go_to_settings_tab_and_click_on_notifications_tab() {
 		    mainPage.clickOnSettingTab();
@@ -7015,7 +7006,6 @@ public class ApptPrecheckSteps extends BaseTest {
 			apptPage.closeReminderLogPopup();
 		}
 		
-		
 		@When("I enable the display patient first name and save the notifications")
 		public void i_enable_the_display_patient_first_name_and_save_the_notifications() throws InterruptedException {
 		   notifPage.displayPatientFirstNameCheckbox();
@@ -7206,6 +7196,12 @@ public class ApptPrecheckSteps extends BaseTest {
 			notifPage.saveChangesButton();
 		}
 		
+		@When("I am on the reminder section of the appointment reminder")
+		public void i_am_on_the_reminder_section_of_the_appointment_reminder() throws InterruptedException {
+		   notifPage.clickApptReminderEmailHamburgerButton();
+		   notifPage.clickOnEditButtonHamburgerButton();
+		   notifPage.clickOnBackArrow();
+		}
 		@When("I click on appointments tabs")
 		public void i_click_on_appointments_tabs() {
 			mainPage.clickOnAppointmentsTab();
