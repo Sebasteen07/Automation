@@ -2303,15 +2303,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			return currentTime;
 		}
 		
-		public void subtractionTime(String timezone) throws ParseException {
-//			String time= currentTimeWithTimeZone(timezone);
-			
-			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:MM");
-			cal.setTime(sdf.parse(currentDateWithTimeZone(timezone)));// all done
-		
-		}
-		
+
 		public String bookLTB(HomePage homePage, Appointment testData,WebDriver driver,String locationName,String appType,String providerName) throws Exception {
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;

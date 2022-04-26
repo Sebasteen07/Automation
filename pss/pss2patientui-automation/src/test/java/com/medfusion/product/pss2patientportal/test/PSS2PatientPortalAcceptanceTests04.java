@@ -541,7 +541,10 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		log("Appointment Time is " + time);
 		assertEquals(time, startTime);
 		logStep("Resetting the Admin Setting ");
-		adminUtils.busineesHours(driver, adminuser, testData,"00:00","23:59");
+		response = postAPIRequestAM.practiceUpdate(practiceId,
+				payloadAM01.updateBusinessHoursNG("00:00", "23:59", practiceId, practiceName, practiceTimeZone, logo));
+		apv.responseCodeValidation(response, 200);
+		
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
