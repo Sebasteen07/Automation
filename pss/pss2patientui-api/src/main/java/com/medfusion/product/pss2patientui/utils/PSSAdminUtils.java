@@ -1695,5 +1695,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
 		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
 		pssPracticeConfig.busineesHours(startTime, endTime);
+		pssPracticeConfig.logout();
 	}
 }

@@ -491,11 +491,19 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 
 		String startTime = propertyData.getProperty("business.hours.starttime");
 		String endTime = propertyData.getProperty("business.hours.endtime");
+		String practiceId = propertyData.getProperty("practice.id.ng.ui");
+		String practiceName = propertyData.getProperty("updatepractice.name.ng");
+		String practiceTimeZone = propertyData.getProperty("updatepratice.timezone.ng");
+		String logo = propertyData.getProperty("updatepractice.logo.ng");
+
+		logStep("Update Practice Business Hours By Using AM");
+		response = postAPIRequestAM.practiceUpdate(practiceId, payloadAM01.updateBusinessHoursNG(startTime, endTime,
+				practiceId, practiceName, practiceTimeZone, logo));
+		apv.responseCodeValidation(response, 200);
 
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.leadTimenotReserve(driver, adminuser, testData, "0");
-		adminUtils.busineesHours(driver, adminuser, testData,startTime,endTime);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -1372,7 +1380,8 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 			log("Time Diff is Not less Than 0 print current date ");
 			assertNotEquals(date, psspatientUtils.numDate(testData));
 		}
-	
+		adminUtils.busineesHours(driver, adminuser, testData,"00:00","23:59");
+
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1440,7 +1449,8 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		} else {
 			assertNotEquals(date, psspatientUtils.numDate(testData));
 		}
-	
+		adminUtils.busineesHours(driver, adminuser, testData,"00:00","23:59");
+
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1506,7 +1516,8 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		} else {
 			assertNotEquals(date, psspatientUtils.numDate(testData));
 		}
-	
+		adminUtils.busineesHours(driver, adminuser, testData,"00:00","23:59");
+
 	}
 	
 }
