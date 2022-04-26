@@ -871,6 +871,17 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//div[contains(text() ,'Timing Units')]")
 	private WebElement timingUnitsInNotifpage;
 
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-1y2qbuw'])[1]")
+	private WebElement firstTimingAndTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-1y2qbuw'])[2]")
+	private WebElement secondTimingAndTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-1y2qbuw'])[3]")
+	private WebElement thirdTimingAndTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-1y2qbuw'])[4]")
+	private WebElement fourthTimingAndTimingUnit;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -3577,5 +3588,77 @@ public class NotificationsPage extends BasePageObject {
 		
 	}
 	
+	public void addThreeTimingAndTimingUnit() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		try {
+			firstTimingAndTimingUnit.isDisplayed();
+			log("First timing and timing unit is display");
+		} catch (NoSuchElementException e) {
+			addButtonInEdit.click();
+			log("First timing and timing unit is added");
+		}
+
+		try {
+			secondTimingAndTimingUnit.isDisplayed();
+			log("Second timing and timing unit is display");
+		} catch (NoSuchElementException e) {
+			addButtonInEdit.click();
+			log("Second timing and timing unit is added");
+		}
+
+		try {
+			thirdTimingAndTimingUnit.isDisplayed();
+			log("Third timing and timing unit is display");
+		} catch (NoSuchElementException e) {
+			addButtonInEdit.click();
+			log("Third timing and timing unit is added");
+		}
+
+		try {
+			fourthTimingAndTimingUnit.isDisplayed();
+			removeButtonInEdit.click();
+			log("Fourth timing and timing unit is deleted");
+		} catch (NoSuchElementException e) {
+			log("Fourth timing and timing unit is not display");
+		}
+	}
+
+	public boolean isAddButtonEnable() {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+			visibility = addButtonInEdit.isEnabled();
+			log("Add button is Enabled");
+			return visibility;
+		} catch (NoSuchElementException e) {
+			log("Add button is not Enabled");
+			return visibility;
+		}
+	}
+
+	public void removeTimingAndTimingUnit(int pathIndex) {
+		IHGUtil.PrintMethodName();
+		WebElement timeUnitMinus = driver
+				.findElement(By.xpath("(//div[@class='cadence-remove-icon'])[" + pathIndex + "]"));
+		timeUnitMinus.click();
+	}
+
+	public void clickOnSaveChangesButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, saveChangesButton);
+		jse.executeScript("arguments[0].click();",saveChangesButton);
+	}
+	
+	public void addTimingUnit() {
+		for(int i=1;i<=4;i++) {
+		try {
+			driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + i + "]")).isDisplayed();
+				log(i+ " Timing and timing unit textbox is present");
+			} catch (NoSuchElementException e) {
+				log("Add"+ i+" timing and timing unit textbox");
+				addButtonInEdit.click();
+			}
+		}
+	}
 
 }

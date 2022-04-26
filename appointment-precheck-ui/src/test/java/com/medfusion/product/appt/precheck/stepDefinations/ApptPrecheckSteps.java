@@ -7254,10 +7254,227 @@ public class ApptPrecheckSteps extends BaseTest {
 					propertyData.getProperty("one.day.prior.logs.status")), propertyData.getProperty("one.day.prior.logs.status"),
 					"Status was not match");
 		}
-
 		
+		@When("I click on email edit section of appointment reminders from setting in notifications tab")
+		public void i_click_on_email_edit_section_of_appointment_reminders_from_setting_in_notifications_tab() throws InterruptedException {
+			mainPage.clickOnSettingTab();
+			notifPage.clickOnNotificationTab();
+			log("user move to notification page");
+			assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+			scrollAndWait(0, 2000, 5000);
+			notifPage.clickApptReminderEmailHamburgerButton();
+			log("From Appointment reminders open edit section for text");
+			notifPage.clickApptReminderEmailEditButton();
+		}
+		
+		@Then("I verify add button functionality for {string}")
+		public void i_verify_add_button_functionality_for(String deliveryMethod) throws InterruptedException {
+			scrollAndWait(0, 500, 5000);
+			assertEquals(notifPage.getDeliveryMethod(), deliveryMethod, "Delivery method was not match");
+			log("Delivery Method:" + notifPage.getDeliveryMethod());
+			notifPage.addThreeTimingAndTimingUnit();
+			assertTrue(notifPage.isAddButtonEnable());
 
+			log("Add fourth timing and timing unit");
+			notifPage.addTimingUnit();
+			assertFalse(notifPage.isAddButtonEnable());
+			
+			log("Delete fourth timing and timing unit");
+			notifPage.removeTimingAndTimingUnit(4);
+			assertTrue(notifPage.isAddButtonEnable());
+			
+			log("Delete two more timing and timing unit");
+			notifPage.removeTimingAndTimingUnit(3);
+			notifPage.removeTimingAndTimingUnit(2);
+			assertTrue(notifPage.isAddButtonEnable());
 
+			log("Delete All timing and timing unit");
+			notifPage.removeTimingAndTimingUnit(1);
+			notifPage.clickOnSaveChangesButton();
+			Thread.sleep(5000);
+			assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		}
+		
+		@Then("I save cadence for email")
+		public void i_save_cadence_for_email() throws InterruptedException {
+			log("From Appointment reminders open edit section for text");
+			notifPage.clickApptReminderEmailHamburgerButton();
+			notifPage.clickApptReminderEmailEditButton();
+			scrollAndWait(0, 500, 5000);
+			notifPage.addThreeTimingAndTimingUnit();
+			Appointment.day1 = notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnit(1, "Days", Appointment.day1);
+			Appointment.day2 = notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(2, "Hours", Appointment.day2);
+			Appointment.day3 = notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnit(3, "Minutes", Appointment.day3);
+			notifPage.clickOnSaveChangesButton();
+			log("user move to notification page");
+			assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		}
+		
+		@When("I click on text edit section of appointment reminders from setting in notifications tab")
+		public void i_click_on_text_edit_section_of_appointment_reminders_from_setting_in_notifications_tab() throws InterruptedException {
+			mainPage.clickOnSettingTab();
+			notifPage.clickOnNotificationTab();
+			log("user move to notification page");
+			assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+			log("From Appointment reminders open edit section for text");
+			scrollAndWait(0, 2000, 5000);
+			notifPage.clickApptReminderSmsHamburgerButton();
+			notifPage.clickApptReminderSmsEditButton();
+		}
+		
+		@Then("I save cadence for text")
+		public void i_save_cadence_for_text() throws InterruptedException {
+			log("From Appointment reminders open edit section for text");
+			notifPage.clickApptReminderSmsHamburgerButton();
+			notifPage.clickApptReminderSmsEditButton();
+			scrollAndWait(0, 500, 5000);
+			notifPage.addThreeTimingAndTimingUnit();
+			Appointment.day1 = notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnit(1, "Days", Appointment.day1);
+			Appointment.day2 = notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(2, "Hours", Appointment.day2);
+			Appointment.day3 = notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnit(3, "Minutes", Appointment.day3);
+			notifPage.clickOnSaveChangesButton();
+			log("user move to notification page");
+			assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		}
+		
+		@When("I schedule an appointment in spanish {string} and have confirmed there arrival")
+		public void i_schedule_an_appointment_in_spanish_and_have_confirmed_there_arrival(String language)  throws Exception, IOException {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			Appointment.randomNumber = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							"jordan"+Appointment.randomNumber+"@YOPmail.com",language,propertyData.getProperty("patient.name")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+
+			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+					propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(actionResponse.getStatusCode(), 200);
+
+			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+					propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+					propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(arrivalResponse.getStatusCode(), 200);
+		}
+		
+		@When("I select patient and click on dropdown from curbside checkin page")
+		public void i_select_patient_and_click_on_dropdown_from_curbside_checkin_page() throws InterruptedException {
+			curbsidePage.filterPatientId(Appointment.patientId);
+			curbsidePage.selectPatientCheckbox();
+			curbsidePage.clickOnSelectedPatientDropdown(Appointment.apptId);
+		}
+		
+		@When("I send {string} message to selected patient")
+		public void i_send_message_to_selected_patient(String message) throws InterruptedException {
+			loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+			mainPage.clickOnCurbsideTab();
+			assertTrue(curbsidePage.getCurbsideTitle().contains("Curbside Check-ins"));
+			log("User is on Curbside check in tab");
+			curbsidePage.selectMessageFromDropdown(Appointment.apptId,message);
+			curbsidePage.clickOnSendButtonOfSelectedPatient(Appointment.apptId);
+		}
+		
+		@When("I received message {string} in email in spanish language")
+		public void i_received_message_in_email_in_spanish_language(String message) throws Exception {
+			scrollAndWait(0, -500, 5000);
+			YopMail yopMail = new YopMail(driver);
+			assertTrue(yopMail.isMessageInInbox("jordan"+Appointment.randomNumber+"@YOPmail.com","Actualización sobre su registro en la acera",propertyData.getProperty("patient.name")+", "+message, 10));
+		}
+		
+		@Then("I verify message {string} receive in spanish language")
+		public void i_verify_message_receive_in_spanish_language(String message) throws Exception {
+			scrollAndWait(0, -500, 5000);
+			YopMail yopMail = new YopMail(driver);
+			assertTrue(yopMail.isMessageInInbox("jordan"+Appointment.randomNumber+"@YOPmail.com","Actualización sobre su registro en la acera",propertyData.getProperty("patient.name")+", "+message, 10));
+			loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		}
+
+		@When("I clear all appointments from on curbside checkin tab")
+		public void i_clear_all_appointments_from_on_curbside_checkin_tab() throws InterruptedException {
+			mainPage.clickOnCurbsideTab();
+			assertTrue(curbsidePage.getCurbsideTitle().contains("Curbside Check-ins"));
+			log("User is on Curbside check in tab");
+			notifPage.checkingCheckinButton();
+			log("Curbside button is disable");
+			curbsidePage.selectAllAppointment();
+			notifPage.clickOnCheckinButton();
+			log("Clear all appointment");
+		}
+		
+		@When("on nitification icon {string} count should be displayed on the top left corner")
+		public void on_nitification_icon_count_should_be_displayed_on_the_top_left_corner(String count) {
+			assertEquals(curbsidePage.getNotificationCount(), count, "Notification Count is not match");
+		}
+		
+		@When("I schedule {int} appointments and finish curbside checkin process from mail by click on I have arrived")
+		public void i_schedule_appointments_and_finish_curbside_checkin_process_from_mail_by_click_on_i_have_arrived(Integer count) throws Exception {
+			for (int i = 0; i < count; i++) {
+				Appointment.patientId = commonMethod.generateRandomNum();
+				Appointment.apptId = commonMethod.generateRandomNum();
+				Appointment.randomNumber = commonMethod.generateRandomNum();
+				long currentTimestamp = System.currentTimeMillis();
+				long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+				apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+						propertyData.getProperty("apt.precheck.practice.id"),
+						payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+								"jordan"+Appointment.randomNumber+"@YOPmail.com"),
+						headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+						Appointment.apptId);
+
+				Thread.sleep(3000);
+				scrollAndWait(0, -500, 5000);
+				String currentWindow = driver.getWindowHandle();
+				YopMail yopMail = new YopMail(driver);
+				String d=yopMail.confirmArrivalFromEmail("jordan"+Appointment.randomNumber+"@YOPmail.com",
+						propertyData.getProperty("curbside.checkin.mail.subject"),propertyData.getProperty("curbside.checkin.mail.title"));
+			assertEquals(d,"Arrival confirmed");
+			driver.close();
+			driver.switchTo().window(currentWindow);
+			}
+		}
+		
+		@When("I logged into practice provisioning and view the notification icon count {string} on the top left corner")
+		public void i_logged_into_practice_provisioning_and_view_the_notification_icon_count_on_the_top_left_corner(String count) {
+		    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+			log("User is on Curbside check in tab");
+			assertTrue(curbsidePage.visibilityOfNotifIcon());
+			assertEquals(curbsidePage.getNotificationCount(), count, "Notification Count is not match");
+		}
+		
+		@When("I switch on curbside checkin tab and select patient and click on check in button")
+		public void i_switch_on_curbside_checkin_tab_and_select_patient_and_click_on_check_in_button() throws InterruptedException {
+			mainPage.clickOnCurbsideTab();
+			assertTrue(curbsidePage.getCurbsideTitle().contains("Curbside Check-ins"));
+			Thread.sleep(10000);
+			curbsidePage.filterPatientId(Appointment.patientId);
+			curbsidePage.selectPatientCheckbox();
+			curbsidePage.clickOnCheckInButton();
+			Thread.sleep(10000);
+		}
+		
+		@When("I verify on nitification icon {string} count should be displayed on the top left corner")
+		public void i_verify_on_nitification_icon_count_should_be_displayed_on_the_top_left_corner(String count) {
+			assertEquals(curbsidePage.getNotificationCount(), count, "Notification Count is not match");
+		}
 }
 
 
