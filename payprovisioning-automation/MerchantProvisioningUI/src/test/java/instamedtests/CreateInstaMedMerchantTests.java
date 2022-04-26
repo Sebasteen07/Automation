@@ -14,7 +14,7 @@ import provisioningtests.ProvisioningBaseTest;
 
 import java.io.IOException;
 
-public class CreateInstaMedMerchant extends ProvisioningBaseTest {
+public class CreateInstaMedMerchantTests extends ProvisioningBaseTest {
 
     protected PropertyFileLoader testData;
 
@@ -51,10 +51,10 @@ public class CreateInstaMedMerchant extends ProvisioningBaseTest {
 
         logStep("Add Rates and Fees Information");
         addInstaMedMerchantPage.addRatesAndFees(
-                testData.getProperty("instamed.perTransactionAuthFee"),
-                testData.getProperty("instamed.qTierFee"),
-                testData.getProperty("instamed.mTierFee"),
-                testData.getProperty("instamed.nTierFee"));
+                testData.getProperty("instamed.per.transaction.auth.fee"),
+                testData.getProperty("instamed.qtier.fee"),
+                testData.getProperty("instamed.mtier.fee"),
+                testData.getProperty("instamed.ntier.fee"));
 
         logStep("Select Visa card");
         addInstaMedMerchantPage.selectAnAcceptedCard(1);

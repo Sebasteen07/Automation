@@ -45,12 +45,12 @@ public class VerifyInstaMedMerchantDetailsTests  extends ProvisioningBaseTest {
                 testData.getProperty("instamed.terminalid.virtualvisits"));
 
         logStep("Going to verify Rates and Contract Information");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getPlatformFeeAuth(), testData.getProperty("instamed.perTransactionAuthFee.get"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getPlatformFeeAuth(), testData.getProperty("instamed.per.transaction.auth.fee.get"));
 
         logStep("Going to verify Percentage Fee Tiers");
-        Assert.assertEquals(instaMedMerchantDetailsPage.getQTierQFee(), testData.getProperty("instamed.qTierFee"));
-        Assert.assertEquals(instaMedMerchantDetailsPage.getMidTierQFee(), testData.getProperty("instamed.mTierFee"));
-        Assert.assertEquals(instaMedMerchantDetailsPage.getNonTierQFee(), testData.getProperty("instamed.nTierFee"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getQTierQFee(), testData.getProperty("instamed.qtier.fee"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getMidTierQFee(), testData.getProperty("instamed.mtier.fee"));
+        Assert.assertEquals(instaMedMerchantDetailsPage.getNonTierQFee(), testData.getProperty("instamed.ntier.fee"));
         Assert.assertNotNull(instaMedMerchantDetailsPage.getAmexFee());
         Assert.assertEquals(instaMedMerchantDetailsPage.getAmexFee(), testData.getProperty("instamed.amex.fee.get"));
 
