@@ -59,7 +59,10 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 	@Test
 	public void getMerchantById() throws IOException {
 		MerchantInfo merchantinfo = new MerchantInfo();
-		merchantinfo.getMerchantDetails(testData.getProperty("mmid"));
+		Response response = merchantinfo.getMerchantDetails(testData.getProperty("mmid"));
+
+		Validations validations = new Validations();
+		validations.verifyMerchantDetails(response.asString());
 
 	}
 

@@ -43,10 +43,11 @@ public class MerchantInfo extends BaseRest {
 
 	}
 
-	public void getMerchantDetails(String mmid) {
+	public Response getMerchantDetails(String mmid) {
 
 		String getmerchant = ProvisioningUtils.postMerchant + "/" + mmid;
-		given().spec(requestSpec).when().get(getmerchant).then().spec(responseSpec);
+		Response response = given().spec(requestSpec).when().get(getmerchant).then().spec(responseSpec).and().extract().response();
+		return response;
 
 	}
 
