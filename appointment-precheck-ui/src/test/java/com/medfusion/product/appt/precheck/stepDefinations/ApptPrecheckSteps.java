@@ -7444,9 +7444,9 @@ public class ApptPrecheckSteps extends BaseTest {
 				scrollAndWait(0, -500, 5000);
 				String currentWindow = driver.getWindowHandle();
 				YopMail yopMail = new YopMail(driver);
-				String d=yopMail.confirmArrivalFromEmail("jordan"+Appointment.randomNumber+"@YOPmail.com",
+				String arrivalConfirmed=yopMail.confirmArrivalFromEmail("jordan"+Appointment.randomNumber+"@YOPmail.com",
 						propertyData.getProperty("curbside.checkin.mail.subject"),propertyData.getProperty("curbside.checkin.mail.title"));
-			assertEquals(d,"Arrival confirmed");
+			assertEquals(arrivalConfirmed,"Arrival confirmed");
 			driver.close();
 			driver.switchTo().window(currentWindow);
 			}
