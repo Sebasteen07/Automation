@@ -1453,4 +1453,135 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		adminUtils.spanishLanguageAndCategorysettingsDeletion(driver, adminUser, testData, testData.getDecisionTreeName());
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void savedAsDraftCategoryShouldNotDisplayedOnPatientUING() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSNewPatient newPatient = new PSSNewPatient();
+		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.ng");
+		adminUtils.savedAsDraftDecisionTreeSettings(driver, adminUser, testData, testData.getDecisionTreeName(), testData.getAppointmenttype(), reasonForAppointment);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		newPatient.createPatientDetails(testData);
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = homepage.skipInsurance(driver);
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getDecisionTreeName());
+		appointment.selectApptTypeDecisionTree(testData.getDecisionTreeName());
+		if(appointment.verifyDecisionTreeApptTypePresent(testData.getDecisionTreeName()) == false) {
+			Assert.assertTrue(true);
+			log("There is no decision tree found with "+ testData.getDecisionTreeName() +" name");
+		}else {
+			Assert.assertTrue(false);
+		}
+		adminUtils.decisionTreeDeletion(driver, adminUser, testData, testData.getDecisionTreeName());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void savedAsDraftCategoryShouldNotDisplayedOnPatientUIGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSNewPatient newPatient = new PSSNewPatient();
+		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.ge");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.importDecisionTree(testData.getDecisionTreeName());
+		manageDecisionTree.selectDecisionTree(testData.getDecisionTreeName());
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.setApptTypeDecisionTree(testData.getAppointmenttype());
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.saveAsDraftGeneralInfo();
+		adminUtils.pageRefresh(driver);
+		manageDecisionTree.logout();
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		newPatient.createPatientDetails(testData);
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = homepage.skipInsurance(driver);
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getDecisionTreeName());
+		appointment.selectApptTypeDecisionTree(testData.getDecisionTreeName());
+		if(appointment.verifyDecisionTreeApptTypePresent(testData.getDecisionTreeName()) == false) {
+			Assert.assertTrue(true);
+			log("There is no decision tree found with "+ testData.getDecisionTreeName() +" name");
+		}else {
+			Assert.assertTrue(false);
+		}
+		adminUtils.decisionTreeDeletion(driver, adminUser, testData, testData.getDecisionTreeName());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void savedAsDraftCategoryShouldNotDisplayedOnPatientUIGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSNewPatient newPatient = new PSSNewPatient();
+		String reasonForAppointment = propertyData.getProperty("decision.tree.appointment.reason.gw");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.importDecisionTree(testData.getDecisionTreeName());
+		manageDecisionTree.selectDecisionTree(testData.getDecisionTreeName());
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.setApptTypeDecisionTree(testData.getAppointmenttype());
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.saveAsDraftGeneralInfo();
+		adminUtils.pageRefresh(driver);
+		manageDecisionTree.logout();
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		newPatient.createPatientDetails(testData);
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = homepage.skipInsurance(driver);
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getDecisionTreeName());
+		appointment.selectApptTypeDecisionTree(testData.getDecisionTreeName());
+		if(appointment.verifyDecisionTreeApptTypePresent(testData.getDecisionTreeName()) == false) {
+			Assert.assertTrue(true);
+			log("There is no decision tree found with "+ testData.getDecisionTreeName() +" name");
+		}else {
+			Assert.assertTrue(false);
+		}
+		adminUtils.decisionTreeDeletion(driver, adminUser, testData, testData.getDecisionTreeName());
+	}
 }
