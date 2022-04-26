@@ -212,11 +212,11 @@ public class AppointmentPage extends PSS2MainPage {
 	
 	public boolean verifyDecisionTreeApptTypePresent(String decisionTreeName) {		
 		if (appointmentTypeList.contains(decisionTreeName)) {
-			log("Appointment type present");
+			log("Decision tree present");
 			return true;			
 		}
 		else {
-			log("Appointment type not present");
+			log("Decision tree not present");
 			return false;
 		}
 	}
