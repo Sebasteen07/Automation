@@ -216,6 +216,12 @@ public class CurbsideCheckInPage extends BasePageObject {
 	
 	@FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::span[7]")
 	private WebElement patientDemo2;
+	
+	@FindBy(how = How.ID, using = "filter-patient-id")
+	private WebElement patientIdFilter;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
+	private WebElement selectPatientCheckbox;
 			
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
@@ -1129,6 +1135,17 @@ public class CurbsideCheckInPage extends BasePageObject {
 			IHGUtil.PrintMethodName();
 			String getPatient = patientDemo2.getText();
 			return getPatient;
+		}
+		
+		public void filterPatientId(String id) throws InterruptedException {
+			patientIdFilter.sendKeys(id);
+			Thread.sleep(5000);
+		}
+		
+		public void selectPatientCheckbox() {
+	    	IHGUtil.PrintMethodName();
+	    	IHGUtil.waitForElement(driver, 5, selectPatientCheckbox);
+	    	jse.executeScript("arguments[0].click();", selectPatientCheckbox);
 		}
 	
 }
