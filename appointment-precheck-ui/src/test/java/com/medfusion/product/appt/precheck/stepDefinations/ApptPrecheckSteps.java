@@ -7480,28 +7480,12 @@ public class ApptPrecheckSteps extends BaseTest {
 		public void i_click_on_curbside_check_in_of_notifications_tab() {
 		   notifPage.clickOnCurbsideCheckInTabInNotif();
 		}
-		@When("I click on English section")
-		public void i_click_on_english_section() {
-		    notifPage.clickOnEnglishButton();
-		}
-		@When("I click on Spanish section")
-		public void i_click_on_spanish_section() {
-		   notifPage.clickOnSpanishButton();
-		}
 		@Then("I verify default arrival instruction message for spanish and english section is not editable")
 		public void i_verify_default_arrival_instruction_message_for_spanish_and_english_section_is_not_editable() {
 		    notifPage.clickOnEnglishButton();
 		    assertEquals(notifPage.visibilityOfArrivalConfirmationMsgInEnglish(),"Arrival confirmation message"," Arrival confirmation message is not displayed");
 		    notifPage.clickOnSpanishButton();
 		    assertEquals(notifPage.visibilityOfArrivalConfirmationMsgInSpanish(),"Arrival confirmation message"," Arrival confirmation message is not displayed");
-		}
-		@When("I click on additional arrival instructions for English section")
-		public void i_click_on_additional_arrival_instructions_for_english_section() {
-			notifPage.clickOnEnglishButton();
-		}
-		@When("I click on additional arrival instructions for Spanish section")
-		public void i_click_on_additional_arrival_instructions_for_spanish_section() throws InterruptedException {
-			notifPage.clickOnSpanishButton();
 		}
 		@Then("I verify arrival confirmation additional instruction text is displayed and textbox is displayed below for English and spanish language")
 		public void i_verify_arrival_confirmation_additional_instruction_text_is_displayed_and_textbox_is_displayed_below_for_english_and_spanish_language() {
@@ -7511,47 +7495,58 @@ public class ApptPrecheckSteps extends BaseTest {
 			assertEquals(notifPage.getAdditionalArrivalInstructionMsgTextInSpanish(),"hola bienvenido al registro en la acera","text not match");
 		}
 		@When("I click on additional arrival instruction for English section")
-		public void i_click_on_additional_arrival_instruction_for_english_section() {
+		public void i_click_on_additional_arrival_instruction_for_english_section() throws InterruptedException {
 			notifPage.clickOnEnglishButton();
 			notifPage.clearAdditionalArrivalInstTextboxEn();
+			notifPage.saveNotification();
 		}
 		@Then("I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for English and spanish language")
-		public void i_verify_arrival_confirmation_additional_instruction_text_is_displayed_and_blank_textbox_is_displayed_below_for_english_and_spanish_language() {
+		public void i_verify_arrival_confirmation_additional_instruction_text_is_displayed_and_blank_textbox_is_displayed_below_for_english_and_spanish_language() throws InterruptedException {
 			assertEquals(notifPage.AdditionalArrivalInstTextboxBlankEn(), "",
 					"Additional arrival instrunction textbox is not blank");
+			notifPage.addArrivalInstructionTextInEnglish(propertyData.getProperty("add.arrival.instruction.in.en"));
+			notifPage.saveNotification();
 		}
 		@When("I click on additional arrival instruction for Spanish section")
-		public void i_click_on_additional_arrival_instruction_for_spanish_section() {
+		public void i_click_on_additional_arrival_instruction_for_spanish_section() throws InterruptedException {
 		   notifPage.clickOnSpanishButton();
 		   notifPage.clearAdditionalArrivalInstTextboxEs();
+		   notifPage.saveNotification();
 		}
 		@Then("I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for Spanish language")
-		public void i_verify_arrival_confirmation_additional_instruction_text_is_displayed_and_blank_textbox_is_displayed_below_for_spanish_language() {
+		public void i_verify_arrival_confirmation_additional_instruction_text_is_displayed_and_blank_textbox_is_displayed_below_for_spanish_language() throws InterruptedException {
 			assertEquals(notifPage.additionalArrivalInstTextboxBlankEs(), "",
 					"Additional arrival instrunction textbox is not blank");
+			notifPage.addArrivalInstructionTextInSpanish(propertyData.getProperty("add.arrival.instruction.in.es"));
+			notifPage.saveNotification();
 		}
 		@When("I click on additional arrival instruction for English section and add arrival instruction")
-		public void i_click_on_additional_arrival_instruction_for_english_section_and_add_arrival_instruction() {
+		public void i_click_on_additional_arrival_instruction_for_english_section_and_add_arrival_instruction() throws InterruptedException {
 			notifPage.clickOnEnglishButton();
 			notifPage.clearAdditionalArrivalInstTextboxEn();
 			notifPage.addArrivalInstructionTextInEnglish(propertyData.getProperty("additional.arrival.instruction.en.new"));
+			notifPage.saveNotification();
 		}
 		@Then("I verify arrival confirmation additional instruction text msg length should not exceeds above {int} character")
-		public void i_verify_arrival_confirmation_additional_instruction_text_msg_length_should_not_exceeds_above_character(Integer int1) {
+		public void i_verify_arrival_confirmation_additional_instruction_text_msg_length_should_not_exceeds_above_character(Integer int1) throws InterruptedException {
 			notifPage.clickOnEnglishButton();
 			assertEquals(notifPage.characterCount(),"(500/500 characters)","count not match");
-			
+			notifPage.addArrivalInstructionTextInEnglish(propertyData.getProperty("add.arrival.instruction.in.en"));
+			notifPage.saveNotification();
 		}
 		@When("I click on additional arrival instruction for Spanish section and add arrival instruction")
-		public void i_click_on_additional_arrival_instruction_for_spanish_section_and_add_arrival_instruction() {
+		public void i_click_on_additional_arrival_instruction_for_spanish_section_and_add_arrival_instruction() throws InterruptedException {
 			notifPage.clickOnSpanishButton();
 			notifPage.clearAdditionalArrivalInstTextboxEs();
 			notifPage.addArrivalInstructionTextInSpanish(propertyData.getProperty("additional.arrival.instruction.es.new"));
+			notifPage.saveNotification();
 		}
 		@Then("I verify arrival confirmation additional instruction text msg length should not exceeds above {int} character for Spanish language")
-		public void i_verify_arrival_confirmation_additional_instruction_text_msg_length_should_not_exceeds_above_character_for_spanish_language(Integer int1) {
+		public void i_verify_arrival_confirmation_additional_instruction_text_msg_length_should_not_exceeds_above_character_for_spanish_language(Integer int1) throws InterruptedException {
 			notifPage.clickOnSpanishButton();
 			assertEquals(notifPage.characterCount(),"(500/500 characters)","count not match");
+			notifPage.addArrivalInstructionTextInSpanish(propertyData.getProperty("add.arrival.instruction.in.es"));
+			notifPage.saveNotification();
 		}
 		@When("I select English as preferred language")
 		public void i_select_english_as_preferred_language() throws InterruptedException {
