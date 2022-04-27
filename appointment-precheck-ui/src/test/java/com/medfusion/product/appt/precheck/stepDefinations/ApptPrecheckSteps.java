@@ -7529,7 +7529,6 @@ public class ApptPrecheckSteps extends BaseTest {
 		}
 		@Then("I verify arrival confirmation additional instruction text msg length should not exceeds above {int} character")
 		public void i_verify_arrival_confirmation_additional_instruction_text_msg_length_should_not_exceeds_above_character(Integer int1) throws InterruptedException {
-			notifPage.clickOnEnglishButton();
 			assertEquals(notifPage.characterCount(),"(500/500 characters)","count not match");
 			notifPage.addArrivalInstructionTextInEnglish(propertyData.getProperty("add.arrival.instruction.in.en"));
 			notifPage.saveNotification();
@@ -7543,7 +7542,6 @@ public class ApptPrecheckSteps extends BaseTest {
 		}
 		@Then("I verify arrival confirmation additional instruction text msg length should not exceeds above {int} character for Spanish language")
 		public void i_verify_arrival_confirmation_additional_instruction_text_msg_length_should_not_exceeds_above_character_for_spanish_language(Integer int1) throws InterruptedException {
-			notifPage.clickOnSpanishButton();
 			assertEquals(notifPage.characterCount(),"(500/500 characters)","count not match");
 			notifPage.addArrivalInstructionTextInSpanish(propertyData.getProperty("add.arrival.instruction.in.es"));
 			notifPage.saveNotification();
