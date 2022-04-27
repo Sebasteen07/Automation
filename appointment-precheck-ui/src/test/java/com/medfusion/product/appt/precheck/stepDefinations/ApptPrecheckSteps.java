@@ -7475,6 +7475,117 @@ public class ApptPrecheckSteps extends BaseTest {
 		public void i_verify_on_nitification_icon_count_should_be_displayed_on_the_top_left_corner(String count) {
 			assertEquals(curbsidePage.getNotificationCount(), count, "Notification Count is not match");
 		}
+		
+		@When("I click on curbside check-in of notifications tab")
+		public void i_click_on_curbside_check_in_of_notifications_tab() {
+		   notifPage.clickOnCurbsideCheckInTabInNotif();
+		}
+		@When("I click on English section")
+		public void i_click_on_english_section() {
+		    notifPage.clickOnEnglishButton();
+		}
+		@When("I click on Spanish section")
+		public void i_click_on_spanish_section() {
+		   notifPage.clickOnSpanishButton();
+		}
+		@Then("I verify default arrival instruction message for spanish and english section is not editable")
+		public void i_verify_default_arrival_instruction_message_for_spanish_and_english_section_is_not_editable() {
+		    notifPage.clickOnEnglishButton();
+		    assertEquals(notifPage.visibilityOfArrivalConfirmationMsgInEnglish(),"Arrival confirmation message"," Arrival confirmation message is not displayed");
+		    notifPage.clickOnSpanishButton();
+		    assertEquals(notifPage.visibilityOfArrivalConfirmationMsgInSpanish(),"Arrival confirmation message"," Arrival confirmation message is not displayed");
+		}
+		@When("I click on additional arrival instructions for English section")
+		public void i_click_on_additional_arrival_instructions_for_english_section() {
+			notifPage.clickOnEnglishButton();
+		}
+		@When("I click on additional arrival instructions for Spanish section")
+		public void i_click_on_additional_arrival_instructions_for_spanish_section() throws InterruptedException {
+			notifPage.clickOnSpanishButton();
+		}
+		@Then("I verify arrival confirmation additional instruction text is displayed and textbox is displayed below for English and spanish language")
+		public void i_verify_arrival_confirmation_additional_instruction_text_is_displayed_and_textbox_is_displayed_below_for_english_and_spanish_language() {
+		    notifPage.clickOnEnglishButton();
+			assertEquals(notifPage.getAdditionalArrivalInstructionMsgTextInEnglish(),"hello welcome to curbside checkin","text not match");
+		    notifPage.clickOnSpanishButton();
+			assertEquals(notifPage.getAdditionalArrivalInstructionMsgTextInSpanish(),"hola bienvenido al registro en la acera","text not match");
+		}
+		@When("I click on additional arrival instruction for English section")
+		public void i_click_on_additional_arrival_instruction_for_english_section() {
+			notifPage.clickOnEnglishButton();
+			notifPage.clearAdditionalArrivalInstTextboxEn();
+		}
+		@Then("I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for English and spanish language")
+		public void i_verify_arrival_confirmation_additional_instruction_text_is_displayed_and_blank_textbox_is_displayed_below_for_english_and_spanish_language() {
+			assertEquals(notifPage.AdditionalArrivalInstTextboxBlankEn(), "",
+					"Additional arrival instrunction textbox is not blank");
+		}
+		@When("I click on additional arrival instruction for Spanish section")
+		public void i_click_on_additional_arrival_instruction_for_spanish_section() {
+		   notifPage.clickOnSpanishButton();
+		   notifPage.clearAdditionalArrivalInstTextboxEs();
+		}
+		@Then("I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for Spanish language")
+		public void i_verify_arrival_confirmation_additional_instruction_text_is_displayed_and_blank_textbox_is_displayed_below_for_spanish_language() {
+			assertEquals(notifPage.additionalArrivalInstTextboxBlankEs(), "",
+					"Additional arrival instrunction textbox is not blank");
+		}
+		@When("I click on additional arrival instruction for English section and add arrival instruction")
+		public void i_click_on_additional_arrival_instruction_for_english_section_and_add_arrival_instruction() {
+			notifPage.clickOnEnglishButton();
+			notifPage.clearAdditionalArrivalInstTextboxEn();
+			notifPage.addArrivalInstructionTextInEnglish(propertyData.getProperty("additional.arrival.instruction.en.new"));
+		}
+		@Then("I verify arrival confirmation additional instruction text msg length should not exceeds above {int} character")
+		public void i_verify_arrival_confirmation_additional_instruction_text_msg_length_should_not_exceeds_above_character(Integer int1) {
+			notifPage.clickOnEnglishButton();
+			assertEquals(notifPage.characterCount(),"(500/500 characters)","count not match");
+			
+		}
+		@When("I click on additional arrival instruction for Spanish section and add arrival instruction")
+		public void i_click_on_additional_arrival_instruction_for_spanish_section_and_add_arrival_instruction() {
+			notifPage.clickOnSpanishButton();
+			notifPage.clearAdditionalArrivalInstTextboxEs();
+			notifPage.addArrivalInstructionTextInSpanish(propertyData.getProperty("additional.arrival.instruction.es.new"));
+		}
+		@Then("I verify arrival confirmation additional instruction text msg length should not exceeds above {int} character for Spanish language")
+		public void i_verify_arrival_confirmation_additional_instruction_text_msg_length_should_not_exceeds_above_character_for_spanish_language(Integer int1) {
+			notifPage.clickOnSpanishButton();
+			assertEquals(notifPage.characterCount(),"(500/500 characters)","count not match");
+		}
+		@When("I select English as preferred language")
+		public void i_select_english_as_preferred_language() throws InterruptedException {
+		   notifPage.clickOnPracticePrefLangDropDown();
+		   notifPage.clickOnEnglishPracticePrefLang();
+		}
+		@When("I schedule an appointment and confirm arrival message")
+		public void i_schedule_an_appointment_and_confirm_arrival_message() throws NullPointerException, IOException {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			Appointment.randomNumber = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							"jordan" + Appointment.randomNumber + "@YOPmail.com","en",
+							propertyData.getProperty("patient.name")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+		}
+		@Then("I verify arrival confirmation default msg should be received to patient in English language for email and text")
+		public void i_verify_arrival_confirmation_default_msg_should_be_received_to_patient_in_english_language_for_email_and_text() throws NullPointerException, Exception {
+			String currentWindow = driver.getWindowHandle();
+			YopMail yopMail = new YopMail(driver);
+			yopMail.confirmArrivalFromEmail("jordan" + Appointment.randomNumber + "@YOPmail.com",
+					propertyData.getProperty("curbside.checkin.mail.subject"),
+					propertyData.getProperty("email.title.in.en"));
+			driver.close();
+			driver.switchTo().window(currentWindow);
+			Thread.sleep(10000);
+			
+			loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		}
 }
 
 

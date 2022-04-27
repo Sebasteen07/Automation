@@ -2144,3 +2144,59 @@ Feature: Test fuctionality of Appointment precheck
     And I switch on curbside checkin tab and select patient and click on check in button
     Then I verify on nitification icon "4" count should be displayed on the top left corner
     And logout from practice provisioning portal
+    
+  Scenario: verify notification setting for arrival instruction for spanish and english section and default msg is not editable and hardcoded
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on English section
+   	And I click on Spanish section
+    Then I verify default arrival instruction message for spanish and english section is not editable
+    And logout from practice provisioning portal
+      
+  Scenario: verify if arrival confirmation additional instruction text is displayed and textbox is displayed below for English and Spanish language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instructions for English section
+   	And I click on additional arrival instructions for Spanish section
+    Then I verify arrival confirmation additional instruction text is displayed and textbox is displayed below for English and spanish language
+    And logout from practice provisioning portal
+     
+  Scenario: verify if arrival confirmation additional instruction text is displayed and blank textbox is displayed below for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instruction for English section
+    Then I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for English language
+    And logout from practice provisioning portal
+     
+  Scenario: verify if arrival confirmation additional instruction text is displayed and blank textbox is displayed below for Spanish language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+   	And I click on additional arrival instruction for Spanish section
+    Then I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for Spanish language
+    And logout from practice provisioning portal
+   
+  Scenario: verify if arrival confirmation additional instruction text msg length does not exceeds above 500 character for English language
+   When I click on setting tab
+   And I click on notification tab
+   And I click on curbside check-in of notifications tab
+   And I click on additional arrival instruction for English section and add arrival instruction 
+   Then I verify arrival confirmation additional instruction text msg length should not exceeds above 500 character
+   
+  Scenario: verify if arrival confirmation additional instruction text msg length does not exceeds above 500 character for Spanish language
+   When I click on setting tab
+   And I click on notification tab
+   And I click on curbside check-in of notifications tab
+   And I click on additional arrival instruction for Spanish section and add arrival instruction 
+   Then I verify arrival confirmation additional instruction text msg length should not exceeds above 500 character for Spanish language
+   
+  Scenario: verify arrival instruction msg received to patient is default msg when custom instruction is blank for English language
+   When I click on setting tab
+   And I click on notification tab
+   And I select English as preferred language
+   And I click on appointments tab
+   And I schedule an appointment and confirm arrival message
+   Then I verify arrival confirmation default msg should be received to patient in English language for email and text
