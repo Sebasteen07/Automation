@@ -535,6 +535,12 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//span[text()='Skip and finish later']")
 	private WebElement skipAndFinishLater;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='Email reminders log']")
+	private WebElement emailReminderLogTitle;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Text reminders log']")
+	private WebElement textReminderLogTitle;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -2416,4 +2422,89 @@ public class AppointmentsPage extends BasePageObject {
 			return reminderTextIcon.getText();
 		}
 		
+		
+		public void clickOnViewAllForEmailReminder(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			WebElement reminderTextIcon = driver.findElement(By
+					.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::a[text()='View all'])[1]"));
+			reminderTextIcon.click();
+		}
+
+		public void clickOnViewAllForTextReminder(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			WebElement reminderTextIcon = driver.findElement(By
+					.xpath("(//input[@id='select-" + patientId + "-" + apptId + "']/following::a[text()='View all'])[2]"));
+			reminderTextIcon.click();
+		}
+
+		public boolean visibilityOfMailReminderLogTitle(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, emailReminderLogTitle);
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", emailReminderLogTitle);
+			boolean visibility = false;
+			visibility = emailReminderLogTitle.isDisplayed();
+			return visibility;
+		}
+
+		public boolean visibilityOfTextReminderLogTitle(String patientId, String apptId) {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, textReminderLogTitle);
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", textReminderLogTitle);
+			boolean visibility = false;
+			visibility = textReminderLogTitle.isDisplayed();
+			return visibility;
+		}
+
+		public boolean visibilityOfMailReminderLogs(String patientId, String apptId, int indexPath) {
+			IHGUtil.PrintMethodName();
+			WebElement text = driver
+					.findElement(By.xpath("(//span[text()='Email reminders log']/following::td)[" + indexPath + "]"));
+			boolean visibility = false;
+			visibility = text.isDisplayed();
+			return visibility;
+		}
+
+		public boolean visibilityOfTextReminderLogs(String patientId, String apptId, int indexPath) {
+			IHGUtil.PrintMethodName();
+			WebElement text = driver
+					.findElement(By.xpath("(//span[text()='Text reminders log']/following::td)[" + indexPath + "]"));
+			boolean visibility = false;
+			visibility = text.isDisplayed();
+			return visibility;
+		}
+
+		public String getTextFromEmailRemLogs(String patientId, String apptId, String logs) {
+			IHGUtil.PrintMethodName();
+			String logContent = null;
+			List<WebElement> text = driver.findElements(By.xpath("//span[text()='Email reminders log']/following::td"));
+			for (int j = 0; j < text.size(); j++) {
+				logContent = text.get(j).getText();
+				if (logContent.equals(logs)) {
+					log(" Reminder " + logs + "is match");
+					return logContent;
+				}
+			}
+			return logContent;
+		}
+
+		public void closeReminderLogPopup() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, textReminderLogTitle);
+			broadcastMsgPopupCrossButton.click();
+			Thread.sleep(3000);
+		}
+		
+		public String getTextFromTextRemLogs(String patientId, String apptId, String logs) {
+			IHGUtil.PrintMethodName();
+			String logContent = null;
+			List<WebElement> text = driver.findElements(By.xpath("//span[text()='Text reminders log']/following::td"));
+			for (int j = 0; j < text.size(); j++) {
+				logContent = text.get(j).getText();
+				if (logContent.equals(logs)) {
+					log(" Reminder " + logs + "is match");
+					return logContent;
+				}
+			}
+			return logContent;
+		}
 }
