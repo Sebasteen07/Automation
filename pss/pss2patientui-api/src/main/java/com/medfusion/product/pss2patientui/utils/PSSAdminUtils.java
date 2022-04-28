@@ -1708,4 +1708,12 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		}
 		patientFlow.logout();
 	}
+	
+	public void busineesHours(WebDriver driver, AdminUser adminuser, Appointment appointment,String startTime,String endTime) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		pssPracticeConfig.busineesHours(startTime, endTime);
+		pssPracticeConfig.logout();
+	}
 }
