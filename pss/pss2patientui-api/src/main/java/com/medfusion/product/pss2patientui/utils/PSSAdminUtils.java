@@ -1034,6 +1034,25 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
+	public void savedAsDraftDecisionTreeSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+			String appointmentType, String reasonForAppointment) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.importDecisionTree(decisionTreeName);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.setApptTypeDecisionTree(appointmentType);
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.saveAsDraftGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
 	public void verifyAnnouncementsAndCategoryWhenSpanishIsDisabled(WebDriver driver, AdminUser adminUser, Appointment appointment, 
 			String decisionTreeName, String appointmentType, String reasonForAppointment, String questionForAppointment, 
 			String decisionTreeAnswer, String footerText, String announcementTypeText,String greetingsText) throws Exception {
