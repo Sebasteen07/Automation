@@ -564,8 +564,6 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 		adminPayload = payloadAM02.careTeamSettingPyaload(pcp, fct);
 		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
 		apv.responseCodeValidation(response, 200);
-
-		//HashSet<String> l2 = new HashSet<String>();
 		
 		ArrayList<String>l2= new ArrayList<String>();
 		response = postAPIRequestAM.getBookById(practiceId, shareBookId);
@@ -573,8 +571,7 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 		
 		JSONObject jo= new JSONObject(response.asString());
 		
-		boolean sharePatientStatus=(Boolean) jo.get("sharePatients");
-		
+		boolean sharePatientStatus=(Boolean) jo.get("sharePatients");		
 		assertTrue(sharePatientStatus);
 		
 		logStep("Set up the desired rule in Admin UI using API");
