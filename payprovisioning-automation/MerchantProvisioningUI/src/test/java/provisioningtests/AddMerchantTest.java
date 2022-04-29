@@ -98,10 +98,10 @@ public class AddMerchantTest extends ProvisioningBaseTest{
                 testData.getProperty("federal.tax.id"));
 
         log("Fill Rates and Fees Info");
-        addNewMerchantPage.fillRatesAndFees(testData.getProperty("perTransactionAuthFee"), testData.getProperty("perTransactionRefundFee"),
-                testData.getProperty("qTierUpper"), testData.getProperty("qTierFee"),
-                testData.getProperty("mTierUpper"), testData.getProperty("mTierFee"),
-                testData.getProperty("nonQTierUpper"), testData.getProperty("nonQTierFee"));
+        addNewMerchantPage.fillRatesAndFees(testData.getProperty("per.transaction.auth.fee"), testData.getProperty("per.transaction.refund.fee"),
+                testData.getProperty("qtier.upper"), testData.getProperty("qtier.fee"),
+                testData.getProperty("mtier.upper"), testData.getProperty("mtier.fee"),
+                testData.getProperty("non.qtier.upper"), testData.getProperty("non.qtier.fee"));
 
         log("Fill Fee Settlement Type");
         addNewMerchantPage.selectFeeSettlementType(merchantEntityElement.getFeeSettlementType());

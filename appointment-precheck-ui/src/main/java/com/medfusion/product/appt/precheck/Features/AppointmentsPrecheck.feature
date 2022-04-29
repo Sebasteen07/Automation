@@ -2196,3 +2196,27 @@ Feature: Test fuctionality of Appointment precheck
     And I click on appointments tab
     And I schedule an appointment and confirm arrival message
     Then I verify arrival confirmation default msg should be received to patient in English language for email and text
+
+  Scenario: verify if user is able to add up-to 500 characters in default additional arrival instruction text box for english language
+    When from setting in notifications user click on curbside checkin tab and click on english button
+    Then I verify after user able to add above five hundred character in default arrival instruction message for english and it should shows filled character count in left
+    And I click on save for english and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enter 100 characters in the english additional arrival instructions text box then count should show correct
+    When from setting in notifications user click on curbside checkin tab and click on english button
+    Then I verify user able to enter hundred characters in arrival instructions text box for english then count should show correct
+    And I click on save for english and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to add up-to 500 characters in default additional arrival instruction text box for spanish language
+    When from setting in notifications user click on curbside checkin tab and click on spanish button
+    Then I verify after user able to add above five hundred character in default arrival instruction message for spanish and it should shows filled character count in left
+    And I click on save for spanish and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enter 100 characters in the english additional arrival instructions text box then count should show correct
+    When from setting in notifications user click on curbside checkin tab and click on spanish button
+    Then I verify user able to enter hundred characters in arrival instructions text box for spanish then count should show correct
+    And I click on save for spanish and redirect to notification dashboard
+    And logout from practice provisioning portal
