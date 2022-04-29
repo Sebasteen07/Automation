@@ -7628,6 +7628,155 @@ public class ApptPrecheckSteps extends BaseTest {
 			notifPage.enterCharInAddArrivalInstTextBox(propertyData.getProperty("hundred.char.arrival.inst.msg.es"));
 			assertEquals(notifPage.getMaxLengthChar(),"(100/500 characters)","Character count was not same");
 		}
+		
+		@When("I click on curbside checkin tab of notification tab and add additional arrival instruction for English section")
+		public void i_click_on_curbside_checkin_tab_of_notification_tab_and_add_additional_arrival_instruction_for_english_section() throws InterruptedException {
+			notifPage.clickOnCurbsideCheckInTabInNotif();
+			notifPage.clickOnPracticePrefLangDropDown();
+			notifPage.clickOnEnglishPracticePrefLang();
+			notifPage.clickOnEnglishButton();
+			notifPage.addArrivalInstructionTextInEnglish(propertyData.getProperty("additional.arrival.inst.msg.en"));
+			notifPage.saveNotification();
+		}
+		@When("I schedule an appointment with English language and confirm arrival message")
+		public void i_schedule_an_appointment_with_english_language_and_confirm_arrival_message() throws NullPointerException, IOException {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			Appointment.randomNumber = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							"jordan" + Appointment.randomNumber + "@YOPmail.com","en",
+							propertyData.getProperty("patient.name")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+		}
+		@Then("I verify arrival confirmation default msg + custom msg should be received to patient in English language for email and text")
+		public void i_verify_arrival_confirmation_default_msg_custom_msg_should_be_received_to_patient_in_english_language_for_email_and_text() throws NullPointerException, Exception {
+			YopMail yopMail = new YopMail(driver);
+			assertEquals(yopMail.getMessageAfterArrival("jordan" + Appointment.randomNumber + "@YOPmail.com", 
+					propertyData.getProperty("curbside.checkin.mail.subject"),
+					propertyData.getProperty("curbside.checkin.mail.title"),
+					propertyData.getProperty("additional.arrival.inst.msg.en")),
+					propertyData.getProperty("additional.arrival.inst.msg.en"), "Message is displayed");
+			
+			loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+			mainPage.clickOnSettingTab();
+			notifPage.clickOnNotificationTab();
+			notifPage.clickOnCurbsideCheckInTabInNotif();
+			notifPage.clickOnEnglishButton();
+			notifPage.clearAdditionalArrivalInstTextboxEn();
+			notifPage.addArrivalInstructionTextInEnglish(propertyData.getProperty("add.arrival.instruction.in.en"));
+			notifPage.saveNotification();
+		}
+		@When("I select English and Spanish as preferred language")
+		public void i_select_english_and_spanish_as_preferred_language() throws InterruptedException {
+		    notifPage.clickOnCurbsideCheckInTabInNotif();
+		    notifPage.clickOnPracticePrefLangDropDown();
+		    notifPage.selectEnglishSpanishPracticePrefLang();
+		    notifPage.saveNotification();
+		}
+		@When("I schedule an appointment with English and Spanish language and confirm the arrival")
+		public void i_schedule_an_appointment_with_english_and_spanish_language_and_confirm_the_arrival() throws NullPointerException, IOException {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			Appointment.randomNumber = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							"jordan" + Appointment.randomNumber + "@YOPmail.com","en-es",
+							propertyData.getProperty("patient.name")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			aptPrecheckPost.aptArrivalActionsCurbsideArrival(propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			
+		}
+		@Then("I verify arrival notification msg should show mobile number of appointment location in the arrival text msg and msg should come in English language")
+		public void i_verify_arrival_notification_msg_should_show_mobile_number_of_appointment_location_in_the_arrival_text_msg_and_msg_should_come_in_english_language() throws Exception {
+		    YopMail yopMail = new YopMail(driver);
+		    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		    		propertyData.getProperty("curbside.mail.subject.en.es"),
+		    		propertyData.getProperty("location.and.phone.number"),5));
+		    
+		    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		}
+		@When("I schedule an appointment with English language and confirm the arrival")
+		public void i_schedule_an_appointment_with_english_language_and_confirm_the_arrival() throws NullPointerException, IOException {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			Appointment.randomNumber = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							"jordan" + Appointment.randomNumber + "@YOPmail.com","en",
+							propertyData.getProperty("patient.name")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			aptPrecheckPost.aptArrivalActionsCurbsideArrival(propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+		}
+		@Then("I verify arrival notification message should show mobile number of appointment location in the arrival text msg and Msg should come in English language")
+		public void i_verify_arrival_notification_message_should_show_mobile_number_of_appointment_location_in_the_arrival_text_msg_and_msg_should_come_in_english_language() throws NullPointerException, Exception {
+			YopMail yopMail = new YopMail(driver);
+		    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		    		propertyData.getProperty("curbside.checkin.mail.subject"),
+		    		propertyData.getProperty("location.and.phone.number"),5));
+		    
+		    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		}
+		@When("I schedule an appointment with English language and set appointment location and phone number as blank")
+		public void i_schedule_an_appointment_with_english_language_and_set_appointment_location_and_phone_number_as_blank() throws NullPointerException, IOException {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			Appointment.randomNumber = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putApptPayloadwithblankPhoneandLocation(plus20Minutes, null, 
+							"jordan" + Appointment.randomNumber + "@YOPmail.com",
+							propertyData.getProperty("provider.first.name"),
+							propertyData.getProperty("patient.name"), null),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			aptPrecheckPost.aptArrivalActionsCurbsideArrival(propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+		}
+		@Then("I verify arrival notification msg should not show {string} text  in the arrival text msg")
+		public void i_verify_arrival_notification_msg_should_not_show_text_in_the_arrival_text_msg(String string) throws NullPointerException, Exception {
+			YopMail yopMail = new YopMail(driver);
+		    assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		    		propertyData.getProperty("curbside.checkin.mail.subject"),
+		    		propertyData.getProperty("location.and.phone.number"),5));
+		    
+		    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		}
+
 }
 
 
