@@ -7579,6 +7579,55 @@ public class ApptPrecheckSteps extends BaseTest {
 			
 			loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 		}
+		
+		@Then("I verify after user able to add above five hundred character in default arrival instruction message for english and it should shows filled character count in left")
+		public void i_verify_after_user_able_to_add_above_five_hundred_character_in_default_arrival_instruction_message_for_english_and_it_should_shows_filled_character_count_in_left() {
+				notifPage.enterCharInAddArrivalInstTextBox(propertyData.getProperty("additional.arrival.inst.msg.en"));
+				assertEquals(notifPage.getMaxLengthChar(),"(500/500 characters)","Character count was not same");
+		}
+		
+		@Then("I click on save for english and redirect to notification dashboard")
+		public void i_click_on_save_for_english_and_redirect_to_notification_dashboard() throws InterruptedException {
+			notifPage.saveNotification();
+			log("user should be on notification page");
+			assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+			scrollAndWait(0, -500, 3000);
+			notifPage.clickOnCurbsideCheckInTabInNotif();
+			notifPage.clickOnEnglishButton();
+			notifPage.enterCharInAddArrivalInstTextBox(propertyData.getProperty("arrival.inst.msg.in.en"));
+			notifPage.saveNotification();
+		}
+		
+		@Then("I verify user able to enter hundred characters in arrival instructions text box for english then count should show correct")
+		public void i_verify_user_able_to_enter_hundred_characters_in_arrival_instructions_text_box_for_english_then_count_should_show_correct() {
+			notifPage.enterCharInAddArrivalInstTextBox(propertyData.getProperty("hundred.char.arrival.inst.msg.en"));
+			assertEquals(notifPage.getMaxLengthChar(),"(100/500 characters)","Character count was not same");
+		}
+		
+		@Then("I verify after user able to add above five hundred character in default arrival instruction message for spanish and it should shows filled character count in left")
+		public void i_verify_after_user_able_to_add_above_five_hundred_character_in_default_arrival_instruction_message_for_spanish_and_it_should_shows_filled_character_count_in_left() {
+			notifPage.enterCharInAddArrivalInstTextBox(propertyData.getProperty("additional.arrival.inst.msg.es"));
+			assertEquals(notifPage.getMaxLengthChar(),"(500/500 characters)","Character count was not same");
+		}
+		
+		@Then("I click on save for spanish and redirect to notification dashboard")
+		public void i_click_on_save_for_spanish_and_redirect_to_notification_dashboard() throws InterruptedException {
+			notifPage.saveNotification();
+			log("user should be on notification page");
+			assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+			scrollAndWait(0, -500, 2000);
+			notifPage.clickOnCurbsideCheckInTabInNotif();
+			notifPage.clickOnSpanishButton();
+			notifPage.enterCharInAddArrivalInstTextBox(propertyData.getProperty("arrival.inst.msg.in.es"));
+			notifPage.saveNotification();
+			scrollAndWait(0, -500, 2000);
+		}
+		
+		@Then("I verify user able to enter hundred characters in arrival instructions text box for spanish then count should show correct")
+		public void i_verify_user_able_to_enter_hundred_characters_in_arrival_instructions_text_box_for_spanish_then_count_should_show_correct() {
+			notifPage.enterCharInAddArrivalInstTextBox(propertyData.getProperty("hundred.char.arrival.inst.msg.es"));
+			assertEquals(notifPage.getMaxLengthChar(),"(100/500 characters)","Character count was not same");
+		}
 }
 
 
