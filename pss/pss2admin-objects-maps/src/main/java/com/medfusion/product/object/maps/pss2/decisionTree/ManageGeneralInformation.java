@@ -42,6 +42,9 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 	@FindBy(how = How.XPATH, using = "//*[@id='displayNames[EN]']")
 	private WebElement fillEngLangField;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='displayName']")
+	private WebElement fillEngFieldWhenESDisabled;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='rect']/div[2]/div/span")
 	private List<WebElement> clickOnEsLangField;
 	
@@ -109,6 +112,16 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 		ClickOnCustomizeText.click();
 	}
 	
+	public void addQuestionInDecisionTreeWhenSpanishIsDisabled(String questionForAppointment) throws InterruptedException {
+		javascriptClick(firstBtn);
+		clickOnEngLangField.get(1).click();
+		IHGUtil.waitForElement(driver, 60, fillEngFieldWhenESDisabled);
+		fillEngFieldWhenESDisabled.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
+		fillEngFieldWhenESDisabled.sendKeys(questionForAppointment);
+		log("Question added in Decision Tree");
+		ClickOnCustomizeText.click();
+	}
+	
 	public void addQuestionInEsLanguageDecisionTree(String questionForAppointment) throws InterruptedException {
 		Thread.sleep(2000);
 		espanolLangGeneralInformation.click();
@@ -129,6 +142,16 @@ public class ManageGeneralInformation extends ManageDecisionTree {
 		fillEngLangField.sendKeys(decisionTreeAnswer);
 		log("First Answer added in Decision Tree");
 		ClickOnCustomizeText.click();
+	}
+	
+	public void addAnswerOneInDecisionTreeWhenSpanishIsDisabled(String decisionTreeAnswer) throws InterruptedException {
+		Thread.sleep(2000);
+		javascriptClick(thirdBtn);
+		clickOnEngLangField.get(2).click();
+		IHGUtil.waitForElement(driver, 60, fillEngFieldWhenESDisabled);
+		fillEngFieldWhenESDisabled.sendKeys(Keys.CONTROL, "a", Keys.DELETE);
+		fillEngFieldWhenESDisabled.sendKeys(decisionTreeAnswer);
+		log("First Answer added in Decision Tree");
 	}
 	
 	public void addAnswerOneInEsLanguageDecisionTree(String decisionTreeAnswer) throws InterruptedException {

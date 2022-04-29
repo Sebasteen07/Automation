@@ -2290,6 +2290,20 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			return newTime;
 		}
 		
+		public String currentTimeWithTimeZone(String timezone) {
+			TimeZone timeZone = TimeZone.getTimeZone(timezone);
+			String dateFormat = "HH:mm";
+			SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+			Calendar c = Calendar.getInstance();
+			TimeZone time_zone = TimeZone.getTimeZone(timezone);
+			f1.setTimeZone(timeZone);
+			c.setTimeZone(time_zone);
+			String currentTime = f1.format(c.getTime());
+			log("Current Time is " + currentTime);
+			return currentTime;
+		}
+		
+
 		public String bookLTB(HomePage homePage, Appointment testData,WebDriver driver,String locationName,String appType,String providerName) throws Exception {
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;

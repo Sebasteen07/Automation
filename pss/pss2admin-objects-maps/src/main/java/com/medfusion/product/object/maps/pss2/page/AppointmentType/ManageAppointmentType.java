@@ -205,8 +205,8 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		log("PrevSched Setting Label- "+prevSchedSettingLabel.getText());
 		
 		commonMethods.highlightElement(prevSchedSettingAdmin);
-		prevSchedSettingAdmin.click();
 		prevSchedSettingAdmin.clear();
+		prevSchedSettingAdmin.sendKeys("0");
 		commonMethods.highlightElement(aptTypeSettingSaveBtn);
 		aptTypeSettingSaveBtn.click();
 	}

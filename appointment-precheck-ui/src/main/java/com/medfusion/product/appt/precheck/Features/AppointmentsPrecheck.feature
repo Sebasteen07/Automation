@@ -2004,3 +2004,195 @@ Feature: Test fuctionality of Appointment precheck
     And I select patient and send manual reminder
     Then I verify for email and text reminder system should show all manual and cadence reminder log on mails history  pop up
     And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see latest reminder status in mail and text section either for cadence reminder.
+    When I click on setting tab
+    And I click on notification tab
+    And I am on the reminder section of the appointment reminder
+    And I click on appointments tabs
+    And I schedule an appointment for English language
+    And I go to appointment dashboard and select one user from appointment dashboard
+    And I click on '>' icon of the selected patient from dashboard
+    Then I verify system should show latest cadence reminder status on page
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see manual reminder status in mail and text section either for manual reminder.
+    When I click on setting tab
+    And I click on notification tab
+    And I am on the reminder section of the appointment reminder
+    And I click on appointments tab
+    And I schedule an appointment for English language
+    And I select one user from appointment dashboard and send manual reminder
+    And I click on '>' icon of the selected patient from dashboard
+    Then I verify system should show manual reminder status on page
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then appointment scheduled confirmation mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the appointment scheduled confirmation in mail
+    Then I verify appointment scheduled confirmation mail recieved should show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then appointment reminder in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the appointment reminder in mail
+    Then I verify appointment reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then broadcast message in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the broadcast message reminder in mail
+    And I send broadcast message to patient
+    Then I verify broadcast message recieved in mail should show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then curbside reminder in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the curbside reminder in mail
+    Then I verify curbside reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then manual reminder in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the manual reminder in mail
+    And I send manual reminder for that appointment
+    Then I verify manual reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+
+  Scenario: verify if user delete 4th timing unit by click on (-) button from page
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on 4th timing unit
+    And I click on delete button of 4th timing unit
+    Then I verify that system should allow user to delete timing units from page
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see (+) add in enable format after deleting 4th timing unit
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on 4th timing unit
+    And I click on delete button of 4th timing unit
+    Then I verify add button should display in enable format
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see add button in enable format when I delete 2 more timing units
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on 4th timing unit
+    And I click on delete button of 4th and 3rd timing unit
+    Then I verify add button should display in enable format if I delete 2 timing units
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to delete all timing units fields on cadence editor template page by clicking on (-) button
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on delete button of all timing unit fields
+    Then I verify system should allow user to delete all timing units fields and in notification tab the timing and timing unit section blank space should display
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to add again timing units field by clicking on (+) add button on cadence editor template page
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on add button on cadence editor template page
+    Then I verify system should allow user to add timing fields on cadence editor template page
+    And logout from practice provisioning portal
+
+  Scenario: Verify add button functionality for email in appointment reminder template editor page
+    When I click on email edit section of appointment reminders from setting in notifications tab
+    Then I verify add button functionality for "Email"
+    And I save cadence for email
+    And logout from practice provisioning portal
+
+  Scenario: Verify add button functionality for email in appointment reminder template editor page
+    When I click on text edit section of appointment reminders from setting in notifications tab
+    Then I verify add button functionality for "SMS"
+    And I save cadence for text
+    And logout from practice provisioning portal
+
+  Scenario: verify If patient has Spanish as preferred language in appointment data then send message in Spanish
+    When I enabled curbside remainder checkbox from notifications tab in Setting tab
+    And I schedule an appointment in spanish "es" and have confirmed there arrival
+    And click on Curbside check-in tab
+    And I select patient and click on dropdown from curbside checkin page
+    And I send "Come in the office now." message to selected patient
+    And I received message "ven a la oficina ahora." in email in spanish language
+    And I send "Wait in the parking lot until we send you a message to come in." message to selected patient
+    And I received message "espere en el estacionamiento hasta que le enviemos un mensaje para que ingrese." in email in spanish language
+    And I send "We will call you shortly to collect your insurance information." message to selected patient
+    Then I verify message "lo llamaremos en breve para recopilar la información de su seguro." receive in spanish language
+    And logout from practice provisioning portal
+
+  Scenario: verify if the total count of number of patients waiting in the parking lot are displayed in the top left corner in Curbside check-in grid
+    When I enabled curbside remainder checkbox from notifications tab in Setting tab
+    And I clear all appointments from on curbside checkin tab
+    And click on Curbside check-in tab
+    And on nitification icon "0" count should be displayed on the top left corner
+    And I schedule 3 appointments and finish curbside checkin process from mail by click on I have arrived
+    And I logged into practice provisioning and view the notification icon count "3" on the top left corner
+    And I schedule 2 appointments and finish curbside checkin process from mail by click on I have arrived
+    And I logged into practice provisioning and view the notification icon count "5" on the top left corner
+    And I switch on curbside checkin tab and select patient and click on check in button
+    Then I verify on nitification icon "4" count should be displayed on the top left corner
+    And logout from practice provisioning portal
+
+  Scenario: verify notification setting for arrival instruction for spanish and english section and default msg is not editable and hardcoded
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    Then I verify default arrival instruction message for spanish and english section is not editable
+    And logout from practice provisioning portal
+
+  Scenario: verify if arrival confirmation additional instruction text is displayed and textbox is displayed below for English and Spanish language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    Then I verify arrival confirmation additional instruction text is displayed and textbox is displayed below for English and spanish language
+    And logout from practice provisioning portal
+
+  Scenario: verify if arrival confirmation additional instruction text is displayed and blank textbox is displayed below for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instruction for English section
+    Then I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for English language
+    And logout from practice provisioning portal
+
+  Scenario: verify if arrival confirmation additional instruction text is displayed and blank textbox is displayed below for Spanish language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instruction for Spanish section
+    Then I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for Spanish language
+    And logout from practice provisioning portal
+
+  Scenario: verify if arrival confirmation additional instruction text msg length does not exceeds above 500 character for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instruction for English section and add arrival instruction
+    Then I verify arrival confirmation additional instruction text msg length should not exceeds above 500 character
+
+  Scenario: verify if arrival confirmation additional instruction text msg length does not exceeds above 500 character for Spanish language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instruction for Spanish section and add arrival instruction
+    Then I verify arrival confirmation additional instruction text msg length should not exceeds above 500 character for Spanish language
+
+  Scenario: verify arrival instruction msg received to patient is default msg when custom instruction is blank for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I select English as preferred language
+    And I click on appointments tab
+    And I schedule an appointment and confirm arrival message
+    Then I verify arrival confirmation default msg should be received to patient in English language for email and text
