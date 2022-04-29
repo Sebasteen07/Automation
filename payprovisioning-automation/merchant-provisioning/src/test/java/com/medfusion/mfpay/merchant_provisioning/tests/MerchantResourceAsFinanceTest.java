@@ -1,8 +1,9 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.tests;
 
 import java.io.IOException;
 
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.mfpay.merchant_provisioning.helpers.Validations;
 import com.medfusion.mfpay.merchant_provisioning.pojos.Merchant;
 import com.medfusion.mfpay.merchant_provisioning.utils.DBUtils;
@@ -30,7 +31,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 	}
 
 	// Creates a new element merchant as Finance user.
-	@Test
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateNewElementMerchantAsFinance() throws IOException {
 
 		MerchantInfo merchantinfo = new MerchantInfo();
@@ -43,7 +44,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 	}
 
 	// Update general merchant details for the merchant created as finance
-	@Test
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUdateGeneralMerchantInfo() throws IOException {
 		MerchantInfo merchantinfo = new MerchantInfo();
 		Response response = merchantinfo.updateGeneralMerchantDetails(testData.getProperty("mmid"));
@@ -56,7 +57,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 	}
 
 	// Get details of the merchant created as finance
-	@Test
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void getMerchantById() throws IOException {
 		MerchantInfo merchantinfo = new MerchantInfo();
 		Response response = merchantinfo.getMerchantDetails(testData.getProperty("mmid"));
@@ -67,7 +68,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 	}
 
 	// Creates a new paypal merchant as Finance user.
-	@Test
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateNewPaypalMerchantAsFinance() throws IOException {
 
 		PaypalDetails merchantdetails = new PaypalDetails();
@@ -83,7 +84,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 	}
 
 	// Creates a new paypal merchant as Finance user.
-	@Test
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void createNewPaypalMerchantAsFinance() throws IOException {
 
 		PaypalDetails merchantdetails = new PaypalDetails();
@@ -91,7 +92,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetSettlementType() throws Throwable {
 
 		MerchantInfo merchantinfo = new MerchantInfo();
@@ -127,7 +128,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 				nonQualifiedUpperBoundaryPercent.toString());
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void updateMerchantFeeInfo() throws IOException {
 
 		MerchantInfo merchantinfo = new MerchantInfo();
@@ -139,7 +140,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 				testData.getProperty("fee.settlement.type").toString());
 	}
 
-	@Test
+	@Test(enabled = false, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateNewMerchantDiffAccounts() throws IOException {
 
 		MerchantInfo merchantinfo = new MerchantInfo();
@@ -151,7 +152,8 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 		ProvisioningUtils.saveMMID(jsonpath.get("id").toString());
 	}
 
-	@Test(dataProvider = "mmids_for_bank_details", dataProviderClass = MPTestData.class)
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" },
+			dataProvider = "mmids_for_bank_details", dataProviderClass = MPTestData.class)
 	public void testGetMerchantsBankAccountDetails(String url, String mmid) throws IOException {
 		MerchantInfo merchantinfo = new MerchantInfo();
 		Response response = merchantinfo.getMerchantBankDetails(url, mmid);
@@ -161,7 +163,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 	}
 
 	// Edit merchant account details single to multiple & vice versa
-	@Test(dataProvider = "edit_account_details", dataProviderClass = MPTestData.class, enabled = true)
+	@Test(dataProvider = "edit_account_details", dataProviderClass = MPTestData.class, enabled = false)
 
 	public void testEditMerchantAccount(String seprateFunding, String feeRoutingNumber, String feeAccountType,
 			String feeAccountNumber, String accountRoutingNumber, String accountType, String accountNumber)
@@ -196,7 +198,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateNewInstamedMerchantAsFinance() throws NullPointerException, Throwable {
 
 		MerchantInfo merchantinfo = new MerchantInfo();
@@ -278,7 +280,8 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 
 	}
 
-	@Test(dataProvider = "instamed_create_with_invalid", dataProviderClass = MPTestData.class)
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, dataProvider = "instamed_create_with_invalid",
+			dataProviderClass = MPTestData.class)
 	public void testCreateNewInstamedMerchantWithInvalid(String merchantName, String externalMerchantId,
 			String customerAccountNumber, Double midQfeePercent, Double nonQFeePercent, Double authFee,
 			Double qualifiedFeePercent, String preferredProcessor, String merchantId, String storeId,

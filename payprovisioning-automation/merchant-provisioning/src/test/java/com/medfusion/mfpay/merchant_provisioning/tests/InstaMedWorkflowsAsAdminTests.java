@@ -1,4 +1,3 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.tests;
 
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
@@ -10,13 +9,13 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class InstaMedWorkflowsAsImplementationTests extends BaseRest{
+public class InstaMedWorkflowsAsAdminTests extends BaseRest{
     protected PropertyFileLoader testData;
 
     @BeforeTest
     public void setBaseUri() throws Exception{
         testData = new PropertyFileLoader();
-        setupImplementationRequestSpecBuilder();
+        setupAdminRequestSpecBuilder();
         setupResponsetSpecBuilder();
     }
 

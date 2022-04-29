@@ -36,7 +36,8 @@ public class MerchantInfo extends BaseRest {
 				testData.getProperty("mid.qfee.percent"), testData.getProperty("mid.qupper.fee.percent"),
 				testData.getProperty("nqfee.percent"), testData.getProperty("nqupper.fee.percent"),
 				testData.getProperty("per.transaction.authfee"), testData.getProperty("per.transaction.refund.fee"),
-				testData.getProperty("qfee.percent"), testData.getProperty("qupper.percent"));
+				testData.getProperty("qfee.percent"), testData.getProperty("qupper.percent"),
+				testData.getProperty("fee.settlement.type.daily"));
 
 		return given().spec(requestSpec).log().all().body(merchantdetails).when().post(ProvisioningUtils.postMerchant)
 				.then().spec(responseSpec).and().extract().response();
@@ -69,7 +70,7 @@ public class MerchantInfo extends BaseRest {
 				testData.getProperty("mid.qfee.percent"), testData.getProperty("mid.qupper.fee.percent"),
 				testData.getProperty("nqfee.percent"), testData.getProperty("nqupper.fee.percent"),
 				testData.getProperty("per.transaction.authfee"), testData.getProperty("per.transaction.refund.fee"),
-				testData.getProperty("qfee.percent"), testData.getProperty("qupper.percent"));
+				testData.getProperty("qfee.percent"), testData.getProperty("qupper.percent"), testData.getProperty("fee.settlement.type.daily"));
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		String convertTOJson = objectMapper.writeValueAsString(merchantdetails);
@@ -122,11 +123,11 @@ public class MerchantInfo extends BaseRest {
 				testData.getProperty("federal.taxid"), testData.getProperty("business.established.date"),
 				testData.getProperty("business.type"), testData.getProperty("mcccode"),
 				testData.getProperty("ownership.type"), testData.getProperty("website.url"),
-				testData.getProperty("amex.percent"), testData.getProperty("mid.qfee.percent"),
-				testData.getProperty("mid.qupper.fee.percent"), testData.getProperty("nqfee.percent"),
-				testData.getProperty("nqupper.fee.percent"), testData.getProperty("per.transaction.authfee"),
-				testData.getProperty("per.transaction.refund.fee"), testData.getProperty("qfee.percent"),
-				testData.getProperty("qupper.percent"));
+				testData.getProperty("fee.settlement.type.daily"), testData.getProperty("amex.percent"),
+				testData.getProperty("mid.qfee.percent"), testData.getProperty("mid.qupper.fee.percent"),
+				testData.getProperty("nqfee.percent"), testData.getProperty("nqupper.fee.percent"),
+				testData.getProperty("per.transaction.authfee"), testData.getProperty("per.transaction.refund.fee"),
+				testData.getProperty("qfee.percent"), testData.getProperty("qupper.percent"));
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		String convertTOJson = objectMapper.writeValueAsString(merchantdetails);

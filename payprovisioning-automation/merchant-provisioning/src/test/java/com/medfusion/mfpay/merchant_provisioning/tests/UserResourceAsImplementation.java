@@ -1,11 +1,11 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.tests;
 
 import java.io.IOException;
 
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.UsersDetails;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
@@ -23,7 +23,7 @@ public class UserResourceAsImplementation extends BaseRest {
 	  }
 	
 	
-	@Test
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	 public void getMerchantUsersAsImplementation() throws Exception, IOException { 
 		UsersDetails usersdetails = new UsersDetails();
 		String getusers = ProvisioningUtils.getUsers+testData.getProperty("static.merchant")+"/users";
