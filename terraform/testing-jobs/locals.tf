@@ -1045,7 +1045,22 @@ locals {
       chrome_driver_version = "100.0.4896.20"
       cron_shedule          = "cron(0 20 ? * 1-5 *)"
     }
-  }
+
+    "dev3-pss20-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pss/pss2patientui-automation"
+      test_environment      = "dev3"
+      suite_xml             = "pss-acceptancetests.xml"
+      pxp_application       = "PatientSelfScheduling"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.127-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(0 18 ? * 1-5 *)"
+    }
+}
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)
   selected_suite_xml             = try(local.inputs[terraform.workspace].suite_xml)

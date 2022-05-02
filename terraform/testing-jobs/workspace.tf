@@ -70,6 +70,7 @@ locals {
     dev3-integrations1-regression        = "dev3-integrations1-regression"
     dev3-payreporting-e2e-element        = "dev3-payreporting-e2e-element"
     dev3-payreporting-payments           = "dev3-payreporting-payments"
+    dev3-pss20-acceptance                = "dev3-pss20-acceptance"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
