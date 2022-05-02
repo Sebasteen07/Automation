@@ -1056,7 +1056,7 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88"
+      google_chrome_version = "100.0.4896.88-1"
       chrome_driver_version = "99.0.4844.51"
       cron_shedule          = "cron(45 1 ? * 4 *)"
     }
@@ -1071,7 +1071,7 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88"
+      google_chrome_version = "100.0.4896.88-1"
       chrome_driver_version = "100.0.4896.20"
       cron_shedule          = "cron(30 1 ? * 4 *)"
     }
@@ -1086,7 +1086,7 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88"
+      google_chrome_version = "100.0.4896.88-1"
       chrome_driver_version = "100.0.4896.20"
       cron_shedule          = "cron(15 1 ? * 4 *)"
     }
@@ -1101,7 +1101,7 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88"
+      google_chrome_version = "100.0.4896.88-1"
       chrome_driver_version = "100.0.4896.20"
       cron_shedule          = "cron(0 1 ? * 4 *)"
     }
