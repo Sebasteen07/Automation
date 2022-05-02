@@ -14,7 +14,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.PartnersInfo;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 
-public class PartnersAsFinance extends BaseRest{
+public class PartnersAsFinanceTests extends BaseRest{
 	protected PropertyFileLoader testData;
 
 	

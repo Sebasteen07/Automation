@@ -10,7 +10,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.UsersDetails;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 
-public class UserResourceAsImplementation extends BaseRest {
+public class UserResourceAsImplementationTests extends BaseRest {
 	
 	protected PropertyFileLoader testData;
 	
