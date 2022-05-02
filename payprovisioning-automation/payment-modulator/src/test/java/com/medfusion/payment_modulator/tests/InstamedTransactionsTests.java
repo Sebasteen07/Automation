@@ -100,4 +100,29 @@ public class InstamedTransactionsTests extends BaseRest {
             }
         }
     }
+
+    @Test(priority = 1, enabled = true)
+    public void testInstaMedECheckSale(String mmid, String txnAmt, String accountType, String bankAccountNumber,
+                                       String routingNumber, String accountHolderName,
+                                       String paymentSource, String responseMsg, String responseCode) throws Exception {
+
+        TransactionResourceDetails transaction = new TransactionResourceDetails();
+        Validations validate = new Validations();
+
+        Response response = transaction.makeAECheckSale(testData.getProperty("instamed.mmid"), txnAmt,
+                testData.getProperty("account.number"), testData.getProperty("consumer.name"),
+                paymentSource, accountType, bankAccountNumber, routingNumber, accountHolderName,
+                testData.getProperty("zipcode"), testData.getProperty("last.name"),
+                testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
+                testData.getProperty("first.name"));
+        Assert.assertEquals(response.getStatusCode(), 200);
+
+        JsonPath jsonPath = new JsonPath(response.asString());
+
+        if (jsonPath.get("message") != null) {
+            Assert.assertTrue(jsonPath.get("message").toString().contains(responseMsg));
+            Assert.assertTrue(jsonPath.get("responseCode").toString().contains(responseCode));
+        }
+        validate.verifyInstaMedTransactionDetails(responseCode, jsonPath);
+    }
 }
