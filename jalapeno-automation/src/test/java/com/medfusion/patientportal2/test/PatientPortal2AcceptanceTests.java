@@ -3209,7 +3209,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 	}
 
-	@Test(enabled = true, groups = { "acceptance-linkedaccounts",
+	@Test(enabled = true, groups = { "acceptance-basics",
 			"commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUnlinkTrustedRepresentative() throws Exception {
 		createCommonPatient();
@@ -4348,7 +4348,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMedicationsDeleteDependantPharmacy() throws Exception {
 
 		logStep("Load login page and login");
@@ -4376,7 +4376,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		pharmaPage.deletePharmacy();
 	}
 
-	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMedicationDependent() throws Exception {
 
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
