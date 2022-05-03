@@ -2196,3 +2196,60 @@ Feature: Test fuctionality of Appointment precheck
     And I click on appointments tab
     And I schedule an appointment and confirm arrival message
     Then I verify arrival confirmation default msg should be received to patient in English language for email and text
+
+  Scenario: verify if user is able to add up-to 500 characters in default additional arrival instruction text box for english language
+    When from setting in notifications user click on curbside checkin tab and click on english button
+    Then I verify after user able to add above five hundred character in default arrival instruction message for english and it should shows filled character count in left
+    And I click on save for english and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enter 100 characters in the english additional arrival instructions text box then count should show correct
+    When from setting in notifications user click on curbside checkin tab and click on english button
+    Then I verify user able to enter hundred characters in arrival instructions text box for english then count should show correct
+    And I click on save for english and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to add up-to 500 characters in default additional arrival instruction text box for spanish language
+    When from setting in notifications user click on curbside checkin tab and click on spanish button
+    Then I verify after user able to add above five hundred character in default arrival instruction message for spanish and it should shows filled character count in left
+    And I click on save for spanish and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enter 100 characters in the english additional arrival instructions text box then count should show correct
+    When from setting in notifications user click on curbside checkin tab and click on spanish button
+    Then I verify user able to enter hundred characters in arrival instructions text box for spanish then count should show correct
+    And I click on save for spanish and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify arrival instruction msg received to patient is default msg + Customized msg when custom instruction is entered for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I select English as preferred language
+    And I click on curbside checkin tab of notification tab and add additional arrival instruction for English section
+    And I click on appointments tab
+    And I schedule an appointment with English language and confirm arrival message
+    Then I verify arrival confirmation default msg + custom msg should be received to patient in English language for email and text
+
+  Scenario: verify if system shows arrival instruction on email and text as per default msg set and system shows phone number as appointment location phone number
+    When I click on setting tab
+    And I click on notification tab
+    And I select English and Spanish as preferred language
+    And I click on appointments tab
+    And I schedule an appointment with English and Spanish language and confirm the arrival
+    Then I verify arrival notification msg should show mobile number of appointment location in the arrival text msg and msg should come in English language
+
+  Scenario: verify if system shows arrival instruction on email and text as per default msg set and system shows phone number as appointment location phone number in English
+    When I click on setting tab
+    And I click on notification tab
+    And I select English as preferred language
+    And I click on appointments tab
+    And I schedule an appointment with English language and confirm the arrival
+    Then I verify arrival notification message should show mobile number of appointment location in the arrival text msg and Msg should come in English language
+
+  Scenario: verify if system shows arrival instruction on email and text as per default msg set and phone number as appointment location phone number is blank
+    When I click on setting tab
+    And I click on notification tab
+    And I select English as preferred language
+    And I click on appointments tab
+    And I schedule an appointment with English language and set appointment location and phone number as blank
+    Then I verify arrival notification msg should not show "mobile number" text  in the arrival text msg

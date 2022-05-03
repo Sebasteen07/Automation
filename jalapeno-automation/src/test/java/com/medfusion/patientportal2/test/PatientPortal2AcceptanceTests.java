@@ -1956,7 +1956,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 	}
 
-	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testStateAgeOut() throws Exception {
 		Instant testStart = Instant.now();
 		String patientLogin = PortalUtil2.generateUniqueUsername("statelogin", testData);
@@ -4521,7 +4521,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Load login page and login");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
-		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"), testData.getProperty("med.wf.password"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
+				testData.getProperty("med.wf.password"));
 
 		logStep("Switching to Dependent Account");
 		homePage.faChangePatient();
@@ -4568,7 +4569,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Proceed in Practice Portal");
 		AppoitmentRequest practicePortal = new AppoitmentRequest();
 		long tsPracticePortal = practicePortal.ProceedAppoitmentRequest(driver, true, appointmentReason,
-				testData.getProperty("portal.url"), testData.getProperty("med.wf.doc.user.id"), testData.getProperty("med.wf.doc.password"));
+				testData.getProperty("portal.url"), testData.getProperty("med.wf.doc.user.id"),
+				testData.getProperty("med.wf.doc.password"));
 
 		logStep("Login back to patient portal");
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
@@ -5782,7 +5784,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(myAccountPage.getZipCodeTextbox(), zipCode);
 	}
 
-	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testValidateDependentPharmacy() throws Exception {
 
 		String name = "Medication Patient CreditCard";
@@ -5939,7 +5941,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientTrustedRep() throws Exception {
 		PracticeLoginPage practiceLogin;
 		PracticeHomePage practiceHome;

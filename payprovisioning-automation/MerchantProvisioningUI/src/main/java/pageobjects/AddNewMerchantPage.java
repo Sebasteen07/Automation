@@ -686,4 +686,11 @@ public class AddNewMerchantPage extends NavigationMenu{
         }
     }
 
+    public AddInstaMedMerchantPage pageForAddingNewInstaMedMerchant(String vendor){
+        if(vendor.equalsIgnoreCase("InstaMed")){
+            return PageFactory.initElements(driver, AddInstaMedMerchantPage.class);
+        }
+        return null;
+    }
+
 }

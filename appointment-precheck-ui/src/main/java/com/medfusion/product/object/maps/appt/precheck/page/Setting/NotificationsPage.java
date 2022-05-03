@@ -1685,7 +1685,7 @@ public class NotificationsPage extends BasePageObject {
 	public void clickOnCurbsideCheckInTabInNotif() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, curbsideCheckInTabInNotif);
-		curbsideCheckInTabInNotif.click();
+		jse.executeScript("arguments[0].click();", curbsideCheckInTabInNotif);
 	}
 
 	public void clickOnEnglishButton() {
@@ -1703,7 +1703,7 @@ public class NotificationsPage extends BasePageObject {
 	public void clickOnSpanishButton() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, spanishButton);
-		spanishButton.click();
+		jse.executeScript("arguments[0].click();", spanishButton);
 	}
 
 	public String getAdditionalArrivalInstructionMsgTextInSpanish() {
@@ -3659,6 +3659,13 @@ public class NotificationsPage extends BasePageObject {
 				addButtonInEdit.click();
 			}
 		}
+	}
+	
+	public void enterCharInAddArrivalInstTextBox(String instructionMessage) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, additionalArrivalInstructionsTextBoxText);
+		additionalArrivalInstructionsTextBoxText.clear();
+		additionalArrivalInstructionsTextBoxText.sendKeys(instructionMessage);
 	}
 
 }
