@@ -11,6 +11,11 @@
 			class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
 	</listeners>
 	<test thread-count="5" name="Test">
+		<groups>
+			<run>
+				<include name="MerchantProvisioningBEAcceptanceTests" />
+			</run>
+		</groups>
 		<classes>
 			<class
 				name="com.medfusion.mfpay.merchant_provisioning.tests.PartnersAsFinance" />
@@ -19,9 +24,13 @@
 			<class
 				name="com.medfusion.mfpay.merchant_provisioning.tests.WPTestsAsImplementation" />
 			<class
-				name="com.medfusion.mfpay.merchant_provisioning.tests.MerchantResourceAsFinance" />
+				name="com.medfusion.mfpay.merchant_provisioning.tests.MerchantResourceAsFinanceTest" />
 			<class
 				name="com.medfusion.mfpay.merchant_provisioning.tests.UserResourceAsImplementation" />
+			<class
+					name="com.medfusion.mfpay.merchant_provisioning.tests.InstaMedWorkflowsAsImplementationTests" />
+			<class
+					name="com.medfusion.mfpay.merchant_provisioning.tests.UserResourceAsImplementation" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->
