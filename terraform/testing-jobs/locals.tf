@@ -1120,6 +1120,51 @@ locals {
       chrome_driver_version = "100.0.4896.20"
       cron_shedule          = "cron(0 18 ? * 1-5 *)"
     }
+
+    "dev3-sitegen-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "sitegen-automation"
+      test_environment      = "dev3"
+      suite_xml             = "sitegen-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "100.0.4896.127-1"
+      chrome_driver_version = "99.0.4844.51"
+      cron_shedule          = "cron(30 18 ? * 1-5 *)"
+    }
+
+    "dev3-ng-int-platform-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "ng-integration"
+      test_environment      = "dev3"
+      suite_xml             = "ngintegration-platform-acceptance-patientEnrollment(MultiPractice).xml"
+      pxp_application       = "Platform"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "100.0.4896.88-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(15 20 ? * 1-5 *)"
+    }
+
+    "dev3-rcm-precheck-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "rcm-precheck"
+      test_environment      = "dev3"
+      suite_xml             = "precheck.xml"
+      pxp_application       = "Appointments"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "100.0.4896.127-1"
+      chrome_driver_version = "99.0.4844.51"
+      cron_shedule          = "cron(45 18 ? * 1-5 *)"
+    }
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)
