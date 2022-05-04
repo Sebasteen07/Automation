@@ -1121,7 +1121,7 @@ locals {
       cron_shedule          = "cron(0 18 ? * 1-5 *)"
     }
 
-    "dev3-siteGen-regression" = {
+    "dev3-sitegen-regression" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "sitegen-automation"
