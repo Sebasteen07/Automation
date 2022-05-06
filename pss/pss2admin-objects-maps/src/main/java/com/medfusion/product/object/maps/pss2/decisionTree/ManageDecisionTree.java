@@ -74,6 +74,9 @@ public class ManageDecisionTree extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//a[@title='Back']//*[local-name()='svg']")
 	private WebElement backtoManageDecisionTree;
 	
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'displayNames as null')]")
+	private WebElement validationAlertMessage;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[1]/a")
 	private WebElement editGeneralTab;
 	
@@ -134,8 +137,8 @@ public class ManageDecisionTree extends PSS2MainPage {
 		log("Clicked on Specialty Toggle button");
 	}
 	
-	public void addDecisionTree(String decisionTreeName) {
-		IHGUtil.waitForElement(driver, 60, addDecisionTree);
+	public void addDecisionTree(String decisionTreeName) throws InterruptedException {
+		Thread.sleep(2000);
 		addDecisionTree.click();
 		log("Add Decision tree Button clicked");
 		editDecisionTreeName.sendKeys(decisionTreeName);
@@ -146,8 +149,8 @@ public class ManageDecisionTree extends PSS2MainPage {
 		log("Decision Tree is added successfully.");	
 	}
 	
-	public void addDecisionTreeWhenSpanishIsDisabled(String decisionTreeName) {
-		IHGUtil.waitForElement(driver, 60, addDecisionTree);
+	public void addDecisionTreeWhenSpanishIsDisabled(String decisionTreeName) throws InterruptedException {
+		Thread.sleep(2000);
 		addDecisionTree.click();
 		log("Add Decision tree Button clicked");
 		editDecisionTreeName.sendKeys(decisionTreeName);
@@ -177,6 +180,16 @@ public class ManageDecisionTree extends PSS2MainPage {
 		buttonSaveDecisionTree.click();
 		log("Imported Decision Tree is saved successfully.");
 	}
+	
+	public void importDecisionTreeWithNullValues(String decisionTreeWithNullValues) throws InterruptedException {
+		importDecisiontreebtn.sendKeys(getFile(decisionTreeWithNullValues));
+		editDecisionTreeName.sendKeys(decisionTreeWithNullValues);
+		editEnglishDecisionTreeName.sendKeys(decisionTreeWithNullValues);
+		clickEspanolDecisionTreeName.click();
+		editEspanolDecisionTreeName.sendKeys(decisionTreeWithNullValues);
+		buttonSaveDecisionTree.click();
+		log("Can not import "+decisionTreeWithNullValues+" Decision Tree");
+	}
 
 	String getFile(String decisionTreeName) {
 		return new File(".//src//test//resources//"+decisionTreeName+".json").getAbsolutePath();
@@ -185,6 +198,12 @@ public class ManageDecisionTree extends PSS2MainPage {
 	public void searchByDecisionTreeName(String decisionTreeName) throws InterruptedException {
 		Thread.sleep(4000);
 		searchDecisionTree.sendKeys(decisionTreeName);
+	}
+	
+	public String captureValidationAlertMessage() {
+		String alertMessage = validationAlertMessage.getText();
+		String decisionTreeAlertMessage = alertMessage.replaceAll("[()\\[\\]]", "");
+		return decisionTreeAlertMessage;
 	}
 	
 	public void selectDecisionTree(String decisionTreeName) throws InterruptedException {
