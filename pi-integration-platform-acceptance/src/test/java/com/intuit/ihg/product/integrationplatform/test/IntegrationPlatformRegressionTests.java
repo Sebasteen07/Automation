@@ -48,6 +48,7 @@ import com.intuit.ihg.product.integrationplatform.utils.BalancePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.BulkAdmin;
 import com.intuit.ihg.product.integrationplatform.utils.BulkMessagePayload;
 import com.intuit.ihg.product.integrationplatform.utils.CCDPayload;
+import com.intuit.ihg.product.integrationplatform.utils.DCFAdminToolUtils;
 import com.intuit.ihg.product.integrationplatform.utils.DirectorySearchUtils;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.ExternalFileReader;
@@ -536,6 +537,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
 
+		log("Step 1: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 		EHDC EHDCObj = new EHDC();
 
 		LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);
@@ -1596,7 +1599,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		int responseCodeInvalidMsgDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidMessageUIDURLDelete,
 				testData.ResponsePath, testData.token);
 		log("responseCode for InvalidMsg Delete API is " + responseCodeInvalidMsgDelete);
-		assertEquals(responseCodeInvalidMsgDelete, 400);
+		assertEquals(responseCodeInvalidMsgDelete, 401);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				testData.invalidUID);
 
@@ -3605,7 +3608,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(10000);
 
 		logStep("Search for Today's RxRenewal in Practice Portal");
-		rxRenewalSearchPage.searchForRxRenewalToday(2);
+		rxRenewalSearchPage.searchForRxRenewalToday(1);
 		Thread.sleep(10000);
 
 		logStep("Get the RxRenewal Details in Practice Portal");
@@ -4081,4 +4084,306 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		aDUtils.checkAppointmentV4(testData, driver);
 
 	}
+
+
+	@Test(enabled = true, dataProvider = "channelVersion", retryAnalyzer = RetryAnalyzer.class)
+	public void testAMDCSecureMessagesBatchInvalid(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
+		log("Test Case: AMDC Secure Message inValid requests");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Step 1: Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AMDC testData = new AMDC();
+
+		LoadPreTestDataObj.loadAMDCDataFromProperty(testData);
+
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+
+		testData.allowOnce = "true";
+		String messageID = null;
+		String dataJobID;
+		ArrayList<String> dataJobIDs = new ArrayList<String>();
+
+		for (int i = 0; i < 10; i++) {
+		if (version.equals("v1")) {
+			log("Step 3: Fill Message data");
+			String message = AMDCPayload.getAMDCPayloadBatch(testData, 50, 10);
+
+			log("message :- " + message);
+			messageID = AMDCPayload.messageID;
+			log("Partner Message ID:" + messageID);
+			log("Step 4: Do Message Post Request");
+			log("responsePath: " + testData.ResponsePath);
+			RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+
+			log("Step 5: Get processing status until it is completed");
+			// wait 50 seconds so the message can be processed
+				Thread.sleep(50000);
+				dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
+				// DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
+				// assertTrue(dcfTool.checkReprocessorButton(dataJobID));
+				log("reprocessor button found");
+				dataJobIDs.add(dataJobID);
+				break;
+		} else {
+			log("Step 3: Fill Message data");
+			String message = AMDCPayload.getAMDCV3Payload(testData);
+			log("message :- " + message);
+			messageID = AMDCPayload.messageID;
+			log("Partner Message ID:" + messageID);
+			log("message :- " + message);
+			messageID = AMDCPayload.messageID;
+			log("Partner Message ID:" + messageID);
+
+			log("Step 4: Do Message Post Request");
+			log("responsePath: " + testData.ResponsePath);
+			RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+
+			log("Step 5: Get processing status until it is completed");
+
+			// wait 50 seconds so the message can be processed
+				Thread.sleep(50000);
+				dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
+				DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
+				assertTrue(dcfTool.checkReprocessorButton(dataJobID));
+				dataJobIDs.add(dataJobID);
+				break;
+		}
+		}
+
+		log("datajobID list is: " + dataJobIDs);
+
+	}
+
+
+
+	@Test(enabled = true, groups = {""}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPharmaciesInvalid() throws Exception {
+		log("Test Case: Add Pharmacy");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		Pharmacies testData = new Pharmacies();
+		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
+		log("POST URL: " + testData.PharmacyRenewalUrl);
+
+		logStep("Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+
+		testData.Status = "NEW";
+		testData.PharmacyName = "AddedNewPharmacy";
+
+		String dataJobID;
+		ArrayList<String> dataJobIDs = new ArrayList<String>();
+
+		PharmacyPayload pharmacyObj = new PharmacyPayload();
+		String ExternalPharmacyId = "35354890098623";
+		testData.PharmacyPhone = PharmacyPayload.randomNumbers(10);
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String pharmacyRenewal = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + pharmacyRenewal);
+		Thread.sleep(6000);
+		log("Wait to generate Pharmacy Renewal Payload");
+
+		logStep("Do Message Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyRenewal, testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUrl);
+
+		// wait 50 seconds so the message can be processed
+		Thread.sleep(50000);
+		dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
+		DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
+		assertTrue(dcfTool.checkReprocessorButton(dataJobID));
+		dataJobIDs.add(dataJobID);
+	}
+
+
+
+	@Test(enabled = true, dataProvider = "channelVersion", retryAnalyzer = RetryAnalyzer.class)
+	public void testBulkSecureMessageInvalid(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
+		log("Test Case: Bulk Secure Message");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		BulkAdmin testData = new BulkAdmin();
+		LoadPreTestDataObj.loadDataFromPropertyBulk(testData);
+		Thread.sleep(3000);
+
+		log("Step 2: Setup Oauth client");
+		if (BulkMessagePayload.checkWithPrevioudBulkMessageID) {
+			testData.PatientsUserNameArray[0] = testData.oUserName;
+			testData.PatientsPasswordArray[0] = testData.oPassword;
+			testData.PatientsIDArray[0] = testData.oPatientID;
+			testData.PatientEmailArray[0] = testData.oEmailID;
+			testData.AddAttachment = "no";
+			testData.MaxPatients = "1";
+			testData.NumberOfAttachments = "1";
+		}
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+
+		if (version.equals("v1")) {
+			String messageID = BulkMessagePayload.messageId;
+			log("Partner Message ID:" + messageID);
+			log("Step 3: Fill Message data");
+			String message = BulkMessagePayload.getBulkMessagePayload(testData);
+			Thread.sleep(6000);
+			log("message xml : " + message);
+			log("Step 4: Do Message Post Request");
+			log("ResponsePath:- " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+			assertTrue(completed == true, "Message processing was not completed in time");
+		} else {
+			String messageID = BulkMessagePayload.messageId;
+			log("Partner Message ID:" + messageID);
+			log("Step 3: Fill Message data");
+			String message = BulkMessagePayload.getBulkMessageV3Payload(testData);
+			log("message xml : " + message);
+			log("Step 4: Do Message Post Request");
+			log("ResponsePath:- " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+			assertTrue(completed == true, "Message processing was not completed in time");
+		}
+		log("testData.MaxPatients : " + testData.MaxPatients);
+
+		for (int i = 1; i <= Integer.parseInt(testData.MaxPatients); i++) {
+			// Loop through different patients email and login to view the message.
+			log("Patient is - " + testData.PatientsUserNameArray[i - 1]);
+			String subject = "New message from PI Automation rsdk Integrated";
+			log("Step 6: Check secure message in patient Email inbox");
+
+			String link = "";
+			YopMailUtils mail = new YopMailUtils(driver);
+			String email = testData.PatientEmailArray[i - 1];
+			String messageLink = "Sign in to view this message";
+			link = mail.getLinkFromEmail(email, subject, messageLink, 20);
+
+			link = link.replace("login?redirectoptout=true", "login");
+			log("Step 7: Login to Patient Portal");
+			log("Link is " + link);
+			JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
+			JalapenoHomePage homePage = loginPage.login(testData.PatientsUserNameArray[i - 1], testData.PatientsPasswordArray[i - 1]);
+
+			Thread.sleep(5000);
+			log("Detecting if Home Page is opened");
+			assertTrue(homePage.isHomeButtonPresent(driver));
+			log("Click on messages solution");
+			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+			long epoch = System.currentTimeMillis() / 1000;
+
+			log("Step 8: Find message in Inbox");
+			if (version.equals("v1")) {
+				String messageIdentifier = BulkMessagePayload.subject;
+				log("message subject " + messageIdentifier);
+				log("Step 9: Log the message read time ");
+				log("Step 10: Validate message loads and is the right message");
+				assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+			} else {
+				String messageIdentifier = BulkMessagePayload.subject;
+				log("message subject " + messageIdentifier);
+				log("Step 9: Log the message read time ");
+				log("Step 10: Validate message loads and is the right message");
+				assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+			}
+			log("Step 11: Check if attachment is present or not");
+			String readdatetimestamp = RestUtils.readTime(epoch);
+			log("Message Read Time:" + readdatetimestamp);
+			if (testData.AddAttachment.equalsIgnoreCase("yes")) {
+				String attachmentFileName = driver.findElement(By.xpath("// a [contains(text(),'bulk1.pdf')]")).getText();
+				log("attachmentFileName " + attachmentFileName);
+				assertFalse(attachmentFileName.equalsIgnoreCase("1.pdf"));
+			}
+			if (i == 1 && BulkMessagePayload.checkWithPrevioudBulkMessageID == false) {
+				log("Step 12: Move to  Health Record page");
+				messagesPage.backToHomePage(driver);
+				MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
+
+				log("Step 13: Open Other Documents");
+				MedicalRecordSummariesPageObject.gotoOtherDocumentTab();
+
+				log("Step 14: Verify name, from and catagory type");
+				String attachmentData = MedicalRecordSummariesPageObject.getMessageAttachmentData();
+				log("attachment details = " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
+				assertTrue(attachmentData.contains(testData.FileName + i + ".pdf"), "file name not found");
+				MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
+				String UIPDF = System.getProperty("user.dir");
+				String home = System.getProperty("user.home");
+				String fileName = "bulk1";
+
+				if (driver instanceof FirefoxDriver) {
+					Robot rb = new Robot();
+					Thread.sleep(2000);
+					rb.keyPress(KeyEvent.VK_ENTER);
+					Thread.sleep(100);
+					rb.keyRelease(KeyEvent.VK_ENTER);
+
+					log("Wait for file to be downloaded");
+					Thread.sleep(24000);
+
+					String downloadFile = UIPDF + testData.downloadLocation;
+					File f = new File(downloadFile);
+					ArrayList<String> names = new ArrayList<String>(Arrays.asList(f.list()));
+					String pdfFileLocation = downloadFile + names.get(0);
+					String pdfFileOnPortal = ExternalFileReader.base64Encoder(pdfFileLocation, false);
+					String workingDir = UIPDF + testData.AttachmentLocation + i + ".txt";
+					String attachmentInPayload = ExternalFileReader.readFromFile(workingDir);
+					Boolean pdfMatch = RestUtils.matchBase64String(pdfFileOnPortal, attachmentInPayload);
+					log("Is PDF Match " + pdfMatch);
+					assertTrue(pdfMatch, "PDF Filecontent did not matched.");
+				}
+				if (driver instanceof ChromeDriver) {
+					File file = new File(home + "/Downloads/" + fileName + ".pdf");
+					String workingDir = UIPDF + testData.AttachmentLocation + i + ".txt";
+
+					String attachmentInPayload = ExternalFileReader.readFromFile(workingDir);
+					String downloadedFile = ExternalFileReader.readFromFile(workingDir);
+					Thread.sleep(800);
+					Boolean pdfMatch = RestUtils.matchBase64String(downloadedFile, attachmentInPayload);
+					log("Is PDF Match " + pdfMatch);
+					RestUtils.deleteFile(file.getPath());
+				}
+
+			}
+			homePage.clickOnLogout();
+		}
+		if (testData.resendPreviousMessage.contains("yes") && BulkMessagePayload.messageIdCounter == 0) {
+
+			BulkMessagePayload.checkWithPrevioudBulkMessageID = true;
+			log("Step 12: Start Bulk mass admin for patient with  No attachment but previous Message ID");
+			testBulkSecureMessage(version);
+		}
+	}
+
+
 }

@@ -571,6 +571,18 @@ public class RestUtils {
 		return true;
 	}
 
+	public static String getDataJobID(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(xmlFileName);
+
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.DATA_JOB_ID);
+		String s = "";
+		for (int i = 0; i < nodes.getLength(); i++) {
+			s = nodes.item(i).getTextContent().toString();
+		}
+		Log4jUtil.log("Datajob id is  " + s);
+		return s;
+	}
+
 	/**
 	 * Checks if the patient address lines are the same as in xml response
 	 * 
@@ -3194,8 +3206,18 @@ public class RestUtils {
 
 		final CompareResult result = new PdfComparator(file1, file2).compare();
 		if (result.isNotEqual()) {
-			Log4jUtil.log("Differences found in PDFs!");
-			assertTrue(false);
+			Log4jUtil.log("Differences found in PDFs! Trying comparison with Encoding:");
+
+			String pdfFromPortal = ExternalFileReader.base64Encoder(file1, false);
+			String pdfFromGet = ExternalFileReader.base64Encoder(file2, false);
+			Log4jUtil.log("pdfFromPortal----------------");
+			Log4jUtil.log(pdfFromPortal);
+			Log4jUtil.log("pdfFromGet----------------");
+			Log4jUtil.log(pdfFromGet);
+			Log4jUtil.log("----------------------------");
+			Boolean pdfMatch = matchBase64String(pdfFromPortal, pdfFromGet);
+			Log4jUtil.log("Is Pdf Matched : " + pdfMatch);
+			assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
 		}
 		if (result.isEqual()) {
 			Log4jUtil.log("PDFs matched..!");
