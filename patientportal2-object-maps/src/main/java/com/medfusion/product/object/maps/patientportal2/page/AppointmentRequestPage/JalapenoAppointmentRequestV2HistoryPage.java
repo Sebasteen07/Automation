@@ -31,6 +31,9 @@ public class JalapenoAppointmentRequestV2HistoryPage extends JalapenoMenu {
 
 		@FindBy(how = How.ID, using = "back_button")
 		private WebElement backButton;
+		
+		@FindBy(how = How.XPATH, using = "//th[text()=\"Reason\"]")
+		private WebElement tbReason;
 
 
 		public JalapenoAppointmentRequestV2HistoryPage(WebDriver driver) {
@@ -40,7 +43,7 @@ public class JalapenoAppointmentRequestV2HistoryPage extends JalapenoMenu {
 
 		public boolean findAppointmentReasonAndOpen(String appointmentReason) {
 				IHGUtil.PrintMethodName();
-
+				new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(tbReason));
 				try {
 						driver.findElement(By.xpath("//*[contains(text(),'" + appointmentReason + "')]")).click();
 						return true;
@@ -61,4 +64,17 @@ public class JalapenoAppointmentRequestV2HistoryPage extends JalapenoMenu {
 						return false;
 				}
 		}
+		
+		public boolean checkAppointmentDetailsOfFirstAvailableTime(String appointmentReason) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(reason));
+			try {
+				return (reason.getText().contains(appointmentReason) && preferredTime.getText().contains("Any Time Of Day") && requestedDay.getText()
+						.contains("Monday - Friday") && requestedTime.getText().contains("First Available"));
+			} catch (Exception e) {
+				log(e.getCause().toString());
+				return false;
+			}
+		}
+
 }

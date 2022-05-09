@@ -73,6 +73,9 @@ import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 
+import de.redsix.pdfcompare.CompareResult;
+import de.redsix.pdfcompare.PdfComparator;
+
 public class RestUtils {
 
 	static Random random = new Random();
@@ -167,7 +170,7 @@ public class RestUtils {
 		for (int i = 0; i < nodes.getLength(); i++) {
 
 			node = nodes.item(i);
-			System.out.println("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
 					+ (timestamp.toString()));
 			if (node.getChildNodes().item(0).getTextContent().contains(timestamp.toString())) {
 				Element ele = (Element) nodes.item(i).getParentNode();
@@ -492,7 +495,7 @@ public class RestUtils {
 			HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
 			String sResp = EntityUtils.toString(resp.getEntity());
-			Log4jUtil.log("Check opst response: " + sResp);
+			Log4jUtil.log("Check post response: " + sResp);
 
 			Log4jUtil.log("Check for http 200/202 response");
 			assertTrue(
@@ -527,20 +530,15 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		emptyFile(oAuthKeySStorePath);
 		OAuthPropertyManager.init(oAuthProperty);
-		System.out.println("appToken: " + appToken);
-		System.out.println("username: " + username);
-		System.out.println("password: " + password);
+		Log4jUtil.log("appToken: " + appToken);
+		Log4jUtil.log("username: " + username);
+		Log4jUtil.log("password: " + password);
 		try {
 			OAuth20TokenManager.initializeTokenStore(appToken, username, password);
 		} catch (Exception hException) {
 			// TODO Auto-generated catch block
-			hException.getCause().printStackTrace();
+			Log4jUtil.log(hException.toString());
 		}
-		// System.out.println("appToken: " +appToken);
-		// System.out.println("username: " +username);
-		// System.out.println("password: " +password);
-
-		// emptyFile(responsePath);
 	}
 
 	public static void emptyFile(String file) throws IOException {
@@ -3191,16 +3189,18 @@ public class RestUtils {
 	}
 
 	public static void comparePDFfiles(String file1, String file2) throws Exception {
-		String pdfFromPortal = ExternalFileReader.base64Encoder(file1, false);
-		String pdfFromGet = ExternalFileReader.base64Encoder(file2, false);
-		Log4jUtil.log("pdfFromPortal----------------");
-		Log4jUtil.log(pdfFromPortal);
-		Log4jUtil.log("pdfFromGet----------------");
-		Log4jUtil.log(pdfFromGet);
+		Log4jUtil.log("Comparing PDFs in locations: " + file1.toString() + " and " + file2.toString());
 		Log4jUtil.log("----------------------------");
-		Boolean pdfMatch = matchBase64String(pdfFromPortal, pdfFromGet);
-		Log4jUtil.log("Is Pdf Matched : " + pdfMatch);
-		assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
+
+		final CompareResult result = new PdfComparator(file1, file2).compare();
+		if (result.isNotEqual()) {
+			Log4jUtil.log("Differences found in PDFs!");
+			assertTrue(false);
+		}
+		if (result.isEqual()) {
+			Log4jUtil.log("PDFs matched..!");
+			assertTrue(true);
+		}
 	}
 
 	public static int setupHttpDeleteRequestExceptOauth(String strUrl, String responseFilePath, String token)
@@ -3718,7 +3718,7 @@ public class RestUtils {
 	public static void isPatientDeactivatedorDeleted(String xmlFileName, String practicePatientId, String firstName,
 			String lastName, String patientID, String portalStatus)
 			throws ParserConfigurationException, SAXException, IOException {
-		System.out.println(xmlFileName + " " + practicePatientId + " " + firstName + " " + lastName + " " + patientID);
+		Log4jUtil.log(xmlFileName + " " + practicePatientId + " " + firstName + " " + lastName + " " + patientID);
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
 		boolean found = false;

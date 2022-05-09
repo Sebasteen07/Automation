@@ -102,7 +102,7 @@ public class ManageResource extends PSS2MenuPage {
 	private WebElement reservefor;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[3]/div/div/button[1]")
-	private WebElement appointmenttypeSave;
+	private WebElement appointmentTypeSave;
 
 	@FindBy(how = How.ID, using = "maxPerDay")
 	private WebElement maxPerDay;
@@ -185,6 +185,30 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@name='slotCount']")
 	private WebElement slotCount;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='isContiguous']")
+	private WebElement preventBacktoBackToggle;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[11]/div/label[1]/i")
+	private WebElement preventBackToBackToggleclick;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']")
+	private WebElement overBookingToggle;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']/following-sibling::i")
+	private WebElement overBookingToggleclick;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[14]/div/label[1]/i")
+	private WebElement overBookingToggleclickGE;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='slotScaling']")
+	private WebElement appointmentDurationToggle;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='slotScaling']/following-sibling::i")
+	private WebElement appointmentDurationButton;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='schedulingDuration']")
+	private WebElement appointmentDurationInput;
 
 	
 	public ManageResource(WebDriver driver) {
@@ -298,23 +322,23 @@ public class ManageResource extends PSS2MenuPage {
 		Select objSelect = new Select(reservefor);
 		objSelect.selectByVisibleText("Same Day");
 		reservefor.click();
-		appointmenttypeSave.click();
+		appointmentTypeSave.click();
 	}
 
-	public void notreserve() {
+	public void notReserve() {
 		Select objSelect = new Select(reservefor);
 		objSelect.selectByVisibleText("Not Reserved");
 		reservefor.click();
-		appointmenttypeSave.click();
+		appointmentTypeSave.click();
 	}
 
 	public void maxperDay(String maxvalue) {
 		maxPerDay.clear();
 		maxPerDay.sendKeys("0");
-		appointmenttypeSave.click();
+		appointmentTypeSave.click();
 		maxPerDay.clear();
 		maxPerDay.sendKeys(maxvalue);
-		appointmenttypeSave.click();
+		appointmentTypeSave.click();
 
 	}
 
@@ -324,9 +348,9 @@ public class ManageResource extends PSS2MenuPage {
 		return bool;
 	}
 
-	public void clickacceptsameday() {
+	public void clickAcceptSameDay() {
 		acceptToggleclick.click();
-		appointmenttypeSave.click();
+		appointmentTypeSave.click();
 		log("clicked on accceptfor sameday");
 	}
 
@@ -356,7 +380,7 @@ public class ManageResource extends PSS2MenuPage {
 		sendMonthsecond.clear();
 		sendMonthsecond.sendKeys(ageEndMonths);
 		log("SuccessFully Sent the Values in ageRule textfield");
-		appointmenttypeSave.click();
+		appointmentTypeSave.click();
 	}
 
 	public void disableLastQuestionRequired() throws InterruptedException {
@@ -453,7 +477,7 @@ public class ManageResource extends PSS2MenuPage {
 		Select selectOptions = new Select(timeMarkOption);
 		selectOptions.selectByValue(timeMarkValue);
 		timeMarkOption.click();
-		appointmenttypeSave.click();
+		appointmentTypeSave.click();
 
 	}
 	public void excludeBtn(String firstValue,String secondValue)
@@ -472,15 +496,15 @@ public class ManageResource extends PSS2MenuPage {
 		log("SuccessFully Sent the Values in Exclude Slot textfield");
 		addExcludeSlotBtn.click();
 		log("Clicked on yes ");
-		appointmenttypeSave.click();
+		appointmentTypeSave.click();
 	}
 
 	public void slotCount(String slotValue) {
 		Select selectOptions = new Select(slotCount);
 		selectOptions.selectByVisibleText(slotValue);
 		slotCount.click();
-		commonMethods.highlightElement(appointmenttypeSave);
-		appointmenttypeSave.click();
+		commonMethods.highlightElement(appointmentTypeSave);
+		appointmentTypeSave.click();
 	}
 	public String getslotSize()
 	{
@@ -494,7 +518,53 @@ public class ManageResource extends PSS2MenuPage {
 	public void setLeadDay(String leadtimeDay) {
 		leadDay.clear();
 		leadDay.sendKeys(leadtimeDay);
-		appointmenttypeSave.click();
+		appointmentTypeSave.click();
 
+	}
+	
+	public boolean preventBackToBack() {
+		boolean bool = preventBacktoBackToggle.isSelected();
+		log("Status of Prevent for the Same Day -" + bool);
+		return bool;
+	}
+
+	public void clickBackToBack() {
+		preventBackToBackToggleclick.click();
+		appointmentTypeSave.click();
+	}
+	
+
+	public boolean overBookingStatus() {
+		boolean bool = overBookingToggle.isSelected();
+		log("Status of OverBooking -" + bool);
+		return bool;
+	}
+
+	public void overBookingClick() {
+		overBookingToggleclick.click();
+		appointmentTypeSave.click();
+	}
+	
+	public void overBookingClickGE() {
+		overBookingToggleclickGE.click();
+		appointmentTypeSave.click();
+	}
+	
+	public boolean appointmentDurationStatus() {
+		boolean bool = appointmentDurationToggle.isSelected();
+		log("Status of appointmentDurationToggle -" + bool);
+		return bool;
+	}
+
+	public void enterAppointmentDuration(String durationValue) {
+		appointmentDurationButton.click();
+		appointmentDurationInput.clear();
+		appointmentDurationInput.sendKeys(durationValue);
+		appointmentTypeSave.click();
+	}
+	
+	public void appointmentDurationClickForDisable() {
+		appointmentDurationButton.click();
+		appointmentTypeSave.click();
 	}
 }

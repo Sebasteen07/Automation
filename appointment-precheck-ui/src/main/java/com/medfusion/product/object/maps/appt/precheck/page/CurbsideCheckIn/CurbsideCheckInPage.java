@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.CurbsideCheckIn;
 
 import java.util.Calendar;
@@ -142,7 +143,7 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@class='react-datepicker__year-select']")
 	private WebElement years;
 	
-	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])")
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[1]")
 	private WebElement selectAllCheckinAppt;
 	
 	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
@@ -180,6 +181,48 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
 	private WebElement removeIconforLocationInCurbsidecheckin;
 	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[2]")
+	private WebElement selectPatientscheckbox;
+	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[3]")
+	private WebElement selectPatientscheckbox2;
+	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[4]")
+	private WebElement selectPatientscheckbox3;
+	
+	@FindAll({ @FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::div")})
+	public List<WebElement> selectPatients;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[4]")
+	private WebElement clickProviderdropdown;
+	
+	@FindBy(how=How.XPATH, using ="//div[text()='Brown, Jennifer']")
+	private WebElement selectProviderA1inDropdown;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[3]")
+	private WebElement clickpatientNamedropdown;
+	
+	@FindBy(how=How.XPATH, using ="//div[text()='AppScheduler One']")
+	private WebElement selectPatientP1;
+	
+	@FindBy(how=How.XPATH, using ="(//*[@title='Toggle Row Selected'])[1]/following::span[1]")
+	private WebElement patientDev1;
+	
+	@FindBy(how=How.XPATH, using ="(//*[@title='Toggle Row Selected'])[2]/following::span[1]")
+	private WebElement patientDev2;
+	
+	@FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::span[1]")
+	private WebElement patientDemo1;	
+	
+	@FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::span[7]")
+	private WebElement patientDemo2;
+	
+	@FindBy(how = How.ID, using = "filter-patient-id")
+	private WebElement patientIdFilter;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
+	private WebElement selectPatientCheckbox;
+			
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -817,7 +860,7 @@ public class CurbsideCheckInPage extends BasePageObject {
 	}
 		public void clickOncurbsideCheckinLocationDropDown() {
 			IHGUtil.waitForElement(driver, 5, curbsideCheckinLocationDropDown);
-			curbsideCheckinLocationDropDown.click();
+			jse.executeScript("arguments[0].click();", curbsideCheckinLocationDropDown);
 	}
 		
 		public void selectLocationL1inDropDown() {
@@ -877,4 +920,232 @@ public class CurbsideCheckInPage extends BasePageObject {
 			
 	}
 		
+		public void selectPatientscheckbox() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox);
+			selectPatientscheckbox.click();
+		}
+		
+		public void selectPatientscheckboxwithTimerOn() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox);
+			selectPatientscheckbox.click();
+			
+		}
+		
+		public boolean visibilityofselectPatientscheckbox() {
+			IHGUtil.waitForElement(driver, 10, selectPatientscheckbox);
+			if (selectPatientscheckbox.isSelected()) {
+				log("patient is selected");
+				return true;
+			} else {
+				log("patient is not selected");
+				return false;
+			}
+		}
+		
+		public void selectPatientscheckbox2() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox2);
+			selectPatientscheckbox2.click();
+		}
+		
+		public void selectPatientscheckbox3() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox3);
+			selectPatientscheckbox3.click();
+		}
+		
+		public boolean visibilityofselectPatientscheckbox2() {
+			IHGUtil.waitForElement(driver, 10, selectPatientscheckbox2);
+			if (selectPatientscheckbox.isSelected()) {
+				log("patient 2 is selected");
+				return true;
+			} else {
+				log("patient 2 is not selected");
+				return false;
+			}
+		}
+		
+		public boolean visibilityofselectPatientscheckbox3() {
+			IHGUtil.waitForElement(driver, 10, selectPatientscheckbox3);
+			if (selectPatientscheckbox.isSelected()) {
+				log("patient 3 is selected");
+				return true;
+			} else {
+				log("patient 3 is not selected");
+				return false;
+			}
+		}
+		
+		public String getPatientsFromCurbside(String patientId, String apptId, int patientNo) {
+			IHGUtil.PrintMethodName();
+			WebElement patient = selectPatients.get(patientNo);
+			String getPatient = patient.getText();
+			return getPatient;
+		}
+		
+		public void clickProviderdropdown() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, clickProviderdropdown);
+			jse.executeScript("arguments[0].click();", clickProviderdropdown);
+		}
+		
+		public void selectProviderA1inDropdown() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, selectProviderA1inDropdown);
+			jse.executeScript("arguments[0].click();", selectProviderA1inDropdown);
+		}
+		
+		public void clickpatientNamedropdown() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, clickpatientNamedropdown);
+			jse.executeScript("arguments[0].click();", clickpatientNamedropdown);
+		}
+		
+		public void selectPatientP1() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, selectPatientP1);
+			jse.executeScript("arguments[0].click();", selectPatientP1);
+		}
+		
+		public String selectOneDayBeforeDateforStartdate(String currentYear,String time) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			log("Select one day before date");
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+			int dd = cal.get(Calendar.DATE) - 1;
+			int yyyy = cal.get(Calendar.YEAR);
+			int mm = cal.get(Calendar.MONTH)+1;
+
+			log("One day before date : " + dd + "-" + mm + "-" + yyyy);
+			startTimeField.click();
+
+			log("Select Month");
+			Select selectMonth = new Select(months);
+			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
+			Thread.sleep(3000);
+
+			log("Select Year");
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			WebElement date = driver.findElement(By.xpath(
+					"//*[@id=\"page-content-container\"]/div/header/div[2]/div[3]//div/div/div[4]/div[text()="
+					+ "'" + dd + "'" +"]"));
+			log("Date : " + dd);
+			date.click();
+			Thread.sleep(10000);
+			return mm+"/"+dd+"/"+currentYear+" "+time;
+		}
+		
+		public String  selectEndDate(String currentYear,String time) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			log("Select one day before date");
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+			int dd = cal.get(Calendar.DATE);
+			int yyyy = cal.get(Calendar.YEAR);
+			int mm = cal.get(Calendar.MONTH)+1;
+
+			log("One day before date : " + dd + "-" + mm + "-" + yyyy);
+			endTimeField.click();
+
+			log("Select Month");
+			Select selectMonth = new Select(months);
+			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
+			Thread.sleep(3000);
+
+			log("Select Year");
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			WebElement date = driver.findElement(By.xpath(
+					"(//*[@id=\"page-content-container\"]/div/header/div[2]/div[4]/div[2]/div[2]/div/div/div[2]/div[2]//div[text()="
+							+ "'" + dd + "'" + "])[1]"));
+			log("Date : " + dd);
+			date.click();
+			Thread.sleep(10000);
+			return mm+"/"+dd+"/"+currentYear+" "+time;
+		}
+		
+		public void clickOnselectAllCheckbox() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, selectAllCheckbox);
+			jse.executeScript("arguments[0].click();", selectAllCheckbox);
+		}
+		
+		public String selectCurrentdateforStartdate(String currentYear,String time) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			log("Select one day before date");
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+			int dd = cal.get(Calendar.DATE);
+			int yyyy = cal.get(Calendar.YEAR);
+			int mm = cal.get(Calendar.MONTH)+1;
+
+			log("One day before date : " + dd + "-" + mm + "-" + yyyy);
+			startTimeField.click();
+
+			log("Select Month");
+			Select selectMonth = new Select(months);
+			selectMonth.selectByIndex((cal.get(Calendar.MONTH)));
+			Thread.sleep(3000);
+
+			log("Select Year");
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			WebElement date = driver.findElement(By.xpath(
+					"//*[@id=\"page-content-container\"]/div/header/div[2]/div[3]//div/div/div[4]/div[text()="
+					+ "'" + dd + "'" +"]"));
+			log("Date : " + dd);
+			date.click();
+			Thread.sleep(10000);
+			return mm+"/"+dd+"/"+currentYear+" "+time;
+		}
+		
+		public String getPatient1FromCurbsideDev() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDev1.getText();
+			return getPatient;
+		}
+		
+		public String getPatient2FromCurbsideDev() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDev2.getText();
+			return getPatient;
+		}
+		
+		public String getPatient1FromCurbsideDemo() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDemo1.getText();
+			return getPatient;
+		}
+		
+		public String getPatient2FromCurbsideDemo() {
+			IHGUtil.PrintMethodName();
+			String getPatient = patientDemo2.getText();
+			return getPatient;
+		}
+		
+		public void filterPatientId(String id) throws InterruptedException {
+			patientIdFilter.sendKeys(id);
+			Thread.sleep(5000);
+		}
+		
+		public void selectPatientCheckbox() {
+	    	IHGUtil.PrintMethodName();
+	    	IHGUtil.waitForElement(driver, 5, selectPatientCheckbox);
+	    	jse.executeScript("arguments[0].click();", selectPatientCheckbox);
+		}
+	
 }

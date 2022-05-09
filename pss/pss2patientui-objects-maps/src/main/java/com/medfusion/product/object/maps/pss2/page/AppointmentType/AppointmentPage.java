@@ -37,6 +37,9 @@ public class AppointmentPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'The practice does not allow this appointment to be scheduled within')]")
 	private WebElement preventApptSchedPopUpMsg;
 	
+	@FindBy(how = How.XPATH, using = "(//a[@class='custombuttonexist'])[1]")
+	private WebElement preventApptSchedOkBtn;
+	
 	@FindBy(how = How.XPATH, using = "//div[@id='providerwizard']//div[2]//a[1]//div[1]//div[2]//span[1]")
 	private WebElement apptNextAvailable;
 	
@@ -56,6 +59,18 @@ public class AppointmentPage extends PSS2MainPage {
 		log("click on next step if present");
 		selectNextStep(isPopUpSelected);
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
+	
+	public AppointmentQuestionsPage selectApptTypeDecisionTree(String decisionTreeApptTypeName) {
+		log("appointmentTypeList " + appointmentTypeList.size());
+		for (int i = 0; i < appointmentTypeList.size(); i++) {
+			if (appointmentTypeList.get(i).getText().contains(decisionTreeApptTypeName)) {
+				appointmentTypeList.get(i).click();
+				return PageFactory.initElements(driver, AppointmentQuestionsPage.class);
+			}
+		}
+		log("no matching appointment found ");
+		return PageFactory.initElements(driver, AppointmentQuestionsPage.class);
 	}
 
 	public AppointmentDateTime selectAppointmentandClick(String appointmentType, Boolean isPopUpSelected) {
@@ -100,7 +115,7 @@ public class AppointmentPage extends PSS2MainPage {
 		return PageFactory.initElements(driver, Provider.class);
 	}
 	
-	public AppointmentDateTime selectAptTyper(String providerConfig, Boolean isPopUpSelected) {
+	public AppointmentDateTime selectAptType(String providerConfig, Boolean isPopUpSelected) {
 		log("appointmentTypeList " + appointmentTypeList.size());
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
 			if (appointmentTypeList.get(i).getText().contains(providerConfig)) {
@@ -155,6 +170,11 @@ public class AppointmentPage extends PSS2MainPage {
 		return apptBox.getText();
 	}
 	
+	public void pressOkBtn() {
+		IHGUtil.waitForElement(driver, 5, preventApptSchedOkBtn);
+		preventApptSchedOkBtn.click();
+	}
+	
 	public String selectTypeOfApp(String providerConfig, Boolean isPopUpSelected) {
 		log("appointmentTypeList " + appointmentTypeList.size());
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
@@ -186,6 +206,17 @@ public class AppointmentPage extends PSS2MainPage {
 		}
 		else {
 			log("Appointment type not present");
+			return false;
+		}
+	}
+	
+	public boolean verifyDecisionTreeApptTypePresent(String decisionTreeName) {		
+		if (appointmentTypeList.contains(decisionTreeName)) {
+			log("Decision tree present");
+			return true;			
+		}
+		else {
+			log("Decision tree not present");
 			return false;
 		}
 	}
