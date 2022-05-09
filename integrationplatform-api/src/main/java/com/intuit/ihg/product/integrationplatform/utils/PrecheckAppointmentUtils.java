@@ -2,6 +2,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.util.List;
+
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 public class PrecheckAppointmentUtils {
@@ -21,4 +22,5 @@ public class PrecheckAppointmentUtils {
 			RestUtils.verifyPatientDetailsForPrecheckAppointment(testData.responsePath_CCD1_FE, testData.preCheckPatientExternalID, patientData);
 		}
 	}
+
 }

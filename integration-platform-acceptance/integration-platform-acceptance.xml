@@ -11,14 +11,14 @@
 	<classes>
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformAcceptanceTests" />
 		<methods>
+				<include name="testStatementPreference" />
 	    		<include name="testAMDCAskQuestionPaid" />
 	    		<include name="testAMDCAskQuestionUnpaid" />
 	    		<include name="testAMDCSecureMessageFromPractice" />
 	    		<include name="testE2EAppointmentRequest" />
         		<include name="testEHDCsendCCD" />
         		<include name="testPIDCPatientUpdate" />
- 		    	<include name="testE2ERxPrescription" />
-        		<include name="testOnlineBillPayment" />
+ 		    	<include name="testOnlineBillPayment" />
         		<exclude name="testPayNow" />
         		<include name="testVirtualCardSwiper" />
       		</methods>

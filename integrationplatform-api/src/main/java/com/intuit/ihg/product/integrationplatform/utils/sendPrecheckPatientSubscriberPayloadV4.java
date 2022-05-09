@@ -5,7 +5,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -14,8 +13,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.json.JSONObject;
-import org.json.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -80,7 +77,7 @@ public class sendPrecheckPatientSubscriberPayloadV4 {
 				Long timestamp = System.currentTimeMillis();
 				firstName = "Name" + timestamp;
 				lastName = "TestPatient" + timestamp;
-				email = firstName + "@mailinator.com";
+				email = firstName + "@yopmail.com";
 				firstNameGroup.add(firstName);
 				lastNameGroup.add(lastName);
 				emailGroup.add(email);

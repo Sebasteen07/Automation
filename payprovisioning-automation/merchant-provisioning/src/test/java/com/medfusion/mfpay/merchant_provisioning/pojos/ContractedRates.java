@@ -16,10 +16,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 public class ContractedRates {
 
-	public static Map<String, Object> getContractedRatesMap(String amexpercent, String midqfeepercent,
+	public static Map<String, Object> getContractedRatesMap(String feeSettlementType, String amexpercent, String midqfeepercent,
 			String midqupperfeepercent, String nqfeepercent, String nqupperfeepercent, String pertransactionauthfee,
 			String pertransactionrefundfee, String qfeepercent, String qupperpercent) {
 		Map<String, Object> contractrates = new HashMap<String, Object>();
+		contractrates.put("feeSettlementType", feeSettlementType);
 		contractrates.put("perTransAuthFee", Integer.parseInt(pertransactionauthfee));
 		contractrates.put("perTransRefundFee", Integer.parseInt(pertransactionrefundfee));
 		contractrates.put("qualifiedUpperBoundaryPercent", Double.parseDouble(qupperpercent));

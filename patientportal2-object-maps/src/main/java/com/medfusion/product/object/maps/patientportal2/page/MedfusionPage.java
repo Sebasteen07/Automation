@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -56,14 +56,14 @@ public abstract class MedfusionPage extends BasePageObject {
 		public MedfusionPage(WebDriver driver, String url) {
 				super(driver);
 				log("Loading page");
-
+				log("Size of window before maximizing: " + driver.manage().window().getSize());
 				if (url != null) {
 						String sanitizedUrl = url.trim();
 						log("URL: " + sanitizedUrl);
 						driver.get(sanitizedUrl);
 						driver.manage().window().maximize();
 				}
-				System.out.println("Size of window before maximizing: " + driver.manage().window().getSize());
+				log("Size of window after maximizing: " + driver.manage().window().getSize());
 				/*
 				 * there's an issue related to hudson slave's resolution 1024x768 - can't click.
 				 * Changing the dimension of window as for the specific resolution 1032,
@@ -106,7 +106,7 @@ public abstract class MedfusionPage extends BasePageObject {
 					while (isElementVisible(weNeedToConfirmSomethingModal, 6)) {
 						log("We need to confirm something modal window shown");
 						if (new IHGUtil(driver).exists(weNeedToConfirmSomethingModal)) {
-							statementPreferenceRadioButton.click();
+							IHGUtil.exists(driver, 5, okButton);
 							okButton.click();
 						} else {
 							okButton.click();

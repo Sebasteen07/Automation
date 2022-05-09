@@ -8,7 +8,11 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-parent-pom</artifactId>
+<<<<<<< HEAD
         <version>22.2.0</version>
+=======
+        <version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
     </parent>
 	
 	<artifactId>integrationplatform-api</artifactId>
@@ -33,7 +37,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<<<<<<< HEAD
 		<ihg.version>22.2.0</ihg.version>
+=======
+		<ihg.version>22.4.0-SNAPSHOT</ihg.version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 	</properties>
 
 	<dependencies>
@@ -59,12 +67,20 @@
 		<dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>qa-automation-utils</artifactId>
+<<<<<<< HEAD
   			<version>22.2.0</version>
+=======
+  			<version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
   		</dependency>
   		 <dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>patientportal2-object-maps</artifactId>
+<<<<<<< HEAD
   			<version>22.2.0</version>
+=======
+  			<version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
   		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -89,13 +105,21 @@
 		<dependency>
 	      <groupId>com.intuit.qhg.hub.schemas</groupId>
 	      <artifactId>Messages</artifactId>
+<<<<<<< HEAD
 	      <version>22.2.0</version>
+=======
+	      <version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 	      <scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client</artifactId>
+<<<<<<< HEAD
 			<version>22.2.0</version>
+=======
+			<version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 		</dependency>
 		<dependency>
 			<groupId>com.jayway.awaitility</groupId>
@@ -106,7 +130,11 @@
 	  	<dependency>
 	  		<groupId>com.intuit.eh.core</groupId>
 	  		<artifactId>eh-core-dto</artifactId>
+<<<<<<< HEAD
 	  		<version>22.2.0</version>
+=======
+	  		<version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 	  	</dependency>
 
 	  	<dependency>
@@ -132,8 +160,19 @@
         <dependency>
 	  	 	<groupId>com.intuit.ihg</groupId>
 	  	 	<artifactId>practiceportal-object-maps</artifactId>
+<<<<<<< HEAD
 	  	 	<version>22.2.0</version>
+=======
+	  	 	<version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 	  </dependency>
+	  
+	  <dependency>
+   			<groupId>de.redsix</groupId>
+    		<artifactId>pdfcompare</artifactId>
+    		<version>1.1.61</version>
+  	  </dependency>
+  
 	</dependencies>
 	<build>
 		<plugins>

@@ -40,7 +40,7 @@ public class PrecheckPatient {
 
 		// Setting data according to test purpose
 
-		email = "pr" + randomize + "@mailinator.com";
+		email = "pr" + randomize + "@yopmail.com";
 		firstName = "pr" + randomize + "First";
 		lastName = "pr" + randomize + "Last";
 		middleName = "pr" + randomize + "Middle";

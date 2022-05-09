@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
 import static org.testng.Assert.assertTrue;
@@ -48,7 +48,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	private WebElement messagesSideBar;
 
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Schedule an Appointment')]")
-	private WebElement sheduleanappointment;
+	private WebElement scheduleAnAppointment;
 
 	@FindBy(how = How.XPATH, using = "//a[@id = 'feature_appointments'] | //a[@id = 'feature_appointment_request'][1]")
 	private WebElement appointments;
@@ -57,9 +57,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	private WebElement askAQuestion;
 
 	@FindBy(how = How.ID, using = "feature_symptomAssesment")
-	private WebElement symptomAss;
+	private WebElement symptomAssesment;
 
-	@FindBy(how = How.ID, using = "feature_rx_renewal")
+	@FindBy(how = How.ID, using = "button-rx-request")
 	private WebElement prescriptions;
 
 	@FindBy(how = How.ID, using = "feature_medications")
@@ -148,6 +148,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.ID, using = "feature_ccdList")
 	private WebElement healthrecord;
+	
+	@FindBy(how = How.XPATH, using = "//p[contains(@class,'broadcastMessage')]")
+    private WebElement broadCastMessage;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -156,18 +159,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoMessagesPage showMessages(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		IHGUtil.waitForElement(driver, 60, messages);
 		messages.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
 	public JalapenoMessagesPage showMessagesSent(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		WebDriverWait wait = new WebDriverWait(driver, 20);
-		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		IHGUtil.waitForElement(driver, 60, messages);
 		messages.click();
-		wait.until(ExpectedConditions.elementToBeClickable(sentFolder));
+		IHGUtil.waitForElement(driver, 60, sentFolder);
 		sentFolder.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
@@ -184,6 +185,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAppointmentRequestPage clickOnAppointment(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, appointments);
 		appointments.click();
 		log("click");
 		return PageFactory.initElements(driver, JalapenoAppointmentRequestPage.class);
@@ -191,6 +193,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAppointmentRequestV2Step1 clickOnAppointmentV2(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, appointments);
 		javascriptClick(appointments);
 		return PageFactory.initElements(driver, JalapenoAppointmentRequestV2Step1.class);
 	}
@@ -203,7 +206,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public JalapenoPayBillsMakePaymentPage clickOnNewPayBills(WebDriver driver) {
-
+		IHGUtil.waitForElement(driver, 50, payments);
 		log("Clicking on Payments button");
 		payments.click();
 
@@ -217,8 +220,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public JalapenoPrescriptionsPage clickOnPrescriptions(WebDriver driver) {
-
 		log("Clicking on Prescriptions button on dashboard");
+		this.clickOnMedications(driver);
 		prescriptions.click();
 		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
 	}
@@ -270,7 +273,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public boolean isTextDisplayed(String text) {
 		log("Looking for notification: " + text);
-
+		IHGUtil.waitForElement(driver, 50, continueRegistrationButton);
 		try {
 			return driver.findElement(By.xpath("//p[contains(text(),'" + text + "')]")).getText().contains(text);
 		} catch (Exception e) {
@@ -416,13 +419,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public void clickFeaturedAppointmentsReq() {
-		javascriptClick(sheduleanappointment);
+		javascriptClick(scheduleAnAppointment);
 		IHGUtil.waitForElement(driver, 5, buttonContinue);
 		javascriptClick(buttonContinue);
 	}
 
 	public String appointmentNotScheduled() {
-		javascriptClick(sheduleanappointment);
+		javascriptClick(scheduleAnAppointment);
 		IHGUtil.waitForElement(driver, 80, appointmentNotScheduled);
 		return appointmentNotScheduled.getText();
 	}
@@ -507,6 +510,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAskAStaffPage clickOnAskADoc(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, askAQuestion);
 		askAQuestion.click();
 		askADocButtonOnPopup.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
@@ -645,4 +649,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 			return false;
 		}
 	}
+	
+	public String readBroadcast() {
+        
+        return broadCastMessage.getText();
+        
+    }
 }

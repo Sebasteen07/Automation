@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
@@ -279,7 +278,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 		String practicePatientId = "Patient" + sinceTime;
 		String firstName = "Name" + sinceTime;
 		String lastName = "TestPatient1" + sinceTime;
-		String email = "Test" + sinceTime + "@mailinator.com";
+		String email = "Test" + sinceTime + "@yopmail.com";
 		payload = OauthUtils.preparePatient(testData.getCommonPath() + "/patient_Oauth10.xml", practicePatientId, firstName, lastName, email, null);
 		payload = payload.replaceAll("patient/v1", "patient/v2");
 		Log4jUtil.log("Step 2: Do a POST call and get processing status URL");
