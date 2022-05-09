@@ -71,11 +71,6 @@
 			<artifactId>common-steps</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.intuit.ihg</groupId>
-			<artifactId>object-maps</artifactId>
-			<version>${ihg.version}</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
