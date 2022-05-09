@@ -80,6 +80,8 @@ locals {
     dev3-rcm-precheck-acceptance         = "dev3-rcm-precheck-acceptance"
     demo-forms-regression1               = "demo-forms-regression1"
     demo-forms-regression2               = "demo-forms-regression2"
+    dev3-forms-regression1               = "dev3-forms-regression1"
+    dev3-forms-regression2               = "dev3-forms-regression2"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
