@@ -6,11 +6,7 @@
 <parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-parent-pom</artifactId>
-<<<<<<< HEAD
 	  <version>22.2.0</version>
-=======
-	  <version>22.4.0-SNAPSHOT</version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 </parent>
 
   <artifactId>pi-integration-platform-automation</artifactId>
@@ -19,13 +15,8 @@
   
   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<<<<<<< HEAD
         <ihg.version>22.2.0</ihg.version>
         <dcf-version>22.2.0</dcf-version>
-=======
-        <ihg.version>22.4.0-SNAPSHOT</ihg.version>
-        <dcf-version>22.4.0-SNAPSHOT</dcf-version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
   </properties>
   
   <repositories>
@@ -139,20 +130,12 @@
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>integrationplatform-service</artifactId>
-<<<<<<< HEAD
 			<version>22.2.0</version>
-=======
-			<version>22.4.0-SNAPSHOT</version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>precheckAppointment-object-maps</artifactId>
-<<<<<<< HEAD
 			<version>22.2.0</version>
-=======
-			<version>22.4.0-SNAPSHOT</version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 		</dependency>
 
 			  <dependency>
@@ -168,20 +151,12 @@
 			  <dependency>
 				<groupId>com.intuit.ihg</groupId>
 				<artifactId>integrationplatform-service</artifactId>
-<<<<<<< HEAD
 				<version>22.2.0</version>
-=======
-				<version>22.4.0-SNAPSHOT</version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 			  </dependency>
 			  <dependency>
 				<groupId>com.intuit.ihg</groupId>
 				<artifactId>precheckAppointment-object-maps</artifactId>
-<<<<<<< HEAD
 				<version>22.2.0</version>
-=======
-				<version>22.4.0-SNAPSHOT</version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 			  </dependency>
 			  
     </dependencies>

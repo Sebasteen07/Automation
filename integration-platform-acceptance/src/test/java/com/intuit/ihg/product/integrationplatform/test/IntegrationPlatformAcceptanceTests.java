@@ -1,10 +1,7 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 import java.util.Random;
 
@@ -35,8 +32,8 @@ import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
-import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
@@ -332,7 +329,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ERxPrescription(String version) throws Exception {
-		// No longer in use as prescription renewal is handled in RxMedication20 case in Pi-integration-regression
 		if (version.contains("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
 
@@ -500,8 +496,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			assertTrue(completed, "Message processing was not completed in time");
 		}
         // Patient portal validation
-				log("Step 13: Check secure message in patient yopmail inbox");
-		YopMailUtils mail = new YopMailUtils(driver);
+		log("Step 13: Check secure message in patient mailinator inbox");
+		Mailinator mail = new Mailinator();
 		String subject = "New message from ";
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
@@ -575,23 +571,15 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		logStep("Get Data from Excel");
+		log("Step 1: Get Data from Excel");
 		Payment paymentData = new Payment();
 		PaymentTestData testcasesData = new PaymentTestData(paymentData);
 		Long timestamp = System.currentTimeMillis();
 		String accountNumber = IHGUtil.createRandomNumericString();
 		String amount = "100.00";
+		String CCType = "MasterCard";
 		String name = "TestPatient CreditCard";
-		CreditCard creditCard;
-		String CCType;
-		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
-			CCType = "Visa";
-			creditCard = new CreditCard(CardType.Visa, name);
-		} else {
-			CCType = "MasterCard";
-			creditCard = new CreditCard(CardType.Mastercard, name);
-		}
-
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
 		String CCLastDig = creditCard.getLastFourDigits();
 		String reply_Subject = "Test Message " + IHGUtil.createRandomNumericString();
 		String messageThreadID;
@@ -600,7 +588,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("USER NAME: " + testcasesData.getUserName());
 		log("Password: " + testcasesData.getPassword());
 
-		logStep("LogIn");
+		log("Step 2: LogIn");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testcasesData.getUrl());
 
 		JalapenoHomePage homePage = loginPage.login(testcasesData.getUserName(), testcasesData.getPassword());
@@ -612,24 +600,24 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber,
 				creditCard);
-		logStep("Verifying credit card ending , expected: "+creditCard.getLastFourDigits() );
+		logStep("Verifying credit card ending");
 		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
 
 		homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
-		logStep("fetch confirmation number ");
+		log("Step 6: fetch confirmation number ");
 		String confirmationNumber = payBillsPage.readConfirmationNumber();
 		log("Confirmation Number is: " + confirmationNumber);
 		assertTrue(homePage.wasPayBillsSuccessfull());
 		homePage.clickOnLogout();
 
-		logStep(" Setup Oauth client 2.O");
+		log("Step 8: Setup Oauth client 2.O");
 		RestUtils.oauthSetup(testcasesData.getOAuthKeyStore(), testcasesData.getOAuthProperty(), testcasesData.getOAuthAppToken(), testcasesData.getOAuthUsername(),
 				testcasesData.getOAuthPassword());
 		if(version.equals("v1")) {
-			logStep(" Getting messages since timestamp: " + timestamp);
+		log("Step 9: Getting messages since timestamp: " + timestamp);
 		lastTimestamp = RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + timestamp, testcasesData.getResponsePath());
 
-			logStep(" Verify payment details");
+		log("Step 10: Verify payment details");
 		RestUtils.isPaymentAppeared(testcasesData.getResponsePath(), accountNumber, amount, CCLastDig, CCType,
 				IntegrationConstants.SUBMITTED, confirmationNumber);
 
@@ -639,11 +627,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String message = RestUtils.prepareSecureMessage(testcasesData.getcommunicationXML(), testcasesData.getFrom(), testcasesData.getUserName(), reply_Subject,
 				messageThreadID);
 		log("Payload to beposted for AM: " + message);
-		logStep("Do Message Post AMDC Request");
+		log("Step 11: Do Message Post AMDC Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getCommRestUrl(), message,
 				testcasesData.getResponsePath());
 
-		logStep("Get processing status until it is completed");
+		log("Step 12: Get processing status until it is completed");
 		boolean completed = false;
 		// wait 10 seconds so the message can be processed
 		Thread.sleep(60000);
@@ -654,10 +642,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(completed, "Message processing was not completed in time");
 		}
 		else {
-			logStep("Getting messages since timestamp: " + timestamp);
+			log("Step 9: Getting messages since timestamp: " + timestamp);
 			lastTimestamp = RestUtils.setupHttpGetRequest(testcasesData.getRestV3Url() + "?since=" + timestamp, testcasesData.getResponsePath());
 
-			logStep("Verify payment details");
+			log("Step 10: Verify payment details");
 			RestUtils.isPaymentAppeared(testcasesData.getResponsePath(), accountNumber, amount, CCLastDig, CCType, IntegrationConstants.SUBMITTED, confirmationNumber);
 
 			messageThreadID = RestUtils.paymentID;
@@ -666,10 +654,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			String message = RestUtils.prepareSecureMessage(testcasesData.getcommunicationXML(), testcasesData.getFrom(), testcasesData.getUserName(), reply_Subject,
 					messageThreadID);
 			log("Payload to beposted for AM: " + message);
-			logStep("Do Message Post AMDC Request");
+			log("Step 11: Do Message Post AMDC Request");
 			String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getCommRestUrl(), message, testcasesData.getResponsePath());
 
-			logStep("Get processing status until it is completed");
+			log("Step 12: Get processing status until it is completed");
 			boolean completed = false;
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);
@@ -679,16 +667,16 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			}
 			assertTrue(completed, "Message processing was not completed in time"); 
 		}
-		logStep("Check secure message in patient yopmail inbox");
-		YopMailUtils mail = new YopMailUtils(driver);
+		log("Step 13: Check secure message in patient mailinator inbox");
+		Mailinator mail = new Mailinator();
 		String subject = "New message from "+testcasesData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testcasesData.getUserName(), subject, messageLink, 20);
 
 		// patient Portal validation
-		logStep("Login to Patient Portal");
+		log("Step 14: Login to Patient Portal");
 
-		logStep("Login to Patient Portal");
+		log("Step 7: Login to Patient Portal");
 		log("Link is " + emailMessageLink);
 		new JalapenoLoginPage(driver, emailMessageLink);
 		Thread.sleep(9000);
@@ -699,31 +687,31 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage messagesPage = phomePage.showMessages(driver);
 		Long since = timestamp / 1000L - 60 * 24;
 
-		logStep("Validate message loads and is the right message");
+		log("Step 15: Validate message loads and is the right message");
 		messagesPage.isMessageDisplayed(driver, reply_Subject);
 
 		Thread.sleep(60000);
-		logStep("Reply to the message");
+		log("Step 16: Reply to the message");
 		messagesPage.replyToMessage(driver);
 
-		logStep("Wait 60 seconds, so the message can be processed");
+		log("Step 17: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 
-		logStep("Do a GET AMDC and verify patient reply in Get AMDC response");
+		log("Step 18: Do a GET AMDC and verify patient reply in Get AMDC response");
 		RestUtils.setupHttpGetRequest(testcasesData.getCommRestUrl() + "?since=" + since + ",0",
 				testcasesData.getResponsePath());
 
-		logStep("Validate message reply");
+		log("Step 19: Validate message reply");
 		RestUtils.isReplyPresent(testcasesData.getResponsePath(), reply_Subject);
 
-		logStep("Logout from Patient Portal");
+		log("Logout from Patient Portal");
 		homePage.clickOnLogout();
 
 		if(version.equals("v1")) {
 		String postPayload = RestUtils.preparePayment(testcasesData.getPaymentPath(), messageThreadID, null, IntegrationConstants.BILLPAYMENT);
 
 		log("Post Payload is:  " + postPayload);
-		logStep("Do a Post and get the message");
+		log("Step 20: Do a Post and get the message");
 		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestUrl(), postPayload, testcasesData.getResponsePath());
 		boolean completed = false;
 
@@ -739,7 +727,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			String postPayload = RestUtils.preparePayment(testcasesData.getPaymentPathV3(), messageThreadID, null, IntegrationConstants.BILLPAYMENT);
 
 			log("Post Payload is:  " + postPayload);
-			logStep("Do a Post and get the message");
+			log("Step 20: Do a Post and get the message");
 			String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestV3Url(), postPayload, testcasesData.getResponsePath());
 			boolean completed = false;
 			// wait 10 seconds so the message can be processed
@@ -752,30 +740,30 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		    }
 		Thread.sleep(5000);
 		log("Verify Payment status in Practice Portal");
-		logStep("Login to Practice Portal");
+		log("Step 21: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(),
 				testcasesData.getPracticePassword());
 		Thread.sleep(6000);
-		logStep("Click On Online BillPayment Tab in Practice Portal");
+		log("Step 22: Click On Online BillPayment Tab in Practice Portal");
 		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
 
-		logStep("Search Paid Bills By Current Date");
+		log("Step 23: Search Paid Bills By Current Date");
 		onlineBillPaySearchPage.searchForBillPayToday();
 
-		logStep("Search For Payment By Status ");
+		log("Search For Payment By Status ");
 		onlineBillPaySearchPage.searchForBillStatus(2);
 
-		logStep("Search For Today's Paid Bill By Account Number");
+		log("Search For Today's Paid Bill By Account Number");
 		onlineBillPaySearchPage.searchForBillPayment(accountNumber);
 
 		String Status = onlineBillPaySearchPage.getBillDetails();
 		assertNotNull(Status, "The submitted Online Bill request was not found in the practice");
 
-		logStep("Logout of Practice Portal");
+		log("Step 24: Logout of Practice Portal");
 		practiceHome.logOut();
 
-		logStep("Verify Payment status in Get Response using the Timestamp received in response of Step 8");
+		log("Step 25: Verify Payment status in Get Response using the Timestamp received in response of Step 8");
 
 		if(version.equals("v1")) {
 		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + lastTimestamp, testcasesData.getResponsePath());
@@ -1019,7 +1007,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		practiceHome.logOut();
 
 		log("Step 16: Verify Payment status in Get Response using the Timestamp received in response of Step 7");
-		Thread.sleep(10000);
+
 		if(version.equals("v1")) {
 			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "=vcsPayment" + "&since=" + lastTimestamp, testcasesData.getResponsePath());
 		}
@@ -1097,11 +1085,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Checking validity of the response xml");
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 		
-		if (version.contains("v3")) {
-			String attachementURL = RestUtils.isResponseContainsValidAttachmentURL(testData.getResponsePath());
-			logStep("Make GET call with attachement URL");
-			RestUtils.setupHttpGetRequest(attachementURL, testData.getResponsePath());
-		}
+		String attachementURL = RestUtils.isResponseContainsValidAttachmentURL(testData.getResponsePath());
+		
+		logStep("Make GET call with attachement URL");
+		RestUtils.setupHttpGetRequest(attachementURL, testData.getResponsePath());
+
 		
 		logStep("Validate the FileName in the attachement URL response");
 		RestUtils.validateAttachementName(testData.getResponsePath(),attachmentName);
@@ -1115,7 +1103,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		logStep("Get Data from Excel");
+		log("Step 1: Get Data from Excel");
 		AMDC AMDCData = new AMDC();
 		AMDCTestData testData = new AMDCTestData(AMDCData);
 
@@ -1132,11 +1120,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
 
-		logStep("Setup Oauth client");
+		log("Step 2: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
 
-		logStep("Fill Message data");
+		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
 		String Subject = "Test " + timestamp;
 		String message = RestUtils.prepareSecureMessage(testData.getSecureMessagePath(),
@@ -1146,11 +1134,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Partner Message ID:" + messageID);
 
 		log("Payload posted is ___________" + message);
-		logStep("Do Message Post Request");
+		log("Step 4: Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), message,
 				testData.getResponsePath());
 
-		logStep("Get processing status until it is completed");
+		log("Step 5: Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -1163,13 +1151,13 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 
-		logStep("Check secure message in patient mail inbox");
-		YopMailUtils mail = new YopMailUtils(driver);
+		log("Step 6: Check secure message in patient gmail inbox");
+		Mailinator mail = new Mailinator();
 		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
 
-		logStep("Login to Patient Portal");
+		log("Step 7: Login to Patient Portal");
 		log("Link is " + emailMessageLink);
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, emailMessageLink);
 		Thread.sleep(9000);
@@ -1179,7 +1167,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(9000);
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
-		logStep("Validate message loads and is the right message");
+		log("Step 8: Validate message loads and is the right message");
 		assertTrue(messagesPage.isMessageDisplayed(driver, Subject), "Message received with timestamp");
 
 	}
@@ -1248,7 +1236,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		Long timestamp = System.currentTimeMillis();
-		logStep("Get Data from Excel");
+		log("Step 1: Get Data from Excel");
 		Appointment aptData = new Appointment();
 		AppointmentTestData testData = new AppointmentTestData(aptData);
 
@@ -1267,35 +1255,35 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		String reason = "Reason" + timestamp;
 
-		logStep("LogIn");
+		log("Step 2: LogIn");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
-		logStep("Click on Appointment Button on Home Page");
+		log("Step 3: Click on Appointment Button on Home Page");
 		JalapenoAppointmentRequestPage apptPage = homePage.clickOnAppointment(driver);
 		JalapenoAppointmentRequestV2Step1 apptPage1 = apptPage.requestForAppointmentStep1(driver);
 
 		apptPage1.chooseFirstProvider();
 
-		logStep("Complete Appointment Request Page");
+		log("Step 4: Complete Appointment Request Page");
 		JalapenoAppointmentRequestV2Step2 apptPage2 = apptPage1.continueToStep2(driver);
 
 		apptPage2.fillAppointmentRequestForm(reason);
 		homePage = apptPage2.submitAppointment(driver);
 
-		logStep("Check if thank you frame is displayd");
+		log("Step 5: Check if thank you frame is displayd");
 		assertTrue(homePage.isTextDisplayed("Thank you"));
 
-		logStep("Logout of Patient Portal");
+		log("Step 6: Logout of Patient Portal");
 		homePage.clickOnLogout();
 
 		Thread.sleep(5000);
 
-		logStep("Setup Oauth client");
+		log("Step 7: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
 
-		logStep("Get Appointment Rest call");
+		log("Step 8: Get Appointment Rest call");
 
 		// get only messages from last hour in epoch time to avoid transferring
 		// lot of data
@@ -1307,7 +1295,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// attribute format
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 
-		logStep("Checking reason in the response xml");
+		log("Step 9: Checking reason in the response xml");
 		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
 
 		// String arSMSubject = "Reply to Appointment Request";
@@ -1324,11 +1312,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason, arSMSubject, arSMBody, testData.getAppointmentPath());
 
 		// httpPostRequest method
-		logStep("Do Message Post Request");
+		log("Step 10: Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML,
 				testData.getResponsePath());
 
-		logStep("Get processing status until it is completed");
+		log("Step 11: Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -1341,38 +1329,38 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 
-		logStep("Check secure message in patient mail inbox");
-		YopMailUtils mail = new YopMailUtils(driver);
+		log("Step 12: Check secure message in patient gmail inbox");
+		Mailinator mail = new Mailinator();
 		String subject = "New message from "+testData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
 
 		// patient Portal validation
-		logStep("Login to Patient Portal");
+		log("Step 13: Login to Patient Portal");
 		JalapenoLoginPage loginPage2 = new JalapenoLoginPage(driver, emailMessageLink);
 		JalapenoHomePage homePage2 = loginPage2.login(testData.getUserName(), testData.getPassword());
 
-		logStep("Click on messages solution");
+		log("Step 14:Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
 
-		logStep("Find & validate message in Inbox");
+		log("Step 15: Find & validate message in Inbox");
 		assertTrue(messagesPage.isMessageDisplayed(driver, arSMSubject));
 
-		logStep("Logout of Patient Portal");
+		log("Step 16: Logout of Patient Portal");
 		homePage2.clickOnLogout();
 
 		// Practice portal validation
-		logStep("Login to Practice Portal");
+		log("Step 17: Login to Practice Portal");
 
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(),
 				testData.getPracticePassword());
 
-		logStep("Click Appt Request tab");
+		log("Step 18: Click Appt Request tab");
 		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
 		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
 
-		logStep("Search for appt requests");
+		log("Step 19: Search for appt requests");
 		apptSearch.searchForApptRequests(2, null, null);
 		Thread.sleep(120000);
 		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(reason);
@@ -1388,7 +1376,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(detailStep1.getPracticeMessageBody().contains(arSMBody), "Expected Secure Message Body containing ["
 				+ arSMBody + "but actual message body was [" + actualSMBody + "]");
 
-		logStep("Logout of Practice Portal");
+		log("Step 20: Logout of Practice Portal");
 		practiceHome.logOut();
 
 	}

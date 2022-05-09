@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +17,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 
@@ -34,8 +34,8 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	@FindBy(how = How.XPATH, using = "//input[@title='languages']")
 	private WebElement preferredLanguageSelectTextbox;
 
-	@FindBy(how = How.XPATH, using = "//div[contains(@class,'ng-option ng-option-marked')]")
-	private WebElement preferredLanguageFirstRow;
+	@FindBy(how = How.XPATH, using = "//ng-select[@id='languages']//span[text()='English']")
+	private WebElement preferredLanguageEnglish;
 
 	@FindBy(how = How.NAME, using = "provider")
 	private WebElement preferredProvider;
@@ -119,16 +119,25 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		return assessPageElements(webElementsList);
 	}
 
+	// this method is not working, the element is not select but something
+	// customized
+	@Deprecated
 	private void setStatementLanguageT(String statementLanguageType) throws InterruptedException {
+		// Select statementSelect = new Select(this.preferredLanguageSelect);
+		// statementSelect.selectByVisibleText(statementLanguageType);
 		log("Setting preferred language");
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		jse.executeScript("window.scrollBy(0,150)", "");
+		preferredLanguageSelect.click();
+		Thread.sleep(1000);
 		preferredLanguageSelectTextbox.sendKeys(statementLanguageType);
-		IHGUtil.waitForElement(driver, 10, preferredLanguageFirstRow);
-		preferredLanguageFirstRow.click();
+		preferredLanguageSelectTextbox.sendKeys(Keys.ENTER);
 
 	}
 
+	// this method is not working, the element is not select but something
+	// customized
+	@Deprecated
 	public void setStatementLanguage(WebDriver driver, String statementLanguageType) throws InterruptedException {
 		setStatementLanguageT(statementLanguageType);
 		javascriptClick(saveAccountChanges);
@@ -161,9 +170,9 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	public void setEnglishAsPreferredLanguageAndSave() {
 		IHGUtil.PrintMethodName();
 		wait.until(ExpectedConditions.elementToBeClickable(preferredLanguageSelect));
-		preferredLanguageSelectTextbox.sendKeys("English");
-		wait.until(ExpectedConditions.elementToBeClickable(preferredLanguageFirstRow));
-		preferredLanguageFirstRow.click();
+		preferredLanguageSelect.click();
+		wait.until(ExpectedConditions.elementToBeClickable(preferredLanguageEnglish));
+		preferredLanguageEnglish.click();
 		javascriptClick(saveAccountChanges);
 
 	}

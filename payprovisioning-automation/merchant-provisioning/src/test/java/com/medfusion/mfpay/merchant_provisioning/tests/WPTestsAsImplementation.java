@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 
-public class WPTestsAsImplementationTests extends BaseRest{
+public class WPTestsAsImplementation extends BaseRest{
 	protected PropertyFileLoader testData;
 	
 	

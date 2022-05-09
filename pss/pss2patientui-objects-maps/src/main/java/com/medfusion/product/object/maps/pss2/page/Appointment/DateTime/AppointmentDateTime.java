@@ -83,7 +83,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
-	
+
 	public String selectDate(Boolean nextMonthBooking) {
 		String dt = null;
 		if (nextMonthBooking) {
@@ -306,20 +306,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		return time.substring(0,5);
 
-	}
-	
-	public String getFirstTimeWithHHMM() {
-		String time = "";
-		for (int i = 0; i < appointmentTimeList.size(); i++) {
-			time = appointmentTimeList.get(0).getText();
-		}
-		return time.substring(0,5);
-	}
-
-	public String chooseAppttypeText(String reasonForAppointment) {
-		WebElement chooseApptTypeText = driver.findElement(By.xpath("//*[text()='"+reasonForAppointment+"']"));
-		String chooseApptText = chooseApptTypeText.getText();
-		return chooseApptText;
 	}
 	
 	public void logout() throws InterruptedException {

@@ -157,7 +157,7 @@ public class PatientRegistrationUtils {
 		csvFileReader(testData, workingDir);
 
 		Thread.sleep(600);
-		if (ChannelVersion.contains("v1") || ChannelVersion.contains("v2")) {
+		if (ChannelVersion.contains("v1")) {
 			replaceUnknownForv1(ChannelVersion, testData);
 		}
 		Log4jUtil.log("Payload Batchsize :" + testData.getBatchSize());
@@ -180,7 +180,7 @@ public class PatientRegistrationUtils {
 			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 			assertTrue(completed, "Message processing was not completed in time");
 
-			YopMailUtils mail = new YopMailUtils(driver);
+			MailinatorUtils mail = new MailinatorUtils(driver);
 
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
@@ -228,7 +228,7 @@ public class PatientRegistrationUtils {
 			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 			assertTrue(completed, "Message processing was not completed in time");
 
-			YopMailUtils mail = new YopMailUtils(driver);
+			MailinatorUtils mail = new MailinatorUtils(driver);
 
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
@@ -262,9 +262,9 @@ public class PatientRegistrationUtils {
 
 
 	public static void replaceUnknownForv1(String ChannelVersion, PIDCInfo testData) {
-		if (ChannelVersion.contains("v1") || ChannelVersion.contains("v2")) {
+		if (ChannelVersion.contains("v1")) {
 			for (int i = 0; i < testData.patientDetailList.size(); i++) {
-				if (testData.patientDetailList.get(i).getGender().equals("UNKNOWN") || testData.patientDetailList.get(i).getGender().equals("UNDIFFERENTIATED")) {
+				if (testData.patientDetailList.get(i).getGender().equals("UNKNOWN")) {
 					testData.patientDetailList.get(i).setGender("MALE");
 				}
 			}
@@ -314,7 +314,7 @@ public class PatientRegistrationUtils {
 		Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 		assertTrue(completed, "Message processing was not completed in time");
 
-		YopMailUtils mail = new YopMailUtils(driver);
+		MailinatorUtils mail = new MailinatorUtils(driver);
 
 		for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 			Thread.sleep(15000);

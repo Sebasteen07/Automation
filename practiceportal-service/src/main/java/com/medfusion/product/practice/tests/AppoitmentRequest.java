@@ -299,38 +299,4 @@ public class AppoitmentRequest extends BaseTestNGWebDriver {
 
 		return detailStep1.getCreatedTs();
 	}
-	
-	public long ProceedFirstAvailableAppoitmentRequest(WebDriver driver, Boolean checkDetails, String appointmentReason,
-			String portalUrl, String doctorLogin, String doctorPassword) throws Exception {
-		IHGUtil.PrintMethodName();
-
-		log("Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, portalUrl);
-		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
-
-		log("Click Appt Request tab");
-		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
-
-		log("Search for appt requests");
-		apptSearch.searchForApptRequests();
-		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(appointmentReason);
-		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
-
-		log("Choose process option and respond to patient");
-		Thread.sleep(1000);
-		if (checkDetails)
-			assertTrue(detailStep1.checkAppointmentDetails("First Available", "Monday,Tuesday,Wednesday,Thursday,Friday",
-					"Any Time Of Day", appointmentReason));
-
-		ApptRequestDetailStep2Page detailStep2 = detailStep1.chooseApproveAndSubmit();
-
-		log("Confirm response details to patient");
-		apptSearch = detailStep2.processApptRequest();
-		assertTrue(apptSearch.isSearchPageLoaded(), "Expected the Appt Search Page to be loaded, but it was not.");
-
-		log("Logout of Practice Portal");
-		practiceHome.logOut();
-
-		return detailStep1.getCreatedTs();
-	}
 }

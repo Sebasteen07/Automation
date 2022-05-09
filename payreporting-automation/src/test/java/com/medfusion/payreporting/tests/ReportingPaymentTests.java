@@ -93,6 +93,20 @@ public class ReportingPaymentTests extends ReportingAcceptanceTests {
 		makeDeclinedPayment(testData.getProperty("merchant.element"));
 	}
 
+	@Test(enabled = true)
+	public void testInstallerDownload() throws InterruptedException, ClientProtocolException, IOException {
+		ReportingNavigationMenu menu = PageFactory.initElements(driver, ReportingNavigationMenu.class);
+		ReportingPOSPage posPage = menu.navigateMakeAPayment();
+		assertTrue(posPage.assessPageElements());
+		log("POS page fields are OK");
+		HttpClient httpClient = flows.createHttpClientWithBrowserCookies(driver);
+		HttpGet getInstaller = new HttpGet(testData.getProperty("reporting.url")
+				+ "/payment-reporting-api/services/v2/merchant/paypoint/installer");
+		HttpResponse response = httpClient.execute(getInstaller);
+		assertEquals(200, response.getStatusLine().getStatusCode());
+		log("Installer link is working OK");
+	}
+
 	/*
 	 * make VCS payment using the default data
 	 * 

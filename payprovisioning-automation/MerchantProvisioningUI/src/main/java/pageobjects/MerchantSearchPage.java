@@ -1,7 +1,12 @@
 package pageobjects;
 
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.medfusion.common.utils.IHGUtil;
+import static org.testng.Assert.assertFalse;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -12,9 +17,9 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import static org.testng.Assert.assertFalse;
+import com.medfusion.common.utils.IHGUtil;
+
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 public class MerchantSearchPage extends NavigationMenu {
 
@@ -99,14 +104,10 @@ public class MerchantSearchPage extends NavigationMenu {
 
 	}
 
-	public void viewDetailsButtonClick(){
-		viewDetailsButton.click();
-		waitForPageToLoad();
-	}
+	public void viewDetailsButtonClick() throws InterruptedException {
 
-	public void waitForPageToLoad(){
-		WebDriverWait wait = new WebDriverWait(driver, 30);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='top-nav']/div/div[2]/div[2]")));
+		viewDetailsButton.click();
+		
 	}
 
 	public void duplicateRecords() {

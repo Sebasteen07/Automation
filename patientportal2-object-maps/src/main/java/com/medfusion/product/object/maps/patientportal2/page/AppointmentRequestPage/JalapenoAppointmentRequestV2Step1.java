@@ -58,7 +58,6 @@ public class JalapenoAppointmentRequestV2Step1 extends JalapenoMenu {
 
 	public void chooseFirstProvider() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 60, showAllButton);
 		showAllButton.click();
 		doctorSelect.click();
 	}

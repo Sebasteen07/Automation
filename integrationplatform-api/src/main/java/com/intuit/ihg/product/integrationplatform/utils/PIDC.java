@@ -57,11 +57,12 @@ public class PIDC {
 	public String LnameSC = "";
 	public String Address1SC = "";
 	public String Address2SC = "";
+	public String CancelInviteRestUrl = "";
 	public String GI = "";
 	public String SO = "";
 	public String NewPassword = "";
 	public String Restv1Url = "";
 	public String Restv2Url = "";
 	public String Restv3Url = "";
-	public String CancelInviteRestUrl = "";
+
 }

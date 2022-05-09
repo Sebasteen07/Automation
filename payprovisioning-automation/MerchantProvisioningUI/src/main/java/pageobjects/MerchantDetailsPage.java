@@ -152,8 +152,6 @@ public class MerchantDetailsPage extends NavigationMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id='merchantDetail']/div[3]/fieldset/div[1]/div/fieldset/legend/div")
 	private WebElement paymentProcessorInformation;
 
-	@FindBy(how = How.XPATH, using ="//*[@id='merchantDetail']/div[3]/div[5]/div/fieldset/legend/div[2]/div/div/a")
-	private WebElement editPartnersButton;
 
 	public void verifyPageTitle() {
 
@@ -318,10 +316,5 @@ public class MerchantDetailsPage extends NavigationMenu {
 			}
 		}
 
-	}
-
-	public PartnerPage clickOnEditpartner(){
-		editPartnersButton.click();
-		return PageFactory.initElements(driver, PartnerPage.class);
 	}
 }

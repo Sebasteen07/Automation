@@ -64,15 +64,6 @@ public class PatientFlow extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/fieldset/div/div/button")
 	private WebElement saveRuleButton;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='showCategory']")
-	private WebElement decisionTreeToggle;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='flow']/form/div/div[1]/div/label[1]/i")
-	private WebElement decisionTreeToggleCheckBox;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='flow']/form/div/div[1]/div/label[2]")
-	private WebElement decisionTreeToggleLabel;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='showProvider']")
 	private WebElement providerToggle;
@@ -220,7 +211,6 @@ public class PatientFlow extends SettingsTab {
 		log("insuranceToggle = " + providerToggle.isSelected());
 
 		if(isProviderEnabled() == true) {
-			IHGUtil.waitForElement(driver, 60, providerToggleCheckBox);
 			providerToggleCheckBox.click();
 		}		
 		log("Turn off the Enable Provider Setting ");
@@ -230,41 +220,9 @@ public class PatientFlow extends SettingsTab {
 		log("insuranceToggle = " + providerToggle.isSelected());
 		
 		if(isProviderEnabled() == false) {
-			IHGUtil.waitForElement(driver, 60, providerToggleCheckBox);
 			providerToggleCheckBox.click();
 		log("Status after turn on Provider-"+providerToggle.isSelected());
 		}		
 		log("Turn off the Enable Provider Setting ");
 	}
-	
-	public void clickonDecisionTreeToggle() throws InterruptedException {
-		Thread.sleep(2000);
-		decisionTreeToggleCheckBox.click();
-		log("clicked on decisionTreetoggle");
-	}
-	
-	public Boolean isDecisionTreeEnabled() {
-		commonMethods.highlightElement(decisionTreeToggle);
-		return decisionTreeToggle.isSelected();
-	}
-	
-	public void disableDecisionTree() throws InterruptedException {
-		log("Toggle status of Decision Tree = " + isDecisionTreeEnabled());
-
-		if(isDecisionTreeEnabled() == true) {
-			clickonDecisionTreeToggle();
-			log("Status after enable Decision Tree-"+decisionTreeToggle.isSelected());
-		}		
-		log("Disabled Decision Tree Setting ");
-	}	
-	
-	public void enableDecisionTree() throws InterruptedException {
-		log("Toggle  Status of Decision Tree = " + isDecisionTreeEnabled());
-		
-		if(isDecisionTreeEnabled() == false) {
-			clickonDecisionTreeToggle();
-			log("Status after enable Decision Tree-"+decisionTreeToggle.isSelected());
-		}		
-		log("Enabled Decision Tree Setting ");
-	}	
 }

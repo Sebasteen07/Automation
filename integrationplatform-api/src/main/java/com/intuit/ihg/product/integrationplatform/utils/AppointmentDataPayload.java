@@ -5,7 +5,6 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -43,13 +42,6 @@ public class AppointmentDataPayload {
 		AppointmentData testData = new AppointmentData();
 		AppointmentDataPayload apObj = new AppointmentDataPayload();
 		apObj.getAppointmentDataPayload(testData);
-	}
-
-	public String getCalculatedDate(String dateFormat, int days) {
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat s = new SimpleDateFormat(dateFormat);
-		cal.add(Calendar.DAY_OF_YEAR, days);
-		return s.format(new Date(cal.getTimeInMillis()));
 	}
 
 	public String getAppointmentDataPayload(AppointmentData testData) throws InterruptedException, IOException,
@@ -92,8 +84,8 @@ public class AppointmentDataPayload {
 
 			mainRootElement.appendChild(AppointmentMessageHeader);
 			// End AppointmentMessageHeader Node
-			testData.Time = this.getCalculatedDate("YYYY-MM-dd", 30) + "T00:00:00.000Z";
-			String[] time = {testData.Time, testData.appointmentDetailList.get(2).getTime()};
+
+			String[] time = { testData.Time, testData.appointmentDetailList.get(2).getTime() };
 			String[] status = { testData.Status, testData.appointmentDetailList.get(2).getStatus() };
 
 			String[] pId = { testData.PatientPracticeId, testData.PatientPracticeId };
@@ -364,7 +356,6 @@ public class AppointmentDataPayload {
 			Element mainRootElement = doc.createElementNS(schema, "ns2:AppointmentData");
 			doc.appendChild(mainRootElement);
 
-			testData.Time = this.getCalculatedDate("YYYY-MM-dd", 30) + "T00:00:00.000Z";
 			String[] time = { testData.Time, testData.appointmentDetailList.get(2).getTime() };
 			String[] status = { testData.Status, testData.appointmentDetailList.get(2).getStatus() };
 
@@ -632,7 +623,6 @@ try {
 	Element mainRootElement = doc.createElementNS(schema, "ns2:AppointmentData");
 	doc.appendChild(mainRootElement);
 
-	testData.Time = this.getCalculatedDate("YYYY-MM-dd", 30) + "T00:00:00.000Z";
 	String[] time = { testData.Time, testData.appointmentDetailList.get(2).getTime() };
 	String[] status = { testData.Status, testData.appointmentDetailList.get(2).getStatus() };
 

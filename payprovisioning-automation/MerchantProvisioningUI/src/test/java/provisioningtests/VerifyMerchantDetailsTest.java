@@ -1,7 +1,5 @@
-//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package provisioningtests;
 
-import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
@@ -13,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public class VerifyMerchantDetailsTest extends ProvisioningBaseTest {
 
-	@Test(enabled = true, groups = { "MerchantProvisioningAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test
 	public void testVerifyMerchant() throws IOException, NullPointerException, InterruptedException {
 
 		PropertyFileLoader testData = new PropertyFileLoader();

@@ -1,4 +1,4 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.tests;
 
 
@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import static io.restassured.path.json.JsonPath.from;
-import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -14,7 +13,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.PartnersInfo;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 
-public class PartnersAsFinanceTests extends BaseRest{
+public class PartnersAsFinance extends BaseRest{
 	protected PropertyFileLoader testData;
 
 	
@@ -26,7 +25,7 @@ public class PartnersAsFinanceTests extends BaseRest{
 	  }
 
 	
-	 @Test(enabled = false)
+	 @Test
 	 public void testCreatePartnerCredentialsAsFinance() throws Exception, IOException {
 		PartnersInfo partnersinfo = new PartnersInfo();
 		String postpartners = ProvisioningUtils.postPartner+testData.getProperty("static.merchant")+"/partners";
@@ -45,7 +44,7 @@ public class PartnersAsFinanceTests extends BaseRest{
 			
   }
 
-	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test
 	public void testGetPartnerCredentialsAsFinance(){
 		PartnersInfo partnersinfo = new PartnersInfo();
 		String postpartners = ProvisioningUtils.postPartner+testData.getProperty("static.merchant")+"/partners";

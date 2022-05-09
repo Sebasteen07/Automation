@@ -123,13 +123,9 @@ public class VirtualCardSwiperPage extends BasePageObject {
 
 		patientNameField.sendKeys(PName);
 
-		try {
-			paymentCommentField.sendKeys(comment);
-		}
-		catch (Exception e) {
-			log(e.getMessage());
-		}
-
+		
+		 if((IHGUtil.getEnvironmentType().toString()== "DEV3") || (IHGUtil.getEnvironmentType().toString()== "QA1")) { paymentCommentField.sendKeys(comment); }
+		
 		clickHereToChargeCard.click();
 	}
 

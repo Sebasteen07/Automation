@@ -12,17 +12,14 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
-import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.intuit.ihg.common.utils.monitoring.TestStatusReporter;
 import com.medfusion.product.object.maps.precheck.page.DashboardLoginPage;
 import com.medfusion.product.object.maps.precheck.page.AppointmentDetails.AppointmentDetailsPage;
 import com.medfusion.product.object.maps.precheck.page.HomePage.HomePage;
-import com.medfusion.product.object.maps.precheck.page.patient.DemographicsPage;
-import com.medfusion.product.object.maps.precheck.page.patient.InsurancePage;
-import com.medfusion.product.object.maps.precheck.page.patient.PatientHomePage;
-import com.medfusion.product.object.maps.precheck.page.patient.PatientLoginPage;
+import com.medfusion.product.object.maps.precheck.page.patient.*;
 import com.medfusion.product.precheck.PrecheckConstants;
 import com.medfusion.product.precheck.PrecheckPatient;
 
@@ -78,8 +75,8 @@ public class PrecheckAcceptanceTests extends BaseTestNGWebDriver {
 				patient.getEmail(), "100", "300");
 
 
-		log("Logging into Yopmail and getting PrecheckApp url");
-		YopMailUtils mail = new YopMailUtils(driver);
+		log("Logging into Mailinator and getting PrecheckApp url");
+		Mailinator mail = new Mailinator();
 		String emailSubject = "You have an upcoming appointment!";
 		String inEmail = "Check in";
 		String url = mail.getLinkFromEmail(patient.getEmail(), emailSubject, inEmail, 10);

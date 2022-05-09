@@ -3,7 +3,10 @@ package com.medfusion.product.object.maps.patientportal2.page.AccountPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import com.medfusion.pojos.Patient;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,8 +17,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.pojos.Patient;
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 
 public class JalapenoAccountPage extends JalapenoMenu {
@@ -64,9 +65,8 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		
 		public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
 				log("Trying to click on Edit button for My Account");
-				if (IHGUtil.waitForElement(driver, 50, editMyAccountButton)) {
+				wait.until(ExpectedConditions.visibilityOf(editMyAccountButton));
 				editMyAccountButton.click();
-				}
 				return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 		}
 

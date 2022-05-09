@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
@@ -89,7 +90,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")
 	private WebElement balanceDueDate;
 
-	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[contains(.,'Your Confirmation Number is ')]")
+	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[3]")
 	private WebElement confirmationNumberMsg;
 
 	@FindBy(how = How.XPATH, using = "(//table[@class='table table-condensed']/tbody/tr/td/a)[1]")
@@ -288,8 +289,6 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	}
 
 	public String readConfirmationNumber() {
-		IHGUtil.waitForElement(driver, 60, confirmationNumberMsg);
-
 		String confirmationNumberMsgstring = confirmationNumberMsg.getText();
 		String confirmationNumber = confirmationNumberMsgstring.substring(28, 40);
 		return confirmationNumber;

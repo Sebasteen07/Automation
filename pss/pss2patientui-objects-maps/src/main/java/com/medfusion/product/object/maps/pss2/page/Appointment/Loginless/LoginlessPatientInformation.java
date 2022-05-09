@@ -1,4 +1,4 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Loginless;
 
 import java.util.List;
@@ -43,10 +43,7 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "PHONE")
 	private WebElement inputPrimaryPhoneNumber;
-	
-	@FindBy(how = How.XPATH, using = "//input[@title='Alternate Number']")
-	private WebElement inputAlternatePhoneNumber;
-	
+
 	@FindBy(how = How.XPATH, using = "//button[@class='custombuttonexistnext']")
 	private WebElement buttonNext;
 
@@ -220,79 +217,6 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		buttonNext.click();
 		return PageFactory.initElements(driver, HomePage.class);
 	}
-
-
-	
-	public HomePage fillPatientFormWithAlternateNumber(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue, 
-			String phoneNumber, String alternateNumber) throws InterruptedException {
-		
-		IHGUtil.waitForElement(driver, 5, inputFirstName);
-		commonMethods.highlightElement(inputFirstName);
-		inputFirstName.sendKeys(firstName);
-		
-		commonMethods.highlightElement(inputLastName);
-		inputLastName.sendKeys(lastName);
-		
-		IHGUtil.waitForElement(driver, 5, dateOfBirth);
-		commonMethods.highlightElement(dateOfBirth);		
-		datePicker.click();
-		log("datePicker clicked ");
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		DateMatcher dateMatcher = new DateMatcher();
-		dateMatcher.selectDate(dob, driver);
-		
-		commonMethods.highlightElement(selectGender);
-		selectGender.click();
-		Select selectGenderType = new Select(selectGender);
-		selectGenderType.selectByValue(gender);
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		commonMethods.highlightElement(inputEmail);
-		inputEmail.sendKeys(email);
-		
-		commonMethods.highlightElement(inputPrimaryPhoneNumber);		
-		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
-		
-		jse.executeScript("window.scrollTo(0, 300)");
-		Thread.sleep(3000);
-		commonMethods.highlightElement(inputZip);
-		inputZip.sendKeys(zipCodeValue);
-		
-		commonMethods.highlightElement(inputAlternatePhoneNumber);		
-		inputAlternatePhoneNumber.sendKeys(alternateNumber);
-
-		commonMethods.highlightElement(privacyPolicyCheckbox);
-		privacyPolicyCheckbox.click();
-		log("Privacy Policy has been checked successfully");
-		log("formfilled ...");
-		jse.executeScript("window.scrollBy(0,250)", "");
-		Thread.sleep(2000);
-		log("first wait completed ...");
-
-		driver.switchTo().frame(recaptchaFrame);
-		commonMethods.highlightElement(recaptchaBox);
-		recaptchaClick.click();
-		Thread.sleep(3000);
-		driver.switchTo().parentFrame();
-
-		log("........Captcha clicked......");
-		Thread.sleep(2000);
-
-		wait.until(ExpectedConditions.elementToBeClickable(buttonNext));
-		commonMethods.highlightElement(buttonNext);
-		buttonNext.click();
-		log("Submit Button cliked ...");
-		return PageFactory.initElements(driver, HomePage.class);
-	}
-	
 
 	public void isPageLoaded() {
 		IHGUtil.waitForElement(driver, 80, this.buttonNext);

@@ -1,18 +1,18 @@
-//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package provisioningtests;
-
-import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.medfusion.common.utils.PropertyFileLoader;
-import org.openqa.selenium.support.PageFactory;
-import org.testng.annotations.Test;
-import pageobjects.MerchantSearchPage;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import com.medfusion.common.utils.PropertyFileLoader;
+
+import pageobjects.MerchantDetailsPage;
+import pageobjects.MerchantSearchPage;
 
 public class SearchMerchantTest extends ProvisioningBaseTest {
 
-	@Test(enabled = true, groups = { "MerchantProvisioningAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test
 	public void testDuplicateRecords() throws IOException, NullPointerException, InterruptedException {
 
 		PropertyFileLoader testData = new PropertyFileLoader();

@@ -113,39 +113,6 @@ public class ManageAppointmentType extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/ul")
 	private WebElement logoutBtn;
-	
-	@FindBy(how = How.XPATH, using = "//a[@title='Add Slots']")
-	private WebElement excludeSlotBtn;
-	
-	@FindBy(how = How.XPATH, using = "//select[@name='beforeAfterStart']")
-	private WebElement excludeSlotBeforeAfterStart;
-
-	@FindBy(how = How.XPATH, using = "//select[@name='beforeAfterEnd']")
-	private WebElement excludeSlotBeforeAfterEnd;
-
-	@FindBy(how = How.XPATH, using = "//select[@name='condition']")
-	private WebElement excludeSlotCondition;
-
-	@FindBy(how = How.XPATH, using = "//input[@name='startTime']")
-	private WebElement startTime;
-
-	@FindBy(how = How.XPATH, using = "//input[@name='endTime']")
-	private WebElement endTime;
-	
-	@FindBy(how = How.XPATH, using = "//a[@title='Add Exclude Slot']")
-	private WebElement addExcludeSlotBtn;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[2]/div/div/button[1]")
-	private WebElement appointmenttypeSave;
-
-	@FindBy(how = How.XPATH, using = "//*[@id=\"tabX33\"]/form/div[2]/table/tbody/tr[1]/td[2]/a")
-	private WebElement excludeSlotCheckBox;	
-	
-	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']")
-	private WebElement overBookingToggle;
-	
-	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']/following-sibling::i")
-	private WebElement overBookingToggleClick;
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
@@ -154,7 +121,6 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	CommonMethods commonMethods = new CommonMethods(driver);
 	
 	public void searchByAptTypeName(String appointmentName) {
-		searchAppointment.clear();
 		searchAppointment.sendKeys(appointmentName);
 	}
 
@@ -190,25 +156,6 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		log("Appointment Type Saved Message- "+appointmentTypeSavedMsg);
 		log("Length of Saved Message- "+appointmentTypeSavedMsg.length());
 		
-	}
-	
-	public void resetPrevSchedSettings(String aptType) throws InterruptedException {
-		
-		commonMethods.highlightElement(searchAppointment);
-		searchAppointment.sendKeys(aptType);
-		commonMethods.highlightElement(aptTypeLink);
-		aptTypeLink.click();
-		IHGUtil.waitForElement(driver, 10, editAptTypeHeading);
-		commonMethods.highlightElement(editAptTypeHeading);
-		scrollAndWait(0, 800, 1000);
-		commonMethods.highlightElement(prevSchedSettingLabel);
-		log("PrevSched Setting Label- "+prevSchedSettingLabel.getText());
-		
-		commonMethods.highlightElement(prevSchedSettingAdmin);
-		prevSchedSettingAdmin.clear();
-		prevSchedSettingAdmin.sendKeys("0");
-		commonMethods.highlightElement(aptTypeSettingSaveBtn);
-		aptTypeSettingSaveBtn.click();
 	}
 	
 	public void selectAppointment(String appointment) throws InterruptedException {
@@ -322,41 +269,5 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	public void logout() throws InterruptedException {
 		settingBtn.click();
 		logoutBtn.click();
-	}
-	
-	public void excludeBtnWithTwoValues(String firstValue,String secondValue)
-	{
-		excludeSlotBtn.click();
-		Select before = new Select(excludeSlotBeforeAfterStart);
-		before.selectByVisibleText("Before");
-		startTime.clear();
-		startTime.sendKeys(firstValue);
-		log("SuccessFully Sent the First Value in Exclude Slot textfield");
-		addExcludeSlotBtn.click();
-		log("Clicked on yes ");
-		excludeSlotBtn.click();
-		before.selectByVisibleText("After");
-		startTime.clear();
-		startTime.sendKeys(secondValue);
-		log("SuccessFully Sent the Second Value in Exclude Slot textfield");
-		addExcludeSlotBtn.click();
-		log("Clicked on yes ");
-		appointmenttypeSave.click();
-	}
-	
-	public void resetExcludeBtn() {
-		excludeSlotCheckBox.click();
-		log("Exclude Btn reset");
-		appointmenttypeSave.click();	
-	}
-	public boolean overBookingStatus() {
-		boolean bool = overBookingToggle.isSelected();
-		log("Status of OverBooking -" + bool);
-		return bool;
-	}
-
-	public void overBookingClick() {
-		overBookingToggleClick.click();
-		appointmenttypeSave.click();
 	}
 }

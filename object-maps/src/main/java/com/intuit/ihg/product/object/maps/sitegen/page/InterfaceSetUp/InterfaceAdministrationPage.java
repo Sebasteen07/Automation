@@ -16,7 +16,7 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
 public class InterfaceAdministrationPage extends BasePageObject {
 
-	@FindBy(xpath = "(//input[@name='otherfeatures'])[3]")
+	@FindBy(xpath = "(//input[@name='otherfeatures'])[5]")
 	private WebElement chckIntegrationEngine;
 
 	@FindBy(linkText = "Delete Integration Type")

@@ -157,7 +157,7 @@ public class FormsExportUtils {
 			new JalapenoLoginPage(driver, testData.url_FE);
 			loginPage.login(username, testData.patientPassword1_FE);
 			Thread.sleep(9000);	
-			jalapenoHomePage.clickOnHealthForms();
+			jalapenoHomePage.clickOnMenuHealthForms();
 			
             Log4jUtil.log("Step 12: Click on Registration button ");
 			HealthFormListPage healthListpage= new HealthFormListPage(driver);
@@ -293,7 +293,6 @@ public class FormsExportUtils {
 
 			Thread.sleep(4000);
 			Log4jUtil.log("Step 34: Logout from patient portal");
-			driver.navigate().refresh();
 			driver.switchTo().defaultContent();
 			jalapenoMenuPage.clickOnMenuHome();
 			jalapenoMenuPage.clickOnLogout();
@@ -332,8 +331,8 @@ public class FormsExportUtils {
 		pFormInsurancePage.fillfirstInsurance(testData.NameofPrimaryInsurance, firstName);
 
 		Log4jUtil.log("Step 17: Fill in Secondary Insurance Details");
-		FormSecondaryInsurancePage pFormSecondaryInsurancePage = PageFactory.initElements(driver, FormSecondaryInsurancePage.class);
-		pFormSecondaryInsurancePage.fillSecondInsurance(testData.NameofsecondaryInsurance, firstName);
+		FormSecondaryInsurancePage pFormSecondaryInsurancePage= PageFactory.initElements(driver, FormSecondaryInsurancePage.class);
+		pFormSecondaryInsurancePage.fillSecondInsurance(testData.NameofsecondaryInsurance,firstName);
 
 		Log4jUtil.log("Step 18: Set Providers Details");
 		FormOtherProvidersPage pFormOtherProvidersPage=PageFactory.initElements(driver, FormOtherProvidersPage.class);

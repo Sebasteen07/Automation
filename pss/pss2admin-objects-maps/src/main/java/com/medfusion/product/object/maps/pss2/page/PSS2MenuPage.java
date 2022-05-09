@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.medfusion.product.object.maps.pss2.decisionTree.ManageDecisionTree;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
 import com.medfusion.product.object.maps.pss2.page.CancelReason.ManageCancelReason;
@@ -42,9 +41,6 @@ public class PSS2MenuPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//a[@href='#/app/careteam']")
 	private WebElement linkCareTeam;
-	
-	@FindBy(how = How.XPATH, using = "//*[@href='#/app/category']")
-	private WebElement linkDecisionTree;
 
 	@FindBy(how = How.XPATH, using = "//*[@href='#/app/location']")
 	private WebElement linkLocation;
@@ -94,12 +90,6 @@ public class PSS2MenuPage extends PSS2MainPage {
 		javascriptClick(linkCareTeam);
 		log("Care Team Tab clicked.....");
 		return PageFactory.initElements(driver, ManageCareTeam.class);
-	}
-	
-	public ManageDecisionTree gotoDecisionTree() {
-		javascriptClick(linkDecisionTree);
-		log("Decision Tree Tab clicked.....");
-		return PageFactory.initElements(driver, ManageDecisionTree.class);
 	}
 
 	public ManageCancelReason gotoCancelReason() throws InterruptedException {
