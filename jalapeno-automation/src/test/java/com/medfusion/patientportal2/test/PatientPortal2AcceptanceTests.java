@@ -909,7 +909,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
 
 		logStep("Fill details and submit");
-		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		assertTrue(appointmentRequestStep2.isVideoVisitDisplayed());
+		appointmentRequestStep2.fillAppointmentRequestReasonForm(appointmentReason);
+
 		homePage = appointmentRequestStep2.submitAppointment(driver);
 
 		logStep("Check if thank you frame is displayd");
@@ -921,16 +923,15 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
 
 		logStep("Check elements and appointment request reason");
-
 		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
 
 		logStep("Check appointment request details");
-		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		assertTrue(historyPage.checkAppointmentDetailsOfFirstAvailableTime(appointmentReason));
 		homePage.clickOnLogout();
 
 		logStep("Proceed in Practice Portal");
 		AppoitmentRequest practicePortal = new AppoitmentRequest();
-		long tsPracticePortal = practicePortal.ProceedAppoitmentRequest(driver, true, appointmentReason,
+		long tsPracticePortal = practicePortal.ProceedFirstAvailableAppoitmentRequest(driver, true, appointmentReason,
 				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
 
 		logStep("Login back to patient portal");

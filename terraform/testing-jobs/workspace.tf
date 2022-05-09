@@ -75,6 +75,11 @@ locals {
     demo-patient-portal-regression3      = "demo-patient-portal-regression3"
     demo-patient-portal-regression4      = "demo-patient-portal-regression4"
     dev3-pss20-acceptance                = "dev3-pss20-acceptance"
+    dev3-sitegen-regression              = "dev3-sitegen-regression"
+    dev3-ng-int-platform-regression      = "dev3-ng-int-platform-regression"
+    dev3-rcm-precheck-acceptance         = "dev3-rcm-precheck-acceptance"
+    demo-forms-regression1               = "demo-forms-regression1"
+    demo-forms-regression2               = "demo-forms-regression2"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
