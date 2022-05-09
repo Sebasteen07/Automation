@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import com.medfusion.common.utils.EnvironmentTypeUtil.EnvironmentType;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.common.utils.YopMail;
@@ -7776,7 +7777,322 @@ public class ApptPrecheckSteps extends BaseTest {
 		    
 		    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 		}
+		
+	@When("I select first Hours, min and then Day in timing units and save changes for {string}")
+	public void i_select_first_hours_min_and_then_day_in_timing_units_and_save_changes_for(String deliveryMethod) throws InterruptedException {
+		scrollAndWait(0, -500, 5000);
+		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
+		log("Delivery Method:"+notifPage.getDeliveryMethod());
 
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+		String currentEnv = String.valueOf(env);
+		notifPage.checkingFourthTimingIfPresent();
+		if (currentEnv.equals("DEV3")) {
+			notifPage.addTimingAndTimingUnit();
+			Appointment.hours=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(1, "Hours", Appointment.hours);
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnit(2, "Minutes", Appointment.minutes);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnit(3, "Days", Appointment.days);
+				assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		} else {
+			notifPage.addTimingAndTimingUnitDemo();
+			Appointment.hours=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnitDemo(1, "Hours", Appointment.hours);
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnitDemo(2, "Minutes", Appointment.minutes);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", Appointment.days);
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		}
+	}
+			
+		
+	@Then("I verify user is able to see timing units in proper sequence on notification tab for email")
+	public void i_verify_user_is_able_to_see_timing_units_in_proper_sequence_on_notification_tab_for_email() throws InterruptedException {
+		scrollAndWait(0, -500, 5000);
+		assertEquals(notifPage.getHoursTimingText(), "Hours", "Hours Timing was not match");
+		assertEquals(notifPage.getMinutesTimingText(), "Minutes", "Minutes Timing was not match");
+		assertEquals(notifPage.getDaysTimingText(), "Days", "Days Timing was not match");
+		assertEquals(notifPage.getTimeUnitTextForHours(), Appointment.hours, "Hours Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForMinutes(), Appointment.minutes, "Minutes Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForDays(), Appointment.days, "Days Timing unit was not match");
+		scrollAndWait(0, 1000, 10000);
+		
+		notifPage.clickApptReminderEmailHamburgerButton();
+		notifPage.clickOnEditButtonHamburgerButton();
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+		String currentEnv = String.valueOf(env);
+		if (currentEnv.equals("DEV3")) {
+			notifPage.enterTimingAndTimingUnit(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnit(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnit(3, "Days", "5");
+		} else {
+			notifPage.enterTimingAndTimingUnitDemo(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnitDemo(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", "5");
+		}
+			notifPage.clickOnSaveChangesbutton();
+	}
+		
+	@When("I select first minutes, hours and then Day in timing units and save changes for {string}")
+	public void i_user_select_first_minutes_hours_and_then_day_in_timing_units_and_save_changes_for(String deliveryMethod) throws InterruptedException {
+		scrollAndWait(0, -500, 5000);
+		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
+		log("Delivery Method:"+notifPage.getDeliveryMethod());
+			
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+		String currentEnv = String.valueOf(env);
+		notifPage.checkingFourthTimingIfPresent();
+		if (currentEnv.equals("DEV3")) {
+			notifPage.addTimingAndTimingUnit();
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnit(1, "Minutes", Appointment.minutes);
+			Appointment.hours=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(2, "Hours", Appointment.hours);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnit(3, "Days", Appointment.days);
+		}else {
+			notifPage.addTimingAndTimingUnitDemo();
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnitDemo(1, "Minutes", Appointment.minutes);
+			Appointment.hours=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnitDemo(2, "Hours", Appointment.hours);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", Appointment.days);
+		}
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());
+	}
+		
+	@When("I select first hour, min, hour and then Day in timing units and save changes for {string}")
+	public void i_select_first_hour_min_hour_and_then_day_in_timing_units_and_save_changes_for(String deliveryMethod) throws InterruptedException {
+		scrollAndWait(0, -500, 5000);
+		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
+		log("Delivery Method:"+notifPage.getDeliveryMethod());
+			
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+		String currentEnv = String.valueOf(env);
+		if (currentEnv.equals("DEV3")) {
+			notifPage.addTimingAndTimingUnit();
+			notifPage.addFourthTimingAndTimingUnit();
+			Appointment.hour1=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(1, "Hours", Appointment.hour1);
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnit(2, "Minutes", Appointment.minutes);
+			Appointment.hour2=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(3, "Hours", Appointment.hour2);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnit(4, "Days", Appointment.days);
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		}else {
+			notifPage.addTimingAndTimingUnitDemo();
+			notifPage.addFourthTimingAndTimingUnit();
+			Appointment.hour1=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnitDemo(1, "Hours", Appointment.hour1);
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnitDemo(2, "Minutes", Appointment.minutes);
+			Appointment.hour2=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnitDemo(3, "Hours", Appointment.hour2);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnitDemo(4, "Days", Appointment.days);
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		}
+	}
+		
+	@Then("I verify if user is able to see timing units in proper sequence on notification tab for email")
+	public void i_verify_if_user_is_able_to_see_timing_units_in_proper_sequence_on_notification_tab_for_email() throws InterruptedException {
+		assertEquals(notifPage.getHoursTimingText(), "Hours", "Hours Timing was not match");
+		assertEquals(notifPage.getMinutesTimingText(), "Minutes", "Minutes Timing was not match");
+		assertEquals(notifPage.getDaysTimingText(), "Days", "Days Timing was not match");
+		assertEquals(notifPage.getTimeUnitTextForMinutes(), Appointment.minutes, "Minutes Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForDays(), Appointment.days, "Days Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForHours(), Appointment.hour1+", "+Appointment.hour2, "Hours Timing unit was not match");
+	    scrollAndWait(0, 1000, 10000);
+	    
+		notifPage.clickApptReminderEmailHamburgerButton();
+		notifPage.clickOnEditButtonHamburgerButton();	
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+		String currentEnv = String.valueOf(env);
+		notifPage.checkingFourthTimingIfPresent();
+		if (currentEnv.equals("DEV3")) {
+			notifPage.enterTimingAndTimingUnit(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnit(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnit(3, "Days", "5");
+				
+		} else {
+			notifPage.enterTimingAndTimingUnitDemo(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnitDemo(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", "5");
+		}
+			notifPage.clickOnSaveChangesbutton();
+	}
+		
+	@When("I hit edit button of text for appointment reminder")
+	public void i_hit_edit_button_of_text_for_appointment_reminder() throws InterruptedException {
+		scrollAndWait(0, 1000, 3000);
+		notifPage.clickOnEditButtonHamburgerButton();
+		log("User redirect on edit template design page");
+	}
+		
+	@When("I select first Hours, min and then Day in timing units in text and save changes for {string}")
+	public void i_select_first_hours_min_and_then_day_in_timing_units_in_text_and_save_changes_for(String deliveryMethod) throws InterruptedException {
+		scrollAndWait(0, -500, 5000);
+		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
+		log("Delivery Method:"+notifPage.getDeliveryMethod());
+			
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+	    String currentEnv = String.valueOf(env);
+		notifPage.checkingFourthTimingIfPresent();
+		if (currentEnv.equals("DEV3")) {
+			notifPage.addTimingAndTimingUnit();
+			Appointment.hours=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(1, "Hours", Appointment.hours);
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnit(2, "Minutes", Appointment.minutes);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnit(3, "Days", Appointment.days);
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		}else {
+			notifPage.addTimingAndTimingUnitDemo();
+			Appointment.hours=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnitDemo(1, "Hours", Appointment.hours);
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnitDemo(2, "Minutes", Appointment.minutes);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", Appointment.days);
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		}
+	}
+		
+		
+	@Then("I verify user is able to see timing units in proper sequence on notification tab for text")
+	public void i_verify_user_is_able_to_see_timing_units_in_proper_sequence_on_notification_tab_for_text() throws InterruptedException {
+		scrollAndWait(0, 1000, 5000);
+		assertEquals(notifPage.getHoursTimingTextForSMS(), "Hours", "Hours Timing was not match");
+		assertEquals(notifPage.getMinutesTimingTextForSMS(), "Minutes", "Minutes Timing was not match");
+		assertEquals(notifPage.getDaysTimingTextForSMS(), "Days", "Days Timing was not match");
+		assertEquals(notifPage.getHoursTimeUnitTextForSMS(), Appointment.hours, "Hours Timing unit was not match");
+		assertEquals(notifPage.getMinutesTimeUnitTextForSMS(), Appointment.minutes, "Minutes Timing unit was not match");
+		assertEquals(notifPage.getDaysTimeUnitTextForSMS(), Appointment.days,"Days Timing unit was not match");
+			
+		scrollAndWait(0, 1000, 10000);
+		notifPage.clickApptReminderSmsHamburgerButton();
+		notifPage.clickOnEditButtonHamburgerButton();
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+		String currentEnv = String.valueOf(env);
+		if (currentEnv.equals("DEV3")) {
+			notifPage.enterTimingAndTimingUnit(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnit(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnit(3, "Days", "5");
+		} else {
+			notifPage.addTimingAndTimingUnitDemo();
+			notifPage.enterTimingAndTimingUnitDemo(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnitDemo(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", "5");
+		}
+			notifPage.clickOnSaveChangesbutton();		
+	}
+		
+	@When("I select first minutes, hours and then Day in timing units in text and save changes for {string}")
+	public void i_select_first_minutes_hours_and_then_day_in_timing_units_in_text_and_save_changes_for(String deliveryMethod) throws InterruptedException {
+		scrollAndWait(0, -500, 5000);
+		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
+		log("Delivery Method:"+notifPage.getDeliveryMethod());
+			
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+		String currentEnv = String.valueOf(env);
+	    notifPage.checkingFourthTimingIfPresent();
+		if (currentEnv.equals("DEV3")) {
+			notifPage.addTimingAndTimingUnit();
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnit(1, "Minutes", Appointment.minutes);
+			Appointment.hours=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(2, "Hours", Appointment.hours);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnit(3, "Days", Appointment.days);
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		}else {
+			notifPage.addTimingAndTimingUnitDemo();
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnitDemo(1, "Minutes", Appointment.minutes);
+			Appointment.hours=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnitDemo(2, "Hours", Appointment.hours);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", Appointment.days);
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());	
+		 }
+	}
+		
+	@When("I select first hour, min, hour and then Day in timing units in text and save changes for {string}")
+	public void i_select_first_hour_min_hour_and_then_day_in_timing_units_in_text_and_save_changes_for(String deliveryMethod) throws InterruptedException {
+		scrollAndWait(0, -500, 5000);
+		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
+		log("Delivery Method:"+notifPage.getDeliveryMethod());
+			
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+		String currentEnv = String.valueOf(env);
+		if (currentEnv.equals("DEV3")) {
+			notifPage.addTimingAndTimingUnit();
+			notifPage.addFourthTimingAndTimingUnit();
+			Appointment.hour1=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(1, "Hours", Appointment.hour1);
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnit(2, "Minutes", Appointment.minutes);
+			Appointment.hour2=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnit(3, "Hours", Appointment.hour2);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnit(4, "Days", Appointment.days);
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		}else {
+			notifPage.addTimingAndTimingUnitDemo();
+			notifPage.addFourthTimingAndTimingUnit();
+			Appointment.hour1=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnitDemo(1, "Hours", Appointment.hour1);
+			Appointment.minutes=notifPage.enterMinutes();
+			notifPage.enterTimingAndTimingUnitDemo(2, "Minutes", Appointment.minutes);
+			Appointment.hour2=notifPage.enterHours();
+			notifPage.enterTimingAndTimingUnitDemo(3, "Hours", Appointment.hour2);
+			Appointment.days=notifPage.enterDays();
+			notifPage.enterTimingAndTimingUnitDemo(4, "Days", Appointment.days);
+			assertTrue(notifPage.visibilityOfSaveChangesbutton());
+		}
+	}
+		
+	@Then("I verify if user is able to see timing units in proper sequence on notification tab for text")
+	public void i_verify_if_user_is_able_to_see_timing_units_in_proper_sequence_on_notification_tab_for_text() throws InterruptedException {
+		assertEquals(notifPage.getHoursTimingTextForSMS(), "Hours", "Hours Timing was not match");
+		assertEquals(notifPage.getMinutesTimingTextForSMS(), "Minutes", "Minutes Timing was not match");
+		assertEquals(notifPage.getDaysTimingTextForSMS(), "Days", "Days Timing was not match");
+		assertEquals(notifPage.getMinutesTimeUnitTextForSMS(), Appointment.minutes, "Minutes Timing unit was not match");
+		assertEquals(notifPage.getDaysTimeUnitTextForSMS(), Appointment.days,"Days Timing unit was not match");
+		assertEquals(notifPage.getHoursTimeUnitTextForSMS(), Appointment.hour1+", "+Appointment.hour2, "Hours Timing unit was not match");
+		scrollAndWait(0, 1000, 10000);
+		
+		notifPage.clickApptReminderSmsHamburgerButton();
+		notifPage.clickOnEditButtonHamburgerButton();
+		EnvironmentType envType =IHGUtil.getEnvironmentType();
+		String env = envType.toString();
+		String currentEnv = String.valueOf(env);
+		notifPage.checkingFourthTimingIfPresent();
+		if (currentEnv.equals("DEV3")) {
+			notifPage.enterTimingAndTimingUnit(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnit(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnit(3, "Days", "5");
+		} else {
+			notifPage.enterTimingAndTimingUnitDemo(1, "Days", "1");
+			notifPage.enterTimingAndTimingUnitDemo(2, "Days", "3");
+			notifPage.enterTimingAndTimingUnitDemo(3, "Days", "5");
+			}
+			notifPage.clickOnSaveChangesbutton();
+		}
 }
-
-
