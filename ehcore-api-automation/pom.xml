@@ -7,28 +7,17 @@
 	<parent>
 		<artifactId>ihg-depot-parent-pom</artifactId>
 		<groupId>com.intuit.ihg</groupId>
-<<<<<<< HEAD
 		<version>22.2.0</version>
-=======
-		<version>22.4.0-SNAPSHOT</version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 	</parent>
 	<artifactId>ehcore-api-automation</artifactId>
 	<name>ehcore-api-automation</name>
 	<description>Ehcore Api Automation</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<<<<<<< HEAD
 		<ihg.version>22.2.0</ihg.version>
 		<dcf-version>22.2.0</dcf-version>
 		<eh-core-version>22.2.0</eh-core-version>
 		<messages-version>22.2.0</messages-version>
-=======
-		<ihg.version>22.4.0-SNAPSHOT</ihg.version>
-		<dcf-version>22.4.0-SNAPSHOT</dcf-version>
-		<eh-core-version>22.4.0-SNAPSHOT</eh-core-version>
-		<messages-version>22.4.0-SNAPSHOT</messages-version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 		<resteasy-version>2.2.2.GA</resteasy-version>
 		<codification-version>13.6.0.5</codification-version>
 	</properties>
@@ -170,11 +159,7 @@
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>object-maps</artifactId>
-<<<<<<< HEAD
 			<version>22.2.0</version>
-=======
-			<version>22.4.0-SNAPSHOT</version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
 		</dependency>
 	</dependencies>
 

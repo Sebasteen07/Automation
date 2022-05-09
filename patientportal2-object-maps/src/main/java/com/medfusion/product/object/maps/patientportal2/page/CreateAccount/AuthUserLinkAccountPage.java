@@ -59,9 +59,9 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		super(driver);
 	}
 
-	public JalapenoHomePage linkPatientToCreateGuardian(String login, String password, String relationship) throws InterruptedException {
+	public JalapenoHomePage linkPatientToCreateGuardian(String login, String password, String relationship) {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(2000);
+
 		userIdInput.sendKeys(login);
 		passwordInput.sendKeys(password);
 		log("Guardian login / password: " + login + " / " + password);
@@ -84,14 +84,16 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 	
-	public JalapenoHomePage linkPatientToCreateTrustedRep(String login, String password, String relationship) throws InterruptedException {
+	public JalapenoHomePage linkPatientToCreateTrustedRep(String login, String password, String relationship) {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(2000);
+
 		userIdInput.sendKeys(login);
 		passwordInput.sendKeys(password);
 		log("Trusted Representative login / password: " + login + " / " + password);
+
 		Select relationshipPatient = new Select(relationshipFirstSelect);
 		relationshipPatient.selectByVisibleText(relationship);
+
 		wait.until(ExpectedConditions.elementToBeClickable(enterPortalButton));
 		enterPortalButton.click();
 
@@ -133,17 +135,16 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		wait.until(ExpectedConditions.textToBePresentInElementValue(emailInput, email));
 	}
 	
-	public void linkSamePatientAsSelfTrustedRep(String login, String password, String relationship) throws InterruptedException {
+	public void linkSamePatientAsSelfTrustedRep(String login, String password, String relationship) {
 		IHGUtil.PrintMethodName();
-		Thread.sleep(2000);
+
 		userIdInput.sendKeys(login);
 		passwordInput.sendKeys(password);
-		
-		IHGUtil.waitForElement(driver, 60, relationshipFirstSelect);
 		log("Trusted Representative login / password: " + login + " / " + password);
 
 		Select relationshipPatient = new Select(relationshipFirstSelect);
 		relationshipPatient.selectByVisibleText(relationship);
+
 		wait.until(ExpectedConditions.elementToBeClickable(enterPortalButton));
 		enterPortalButton.click();
 	}

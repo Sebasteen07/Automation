@@ -6,11 +6,7 @@
     <parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-parent-pom</artifactId>
-<<<<<<< HEAD
         <version>22.2.0</version>
-=======
-        <version>22.4.0-SNAPSHOT</version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
     </parent>
 
     <artifactId>wsdk-automation</artifactId>
@@ -19,11 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<<<<<<< HEAD
         <ihg.version>22.2.0</ihg.version>
-=======
-        <ihg.version>22.4.0-SNAPSHOT</ihg.version>
->>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
         <suite.xml>wsdk-testng.xml</suite.xml>
     </properties>
 
@@ -58,11 +50,6 @@
             <artifactId>jaxrpc-api</artifactId>
             <version>1.1</version>
         </dependency>
-        <dependency>
-		    <groupId>javax.xml.ws</groupId>
-		    <artifactId>jaxws-api</artifactId>
-		    <version>2.3.1</version>
-			</dependency>
         <dependency>
             <groupId>commons-discovery</groupId>
             <artifactId>commons-discovery</artifactId>

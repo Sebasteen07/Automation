@@ -1,12 +1,9 @@
-// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.apptprecheckapi.test;
 
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
-import org.json.JSONArray;
 import org.testng.ITestResult;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -16,17 +13,13 @@ import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.product.appt.precheck.payload.MfAppointmentSchedulerPayload;
 import com.medfusion.product.appt.precheck.payload.MfPracticeSettingsManagerPayload;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.util.APIVerification;
 import com.medfusion.product.object.maps.appt.precheck.util.AccessToken;
-import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
-import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfPracticeSettingsManager;
 
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
@@ -38,9 +31,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 	public static HeaderConfig headerConfig;
 	public static Appointment testData;
 	APIVerification apiVerification = new APIVerification();
-	public static PostAPIRequestMfAppointmentScheduler postAPIRequestApptSche;
-	public static MfAppointmentSchedulerPayload schedulerPayload;
-	CommonMethods commonMtd;
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
@@ -53,9 +43,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		testData = new Appointment();
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.mf.practice.settings.manager"));
 		log("BASE URL-" + propertyData.getProperty("baseurl.mf.practice.settings.manager"));
-		postAPIRequestApptSche = PostAPIRequestMfAppointmentScheduler.getPostAPIRequestMfAppointmentScheduler();
-		schedulerPayload = MfAppointmentSchedulerPayload.getMfAppointmentSchedulerPayload();
-		commonMtd = new CommonMethods();
 
 	}
 
@@ -121,16 +108,8 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testReminderSettingGet() throws IOException {
-		Response getReminderResponse = postAPIRequest.retrieveSettingForSpecificPractice(
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
-		log("Verifying the response");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-		JSONArray arr = new JSONArray(getReminderResponse.getBody().asString());
-		String reminderId = arr.getJSONObject(0).getJSONObject("notifySettings").getJSONArray("reminderNotification")
-				.getJSONObject(0).getString("id");
-
 		Response response = postAPIRequest.reminderSetting(headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("settings.manager.practice.id"), reminderId);
+				propertyData.getProperty("settings.manager.practice.id"), propertyData.getProperty("reminder.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
@@ -140,16 +119,8 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testReminderSettingGetWithoutPracticeId() throws IOException {
-		Response getReminderResponse = postAPIRequest.retrieveSettingForSpecificPractice(
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
-		log("Verifying the response");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-		JSONArray arr = new JSONArray(getReminderResponse.getBody().asString());
-		String reminderId = arr.getJSONObject(0).getJSONObject("notifySettings").getJSONArray("reminderNotification")
-				.getJSONObject(0).getString("id");
-
-		Response response = postAPIRequest
-				.reminderSettingWithoutPracticeId(headerConfig.HeaderwithToken(getaccessToken), reminderId);
+		Response response = postAPIRequest.reminderSettingWithoutPracticeId(
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("reminder.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
@@ -163,6 +134,7 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 405);
 		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyWithoutReminderId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -228,42 +200,25 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateReminderSettingsPut() throws IOException {
-		Response getReminderResponse = postAPIRequest.retrieveSettingForSpecificPractice(
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
-		log("Verifying the response");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-		JSONArray arr = new JSONArray(getReminderResponse.getBody().asString());
-		String reminderId = arr.getJSONObject(0).getJSONObject("notifySettings").getJSONArray("reminderNotification")
-				.getJSONObject(0).getString("id");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-
 		Response response = postAPIRequest.updateReminderSettings(
 				payload.getUpdateReminderSettingsPayload(propertyData.getProperty("reminder.timing.days"), 1,
-						reminderId, propertyData.getProperty("settings.delivery.method"),
+						propertyData.getProperty("reminder.id"), propertyData.getProperty("settings.delivery.method"),
 						propertyData.getProperty("settings.appt.method"), propertyData.getProperty("settings.status")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyReminderSettings(response, propertyData.getProperty("settings.manager.practice.id"),
-				propertyData.getProperty("retrives.system.id"), reminderId,
-				propertyData.getProperty("settings.delivery.method"), propertyData.getProperty("settings.appt.method"));
+				propertyData.getProperty("retrives.system.id"),
+				propertyData.getProperty("reminder.id"), propertyData.getProperty("settings.delivery.method"),
+				propertyData.getProperty("settings.appt.method"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateReminderSettingsPutWithInvalidDeliveryMtd() throws IOException {
-		Response getReminderResponse = postAPIRequest.retrieveSettingForSpecificPractice(
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
-		log("Verifying the response");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-		JSONArray arr = new JSONArray(getReminderResponse.getBody().asString());
-		String reminderId = arr.getJSONObject(0).getJSONObject("notifySettings").getJSONArray("reminderNotification")
-				.getJSONObject(0).getString("id");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-
 		Response response = postAPIRequest.updateReminderSettings(
 				payload.getUpdateReminderSettingsPayload(propertyData.getProperty("reminder.timing.days"), 1,
-						reminderId, propertyData.getProperty("invalid.delivery.method"),
+						propertyData.getProperty("reminder.id"), propertyData.getProperty("invalid.delivery.method"),
 						propertyData.getProperty("settings.appt.method"), propertyData.getProperty("settings.status")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
 		log("Verifying the response");
@@ -274,18 +229,9 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateReminderSettingsPutWithInvalidApptMtd() throws IOException {
-		Response getReminderResponse = postAPIRequest.retrieveSettingForSpecificPractice(
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
-		log("Verifying the response");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-		JSONArray arr = new JSONArray(getReminderResponse.getBody().asString());
-		String reminderId = arr.getJSONObject(0).getJSONObject("notifySettings").getJSONArray("reminderNotification")
-				.getJSONObject(0).getString("id");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-
 		Response response = postAPIRequest.updateReminderSettings(
 				payload.getUpdateReminderSettingsPayload(propertyData.getProperty("reminder.timing.days"), 1,
-						reminderId, propertyData.getProperty("settings.delivery.method"),
+						propertyData.getProperty("reminder.id"), propertyData.getProperty("settings.delivery.method"),
 						propertyData.getProperty("invalid.appt.method"), propertyData.getProperty("settings.status")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
 		log("Verifying the response");
@@ -296,17 +242,9 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateReminderSettingsPutWithInvalidStatus() throws IOException {
-		Response getReminderResponse = postAPIRequest.retrieveSettingForSpecificPractice(
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
-		log("Verifying the response");
-		JSONArray arr = new JSONArray(getReminderResponse.getBody().asString());
-		String reminderId = arr.getJSONObject(0).getJSONObject("notifySettings").getJSONArray("reminderNotification")
-				.getJSONObject(0).getString("id");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-
 		Response response = postAPIRequest.updateReminderSettings(
 				payload.getUpdateReminderSettingsPayload(propertyData.getProperty("reminder.timing.days"), 1,
-						reminderId, propertyData.getProperty("settings.delivery.method"),
+						propertyData.getProperty("reminder.id"), propertyData.getProperty("settings.delivery.method"),
 						propertyData.getProperty("settings.appt.method"), propertyData.getProperty("invalid.status")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
 		log("Verifying the response");
@@ -319,11 +257,12 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 	public void testUpdateSettingsExistingPracticePut() throws IOException {
 		Response response;
 		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
-			response = postAPIRequest.updateSettings(payload.getUpdateSettingsPayload(
-					propertyData.getProperty("update.setting.practice"), propertyData.getProperty("update.system.id"),
-					propertyData.getProperty("update.location.id"),
-					propertyData.getProperty("settings.delivery.method"), propertyData.getProperty("update.language")),
-					headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("update.setting.practice"));
+			response = postAPIRequest.updateSettings(
+				payload.getUpdateSettingsPayload(propertyData.getProperty("update.setting.practice"),
+						propertyData.getProperty("update.system.id"), propertyData.getProperty("update.location.id"),
+						propertyData.getProperty("settings.delivery.method"),
+						propertyData.getProperty("update.language")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("update.setting.practice"));
 		} else {
 			response = postAPIRequest.updateSettings(payload.getUpdateSettingsPayloadDemo(
 					propertyData.getProperty("update.setting.practice"), propertyData.getProperty("update.system.id"),
@@ -335,8 +274,8 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyUpdateSettings(response, propertyData.getProperty("update.setting.practice"),
-				propertyData.getProperty("retrives.system.id"), propertyData.getProperty("expected.location.id"),
-				propertyData.getProperty("settings.delivery.method"));
+				propertyData.getProperty("retrives.system.id"),
+				propertyData.getProperty("expected.location.id"), propertyData.getProperty("settings.delivery.method"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -385,12 +324,13 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 	public void testUpdateActiveSettingsTruePut() throws IOException {
 		Response response;
 		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
-			response = postAPIRequest.updateActiveSettings(payload.getUpdateSettingsPayload(
-					propertyData.getProperty("update.setting.practice"), propertyData.getProperty("update.system.id"),
-					propertyData.getProperty("update.location.id"),
-					propertyData.getProperty("settings.delivery.method"), propertyData.getProperty("update.language")),
-					headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("update.setting.practice"),
-					propertyData.getProperty("practice.active.setting.true"));
+			response = postAPIRequest.updateActiveSettings(
+				payload.getUpdateSettingsPayload(propertyData.getProperty("update.setting.practice"),
+						propertyData.getProperty("update.system.id"), propertyData.getProperty("update.location.id"),
+						propertyData.getProperty("settings.delivery.method"),
+						propertyData.getProperty("update.language")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("update.setting.practice"),
+				propertyData.getProperty("practice.active.setting.true"));
 		} else {
 			response = postAPIRequest.updateActiveSettings(payload.getUpdateSettingsPayloadDemo(
 					propertyData.getProperty("update.setting.practice"), propertyData.getProperty("update.system.id"),
@@ -410,12 +350,13 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 	public void testUpdateActiveSettingsFalsePut() throws IOException {
 		Response response;
 		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
-			response = postAPIRequest.updateActiveSettings(payload.getUpdateSettingsPayload(
-					propertyData.getProperty("update.setting.practice"), propertyData.getProperty("update.system.id"),
-					propertyData.getProperty("update.location.id"),
-					propertyData.getProperty("settings.delivery.method"), propertyData.getProperty("update.language")),
-					headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("update.setting.practice"),
-					propertyData.getProperty("practice.active.setting.false"));
+			response = postAPIRequest.updateActiveSettings(
+				payload.getUpdateSettingsPayload(propertyData.getProperty("update.setting.practice"),
+						propertyData.getProperty("update.system.id"), propertyData.getProperty("update.location.id"),
+						propertyData.getProperty("settings.delivery.method"),
+						propertyData.getProperty("update.language")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("update.setting.practice"),
+				propertyData.getProperty("practice.active.setting.false"));
 		} else {
 			response = postAPIRequest.updateActiveSettings(payload.getUpdateSettingsPayloadDemo(
 					propertyData.getProperty("update.setting.practice"), propertyData.getProperty("update.system.id"),
@@ -459,9 +400,10 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyLocationSettings(response, propertyData.getProperty("update.setting.practice"),
-				propertyData.getProperty("update.system.id"), propertyData.getProperty("location.id"),
-				propertyData.getProperty("location.display.name"), propertyData.getProperty("location.street.name"),
-				propertyData.getProperty("location.city"), propertyData.getProperty("location.state"));
+				propertyData.getProperty("update.system.id"),
+				propertyData.getProperty("location.id"), propertyData.getProperty("location.display.name"),
+				propertyData.getProperty("location.street.name"), propertyData.getProperty("location.city"),
+				propertyData.getProperty("location.state"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -480,35 +422,23 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateMerchantSettingsPut() throws IOException {
-		Response getReminderResponse = postAPIRequest.retrieveSettingForSpecificPractice(
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
-		log("Verifying the response");
-		JSONArray arr = new JSONArray(getReminderResponse.getBody().asString());
-		String merchantId = arr.getJSONObject(0).getJSONObject("merchantSettings").getString("id");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-
 		Response response = postAPIRequest.updateMerchantSettings(
-				payload.getUpdateMerchantSettingPayload(merchantId, propertyData.getProperty("merchant.name")),
+				payload.getUpdateMerchantSettingPayload(propertyData.getProperty("merchant.id"),
+						propertyData.getProperty("merchant.name")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("update.setting.practice"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyMerchantSettings(response, propertyData.getProperty("update.setting.practice"),
-				propertyData.getProperty("update.system.id"), merchantId, propertyData.getProperty("merchant.name"),
+				propertyData.getProperty("update.system.id"),
+				propertyData.getProperty("merchant.id"), propertyData.getProperty("merchant.name"),
 				propertyData.getProperty("credit.cards"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateMerchantSettingsPutWithInvalidCreditCard() throws IOException {
-		Response getReminderResponse = postAPIRequest.retrieveSettingForSpecificPractice(
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("settings.manager.practice.id"));
-		log("Verifying the response");
-		JSONArray arr = new JSONArray(getReminderResponse.getBody().asString());
-		String merchantId = arr.getJSONObject(0).getJSONObject("merchantSettings").getString("id");
-		assertEquals(getReminderResponse.getStatusCode(), 200);
-
 		Response response = postAPIRequest.updateMerchantSettings(
-				payload.getUpdateMerchantSettingPayloadWithInvalidCard(merchantId,
+				payload.getUpdateMerchantSettingPayloadWithInvalidCard(propertyData.getProperty("merchant.id"),
 						propertyData.getProperty("merchant.name")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("update.setting.practice"));
 		log("Verifying the response");
@@ -540,9 +470,10 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyNotifySettings(response, propertyData.getProperty("update.setting.practice"),
-				propertyData.getProperty("update.system.id"), propertyData.getProperty("notify.enabled"),
-				propertyData.getProperty("notify.enabled.by.practice"), propertyData.getProperty("notify.one.day.out"),
-				propertyData.getProperty("notify.three.days.out"), propertyData.getProperty("notify.five.days.out"));
+				propertyData.getProperty("update.system.id"),
+				propertyData.getProperty("notify.enabled"), propertyData.getProperty("notify.enabled.by.practice"),
+				propertyData.getProperty("notify.one.day.out"), propertyData.getProperty("notify.three.days.out"),
+				propertyData.getProperty("notify.five.days.out"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -570,7 +501,8 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyPmIntegrationSettings(response, propertyData.getProperty("update.setting.practice"),
-				propertyData.getProperty("update.system.id"), propertyData.getProperty("data.sync.enabled"));
+				propertyData.getProperty("update.system.id"),
+				propertyData.getProperty("data.sync.enabled"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -650,7 +582,8 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyUpdatePssSetting(response, propertyData.getProperty("update.setting.practice"),
-				propertyData.getProperty("update.system.id"), testData.isPssSetting());
+				propertyData.getProperty("update.system.id"),
+				testData.isPssSetting());
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -673,7 +606,8 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 			log("Create Practice setting");
 			assertEquals(response.getStatusCode(), 200);
 			apiVerification.verifyCreateSetting(response, propertyData.getProperty("create.setting.practice.id"));
-		} else {
+		}
+		else {
 			log("Settings for the practice already exists");
 			assertEquals(response.getStatusCode(), 400);
 			apiVerification.verifySettingIfAlreadyExist(response);
@@ -683,30 +617,15 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSettingsForAPracticeGet() throws IOException {
-		Appointment.patientId = commonMtd.generateRandomNum();
-		Appointment.apptId = commonMtd.generateRandomNum();
-		long currentTimestamp = System.currentTimeMillis();
-		Appointment.plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
-		log("Getting patients since timestamp: " + Appointment.plus20Minutes);
-		log("Schedule a new Appointment");
-		Response scheduleResponse = postAPIRequestApptSche.aptPutAppointment(
-				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("update.appt.metadata.practice.id"),
-				schedulerPayload.putAppointmentPayload(Appointment.plus20Minutes,
-						propertyData.getProperty("mf.apt.scheduler.phone"),
-						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
-		assertEquals(scheduleResponse.getStatusCode(), 200);
-
 		Response response = postAPIRequest.getSettingsForAPractice(
 				propertyData.getProperty("baseurl.apt-precheck.resource"), headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.pre.check.practice.id"), Appointment.patientId, Appointment.apptId,
+				propertyData.getProperty("apt.pre.check.practice.id"),
+				propertyData.getProperty("apt.precheck.patient.id"), propertyData.getProperty("apt.precheck.appt.id"),
 				payload.getGuestTokenPayload(propertyData.getProperty("patient.dob"),
 						propertyData.getProperty("zipcode")));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-
 		apiVerification.verifyGetSettingsForAPractice(response, propertyData.getProperty("apt.pre.check.practice.id"),
 				propertyData.getProperty("update.system.id"));
 	}

@@ -122,9 +122,6 @@ public class AddNewMerchantPage extends NavigationMenu{
     @FindBy(how = How.ID, using = "accountType")
     private WebElement accountType;
 
-    @FindBy(how = How.ID, using = "accountUsage")
-    private WebElement accountUsage;
-
     @FindBy(how = How.ID, using = "routingNumber")
     private WebElement routingNumber;
 
@@ -529,11 +526,6 @@ public class AddNewMerchantPage extends NavigationMenu{
         select.selectByVisibleText(bankAccountType);
     }
 
-    public void selectAccountUsage(String bankAccountUsage) {
-        Select select = new Select(accountUsage);
-        select.selectByVisibleText(bankAccountUsage);
-    }
-
     public void selectControlOwnerType(String controlOwnerTypeValue) {
         Select select = new Select(controlOwnerType);
         select.selectByVisibleText(controlOwnerTypeValue);
@@ -541,7 +533,7 @@ public class AddNewMerchantPage extends NavigationMenu{
 
     public MerchantDetailsPage clickCreateMerchantButton() {
         createMerchantButton.click();
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+        WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='top-nav']/div/div[2]/div[1]/span[1]")));
         return PageFactory.initElements(driver, MerchantDetailsPage.class);
     }
@@ -646,9 +638,8 @@ public class AddNewMerchantPage extends NavigationMenu{
         }
     }
 
-    public void fillBankAccountDetails(String accountUsage, String accountType, String routingNumber,
+    public void fillBankAccountDetails(String accountType, String routingNumber,
                                        String bankAccountNo, String federalTaxId) {
-            selectAccountUsage(accountUsage);
             selectAccountType(accountType);
             fillRoutingNumber(routingNumber);
             fillBankAccountNumber(bankAccountNo);
@@ -684,13 +675,6 @@ public class AddNewMerchantPage extends NavigationMenu{
             fillPaypalCardPresentUsername(merchantEntity.getPaypalCardPresentUsername());
             fillPaypalCardPresentPassword(cardNotPresentPassword);
         }
-    }
-
-    public AddInstaMedMerchantPage pageForAddingNewInstaMedMerchant(String vendor){
-        if(vendor.equalsIgnoreCase("InstaMed")){
-            return PageFactory.initElements(driver, AddInstaMedMerchantPage.class);
-        }
-        return null;
     }
 
 }

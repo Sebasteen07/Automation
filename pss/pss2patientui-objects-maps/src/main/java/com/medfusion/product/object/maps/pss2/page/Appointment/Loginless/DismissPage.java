@@ -2,7 +2,6 @@
 
 package com.medfusion.product.object.maps.pss2.page.Appointment.Loginless;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -72,11 +71,6 @@ public class DismissPage extends PSS2MainPage {
 		return linkUnavailableMsg.getText();
 	}
 	
-	public String getGreetingsText(String greetingsText) {
-		WebElement dismissText = driver.findElement(By.xpath("//div[text()='"+greetingsText+"']"));
-		commonMethods.highlightElement(dismissText);
-		String getGreetingsText=dismissText.getText();
-		return getGreetingsText;		
-	}
+	
 
 }

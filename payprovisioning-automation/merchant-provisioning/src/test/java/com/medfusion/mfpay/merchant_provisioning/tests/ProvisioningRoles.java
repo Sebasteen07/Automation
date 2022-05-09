@@ -15,7 +15,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 import com.medfusion.mfpay.merchant_provisioning.utils.User;
 
-public class ProvisioningRolesTests {
+public class ProvisioningRoles {
 	protected PropertyFileLoader testData;
 	
 

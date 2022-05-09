@@ -1,10 +1,9 @@
-// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.apptprecheckapi.test;
 
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import org.testng.ITestResult;
 import org.testng.annotations.BeforeMethod;
@@ -15,14 +14,11 @@ import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.product.appt.precheck.payload.MfAppointmentSchedulerPayload;
 import com.medfusion.product.appt.precheck.payload.MfNotificationsLogPayload;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.util.APIVerification;
 import com.medfusion.product.object.maps.appt.precheck.util.AccessToken;
-import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
-import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfNotificationsLog;
 
 import io.restassured.response.Response;
@@ -36,9 +32,6 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 	public static HeaderConfig headerConfig;
 	public static Appointment testData;
 	APIVerification apiVerification = new APIVerification();
-	public static PostAPIRequestMfAppointmentScheduler postAPIRequestApptSche;
-	public static MfAppointmentSchedulerPayload schedulerPayload;
-	CommonMethods commonMtd;
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
@@ -51,24 +44,18 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 		testData = new Appointment();
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.mf.notifications.log"));
 		log("BASE URL-" + propertyData.getProperty("baseurl.mf.notifications.log"));
-		postAPIRequestApptSche = PostAPIRequestMfAppointmentScheduler.getPostAPIRequestMfAppointmentScheduler();
-		schedulerPayload = MfAppointmentSchedulerPayload.getMfAppointmentSchedulerPayload();
-		commonMtd = new CommonMethods();
 
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testReturnsLogGet() throws IOException {
 		Response response = postAPIRequest.returnsLog(headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("notifiction.subj.urn"),
-				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
-						+ Appointment.apptId);
+				propertyData.getProperty("notifiction.subj.urn"), propertyData.getProperty("notifiction.subj.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyReturnLogs(response, propertyData.getProperty("notifiction.subj.urn"),
-				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
-						+ Appointment.apptId);
+				propertyData.getProperty("notifiction.subj.id"));
 		apiVerification.responseKeyValidationJson(response, "result.notifications[0].notificationId");
 		apiVerification.responseKeyValidationJson(response, "result.notifications[0].mechanism");
 		apiVerification.responseKeyValidationJson(response, "result.notifications[0].notificationType");
@@ -81,8 +68,7 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testReturnsLogGetWithoutSubUrn() throws IOException {
 		Response response = postAPIRequest.returnsLogWithoutSubjUrn(headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
-						+ Appointment.apptId);
+				propertyData.getProperty("notifiction.subj.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 400);
 		apiVerification.responseTimeValidation(response);
@@ -101,24 +87,19 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testReturnsLogPost() throws IOException {
-		Response response = postAPIRequest
-				.returnsLogPost(
-						payload.returnLogsPayload(
-								propertyData.getProperty("update.appt.metadata.practice.id") + "."
-										+ Appointment.patientId + "." + Appointment.apptId,
-								propertyData.getProperty("notifiction.subj.urn")),
-						headerConfig.HeaderwithToken(getaccessToken));
+		Response response = postAPIRequest.returnsLogPost(
+				payload.returnLogsPayload(propertyData.getProperty("notifiction.subj.id"),
+						propertyData.getProperty("notifiction.subj.urn")),
+				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
-			apiVerification.verifyReturnLogsPost(response, propertyData.getProperty("notifiction.subj.urn"),
-					"[" + propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId
-							+ "." + Appointment.apptId + "]");
+		apiVerification.verifyReturnLogsPost(response, propertyData.getProperty("notifiction.subj.urn"),
+				propertyData.getProperty("notifiction.subj.id"));
 		} else {
 			apiVerification.verifyReturnLogsPost(response, propertyData.getProperty("notifiction.subj.urn"),
-					"[" + propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId
-							+ "." + Appointment.apptId + "]");
+					propertyData.getProperty("notifiction.subject.id"));
 		}
 		apiVerification.responseKeyValidationJson(response, "result.notifications[0].notificationId");
 		apiVerification.responseKeyValidationJson(response, "result.notifications[0].mechanism");
@@ -143,19 +124,15 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testReturnsLogPostWithInvalidSubjUrn() throws IOException {
-		Response response = postAPIRequest
-				.returnsLogPost(
-						payload.returnLogsPayload(
-								propertyData.getProperty("update.appt.metadata.practice.id") + "."
-										+ Appointment.patientId + "." + Appointment.apptId,
-								propertyData.getProperty("invalid.notif.subj.urn")),
-						headerConfig.HeaderwithToken(getaccessToken));
+		Response response = postAPIRequest.returnsLogPost(
+				payload.returnLogsPayload(propertyData.getProperty("notifiction.subj.id"),
+						propertyData.getProperty("invalid.notif.subj.urn")),
+				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyReturnLogsPostWithInvalidSubjUrn(response,
-				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
-						+ Appointment.apptId);
+				propertyData.getProperty("notifiction.subj.id"));
 
 	}
 
@@ -172,20 +149,16 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDeleteLog() throws IOException {
-		Response response = postAPIRequest
-				.deleteLog(
-						payload.deleteLogsPayload(
-								propertyData.getProperty("update.appt.metadata.practice.id") + "."
-										+ Appointment.patientId + "." + Appointment.apptId,
-								propertyData.getProperty("notifiction.subj.urn")),
-						headerConfig.HeaderwithToken(getaccessToken));
+		Response response = postAPIRequest.deleteLog(
+				payload.deleteLogsPayload(propertyData.getProperty("delete.notif.subj.id"),
+						propertyData.getProperty("notifiction.subj.urn")),
+				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyDeleteLogs(response,
-				"[" + propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
-						+ Appointment.apptId + "]",
-				propertyData.getProperty("mf.notif.log.practice.id"), Appointment.patientId, Appointment.apptId);
+		apiVerification.verifyDeleteLogs(response, propertyData.getProperty("notifiction.subj.id"),
+				propertyData.getProperty("mf.notif.log.practice.id"),
+				propertyData.getProperty("mf.notif.log.patient.id"), propertyData.getProperty("mf.notif.log.appt.id"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -203,19 +176,14 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDeleteLogInvalidSubjUrn() throws IOException {
-		Response response = postAPIRequest
-				.deleteLog(
-						payload.deleteLogsPayload(
-								propertyData.getProperty("update.appt.metadata.practice.id") + "."
-										+ Appointment.patientId + "." + Appointment.apptId,
-								propertyData.getProperty("invalid.notif.subj.urn")),
-						headerConfig.HeaderwithToken(getaccessToken));
+		Response response = postAPIRequest.deleteLog(
+				payload.deleteLogsPayload(propertyData.getProperty("delete.notif.subj.id"),
+						propertyData.getProperty("invalid.notif.subj.urn")),
+				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyDeleteLogsWithInvalidSubjUrn(response,
-				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
-						+ Appointment.apptId);
+		apiVerification.verifyDeleteLogsWithInvalidSubjUrn(response, propertyData.getProperty("delete.notif.subj.id"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -327,19 +295,5 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 	@BeforeMethod(enabled = true, groups = { "APItest" })
 	public void getMethodName(ITestResult result) throws IOException {
 		log("Method Name-- " + result.getMethod().getMethodName());
-		Appointment.patientId = commonMtd.generateRandomNum();
-		Appointment.apptId = commonMtd.generateRandomNum();
-		long currentTimestamp = System.currentTimeMillis();
-		Appointment.plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
-		log("Getting patients since timestamp: " + Appointment.plus20Minutes);
-		log("Schedule a new Appointment");
-		Response scheduleResponse = postAPIRequestApptSche.aptPutAppointment(
-				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("update.appt.metadata.practice.id"),
-				schedulerPayload.putAppointmentPayload(Appointment.plus20Minutes,
-						propertyData.getProperty("mf.apt.scheduler.phone"),
-						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
-		assertEquals(scheduleResponse.getStatusCode(), 200);
 	}
 }

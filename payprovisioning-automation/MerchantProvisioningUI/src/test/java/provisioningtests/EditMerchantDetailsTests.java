@@ -1,4 +1,3 @@
-//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package provisioningtests;
 
 import com.medfusion.common.utils.PropertyFileLoader;

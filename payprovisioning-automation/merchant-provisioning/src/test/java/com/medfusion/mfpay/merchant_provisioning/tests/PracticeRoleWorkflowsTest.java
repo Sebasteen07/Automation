@@ -1,7 +1,6 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.tests;
 
-import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.UsersDetails;
@@ -27,7 +26,7 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 		setupFinanceRequestSpecBuilder();
 	}
 
-	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true)
 	public void testSetPracticeRoleToMerchantUser() throws Throwable {
 		
 		String practiceStaffId = IHGUtil.createRandomNumericString(5);
@@ -45,8 +44,7 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 				Arrays.asList(testData.getProperty("practice.role")));
 	}
 
-	@Test(dataProvider = "practice_role_test", dataProviderClass = MPTestData.class,
-			enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(dataProvider = "practice_role_test", dataProviderClass = MPTestData.class, enabled = true)
 	public void testSetPracticeRoleToMerchantUserInvalidData(String practiceStaffId, String practiceId, String username,
 			String practiceRole) throws IOException {
 		String getusers = ProvisioningUtils.PRACTICE_ROLE + practiceStaffId + "/practice/" + practiceId;
@@ -63,7 +61,7 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 		}
 	}
 
-	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true)
 	public void testGetUsers() throws Throwable {
 		String getusers = ProvisioningUtils.MERCHANT_USER + "/practice/" + testData.getProperty("practice.id")
 				+ "/user/" + testData.getProperty("user.id") + "/metadata";
@@ -81,7 +79,7 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 	
 
 	
-	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true)
 	public void testVerifyDbForPracticeRolesToMerchantUser() throws Throwable {
 
 		String practiceStaffId = IHGUtil.createRandomNumericString(5);

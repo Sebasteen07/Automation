@@ -4567,18 +4567,5 @@ public class PayloadAdapterModulator {
 		String payload = "[{\"group\":\"RULEENGINE\",\"key\":\"showCategory\",\"value\":"+enableDecisionTree+"}]";
 		return payload;
 	}
-	
-	public String preRequisiteAppointmentTypesDefualtAT(String name, int preAppId,String extAppId) {
-		String preRequisiteAppointmentTypesDefualtAT = "[\r\n"
-				+ "  {\r\n"
-				+ "    \"id\": "+preAppId+",\r\n"
-				+ "    \"name\": \""+name+"\",\r\n"
-				+ "    \"extPreAppTypeId\": \""+extAppId+"\",\r\n"
-				+ "    \"numOfDays\": -1,\r\n"
-				+ "    \"selected\": true\r\n"
-				+ "  }\r\n"
-				+ "]";
-		return preRequisiteAppointmentTypesDefualtAT;
-	}
 }
 

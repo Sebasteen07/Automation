@@ -85,10 +85,7 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	@FindBy(linkText = "Online Solutions")
 	private WebElement lnkOnlineSolutions;
-	
-	@FindBy(xpath="//a[contains(text(),'Patient Portal Broadcasts')]")
-    private WebElement patientBroadcast;
-	
+
 	public SiteGenPracticeHomePage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -288,10 +285,4 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		lnkOnlineSolutions.click();
 		return PageFactory.initElements(driver, ManageSolutionsPage.class);
 	}
-	
-    public ManageSolutionsPage clickOnPatientBroadcast() {
-        IHGUtil.waitForElement(driver, 30, patientBroadcast);
-        patientBroadcast.click();
-        return PageFactory.initElements(driver, ManageSolutionsPage.class);
-    }
 }

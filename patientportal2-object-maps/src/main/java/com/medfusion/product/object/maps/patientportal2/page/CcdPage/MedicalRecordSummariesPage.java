@@ -13,12 +13,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,10 +25,10 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.TimeoutException;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.MFDateUtil;
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
 public class MedicalRecordSummariesPage extends JalapenoMenu {
 
@@ -51,10 +50,10 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "healthRecordRequest")
 	private WebElement healthRecordRequestButton;
 
-	@FindBy(how = How.XPATH, using = "(//*[@type='checkbox'])[2]")
+	@FindBy(how = How.XPATH, using = "(//*[@type='checkbox'])[1]")
 	private WebElement firstVisibleCCDCheckbox;
 
-	@FindBy(how = How.XPATH, using = "(//*[@type='checkbox'])[3]")
+	@FindBy(how = How.XPATH, using = "(//*[@type='checkbox'])[2]")
 	private WebElement secondVisibleCCDCheckbox;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[1]/tr/td[2]/a")
@@ -169,9 +168,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//h3[text()='Request received']")
 	private WebElement notificationMessage;
-	
-	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Please enter a valid date range.')]")
-	private WebElement txtDateErrorMessage;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -499,16 +495,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 			log("Looking for the Request Recived message");
 			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(notificationMessage));
 			return notificationMessage.isDisplayed();
-		} catch (Exception e) {
-		}
-		return false;
-	}
-	
-	public boolean isDateErrorMessageDisplayed() {
-		try {
-			log("Looking for the date error message");
-			new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(txtDateErrorMessage));
-			return txtDateErrorMessage.isDisplayed();
 		} catch (Exception e) {
 		}
 		return false;

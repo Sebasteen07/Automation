@@ -13,6 +13,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.customform.ViewPatientFormPage;
@@ -177,12 +178,8 @@ public class PatientDashboardPage extends BasePageObject {
 		String emrID = IHGUtil.createRandomNumericString();
 		txtexternalID.clear();
 		txtexternalID.sendKeys(emrID);
-		try {
 		txtexternalIDPM.clear();
 		txtexternalIDPM.sendKeys(emrID);
-	} catch (Exception e) {
-		log(e.getMessage());
-	}
 		btnUpdateInfo.click();
 		IHGUtil.waitForElement(driver, 60, lblPatientID1);
 		assertTrue(lblPatientID1.getText().contains(emrID), "patient ID is not set");

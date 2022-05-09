@@ -44,9 +44,6 @@ public class AnnouncementsTab extends SettingsTab  {
 	@FindBy(how = How.XPATH, using = "//textarea[@id='announcementObject.textEN']")
 	private WebElement announcementMessage;
 	
-	@FindBy(how = How.XPATH, using = "//textarea[@id='displayNameen']")
-	private WebElement announcementMessage1;
-	
 	@FindBy(how = How.XPATH, using = "//button[normalize-space()='Save']")
 	private WebElement announcementSave;
 	
@@ -55,6 +52,7 @@ public class AnnouncementsTab extends SettingsTab  {
 	
 	@FindBy(how = How.XPATH, using = "//a[@title='Edit']//*[local-name()='svg']")
 	private WebElement editMessage;
+	
 
 	@FindAll({ @FindBy(xpath = "//select/option") })
 	private List<WebElement> announcementMsgDropdownList;
@@ -103,25 +101,10 @@ public class AnnouncementsTab extends SettingsTab  {
 		
 	}
 	
-	public void addAnnouncementWhenSpanishISDisabled(WebDriver driver, String announcementTypeText, String greetingsText) throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, addAnnouncementBtn);
-		commonMethods.highlightElement(addAnnouncementBtn);
-		addAnnouncementBtn.click();
-		
-		IHGUtil.waitForElement(driver, 10, announcementType);
-		Select announcementList = new Select(announcementType);
-		Thread.sleep(2000);
-		announcementList.selectByVisibleText(announcementTypeText);
-		log("Greetings from Dropdown is selected");
-		IHGUtil.waitForElement(driver, 10, editMessage);
-		commonMethods.highlightElement(editMessage);
-		editMessage.click();
-		IHGUtil.waitForElement(driver, 10, announcementMessage1);
-		announcementMessage1.clear();
-		announcementMessage1.sendKeys(greetingsText);
-		IHGUtil.waitForElement(driver, 10, announcementSave);
-		commonMethods.highlightElement(announcementSave);
-		announcementSave.click();
-	}
+	
+	
+	
+
+
 	
 }

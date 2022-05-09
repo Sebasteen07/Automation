@@ -25,9 +25,8 @@ public class MedicationsHomePage extends JalapenoMenu {
 
 	}
 
-	public void clickOnRxRequest() throws InterruptedException {
+	public void clickOnRxRequest() {
 		log("Clicking on Rx Request button in Medications Home Page");
-		Thread.sleep(2000);
 		btnRxRequest.click();
 	}
 

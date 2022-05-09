@@ -9,8 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 
@@ -28,10 +26,10 @@ public class LocationAndProviderPage {
 	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
 	private static WebElement btnContinue;
 
-	@FindBy(how = How.XPATH, using = "(//div[.='Choose location'])/../div[2]/span[2]")
+	@FindBy(how = How.XPATH, using = "(//*[@class='ng-value-label'])[1]")
 	private static WebElement selectedLocation;
 
-	@FindBy(how = How.XPATH, using = "(//div[.='Choose provider'])/../div[2]/span[2]")
+	@FindBy(how = How.XPATH, using = "(//*[@class='ng-value-label'])[2]")
 	private static WebElement selectedProvider;
 
 	public LocationAndProviderPage(WebDriver driver) {
@@ -72,17 +70,11 @@ public class LocationAndProviderPage {
 	}
 
 	public String getPracticeProvider() {
-		String provider = "";
-		try {
-			provider = selectedProvider.getText();
-			providerDropdown.click();
-			providerDropdown.sendKeys(provider);
-		} catch (Exception e) {
-			Log4jUtil.log(e + "");
-		} finally {
-			btnContinue.click();
-			return provider;
-		}
+		String provider = selectedProvider.getText();
+		providerDropdown.click();
+		providerDropdown.sendKeys(provider);
+		btnContinue.click();
+		return provider;
 	}
 
 }

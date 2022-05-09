@@ -1,7 +1,6 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.CancResc;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,7 +8,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
@@ -101,14 +99,6 @@ public class PatientIdentificationPage extends PSS2MainPage {
 		buttonNext.click();
 		log("Submit Button cliked ...");
 		return PageFactory.initElements(driver, CancelRescheduleDecisionPage.class);
-	}
-	
-	public String footertextadding(String footerText) {
-		WebElement footerText1 = driver.findElement(By.xpath("//*[text()='"+footerText+"']"));
-		IHGUtil.waitForElement(driver, 10, footerText1);
-		String getFooterText = footerText1.getText();
-		commonMethods.highlightElement(footerText1);
-		return getFooterText;
 	}
 
 }

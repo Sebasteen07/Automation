@@ -140,21 +140,9 @@ public class HomePage extends PSS2MainPage {
 
 	@FindAll({ @FindBy(xpath = "//*[@id=\"upcomingappoitment\"]/div") })
 	private List<WebElement> selectUpcomingApptList;
-	
-	@FindAll({ @FindBy(xpath = "//*[@id='upcomingappoitment']/div/div/div[2]/div[1]") })
-	private List<WebElement> upcomingAptLocationText;
-	
-	@FindAll({ @FindBy(xpath = "//*[@id='upcomingappoitment']/div/div/div[2]/div[2]") })
-	private List<WebElement> upcomingAptPracticeText;
 
 	@FindAll({ @FindBy(xpath = "//*[@id='pastappointmentevent']/div/div") })
 	private List<WebElement> selectPastApptList;
-	
-	@FindAll({ @FindBy(xpath = "//*[@id='pastappointment']/div/div/div[2]/div[1]") })
-	private List<WebElement> pastAptLocationText;
-	
-	@FindAll({ @FindBy(xpath = "//*[@id='pastappointment']/div/div/div[2]/div[2]") })
-	private List<WebElement> pastAptPracticeText;
 
 	@FindBy(how = How.XPATH, using = ".//*[@id='upcomingevents']/p/span")
 	private WebElement noUpcomingText;
@@ -386,38 +374,6 @@ public class HomePage extends PSS2MainPage {
 
 	public int getPastAppointmentListSize() {
 		return selectPastApptList.size();
-	}
-	
-	public String getFutureAppointmentLocationText() {
-		for( WebElement locationName : upcomingAptLocationText){
-			String location= locationName.getText();
-			return location;
-		}
-		return null;
-	}
-
-	public String getFutureAppointmentPracticeText() {
-		for( WebElement practiceName : upcomingAptPracticeText){
-			String practice= practiceName.getText();
-			return practice;
-		}
-		return null;
-	}
-	
-	public String getPastAppointmentLocationText() {
-		for( WebElement locationName : pastAptLocationText){
-			String location= locationName.getText();
-			return location;
-		}
-		return null;
-	}
-
-	public String getPastAppointmentPracticeText() {
-		for( WebElement practiceName : pastAptPracticeText){
-			String practice= practiceName.getText();
-			return practice;
-		}
-		return null;
 	}
 	
 	public boolean isCancelAppointmentListPresent() {

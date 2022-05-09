@@ -5,12 +5,8 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.util.List;
-import java.util.function.Function;
 
-import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,7 +16,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
@@ -35,7 +31,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	private long createdTs;
 
-	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
+	@FindBy(how = How.XPATH, using = "//input[@value='Continue']")
 	private WebElement continueButton;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='medForm']/div[1]/div/div[2]/input")
@@ -65,17 +61,11 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.LINK_TEXT, using = "Home")
 	public WebElement homeButton; // this is not home button in Jalapeno Menu
 
-	@FindBy(how = How.XPATH, using = "//input[@title='location']")
+	@FindBy(how = How.XPATH, using = "//select[@name='locationContainer:locationDD']")
 	private WebElement locationDropdown;
 
-	@FindBy(how = How.XPATH, using = "//div[.='Choose provider']/../div[@class='ng-input']")
+	@FindBy(how = How.XPATH, using = "//select[@name='providerContainer:providerDD']")
 	private WebElement providerDropdown;
-
-	@FindBy(how = How.XPATH, using = "(//div[.='Choose location'])/../div[2]/span[2]")
-	private static WebElement selectedLocation;
-
-	@FindBy(how = How.XPATH, using = "(//div[.='Choose provider'])/../div[2]/span[2]")
-	private static WebElement selectedProvider;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='cccontainer:ccpanel:newccdetails:nameOnCreditCard']")
 	private WebElement cardholdername;
@@ -119,11 +109,8 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[contains(@name,'0:additionalInfoForAddWrapper:_body:additionalInfoForAdd')]")
 	private WebElement additionalInformation;
 
-	@FindBy(how = How.XPATH, using = "//button[contains(.,'Add a pharmacy')]")
-	private WebElement addNewPharamcyBtn;
-
-	@FindBy(how = How.XPATH, using = "//a[.='Providers suggested pharmacy']")
-	private WebElement providerSelectedPharmacy;
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Add a Pharmacy')]/preceding-sibling::input[@name='pharmacyPanel:radioGroup']")
+	private WebElement addNewPharamcyRadioBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
 	public WebElement renewalConfirmationmessage;
@@ -138,23 +125,11 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			@FindBy(how = How.XPATH, using = "//select[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList:select']/optgroup[2]/option") })
 	public List<WebElement> optionFromOtherPharmacy;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='ng-value-container']/div[contains(.,'Search by pharmacy name')]/../div[2]/input")
-	private WebElement pharmacySearchTextField;
+	@FindBy(how = How.XPATH, using = "//input[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList']")
+	private WebElement chooseFromAList;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='ng-value-container']/div[contains(.,'Search by pharmacy name')]/../../span")
-	private WebElement searchPharmacyDropDown;
-
-	@FindBy(how = How.XPATH, using = "//div[@class='ng-dropdown-panel-items scroll-host']/div/div[.='No items found']")
-	private WebElement noPharmacyFound;
-
-	@FindBy(how = How.XPATH, using = "//div[@class='suggested-pharmacy-name']")
-	private WebElement pharmacyNameSearchResult;
-
-	@FindBy(how = How.XPATH, using = "//div[@class='suggested-pharmacy-name']/../span[1]")
-	private WebElement pharmacyLine1;
-
-	@FindBy(how = How.XPATH, using = "//div[@class='suggested-pharmacy-name']/../span[2]")
-	private WebElement pharmacyLine2;
+	@FindBy(how = How.XPATH, using = "//div[@class='wicket-aa-container']/div/ul/li")
+	private WebElement textValueFromChooseFromAList;
 
 	@FindBy(how = How.XPATH, using = "(//div[@id='medicationForm']//input[@type='checkbox'])[1]")
 	public WebElement selectFirstMedication;
@@ -174,9 +149,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"rxrenewalform\"]/div[4]/div[2]/div")
 	public WebElement practiceProvider;
 
-	@FindBy(how = How.XPATH, using = "//iframe[@id='iframebody']")
-	public WebElement iframeBody;
-
 	public JalapenoPrescriptionsPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -185,31 +157,27 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	}
 
 	public void clickContinueButton(WebDriver driver) {
-		try {
-			if (iframeBody.isDisplayed())
-				driver.switchTo().frame("iframebody");
-		} catch (Exception e) {
-			log(e.getMessage());
-		}
+		driver.switchTo().frame("iframebody");
+
 		log("Checking if there're location options");
 		if (IHGUtil.exists(driver, 2, locationDropdown)) {
 			log("Selecting location");
-			locationDropdown.click();
-			locationDropdown.sendKeys(selectedLocation.getText());
-		}
-		try {
-			log("Checking if there're provider options");
-			if (IHGUtil.exists(driver, 2, providerDropdown)) {
-				log("Selecting provider");
-				providerDropdown.click();
-				providerDropdown.sendKeys(selectedProvider.getText());
+			Select locationSelect = new Select(locationDropdown);
+			locationSelect.selectByIndex(1);
 
+			log("Selecting provider");
+			try {
+				Select providerSelect = new Select(providerDropdown);
+				providerSelect.selectByIndex(1);
+
+			} catch (StaleElementReferenceException ex) {
+				log("Dont know what's going on here");
 			}
-		} catch (Exception ex) {
-			log("Provider field is not available" + ex);
-		} finally {
+
 			log("Clicking on continue button");
 			javascriptClick(continueButton);
+
+			driver.switchTo().defaultContent();
 		}
 	}
 
@@ -297,7 +265,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		Thread.sleep(2000);
 		// Clicking on Add a pharmacy radio button to add new Pharmacy
 		jse.executeScript("window.scrollBy(0,400)", "");
-		addNewPharamcyBtn.click();
+		addNewPharamcyRadioBtn.click();
 		pharmacyName.sendKeys("PharmacyName");
 		pharmacyPhone.sendKeys("3216549870");
 		log("Click on Continue button");
@@ -317,11 +285,8 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	}
 
 	public void validatemedication(String productName) {
-		try {
 		driver.switchTo().frame("iframe");
-		} catch (Exception e) {
-			log(e.toString());
-		}
+
 		for (int i = 1; i < Medicationlist.size(); i++) {
 			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[" + i + "]"))
 					.getText();
@@ -374,56 +339,19 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	}
 
 	public void verifyPharamcy(String pharmacy, String sendPharmacyFirstWord, String env) throws InterruptedException {
-		try {
-			if (!env.equalsIgnoreCase("PROD") | IHGUtil.exists(driver, 2, iframeBody)) {
-				driver.switchTo().frame("iframebody");
-			}
-		} catch (Exception e) {
-			log("no iframe found in verify pharmacy page");
+		if(!env.equalsIgnoreCase("PROD")) {
+			driver.switchTo().frame("iframebody");
 		}
-		Thread.sleep(10000);
-		try {
-			addNewPharamcyBtn.click();
-			providerSelectedPharmacy.click();
-			searchPharmacyDropDown.click();
-		} catch (Exception e) {
-			log(e.getMessage());
+		chooseFromAList.sendKeys(sendPharmacyFirstWord);
+		Thread.sleep(5000);
+		log("Get text value from Choose from a list textbox");
+		String textValue = textValueFromChooseFromAList.getText();
+		if (textValue.equalsIgnoreCase(pharmacy)) {
+			assertEquals(textValue, pharmacy);
+			log("Pharamacy is visible on Portal");
+		} else {
+			log("Pharamacy is not visible on Portal");
 		}
-		for (int i = 0; i < 4; i++) {
-			if (JalapenoPrescriptionsPage.this
-					.checkWhetherElementDisappears(By.xpath("//div[@class='ng-value-container']/div[contains(.,'Search by pharmacy name')]/../../div[2]"), 360000)) {
-				pharmacySearchTextField.sendKeys(sendPharmacyFirstWord);
-				break;
-			} else {
-				Thread.sleep(300000);
-			}
-
-		}
-		log("Get text value from Choose from a list textbox .");
-		try {
-			String textValue = StringUtils.trimToNull(pharmacyNameSearchResult.getText()) + ", " + StringUtils.trimToNull(pharmacyLine1.getText()) + ", "
-					+ StringUtils.trimToNull(pharmacyLine2.getText());
-			System.out.println(textValue + "  text value " + pharmacy);
-			if (textValue.equalsIgnoreCase(pharmacy)) {
-				assertEquals(textValue, pharmacy);
-				log("Pharamacy is visible on Portal");
-
-			} else {
-				log("Pharamacy is not visible on Portal");
-			}
-		} catch (Exception e) {
-			log("Suggested pharmacy dropdown is not populated.Probably match not found." + e.getMessage());
-		}
-	}
-
-	public boolean checkWhetherElementDisappears(final By xpath, final int waitTime) {
-		log("checkWhetherElementDisappears() - called ");
-
-		// @formatter:off
-		return new WebDriverWait(driver, waitTime).ignoring(StaleElementReferenceException.class, NoSuchElementException.class)
-				.ignoring(NullPointerException.class, ElementNotVisibleException.class)
-				.until((Function<? super WebDriver, Boolean>) ExpectedConditions.invisibilityOfElementLocated(xpath));
-		// @formatter:on
 	}
 
 	public void SelectProviderLocationclickContinueButton(WebDriver driver, String locationName, String ProviderName)
@@ -581,55 +509,25 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	}
 
 	public void verifyDeletedPharamcy(String pharmacy, String sendPharmacyFirstWord, String env) throws InterruptedException {
-		try {
-			if (!env.equalsIgnoreCase("PROD") | IHGUtil.exists(driver, 2, iframeBody)) {
-				driver.switchTo().frame("iframebody");
-			}
-		} catch (Exception e) {
-			log(e.getMessage());
+		if(!env.equalsIgnoreCase("PROD")) {
+			driver.switchTo().frame("iframebody");
 		}
 		String textValue = "";
-		try {
-			addNewPharamcyBtn.click();
-			providerSelectedPharmacy.click();
-			searchPharmacyDropDown.click();
-		} catch (Exception e) {
-			log(e.getMessage());
-		}
-
-		for (int i = 0; i < 4; i++) {
-			if (JalapenoPrescriptionsPage.this
-					.checkWhetherElementDisappears(By.xpath("//div[@class='ng-value-container']/div[contains(.,'Search by pharmacy name')]/../../div[2]"), 360000)) {
-				pharmacySearchTextField.clear();
-				pharmacySearchTextField.sendKeys(sendPharmacyFirstWord);
-				break;
-			} else {
-				Thread.sleep(100000);
-			}
-
-		}
-
+		chooseFromAList.sendKeys(sendPharmacyFirstWord);
 		Thread.sleep(5000);
 		try {
 			log("Trying to get text value from Choose from a list textbox");
-			textValue = StringUtils.trimToNull(pharmacyNameSearchResult.getText()) + ", " + StringUtils.trimToNull(pharmacyLine1.getText()) + ", "
-					+ StringUtils.trimToNull(pharmacyLine2.getText());
-
-			if (textValue.contains(pharmacy)) {
-				log("Deleted Pharmacy is visible on the Portal");
-				assertEquals(textValue, pharmacy);
-			} else {
-				log("Pharamacy is not visible on Portal");
-			}
+			textValue = textValueFromChooseFromAList.getText();
 		} catch (Exception e) {
 			log(e.getMessage());
 		}
-
-		if (noPharmacyFound.isDisplayed()) {
-			log("Pharamacy is not visible on the Portal");
-			assertTrue(true);
+		if (textValue.contains(pharmacy)) {
+			log("Deleted Pharmacy is visible on the Portal");
+			assertTrue(!textValue.contains(pharmacy));
+		} else {
+			log("Pharamacy is not visible on Portal");
 		}
-		}
+	}
 
 	public String getPracticeProvider(WebDriver driver) {
 		IHGUtil.PrintMethodName();

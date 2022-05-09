@@ -13,7 +13,6 @@ public class Appointment {
 	public static String apptId;
 	public static String patientId;
 	public static long plus20Minutes;
-	public static String eventId;
 
 	public boolean isGenerateEmailTrue() {
 		return generateEmailTrue;

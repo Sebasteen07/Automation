@@ -20,7 +20,7 @@ public class PayNowInfo {
 		this.patientAccountNumber = IHGUtil.createRandomNumericString(5);
 		this.amount = IHGUtil.createRandomNumericString(3);
 		this.paymentComment = "My PayNow comment. " + timeStamp;
-		this.emailAddress = IHGUtil.createRandomEmailAddress("paynow@yopmail.com");
+		this.emailAddress = IHGUtil.createRandomEmailAddress("paynow@mailinator.com");
 		CreditCard card = new CreditCard();
 		this.card = card;
 	}

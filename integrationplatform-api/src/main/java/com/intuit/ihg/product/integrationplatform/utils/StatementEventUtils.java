@@ -1,8 +1,6 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +29,7 @@ import org.w3c.dom.NodeList;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
@@ -140,7 +139,8 @@ public class StatementEventUtils {
 		
 		long timeStamp = System.currentTimeMillis();
 
-		YopMailUtils mail = new YopMailUtils(driver);
+
+		Mailinator mail = new Mailinator();
 		String link = mail.getLinkFromEmail(testData.Email, testData.emailSubject, testData.PracticeName, 20);
 		assertTrue(link != null, "Statement Message link not found in mail.");
 		Log4jUtil.log("statement link  " + link);

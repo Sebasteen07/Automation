@@ -114,7 +114,7 @@ public class PatientSearchPage extends BasePageObject {
 	@FindBy(xpath = "//*[@id='content']/form/table/tbody/tr[7]/td[2]/input")
 	private WebElement updateInfo;
 
-	@FindBy(xpath = "//td[.='Patient Id ']/../td[2]/a")
+	@FindBy(xpath = "//*[@id='dashboard']/fieldset[1]/table/tbody/tr[7]/td[2]/a")
 	private WebElement editPatientID;
 
 	@FindBy(xpath = "//input[@type='submit']")

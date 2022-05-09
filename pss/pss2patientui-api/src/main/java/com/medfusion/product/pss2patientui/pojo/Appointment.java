@@ -78,8 +78,6 @@ public class Appointment {
 	private String zipCarePatient;
 	private String careProvider;
 
-	private String decisionTreeName;
-	
 	private Boolean isCancelApt = true;
 	private Boolean isInsuranceEnabled = false;
 
@@ -163,12 +161,8 @@ public class Appointment {
 	private boolean startPointPresent = false;
 	private boolean resourcetoggleStatus = false;
 	private boolean accepttoggleStatus = false;
-	private boolean preventBacktoBackToggleStatus = false;
-	private boolean appointmentStacking= false;
-	private boolean appointmentDuration= false;
 
 	private boolean showCancellationRescheduleReason = false;
-	
 	private boolean showCancellationReasonPM = false;
 	private boolean isFutureApt = false;
 	private boolean pcptoggleState = false;
@@ -270,30 +264,6 @@ public class Appointment {
 		this.datetime = datetimeConfig;
 		this.appointmenttype = appointmentConfig;
 		this.speciality = specialityConfig;
-	}
-
-	public boolean isAppointmentDuration() {
-		return appointmentDuration;
-	}
-
-	public void setAppointmentDuration(boolean appointmentDuration) {
-		this.appointmentDuration = appointmentDuration;
-	}
-	
-	public boolean isAppointmentStacking() {
-		return appointmentStacking;
-	}
-
-	public void setAppointmentStacking(boolean appointmentStacking) {
-		this.appointmentStacking = appointmentStacking;
-	}
-
-	public boolean isPreventBacktoBackToggleStatus() {
-		return preventBacktoBackToggleStatus;
-	}
-
-	public void setPreventBacktoBackToggleStatus(boolean preventBacktoBackToggleStatus) {
-		this.preventBacktoBackToggleStatus = preventBacktoBackToggleStatus;
 	}
 
 	public int getPreSchedDays() {
@@ -654,15 +624,7 @@ public class Appointment {
 	public void setZipCarePatient(String zipCarePatient) {
 		this.zipCarePatient = zipCarePatient;
 	}
-	
-	public String getDecisionTreeName() {
-		return decisionTreeName;
-	}
 
-	public void setDecisionTreeName(String decisionTreeName) {
-		this.decisionTreeName = decisionTreeName;
-	}
-	
 	public boolean isPcptoggleState() {
 		return pcptoggleState;
 	}

@@ -117,7 +117,4 @@ public class MedicationTestData {
 		return MedicationObj.RemoveMedicationRestUrl;
 	}
 
-	public String getPharmacyName() {
-		return MedicationObj.PharmacyName;
-	}
 }

@@ -17,6 +17,7 @@ import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOn
 import com.medfusion.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
+import com.medfusion.product.object.maps.practice.page.referrals.ReferralsPage;
 import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.medfusion.product.object.maps.practice.page.symptomassessment.SymptomAssessmentFilterPage;
 import com.medfusion.product.object.maps.practice.page.treatmentplanpage.TreatmentPlansPage;
@@ -227,6 +228,12 @@ public class PracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, RxRenewalSearchPage.class);
 	}
 
+	public ReferralsPage clickOnReferrals() throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElementInDefaultFrame(driver, 30, referralsTab);
+		referralsTab.click();
+		return PageFactory.initElements(driver, ReferralsPage.class);
+	}
 
 	public ApptRequestSearchPage clickApptRequestTab() throws Exception {
 		IHGUtil.PrintMethodName();

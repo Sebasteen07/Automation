@@ -34,7 +34,7 @@ public class UsersDetails extends BaseRest {
 		Map<String, Object> user = Roles.getRolesMap(staffusername,practicestaffid );
 		Response response = given().spec(requestSpec).
 		body(user).when().post(getusers).then().assertThat()
-	   .body("roles" ,containsInAnyOrder("USER", "FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "MERCHANT_POS_ADMIN", "VOIDREFUND"))
+	   .body("roles" ,containsInAnyOrder("USER","FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "POS_ADMIN", "VOIDREFUND"))
 	   .extract().response();
 		Validations.validateStaffUser(staffusername, practicestaffid,response.asString())	;
 					 		
@@ -42,7 +42,7 @@ public class UsersDetails extends BaseRest {
 
 	public void getRolesForUser(String getusers, String staffname, String practicestaffid) {
 		given().spec(requestSpec).when().get(getusers+"/"+practicestaffid).then().spec(responseSpec)
-		.assertThat().body("roles" ,containsInAnyOrder("USER","FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "MERCHANT_POS_ADMIN", "VOIDREFUND"));
+		.assertThat().body("roles" ,containsInAnyOrder("USER","FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "POS_ADMIN", "VOIDREFUND"));
 	}
 
 	public Response createPracticeUser(String getusers, String staffusername, String practiceRoles) throws IOException {
