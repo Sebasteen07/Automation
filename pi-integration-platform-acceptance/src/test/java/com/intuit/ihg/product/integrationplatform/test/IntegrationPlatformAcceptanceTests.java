@@ -20,7 +20,6 @@ import com.intuit.ihg.product.integrationplatform.utils.BalancePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.CancelInvitePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
-import com.intuit.ihg.product.integrationplatform.utils.MailinatorUtils;
 import com.intuit.ihg.product.integrationplatform.utils.Medication;
 import com.intuit.ihg.product.integrationplatform.utils.MedicationPayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.MedicationTestData;
@@ -33,6 +32,7 @@ import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
+import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
@@ -41,6 +41,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.SelectPharmacyPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
@@ -78,7 +79,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String practicePatientId = "Patient" + timestamp;
 		String firstName = "Name" + timestamp;
 		String lastName = "TestPatient1" + timestamp;
-		String email = firstName + "@mailinator.com";
+		String email = firstName + "@yopmail.com";
 		String zip = testData.getZipCode();
 		String date = testData.getBirthDay();
 
@@ -117,10 +118,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 		
-		log("Step 5: Checking for the activation link inside the patient mailinator inbox");
-		// Searching for the link for patient activation in the mailinator Inbox
+		log("Step 5: Checking for the activation link inside the patient yopmail inbox");
+		// Searching for the link for patient activation in the yopmail Inbox
 
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 
@@ -251,7 +252,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 6: Check secure message in patient gmail inbox");
 		// String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(),
 		// testData.getGmailPassword(), testData.getSender3(), 3, "Portal 2.0");
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
@@ -454,9 +455,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 			assertTrue(completed, "Message processing was not completed in time");
 		}
-		log("Step 12: Check secure message in patient mailinator inbox");
+		log("Step 12: Check secure message in patient yopmail inbox");
 
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 10);
@@ -595,7 +596,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(90000);
 
 		log("Step 13: Check secure message in patient gmail inbox");
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String subject = "New message from " + OLBPData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		assertTrue(mail.isMessageInInbox(OLBPData.getUserName(), subject, messageLink, 5));
@@ -961,6 +962,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		prescriptionsPage.clickContinueButton(driver);
 		Thread.sleep(15000);
 
+		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
+		pharmaPage.addProviderSuggestedPharmacy(driver, testData.getPharmacyName());
+
 		log("Step 7: Verify the medication Posted");
 		prescriptionsPage.validatemedication(productName);
 
@@ -1164,7 +1168,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String practicePatientId = "Name" + timestamp;
 		String firstName = "Name" + timestamp;
 		String lastName = "TestPatient1" + timestamp;
-		String email = firstName + "@mailinator.com";
+		String email = firstName + "@yopmail.com";
 		String zip = testData.getZipCode();
 		String date = testData.getBirthDay();
 
@@ -1205,10 +1209,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 		
-		logStep("Checking for the activation link inside the patient mailinator inbox");
-		// Searching for the link for patient activation in the mailinator Inbox
+		logStep("Checking for the activation link inside the patient yopmail inbox");
+		// Searching for the link for patient activation in the yopmail Inbox
 
-		MailinatorUtils mail = new MailinatorUtils(driver);
+		YopMailUtils mail = new YopMailUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 

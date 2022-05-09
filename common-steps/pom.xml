@@ -6,19 +6,31 @@
   <parent>
     <groupId>com.intuit.ihg</groupId>
     <artifactId>ihg-depot-parent-pom</artifactId>
+<<<<<<< HEAD
     <version>22.2.0</version>
+=======
+    <version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
   </parent>
   <artifactId>common-steps</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>com.intuit.ihg</groupId>
   		<artifactId>qa-automation-utils</artifactId>
+<<<<<<< HEAD
   		<version>22.2.0</version>
+=======
+  		<version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
   	</dependency>
   	<dependency>
   		<groupId>com.intuit.ihg</groupId>
   		<artifactId>object-maps</artifactId>
+<<<<<<< HEAD
   		<version>22.2.0</version>
+=======
+  		<version>22.4.0-SNAPSHOT</version>
+>>>>>>> e8107c056a035ba87c9d311bf5bdc3afba07bb3f
   	</dependency>
   </dependencies>
   <properties>

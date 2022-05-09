@@ -38,6 +38,9 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	@FindBy(how = How.ID, using = "leftMenuToggle")
 	private WebElement leftMenuToggle;
 
+	@FindBy(how = How.XPATH, using = "//button[@id='leftMenuToggle']")
+	private WebElement leftMenuToggleXpath;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='home']/a/span")
 	private WebElement homeMenu;
 
@@ -117,6 +120,10 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	private void openMenuIfClosed() {
 		driver.navigate().refresh();
+		driver.manage().window().maximize();
+		log("Maximized the page to see the HOME menu. Current size= " + driver.manage().window().getSize());
+		IHGUtil.waitForElement(driver, 50, homeMenu);
+
 		try {
 			if (!homeMenu.isDisplayed()) {
 				openJalapenoMenu();
@@ -128,12 +135,15 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	private void openJalapenoMenu() {
 		log("Opening Jalapeno menu");
-		JavascriptExecutor ex = (JavascriptExecutor)driver;
+		log("Browser size before setting size: " + driver.manage().window().getSize());
+		driver.manage().window().setSize(new Dimension(936, 788));
+		JavascriptExecutor ex = (JavascriptExecutor) driver;
 		ex.executeScript("arguments[0].scrollIntoView();",leftMenuToggle ); 
-		new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(leftMenuToggle));
-		leftMenuToggle.click();
-		new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(homeMenu));
-		log("Jalapeno menu is opened");
+		IHGUtil.waitForElement(driver, 50, leftMenuToggleXpath);
+		leftMenuToggleXpath.click();
+		if (IHGUtil.waitForElement(driver, 50, homeMenu)) {
+			log("Menu toggle clicked and Jalapeno menu is opened");
+		}
 	}
 
 	public JalapenoHomePage clickOnMenuHome() {
@@ -226,13 +236,18 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 	}
 
-	public JalapenoLoginPage clickOnLogout() {
+	public JalapenoLoginPage clickOnLogout() throws InterruptedException {
 
 		log("Clicking on Logout button - regular resolution");
 
 		try {
-			IHGUtil.waitForElement(driver, 30, signout);
+			Thread.sleep(4000);
+			if (IHGUtil.exists(driver, signout)) {
 			javascriptClick(signout);
+			} else {
+				driver.manage().window().maximize();
+				javascriptClick(signout);
+			}
 
 		} catch (NoSuchElementException ex) {
 			log("Did not find Logout button, trying mobile version size");

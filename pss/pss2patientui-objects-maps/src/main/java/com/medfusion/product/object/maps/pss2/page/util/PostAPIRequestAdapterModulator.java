@@ -1035,4 +1035,10 @@ public class PostAPIRequestAdapterModulator {
 				.log().all().extract().response();
 		return response;
 	}
+	
+	public Response practiceUpdate(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + "/practice")
+				.then().log().all().extract().response();
+		return response;
+	}
 }

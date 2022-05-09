@@ -1,9 +1,9 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.apptprecheckapi.test;
 
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.testng.ITestResult;
@@ -19,6 +19,7 @@ import com.medfusion.product.appt.precheck.payload.MfisAppointmentServicePayload
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.util.APIVerification;
 import com.medfusion.product.object.maps.appt.precheck.util.AccessToken;
+import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfisAppointmentService;
@@ -36,6 +37,7 @@ public class ApptPrecheckMfisAppointmentServiceTest extends BaseTestNG {
 	public static PostAPIRequestMfAppointmentScheduler postAPIRequestApptSche;
 	public static MfAppointmentSchedulerPayload schedulerPayload;
 	APIVerification apiVerification = new APIVerification();
+	CommonMethods commonMtd;
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
@@ -50,15 +52,14 @@ public class ApptPrecheckMfisAppointmentServiceTest extends BaseTestNG {
 		schedulerPayload = MfAppointmentSchedulerPayload.getMfAppointmentSchedulerPayload();
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.mfis.appt.service"));
 		log("BASE URL-" + propertyData.getProperty("baseurl.mfis.appt.service"));
+		commonMtd = new CommonMethods();
 	}
 
 	@BeforeMethod(enabled = true, groups = { "APItest" })
 	public void getMethodName(ITestResult result) throws IOException {
 		log("Method Name-- " + result.getMethod().getMethodName());
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		Appointment.patientId = String.valueOf(randamNo);
-		Appointment.apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);

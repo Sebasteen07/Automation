@@ -38,6 +38,9 @@ public class Provider extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "providerserach")
 	private WebElement searchForProvider;
+	
+	@FindBy(how = How.XPATH, using = "//h5[@class='announcementmessages']/div")
+	private WebElement careTeamAnn;
 
 	@FindAll({ @FindBy(css = ".providerImage-width") })
 	private List<WebElement> providerImages;
@@ -58,6 +61,19 @@ public class Provider extends PSS2MainPage {
 					+ providerList.get(i).getText().equalsIgnoreCase(providerName));
 			if (providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim())) {
 				providerList.get(i).click();
+				return PageFactory.initElements(driver, Location.class);
+			}
+		}
+		return PageFactory.initElements(driver, Location.class);
+	}
+	
+	public Location selectLocation1(String providerName) {
+		log("in selectLocation providerList" + providerName);
+		for (int i = 0; i < providerList1.size(); i++) {
+			log(providerList1.get(i).getText() + " match "
+					+ providerList1.get(i).getText().equalsIgnoreCase(providerName));
+			if (providerList1.get(i).getText().trim().equalsIgnoreCase(providerName.trim())) {
+				providerList1.get(i).click();
 				return PageFactory.initElements(driver, Location.class);
 			}
 		}
@@ -143,6 +159,20 @@ public class Provider extends PSS2MainPage {
 		}
 	}
 
+	public String getProviderText(String providerName) {
+		log("in select Provider from providerList" + providerName);
+		String book = null;
+		for (int i = 0; i < providerList.size(); i++) {
+			log(providerList.get(i).getText() + " match "
+					+ providerList.get(i).getText().equalsIgnoreCase(providerName));
+			if (providerList.get(i).getText().contains(providerName)) {
+				book = providerList.get(i).getText();
+				break;
+			}
+		}
+		return book;
+	}
+
 	public AppointmentDateTime searchForProviderFromList(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName.trim());
 		log("providerList = " + providerList.size());
@@ -158,7 +188,7 @@ public class Provider extends PSS2MainPage {
 		log("in select Provider from providerList" + providerName);
 		log("Size is " + providerList.size());
 		Thread.sleep(1000);
-		for (int i = 0; i <providerList.size(); i++) {
+		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().contains(providerName));
 			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
 				CommonMethods.highlightElement(providerList.get(i));
@@ -173,11 +203,54 @@ public class Provider extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
+	
+	public AppointmentDateTime getProviderAndClick1(String providerName) throws InterruptedException {
+		log("in select Provider from providerList" + providerName);
+		log("Size is " + providerList1.size());
+		Thread.sleep(1000);
+		for (int i = 0; i < providerList1.size(); i++) {
+			log(providerList1.get(i).getText() + " match " + providerList1.get(i).getText().contains(providerName));
+			if (providerList1.get(i).getText().trim().contains(providerName.trim())) {
+				CommonMethods.highlightElement(providerList1.get(i));
+				IHGUtil.waitForElement(driver, 13, providerList1.get(i));
+				Thread.sleep(1000);
+				log("Search Provider");
+				log("Provider of user found at " + providerList1.get(i).getText());
+				providerList1.get(i).click();
+				log("Clicked on Provider");
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
 
 	public int searchForProviderFromListt(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName);
 		log("providerList = " + providerList.size());
 		Thread.sleep(1000);
+		return providerList.size();
+	}
+	
+	public ArrayList<String> getBookList() throws InterruptedException {
+
+		ArrayList<String> providerName = new ArrayList<String>();
+
+		for (int i = 0; i < providerList1.size(); i++) {
+			providerName.add(providerList1.get(i).getText());
+		}
+		log("providerList = " + providerName);
+		return providerName;
+	}
+	
+	public String getCareTeamAnn() {
+		IHGUtil.waitForElement(driver, 3, careTeamAnn);
+		String message=careTeamAnn.getText();
+		log("Care Team Announcement Message- "+message);
+		return message;
+	}
+	
+	public int getNumberOfBook() throws InterruptedException {
+		log("providerList = " + providerList.size());
 		return providerList.size();
 	}
 
@@ -200,8 +273,9 @@ public class Provider extends PSS2MainPage {
 		log("Only date is  " + nextDate);
 		return nextDate;
 	}
-	
+
 	public String getNextavaliableText() {
 		return providerNextavaliable.getText();
 	}
+	
 }

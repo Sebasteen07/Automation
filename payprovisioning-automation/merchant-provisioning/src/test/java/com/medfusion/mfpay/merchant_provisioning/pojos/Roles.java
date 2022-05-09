@@ -47,7 +47,7 @@ public static Map<String, Object> getRolesMap(String staffusername, String pract
 	Map<String, Object> user = new HashMap<String, Object>(); 
 	user.put("practicestaffId", practicestaffid);
 	user.put("userName",staffusername); 
-	user.put("roles", Arrays.asList("FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "POS_ADMIN", "VOIDREFUND"));
+	user.put("roles", Arrays.asList("FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "MERCHANT_POS_ADMIN", "VOIDREFUND"));
 	return user;
 	
 }

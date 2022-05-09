@@ -29,7 +29,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -203,12 +202,11 @@ public class MU2Utils {
 								&& getValue(PracticePatientId, element).equalsIgnoreCase(patientExternalId)
 								&& getValue(FirstName, element).equalsIgnoreCase(firstName)
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
-								) 
+						) {
 						if(version.equals("v1")){
 							getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID);
 						}
 						
-							{
 							if(action.contains("Transmit")){
 								Log4jUtil.log("transmitTimestamp "+transmitTimestamp+" compare with recordedTimeStamp "+recordedTimeStamp);
 							}
@@ -226,7 +224,6 @@ public class MU2Utils {
 										Log4jUtil.log("Matching response practiceResourceId (CCDMessageId) "+getValue(PracticeResourceId, element)+" with "+ccdMessageList.get(j));
 									}
 								}
-								
 								if(version.equals("v1")){
 									Log4jUtil.log("Matching response medfusionId "+getValue(MU2Constants.INTUIT_PATIENT_ID, element)+" with "+practicePatientID);
 								}
@@ -237,10 +234,13 @@ public class MU2Utils {
 							
 								ActionTimestamp = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
 							
-							//break;
+								break;
+
+						} else {
+							Log4jUtil.log("Resource type is not matching..");
 						}
 					} else {
-						 
+						Log4jUtil.log(recordedTimeStamp + " is less than " + timeStamp);
 					}
 				}
 			}

@@ -18,6 +18,7 @@ import com.medfusion.product.appt.precheck.payload.MfAppointmentSchedulerPayload
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.util.APIVerification;
 import com.medfusion.product.object.maps.appt.precheck.util.AccessToken;
+import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
 
@@ -32,7 +33,8 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 	public static HeaderConfig headerConfig;
 	public static Appointment testData;
 	APIVerification apiVerification = new APIVerification();
-
+	CommonMethods commonMtd;
+	
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
 		propertyData = new PropertyFileLoader();
@@ -44,15 +46,15 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 		testData = new Appointment();
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.mf.appointment.scheduler"));
 		log("BASE URL-" + propertyData.getProperty("baseurl.mf.appointment.scheduler"));
+		commonMtd = new CommonMethods();
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testGETAppointmentsForPss() throws IOException {
+	public void testGETAppointmentsForPss() throws IOException {		
 		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
@@ -61,85 +63,52 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		assertEquals(scheduleResponse.getStatusCode(), 200);
 		
 		log("Get Appoinment");
 		Response response = postAPIRequest.getAppointmentAptId(propertyData.getProperty("mf.apt.scheduler.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyGetAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), patientId,
-				apptId);
+		apiVerification.verifyGetAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), Appointment.patientId,
+				Appointment.apptId);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testGETAppointmentsForPM() throws IOException {
+	public void testGETAppointmentsForPM() throws IOException {	
 		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
-		Response scheduleResponse = postAPIRequest.aptPutAppointmentPM(
+		Response scheduleResponse = postAPIRequest.aptPutAppointmentPss(
 				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		assertEquals(scheduleResponse.getStatusCode(), 200);
 		
 		log("Get Appoinment");
 		Response response = postAPIRequest.getAppointmentAptId(propertyData.getProperty("mf.apt.scheduler.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyGetAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), patientId,
-				apptId);
+		apiVerification.verifyGetAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), Appointment.patientId,
+				Appointment.apptId);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETAppointmentsForLegacy() throws IOException {
 		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
-		long currentTimestamp = System.currentTimeMillis();
-		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
-		log("Getting patients since timestamp: " + plus20Minutes);
-		Response scheduleResponse = postAPIRequest.aptPutAppointmentLegacy(
-				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("mf.apt.scheduler.practice.id"),
-				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
-		assertEquals(scheduleResponse.getStatusCode(), 200);
-		
-		log("Get Appoinment");
-		Response response = postAPIRequest.getAppointmentAptId(propertyData.getProperty("mf.apt.scheduler.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
-		
-		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 200);
-		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyGetAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), patientId,
-				apptId);
-	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testDELETEAppointmentForPss() throws IOException {
-		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
@@ -148,88 +117,109 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		assertEquals(scheduleResponse.getStatusCode(), 200);
 		
-		log("Delete Appoinment");
-		Response response = postAPIRequest.getDELETETAppointment(
-				propertyData.getProperty("mf.apt.scheduler.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
-				patientId, apptId);
-
+		log("Get Appoinment");
+		Response response = postAPIRequest.getAppointmentAptId(propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId,  Appointment.apptId);
+		
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyDeleteApmt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), patientId,
-				apptId);
 		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyGetAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"),  Appointment.patientId,
+				 Appointment.apptId);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testDELETEAppointmentForPM() throws IOException {
+	public void testDELETEAppointmentForPss() throws IOException {
 		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
-		Response scheduleResponse = postAPIRequest.aptPutAppointmentPM(
+		Response scheduleResponse = postAPIRequest.aptPutAppointmentPss(
 				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		assertEquals(scheduleResponse.getStatusCode(), 200);
 		
 		log("Delete Appoinment");
 		Response response = postAPIRequest.getDELETETAppointment(
 				propertyData.getProperty("mf.apt.scheduler.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
-				patientId, apptId);
+				 Appointment.patientId,  Appointment.apptId);
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyDeleteApmt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), patientId,
-				apptId);
+		apiVerification.verifyDeleteApmt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"),  Appointment.patientId,
+				 Appointment.apptId);
+		apiVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDELETEAppointmentForPM() throws IOException {	
+		log("Schedule new Appointments");
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		Response scheduleResponse = postAPIRequest.aptPutAppointmentPss(
+				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+		assertEquals(scheduleResponse.getStatusCode(), 200);
+		
+		log("Delete Appoinment");
+		Response response = postAPIRequest.getDELETETAppointment(
+				propertyData.getProperty("mf.apt.scheduler.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
+				 Appointment.patientId,  Appointment.apptId);
+
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		apiVerification.verifyDeleteApmt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"),  Appointment.patientId,
+				 Appointment.apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDELETEAppointmentForLegacy() throws IOException {
 		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
-		Response scheduleResponse = postAPIRequest.aptPutAppointmentLegacy(
+		Response scheduleResponse = postAPIRequest.aptPutAppointmentPss(
 				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		assertEquals(scheduleResponse.getStatusCode(), 200);
 		
 		log("Delete Appoinment");
 		Response response = postAPIRequest.getDELETETAppointment(
 				propertyData.getProperty("mf.apt.scheduler.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
-				patientId, apptId);
+				 Appointment.patientId,  Appointment.apptId);
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyDeleteApmt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), patientId,
-				apptId);
+		apiVerification.verifyDeleteApmt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"),  Appointment.patientId,
+				 Appointment.apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutAppointmentForPSS() throws IOException {
 		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
@@ -238,22 +228,20 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		
 		log("Verify response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyPutAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), patientId,
-				apptId);
+		apiVerification.verifyPutAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), Appointment.patientId,
+				Appointment.apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutAppointmentForPM() throws IOException {
 		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
@@ -262,22 +250,20 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		
 		log("Verify response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyPutAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), patientId,
-				apptId);
+		apiVerification.verifyPutAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), Appointment.patientId,
+				Appointment.apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutAppointmentForLegacy() throws IOException {
 		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
@@ -286,22 +272,20 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		
 		log("Verify response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyPutAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), patientId,
-				apptId);
+		apiVerification.verifyPutAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), Appointment.patientId,
+				Appointment.apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutAppointmentForInvalidSource() throws IOException {
 		log("Schedule new Appointments");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		String patientId = String.valueOf(randamNo);
-		String apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
@@ -310,7 +294,7 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),
-				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
 		
 		log("Verify response");
 		assertEquals(response.getStatusCode(), 400);
@@ -319,12 +303,14 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutAppointmentPastTime() throws IOException {
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		Response response = postAPIRequest.aptPutAppointment(
 				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("mf.apt.scheduler.practice.id"), payload.putAppointmentPastTimePayload(),
 				headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("mf.apt.scheduler.put.patient.id"),
-				propertyData.getProperty("mf.apt.scheduler.put.appt.id"));
+				Appointment.patientId,
+				Appointment.apptId );
 		
 		log("Verify response");
 		assertEquals(response.getStatusCode(), 400);
@@ -335,5 +321,6 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 	@BeforeMethod(enabled = true, groups = { "APItest" })
 	public void getMethodName(ITestResult result) throws IOException {
 		log("Method Name-- " + result.getMethod().getMethodName());
+		
 	}
 }

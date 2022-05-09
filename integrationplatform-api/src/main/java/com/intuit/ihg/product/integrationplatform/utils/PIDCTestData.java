@@ -240,11 +240,11 @@ public class PIDCTestData {
 	public String getAddress2SC() {
 		return PidcObj.Address1SC;
 	}
-	
+
 	public String getCancelInviteRestUrl() {
 		return PidcObj.CancelInviteRestUrl;
 	}
-	
+
 	public String getGenderIdentityValues() {
 		return PidcObj.GI;
 	}
