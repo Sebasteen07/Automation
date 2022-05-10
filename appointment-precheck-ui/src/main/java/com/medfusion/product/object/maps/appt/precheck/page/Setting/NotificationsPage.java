@@ -3667,5 +3667,17 @@ public class NotificationsPage extends BasePageObject {
 		additionalArrivalInstructionsTextBoxText.clear();
 		additionalArrivalInstructionsTextBoxText.sendKeys(instructionMessage);
 	}
+	
+	public void addTimingAndTimingUnitDemo() {
+		for(int i=1;i<=3;i++) {
+		try {
+			driver.findElement(By.xpath("(//div[@class=' css-yk16xz-control'])[" + i + "]")).isDisplayed();
+				log(i+ " Timing and timing unit textbox is present");
+			} catch (NoSuchElementException e) {
+				log("Add "+ i+" timing and timing unit textbox");
+				addButtonInEdit.click();
+			}
+		}
+	}
 
 }
