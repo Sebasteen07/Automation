@@ -2253,45 +2253,56 @@ Feature: Test fuctionality of Appointment precheck
     And I click on appointments tab
     And I schedule an appointment with English language and set appointment location and phone number as blank
     Then I verify arrival notification msg should not show "mobile number" text  in the arrival text msg
-   
-	Scenario: Verify if user is able to see timing units days, hours, mins in proper sequence on notification tab for email
-		When from setting in notifications user click on email hamburgerButton section of appointment reminder
-		And  I hit edit button of email for appointment reminder
-		And I select first Hours, min and then Day in timing units and save changes for 'Email'
-		Then I verify user is able to see timing units in proper sequence on notification tab for email
-		And logout from practice provisioning portal
 
-	Scenario: Verify if user is able to see timing units in proper sequence on notification tab for email
-		When from setting in notifications user click on email hamburgerButton section of appointment reminder
-		And  I hit edit button of email for appointment reminder
-		And I select first minutes, hours and then Day in timing units and save changes for 'Email'
-		Then I verify user is able to see timing units in proper sequence on notification tab for email
-		And logout from practice provisioning portal
+  Scenario: Verify if user is able to see timing units days, hours, mins in proper sequence on notification tab for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    And I select first Hours, min and then Day in timing units and save changes for 'Email'
+    Then I verify user is able to see timing units in proper sequence on notification tab for email
+    And logout from practice provisioning portal
 
-	Scenario: Verify if user is able to see timing in proper sequence on notification tab for email
-		When from setting in notifications user click on email hamburgerButton section of appointment reminder
-		And  I hit edit button of email for appointment reminder
-		And I select first hour, min, hour and then Day in timing units and save changes for 'Email'
-		Then I verify if user is able to see timing units in proper sequence on notification tab for email
-		And logout from practice provisioning portal
+  Scenario: Verify if user is able to see timing units in proper sequence on notification tab for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    And I select first minutes, hours and then Day in timing units and save changes for 'Email'
+    Then I verify user is able to see timing units in proper sequence on notification tab for email
+    And logout from practice provisioning portal
 
-	Scenario: Verify if user is able to see timing units days, hours, mins in proper sequence on notification tab for text
-		When from setting in notifications user click on text hamburgerButton section of appointment reminder
-		And I hit edit button of text for appointment reminder
-		And I select first Hours, min and then Day in timing units in text and save changes for 'SMS'
-		Then I verify user is able to see timing units in proper sequence on notification tab for text
-		And logout from practice provisioning portal
+  Scenario: Verify if user is able to see timing in proper sequence on notification tab for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    And I select first hour, min, hour and then Day in timing units and save changes for 'Email'
+    Then I verify if user is able to see timing units in proper sequence on notification tab for email
+    And logout from practice provisioning portal
 
-	Scenario: Verify if user is able to see timing units in proper sequence on notification tab for text
-		When from setting in notifications user click on text hamburgerButton section of appointment reminder
-		And I hit edit button of text for appointment reminder
-		And I select first minutes, hours and then Day in timing units in text and save changes for 'SMS'
-		Then I verify user is able to see timing units in proper sequence on notification tab for text
-		And logout from practice provisioning portal
+  Scenario: Verify if user is able to see timing units days, hours, mins in proper sequence on notification tab for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And I hit edit button of text for appointment reminder
+    And I select first Hours, min and then Day in timing units in text and save changes for 'SMS'
+    Then I verify user is able to see timing units in proper sequence on notification tab for text
+    And logout from practice provisioning portal
 
-	Scenario: Verify if user is able to see timing in proper sequence on notification tab for text
-		When from setting in notifications user click on text hamburgerButton section of appointment reminder
-		And  I hit edit button of text for appointment reminder
-		And I select first hour, min, hour and then Day in timing units in text and save changes for 'SMS'
-		Then I verify if user is able to see timing units in proper sequence on notification tab for text
-		And logout from practice provisioning portal
+  Scenario: Verify if user is able to see timing units in proper sequence on notification tab for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And I hit edit button of text for appointment reminder
+    And I select first minutes, hours and then Day in timing units in text and save changes for 'SMS'
+    Then I verify user is able to see timing units in proper sequence on notification tab for text
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to see timing in proper sequence on notification tab for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And I hit edit button of text for appointment reminder
+    And I select first hour, min, hour and then Day in timing units in text and save changes for 'SMS'
+    Then I verify if user is able to see timing units in proper sequence on notification tab for text
+    And logout from practice provisioning portal
+
+  Scenario: verify check-in change status decreases number of notification
+    When I enabled curbside remainder checkbox from notifications tab in Setting tab
+    And I clear all appointments from on curbside checkin tab
+    And I schedule multiple appointments and perform arrival actions confirm
+    And I schedule a new appointment and not having confirm
+    And I click on the curbside link and finish curbside checkin process from mail
+    And I logged into practice provisioning and view the notification icon count "6" on the top left corner
+    And I switch on curbside checkin tab and select patient and click on check in button
+    Then I verify notification icon count decreases and patient should be disappeared
+    And logout from practice provisioning portal
