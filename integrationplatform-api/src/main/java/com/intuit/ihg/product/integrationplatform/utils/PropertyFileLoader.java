@@ -228,6 +228,10 @@ public class PropertyFileLoader {
 		return property.getProperty("readcommunicationurlv3.amdc");
 	}
 
+	public String getBatchUsername1() {
+		return property.getProperty("patient.externalid1");
+	}
+
 	// MU2 EVENTS
 	public String getPULLAPI_URL_MU2() {
 		return property.getProperty("pullapi.url.mu2");

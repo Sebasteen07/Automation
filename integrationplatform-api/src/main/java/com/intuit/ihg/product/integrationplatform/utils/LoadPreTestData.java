@@ -83,7 +83,7 @@ public class LoadPreTestData {
 		testData.portalCategoryType = propertyData.getPortalCategoryType();
 		testData.RestV3Url = propertyData.getRestUrlV3AMDC();
 		testData.ReadCommuniationURLV3 = propertyData.getReadCommunicationUrlV3AMDC();
-
+		testData.batchUsername1 = propertyData.getBatchUsername1();
 		return testData;
 	}
 

@@ -4212,6 +4212,29 @@ public class RestUtils {
 		return true;
 	}
 
+	public static boolean isResponseContainsErrorNodeBatch(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(xmlFileName);
+
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
+		NodeList errorNode = doc.getElementsByTagName("Error");
+
+		for (int i = 0; i < nodes.getLength() - 1; i++) {
+			if (!nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED)) {
+				Log4jUtil.log("Error while processing response: " + errorNode.item(0).getTextContent());
+				assertTrue(errorNode.item(0).getTextContent().contains("APPNT_CORE_SRV_014Bad RequestFATAL"),
+						" Processing Status is failed for No '" + i + "' message");
+				return true;
+			}
+			assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED), "Processing Status is failed for No '" + i + "' message");
+		}
+
+		assertTrue(nodes.item(nodes.getLength() - 1).getTextContent().equals(IntegrationConstants.STATE_ERRORED),
+				"Response Contains Node with Error State for invalid data");
+		Log4jUtil.log("Error Node Contains : " + doc.getElementsByTagName("Description").item(0).getTextContent() + " with severity "
+				+ doc.getElementsByTagName("Severity").item(0).getTextContent());
+		return true;
+	}
+
 	public static String isResponseContainsValidAttachmentURL(String xmlFileName)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();

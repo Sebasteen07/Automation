@@ -538,7 +538,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
 
 		log("Step 1: Setup Oauth client");
-		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 		EHDC EHDCObj = new EHDC();
 
 		LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);
@@ -4149,7 +4148,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				Thread.sleep(50000);
 				dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
 				DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
-				assertTrue(dcfTool.checkReprocessorButton(dataJobID));
+				dcfTool.checkReprocessorButton(dataJobID, "reprocess");
 				dataJobIDs.add(dataJobID);
 				break;
 		}
@@ -4162,7 +4161,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 
 	@Test(enabled = true, groups = {""}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPharmaciesInvalid() throws Exception {
+	public void testPharmaciesInvalidBatch() throws Exception {
 		log("Test Case: Add Pharmacy");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -4182,10 +4181,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		ArrayList<String> dataJobIDs = new ArrayList<String>();
 
 		PharmacyPayload pharmacyObj = new PharmacyPayload();
-		String ExternalPharmacyId = "35354890098623";
+		String ExternalPharmacyId = "353548900986280";
 		testData.PharmacyPhone = PharmacyPayload.randomNumbers(10);
 		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
-		String pharmacyRenewal = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		String pharmacyRenewal = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId, 100);
 		log("Payload: " + pharmacyRenewal);
 		Thread.sleep(6000);
 		log("Wait to generate Pharmacy Renewal Payload");
@@ -4200,7 +4199,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(50000);
 		dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
 		DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
-		assertTrue(dcfTool.checkReprocessorButton(dataJobID));
+		dcfTool.checkReprocessorButton(dataJobID, "reprocess");
 		dataJobIDs.add(dataJobID);
 	}
 
@@ -4384,6 +4383,141 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testBulkSecureMessage(version);
 		}
 	}
+
+
+	@Test(enabled = true, groups = {"RegressionTests3"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentDataExistingPatientBulkInvalidTimeZoneV4() throws Exception {
+		log("Test Case: Appointment Request for Existing Patient From Partner");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		logStep("Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();
+		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData, workingDir);
+
+		String dataJobID;
+		ArrayList<String> dataJobIDs = new ArrayList<String>();
+
+		logStep("Post NEW AppointMentData ");
+		testData.Status = "NEW";
+		testData.FirstName = testData.FirstName;
+		testData.LastName = testData.LastName;
+		testData.EmailUserName = testData.EmailUserName;
+		testData.BatchSize = "30";
+
+		testData.Time = testData.appointmentDetailList.get(1).getTime();
+		testData.appointmentType = "FUTURE";
+		testData.Location = "NEW";
+
+		testData.Type = testData.appointmentDetailList.get(1).getType();
+		testData.Reason = testData.appointmentDetailList.get(1).getReason();
+		testData.Description = testData.appointmentDetailList.get(1).getDescription();
+
+		logStep("Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+
+		aDUtils.checkAppointmentV4Batch(testData, driver);
+		Thread.sleep(6000);
+
+		dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
+		DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
+		dcfTool.checkReprocessorButton(dataJobID, "invalidzip");
+		dataJobIDs.add(dataJobID);
+	}
+
+
+	@Test(enabled = true, groups = {"RegressionTests3"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentDataExistingPatientBulkInvalidTimeZoneV3() throws Exception {
+		log("Test Case: Appointment Request for Existing Patient From Partner");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		logStep("Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();
+		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData, workingDir);
+
+		String dataJobID;
+		ArrayList<String> dataJobIDs = new ArrayList<String>();
+
+		logStep("Post NEW AppointMentData ");
+		testData.Status = "NEW";
+		testData.FirstName = testData.FirstName;
+		testData.LastName = testData.LastName;
+		testData.EmailUserName = testData.EmailUserName;
+		testData.BatchSize = "30";
+
+		testData.Time = testData.appointmentDetailList.get(1).getTime();
+		testData.appointmentType = "FUTURE";
+		testData.Location = "NEW";
+
+		testData.Type = testData.appointmentDetailList.get(1).getType();
+		testData.Reason = testData.appointmentDetailList.get(1).getReason();
+		testData.Description = testData.appointmentDetailList.get(1).getDescription();
+
+		logStep("Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+
+		aDUtils.checkAppointmentV3Batch(testData, driver);
+		Thread.sleep(6000);
+
+		dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
+		DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
+		dcfTool.checkReprocessorButton(dataJobID, "invalidzip");
+		dataJobIDs.add(dataJobID);
+	}
+
+	@Test(enabled = true, groups = {"RegressionTests3", "AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestForExistingPatientBulkInvalidTimeZone() throws Exception {
+		log("Test Case: Appointment Request for Existing Patient From Partner");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();
+		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData, workingDir);
+
+		String dataJobID;
+		ArrayList<String> dataJobIDs = new ArrayList<String>();
+
+		testData.Status = "NEW";
+		testData.FirstName = testData.FirstName;
+		testData.LastName = testData.LastName;
+		testData.EmailUserName = testData.EmailUserName;
+		testData.BatchSize = "20";
+
+		testData.Time = testData.appointmentDetailList.get(1).getTime();
+		testData.appointmentType = "FUTURE";
+		testData.Location = "NEW";
+
+		testData.Type = testData.appointmentDetailList.get(1).getType();
+		testData.Reason = testData.appointmentDetailList.get(1).getReason();
+		testData.Description = testData.appointmentDetailList.get(1).getDescription();
+
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+
+		aDUtils.checkAppointmentBatch(testData, driver);
+
+		dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
+		DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
+		dcfTool.checkReprocessorButton(dataJobID, "invalidzip");
+		dataJobIDs.add(dataJobID);
+	}
+
 
 
 }

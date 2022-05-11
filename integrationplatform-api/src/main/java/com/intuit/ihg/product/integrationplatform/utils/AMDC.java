@@ -42,4 +42,5 @@ public class AMDC {
 	public String allowOnce="";
 	public String downloadLocation="";
 	public String portalCategoryType = "";
+	public String batchUsername1 = "";
 }
