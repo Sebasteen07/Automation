@@ -1019,10 +1019,19 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
 
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+		int askaSubjectLength = askaSubject.length();
+		String askalength = String.valueOf(askaSubjectLength);
+
+		int questionLenth = questionText.length();
+		String questionTextLenth = String.valueOf(questionLenth);
 
 		logStep("Fill question and continue");
-		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinue(askaSubject, questionText);
-
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillDetails(askaSubject, questionText);
+		assertEquals(askalength + "/30", askPage1.getSubjectLength());
+		assertEquals(questionTextLenth + "/4000", askPage1.getQuestionLength());
+		
+		askPage1.continueClick();
+		
 		assertTrue(askaSubject.equals(askPage2.getSubject()),
 				"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
 		assertTrue(questionText.equals(askPage2.getQuestion()),
@@ -3210,8 +3219,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 	}
 
-	@Test(enabled = true, groups = { "acceptance-basics",
-			"commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUnlinkTrustedRepresentative() throws Exception {
 		createCommonPatient();
 		Patient trustedPatient = PatientFactory.createJalapenoPatient(

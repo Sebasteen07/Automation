@@ -160,6 +160,12 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
     @FindBy(how = How.XPATH, using = "//span[text()='Error_Files_Testing1.json']")
 	private WebElement invalidFileName;
 	
+	@FindBy(how = How.XPATH, using = "//span[@class='pull-right']")
+	private WebElement subjectLengthCount;
+
+	@FindBy(how = How.XPATH, using = " (//span[@class='pull-right'])[2]")
+	private WebElement quesLengthCount;
+	
 	private long createdTS;
 
 	public JalapenoAskAStaffV2Page1(WebDriver driver) {
@@ -220,6 +226,35 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		continueButton.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 		
+	}
+	
+	public JalapenoAskAStaffV2Page2 fillDetails(String subject, String question) throws InterruptedException {
+		if (subject != null && !subject.trim().isEmpty()) {
+			subjectBox.clear();
+			wait.until(ExpectedConditions.visibilityOf(subjectBox));
+			Thread.sleep(2000);
+			subjectBox.sendKeys(subject);
+		}
+		Thread.sleep(2000);
+		log("Selecting Provider ");
+		try {
+			IHGUtil.waitForElement(driver, 0, ProviderDropDown);
+			ProviderDropDown.click();
+			Thread.sleep(2000);
+			firstProvider.click();
+		} catch (NoSuchElementException e) {
+			log("Provider drop down not displayed");
+		}
+		questionBox.sendKeys(question);
+		Thread.sleep(2000);
+		
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
+	}
+
+	public JalapenoAskAStaffV2Page2 continueClick() {
+
+		continueButton.click();
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 	}
 	
 	public JalapenoAskAStaffV2Page2 fillAndContinue(String invalidLengthText, String question, String validLengthText)
@@ -528,6 +563,16 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
 	public String getErrorFileMsgText() {
 		return fileUploadErrorMsg.getText();
+
+	}
+	
+	public String getSubjectLength() {
+		return subjectLengthCount.getText();
+
+	}
+
+	public String getQuestionLength() {
+		return quesLengthCount.getText();
 
 	}
 	
