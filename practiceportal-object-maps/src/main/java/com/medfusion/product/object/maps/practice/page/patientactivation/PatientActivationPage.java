@@ -482,13 +482,9 @@ public class PatientActivationPage extends BasePageObject {
 		toYear.selectByVisibleText(JalapenoConstants.TO_YEAR);
 		
 		btnFilterPatients.click();
-		Thread.sleep(2000);
 		IHGUtil.waitForElement(driver, 10, checkboxSelectAll);
-		Thread.sleep(2000);
 		checkboxSelectAll.click();
-		Thread.sleep(3000);
 		btnResendInvite.click();
-		//IHGUtil.waitForElement(driver, 10, resendSuccessMsg);
 		
 		try {
 			resendSuccessMsg.isDisplayed();
