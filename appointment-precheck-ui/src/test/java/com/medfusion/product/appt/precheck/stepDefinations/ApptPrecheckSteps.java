@@ -8095,4 +8095,72 @@ public class ApptPrecheckSteps extends BaseTest {
 			}
 			notifPage.clickOnSaveChangesbutton();
 		}
+	
+	@And("I schedule multiple appointments and perform arrival actions confirm")
+	public void i_schedule_multiple_appointments_and_perform_arrival_actions_confirm()  throws NullPointerException, IOException {
+		for (int i = 0; i <= 4; i++) {
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							"jordan@YOPmail.com"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+
+			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(actionResponse.getStatusCode(), 200);
+
+			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(arrivalResponse.getStatusCode(), 200);
+		}
+		driver.navigate().refresh();
+	}	
+	
+	@When("I schedule a new appointment and not having confirm")
+	public void i_schedule_a_new_appointment_only_and_having_confirm() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		log("schedule more than 10 an appointments ");
+		Response resonse = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan"+Appointment.randomNumber+"@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(resonse.statusCode(), 200);
+	}
+
+	@When("I click on the curbside link and finish curbside checkin process from mail")
+	public void i_click_on_the_curbside_link_and_finish_curbside_checkin_process_from_mail() throws Exception {
+		scrollAndWait(0, -500, 5000);
+		YopMail yopMail = new YopMail(driver);
+		String arrivalConfirmedTitle=yopMail.confirmArrivalFromEmail("jordan"+Appointment.randomNumber+"@YOPmail.com", "Curbside check-in for your appointment","I have arrived");
+		assertEquals(arrivalConfirmedTitle,"Arrival confirmed");
+	}
+
+	@Then("I verify notification icon count decreases and patient should be disappeared")
+	public void i_verify_notification_icon_count_decreases_and_patient_should_be_disappeared() {
+		assertEquals(curbsidePage.getNotificationCount(), "5", "Notification Count is not match");
+	}
 }
