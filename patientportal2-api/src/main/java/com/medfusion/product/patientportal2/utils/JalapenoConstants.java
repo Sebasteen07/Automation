@@ -51,4 +51,14 @@ public class JalapenoConstants {
 	public final static String DATE_OF_BIRTH_MONTH_NO = "1";
 	public final static String DATE_OF_BIRTH_DAY = "11";
 	public final static String DATE_OF_BIRTH_YEAR = "1987";
+	
+	//Resend Patient Invites
+	public final static String FROM_MONTH = "Mar";
+	public final static String FROM_DAY = "1";
+	public final static String FROM_YEAR = "2022";
+	
+	public final static String TO_MONTH = "Jun";
+	public final static String TO_DAY = "1";
+	public final static String TO_YEAR = "2022";
+	
 }

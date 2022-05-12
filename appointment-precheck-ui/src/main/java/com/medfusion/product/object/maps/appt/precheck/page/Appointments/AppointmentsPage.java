@@ -541,6 +541,9 @@ public class AppointmentsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//span[text()='Text reminders log']")
 	private WebElement textReminderLogTitle;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
+	public List<WebElement> allTimeCheckboxes;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -2506,5 +2509,66 @@ public class AppointmentsPage extends BasePageObject {
 				}
 			}
 			return logContent;
+		}
+		
+		public void clickOnTimeCheckboxes(int numberOfPatient) {
+    		IHGUtil.PrintMethodName();
+    		for (int i = 1; i <= numberOfPatient; i++) {
+    			WebElement timeCheckboxes = allTimeCheckboxes.get(i+1);
+    			jse.executeScript("arguments[0].click();", timeCheckboxes);
+    	}
+	}
+		
+		public void startDate() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, startTime);
+			startTime.click();
+			log("click on start date filter");
+			
+			log("Select Month");
+			IHGUtil.waitForElement(driver, 10, months);
+			DateFormat monthFormat = new SimpleDateFormat("M");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			String currentMonth=monthFormat.format(cal.getTime());
+			Integer month = Integer.valueOf(currentMonth);
+			String monthValue=String.valueOf(month-2); 
+			Select selectMonth = new Select(months);
+			selectMonth.selectByValue(monthValue);
+			
+			log("Select Year");
+			IHGUtil.waitForElement(driver, 10, years);
+			int yyyy = cal.get(Calendar.YEAR);
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+			
+			log("Select Date");
+			DateFormat dateFormat = new SimpleDateFormat("d");
+			cal.setTime(new Date());
+			String currentDate=dateFormat.format(cal.getTime());
+			WebElement date = driver.findElement(By.xpath(
+					"(//*[@id=\"page-content-container\"]/div/header/div[2]/div[1]/div[2]/div/div//div[text()="
+							+ "'" + currentDate + "'" + "])[1]"));
+			date.click();
+			log("click on current date");
+			Thread.sleep(10000);
+		}
+		
+		public void enterProvider(String providerName) throws Exception {
+			scrollAndWait(0, -1000, 5000);
+			jse.executeScript("arguments[0].click();", providerFilter);
+			Actions action = new Actions(driver);
+			action.sendKeys(providerFilter, providerName).sendKeys(Keys.ENTER).build().perform();
+			clickOnRefreshTab();
+		}
+		
+		public void enterLocation(String locationName) throws InterruptedException {
+			scrollAndWait(0, -1000, 5000);
+			jse.executeScript("arguments[0].click();", patientFilter);
+			Actions action = new Actions(driver);
+			action.sendKeys(locationFilter, locationName).sendKeys(Keys.ENTER).build().perform();
+			clickOnRefreshTab();
 		}
 }
