@@ -8163,4 +8163,102 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_verify_notification_icon_count_decreases_and_patient_should_be_disappeared() {
 		assertEquals(curbsidePage.getNotificationCount(), "5", "Notification Count is not match");
 	}
+	
+	@When("I applied filter for start date")
+	public void i_applied_filter_for_start_date() throws InterruptedException {
+		scrollAndWait(0, -500, 3000);
+		apptPage.startDate();
+		apptPage.selectStartTime("12:00 AM");
+	}
+	
+	@When("I select all record from page {string}")
+	public void i_select_all_record_from_page(String pageNo) throws InterruptedException {
+		log("User is on page: "+apptPage.getPageNo());
+		assertEquals(apptPage.getPageNo(),pageNo,"Page number was not correct");
+		log("User on first page");
+		apptPage.selectAllCheckboxes();;
+	}
+	
+	@When("I deselect few records from page {string} and switch to page {int} and select all records")
+	public void i_deselect_few_records_from_page_and_switch_to_page_and_select_all_records(String pageNo, int reqPage) throws InterruptedException {
+		scrollAndWait(0, 5000, 5000);
+		apptPage.clickOnTimeCheckboxes(4);
+		log("Deselect few records from page one");
+		assertEquals(apptPage.getPageNo(),pageNo,"Page number was not correct");
+		apptPage.selectRequiredPage(reqPage);
+		apptPage.selectAllCheckboxes();
+	}
+	
+	@When("I again switch on page {int} click on banner message")
+	public void i_again_switch_on_page_click_on_banner_message(int reqPage) throws InterruptedException {
+		String page=String.valueOf(reqPage);
+		assertEquals(apptPage.jumpToPreviousPage(),page,"Page number was not correct");
+		apptPage.clickOnBannerMessage();
+	}
+	
+	@Then("I verify broadcast message count from action button after clicking on banner message on page one")
+	public void i_verify_broadcast_message_count_from_action_button_after_clicking_on_banner_message_on_page_one() throws InterruptedException {
+		Appointment.bannerMessage = apptPage.getSelectedBannerMessage();
+		log("Get banner message-:" + Appointment.bannerMessage);
+		String bannerCount = Appointment.bannerMessage.substring(3,8);
+		String getBannerCount = bannerCount.replaceAll("[^\\d]"," ");
+		log("Total count on banner meassage: " + getBannerCount.trim());
+		String bannerMessageCount=getBannerCount.trim();
+		
+		apptPage.clickOnActions();
+		String broadcastMessageButtonText =apptPage.getBroadcastMessageButtonText();
+		log("Get broadcast message button text-:" + broadcastMessageButtonText);
+		String broadcastMessageBtnCount = broadcastMessageButtonText.substring(19,23);
+		String getBroadcastMsgBtnCount = broadcastMessageBtnCount.replaceAll("[^\\d{}]"," ").replaceAll("\\(", ""). replaceAll("\\)","");
+		log("Total count on broadcast message button: " + getBroadcastMsgBtnCount.trim());
+		String broadcastCount=getBroadcastMsgBtnCount.trim();
+		assertEquals(bannerMessageCount,broadcastCount,"Banner and broadcast message button count was not same");
+	}
+	
+	@When("I switch on page {string} and select all records")
+	public void i_switch_on_page_and_select_all_records(String pageNo) throws InterruptedException {
+		int page=Integer. parseInt(pageNo);
+		apptPage.selectRequiredPage(page);
+		assertEquals(apptPage.getPageNo(),pageNo,"Page number was not correct");
+		apptPage.selectAllCheckboxes();
+	}
+	
+	@When("I switch on page {string} and deselect few records")
+	public void i_switch_on_page_and_deselect_few_records(String page) throws InterruptedException {
+		assertEquals(apptPage.jumpToPreviousPage(),page,"Page number was not correct");
+		apptPage.clickOnTimeCheckboxes(4);
+		log("Deselect few records from page one");
+	}
+	
+	@Then("I verify broadcast message count from action button after clicking on banner message on page two")
+	public void i_verify_broadcast_message_count_from_action_button_after_clicking_on_banner_message_on_page_two() {
+		Appointment.bannerMessage = apptPage.getSelectedBannerMessage();
+		log("Get banner message-:" + Appointment.bannerMessage);
+		String bannerCount = Appointment.bannerMessage.substring(3,8);
+		String getBannerCount = bannerCount.replaceAll("[^\\d]"," ");
+		log("Total count on banner meassage: " + getBannerCount.trim());
+		String bannerMessageCount=getBannerCount.trim();
+		
+		apptPage.clickOnActions();
+		String broadcastMessageButtonText =apptPage.getBroadcastMessageButtonText();
+		log("Get broadcast message button text-:" + broadcastMessageButtonText);
+		String broadcastMessageBtnCount = broadcastMessageButtonText.substring(19,23);
+		String getBroadcastMsgBtnCount = broadcastMessageBtnCount.replaceAll("[^\\d{}]"," ").replaceAll("\\(", ""). replaceAll("\\)","");
+		log("Total count on broadcast message button: " + getBroadcastMsgBtnCount.trim());
+		String broadcastCount=getBroadcastMsgBtnCount.trim();
+		assertEquals(bannerMessageCount,broadcastCount,"Banner and broadcast message button count was not same");
+	}
+	
+	@When("I applied filter for start date, provider and location")
+	public void i_applied_filter_for_start_date_provider_and_location() throws NullPointerException, Exception {
+		scrollAndWait(0, -500, 3000);
+		apptPage.startDate();
+		apptPage.selectStartTime("12:00 AM");
+		scrollAndWait(0, -500, 10000);
+		log("Provider name-- " + propertyData.getProperty("provider.name.ge"));
+		apptPage.enterProvider(propertyData.getProperty("provider.name.ge"));
+		log("Location name-- " + propertyData.getProperty("location.name.ge"));
+		apptPage.enterLocation(propertyData.getProperty("location.name.ge"));
+		
+	}
 }
