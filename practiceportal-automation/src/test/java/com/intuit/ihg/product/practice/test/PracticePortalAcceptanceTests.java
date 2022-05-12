@@ -1225,5 +1225,27 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(homePage.isHealthRecordSolutionisplayed());
 		homePage.clickOnLogout();
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testResendPatientInvitationFailures() throws Exception {
+		PracticeLoginPage practiceLogin;
+		PracticeHomePage practiceHome;
+		
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
+		
+		
+		logStep("Click on Patient Activation tab");
+		PatientActivationPage activationPage= practiceHome.clickPatientactivationTab();
+		
+		logStep("Click on Failures link");
+		activationPage.clickonFailuresLink();
+		
+		logStep("Select date range and resend patient invite failures");
+		assertTrue(activationPage.resendFailures());		
+	}
+
 }
 
