@@ -2306,3 +2306,29 @@ Feature: Test fuctionality of Appointment precheck
     And I switch on curbside checkin tab and select patient and click on check in button
     Then I verify notification icon count decreases and patient should be disappeared
     And logout from practice provisioning portal
+
+  Scenario: verify broadcast count functionality is coming correct when select all patient on page one
+    When I applied filter for start date
+    And I select all record from page "1"
+    And I deselect few records from page "1" and switch to page 2 and select all records
+    And I again switch on page 1 click on banner message
+    Then I verify broadcast message count from action button after clicking on banner message on page one
+    And logout from practice provisioning portal
+
+  Scenario: verify broadcast count functionality is coming correct when selects all patient on page two
+    When I applied filter for start date
+    And I select all record from page "1"
+    And I switch on page "2" and select all records
+    And I switch on page "1" and deselect few records
+    And I switch on page "3" and select all records
+    And I again switch on page 2 click on banner message
+    Then I verify broadcast message count from action button after clicking on banner message on page two
+    And logout from practice provisioning portal
+
+  Scenario: verify broadcast count functionality is coming correct when selects all patient
+    When I applied filter for start date, provider and location
+    And I select all record from page "1"
+    And I deselect few records from page "1" and switch to page 2 and select all records
+    And I again switch on page 1 click on banner message
+    Then I verify broadcast message count from action button after clicking on banner message on page one
+    And logout from practice provisioning portal
