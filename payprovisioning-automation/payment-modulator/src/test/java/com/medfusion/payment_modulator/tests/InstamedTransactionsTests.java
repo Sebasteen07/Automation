@@ -1,9 +1,8 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.tests;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.payment_modulator.helpers.TransactionResourceDetails;
-import com.medfusion.payment_modulator.utils.CommonUtils;
 import com.medfusion.payment_modulator.utils.ModulatorTestData;
 import com.medfusion.payment_modulator.utils.Validations;
 import io.restassured.path.json.JsonPath;

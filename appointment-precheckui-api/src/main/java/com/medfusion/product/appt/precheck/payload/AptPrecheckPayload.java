@@ -1,7 +1,7 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.appt.precheck.payload;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -58,7 +58,6 @@ public class AptPrecheckPayload {
 	}
 	
 	public String getBroadcastMessagePayload(String appDateRangeStart, String appDateRangeEnd, String PatientId, String ApptId) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
 		   LocalDateTime endDate = LocalDateTime.now();  
 		String broadcastmsg=" {\r\n"
 				+ "	\"broadcastMessage\": {\r\n"
@@ -471,7 +470,6 @@ public class AptPrecheckPayload {
 	}
 		
 		public String getDELETEApptsFromDbWithSelectAllFalsePayload() {
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
 			   LocalDateTime endDate = LocalDateTime.now();
 			String deleteAppt="{\r\n"
 					+ "\"selectedAll\":false,\r\n"
@@ -519,9 +517,7 @@ public class AptPrecheckPayload {
 			int dd = cal.get(Calendar.DATE) + 1;
 			int yyyy = cal.get(Calendar.YEAR);
 			int mm = cal.get(Calendar.MONTH)+1;
-
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-			   LocalDateTime endDate = LocalDateTime.now();
+			
 			String deleteAppt="{\r\n"
 					+ "    \"selectedAll\": true,\r\n"
 					+ "    \"pagingParameters\": {\r\n"

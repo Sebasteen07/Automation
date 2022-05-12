@@ -1,4 +1,4 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.util;
 
 import static org.testng.Assert.assertEquals;
@@ -1540,8 +1540,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	public void verifyGuestAuthorization(Response response, String practiceId, String pmPatientId,
 			String pmAppointmentId) throws IOException {
-		JSONObject jsonObject = new JSONObject(response.asString());
-		JSONArray jsonArray = (JSONArray) jsonObject.getJSONArray("roles");
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.getString("practiceId"), practiceId, "practiceId  was incorrect");
 		assertEquals(js.getString("pmPatientId"), pmPatientId, "pmPatientId  was incorrect");

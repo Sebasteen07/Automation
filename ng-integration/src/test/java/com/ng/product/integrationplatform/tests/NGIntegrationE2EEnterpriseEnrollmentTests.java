@@ -1,4 +1,4 @@
-//Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.tests;
 
 import static org.testng.Assert.*;
@@ -17,7 +17,6 @@ import com.intuit.ifs.csscat.core.pojo.ExpectedEmail;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
@@ -390,13 +389,13 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String postEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", personId);
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", postEnrollmentURL, "", 409);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", postEnrollmentURL, "", 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 
 		logStep("Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
 		String getEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", personId);
-		String GetEnrollmentStatusresponse = ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
+		String GetEnrollmentStatusresponse = NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
 				200);
 
 		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse, "status"), "equals",
@@ -928,13 +927,13 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String PostEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", personId);
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", PostEnrollmentURL, "", 409);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", PostEnrollmentURL, "", 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 
 		logStep("Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
 		String getEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", personId);
-		String GetEnrollmentStatusresponse = ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
+		String GetEnrollmentStatusresponse = NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
 				200);
 
 		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse, "status"), "equals",

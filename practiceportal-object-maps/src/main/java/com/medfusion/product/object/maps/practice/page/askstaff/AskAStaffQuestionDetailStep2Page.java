@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.askstaff;
 
 import org.openqa.selenium.WebDriver;
@@ -64,8 +65,6 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 	// unloads the result table from the DOM and adds it again, which causes issues
 	// with the script.
 	private final String diagnosticCodeContent = "COU";
-	private final String diagnosticContent = "Cough";
-
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Cough')]")
 	private WebElement diagnosticContentButton;
 

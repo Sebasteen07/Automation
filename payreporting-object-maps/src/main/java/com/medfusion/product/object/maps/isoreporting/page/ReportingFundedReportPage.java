@@ -1,7 +1,6 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package com.medfusion.product.object.maps.isoreporting.page;
 import java.io.File;
-import java.text.NumberFormat;
 import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.openqa.selenium.By;

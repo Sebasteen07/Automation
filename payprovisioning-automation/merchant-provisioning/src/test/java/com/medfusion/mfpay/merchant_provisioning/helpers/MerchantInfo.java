@@ -1,8 +1,7 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.helpers;
 
 import static io.restassured.RestAssured.given;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.io.IOException;
 import java.util.Arrays;
@@ -104,7 +103,6 @@ public class MerchantInfo extends BaseRest {
 		String updatemerchant = ProvisioningUtils.postMerchant + "/" + mmid + "/rates";
 		Response response = given().spec(requestSpec).body(convertTOJson).when().put(updatemerchant).then()
 				.spec(responseSpec).extract().response();
-		ContractedRates readJSON = objectMapper.readValue(response.asString(), ContractedRates.class);
 		return response;
 	}
 
@@ -135,7 +133,6 @@ public class MerchantInfo extends BaseRest {
 		String createmerchant = ProvisioningUtils.postMerchant;
 		Response response = given().spec(requestSpec).body(convertTOJson).when().post(createmerchant).then()
 				.spec(responseSpec).extract().response();
-		Merchant readJSON = objectMapper.readValue(response.asString(), Merchant.class);
 		return response;
 
 	}

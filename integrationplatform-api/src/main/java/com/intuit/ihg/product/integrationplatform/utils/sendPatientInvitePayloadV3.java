@@ -1,4 +1,4 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.StringWriter;
@@ -368,8 +368,6 @@ public class sendPatientInvitePayloadV3 {
 
 				Element Billing = doc.createElement("Billing");
 				Patient.appendChild(Billing);
-
-				Element AccountNumber = doc.createElement("AccountNumber");
 
 				Element Guarantor = doc.createElement("Guarantor");
 				Billing.appendChild(Guarantor);

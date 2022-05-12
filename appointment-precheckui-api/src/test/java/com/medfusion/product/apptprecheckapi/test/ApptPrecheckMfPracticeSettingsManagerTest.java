@@ -26,7 +26,6 @@ import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfPracticeSettingsManager;
 
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {

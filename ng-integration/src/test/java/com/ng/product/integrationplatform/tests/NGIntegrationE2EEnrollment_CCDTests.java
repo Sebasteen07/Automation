@@ -1,4 +1,4 @@
-//Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.tests;
 
 import static org.testng.Assert.*;
@@ -18,7 +18,6 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -93,7 +92,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		apiRoutes personURL = apiRoutes.valueOf("AddEnterprisePerson");
 		String finalURL = enterprisebaseURL + personURL.getRouteURL();
-		String personId = ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
+		String personId = NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
 		log("Step End: Person created with id " + personId);
 
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
@@ -103,13 +102,13 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String postEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", personId);
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", postEnrollmentURL, "", 409);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", postEnrollmentURL, "", 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 
 		logStep("Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
 		String getEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", personId);
-		String getEnrollmentStatusresponse = ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
+		String getEnrollmentStatusresponse = NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
 				200);
 
 		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse, "status"), "equals",
@@ -277,7 +276,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		PatientEnrollment.verifyProcessingStatusto4(personId);
 
-		String getEnrollmentStatusresponse2 = ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
+		String getEnrollmentStatusresponse2 = NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
 				200);
 		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2, "status"), "equals",
 				"9");
@@ -311,14 +310,14 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		apiRoutes personURL = apiRoutes.valueOf("AddEnterprisePerson");
 		String finalURL = enterprisebaseURL + personURL.getRouteURL();
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 400);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 400);
 		log("Step End: Person should not be created");
 
 		logStep("Create the patient in NG EPM without Last Name");
 		NewPatient createPatient1 = NGPatient.patientUsingJSON(propertyLoaderObj, "withoutLastName");
 
 		log("Request Body is \n" + objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient1));
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL,
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL,
 				objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient1), 400);
 		log("Step End: Person should not be created");
 
@@ -326,7 +325,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		NewPatient createPatient2 = NGPatient.patientUsingJSON(propertyLoaderObj, "withoutDOB");
 
 		log("Request Body is \n" + objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient2));
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL,
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL,
 				objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient2), 400);
 		log("Step End: Person should not be created");
 
@@ -334,7 +333,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		NewPatient createPatient3 = NGPatient.patientUsingJSON(propertyLoaderObj, "withoutSex");
 		log("Request Body is \n" + objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient3));
 
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL,
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL,
 				objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient3), 400);
 		log("Step End: Person should not be created");
 
@@ -1105,7 +1104,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		apiRoutes personURL = apiRoutes.valueOf("AddEnterprisePerson");
 		String finalURL = enterprisebaseURL + personURL.getRouteURL();
-		String person_id = ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
+		String person_id = NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
 		log("Step End: Person created with id " + person_id);
 
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
@@ -1115,13 +1114,13 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String postEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", postEnrollmentURL, "", 409);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", postEnrollmentURL, "", 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 
 		logStep("Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
 		String getEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-		String getEnrollmentStatusresponse = ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
+		String getEnrollmentStatusresponse = NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
 				200);
 
 		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse, "status"), "equals",
@@ -1287,7 +1286,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		PatientEnrollment.verifyProcessingStatusto4(person_id);
 
 		logStep("Find the patient and check if he is registered");
-		String getEnrollmentStatusresponse2 = ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
+		String getEnrollmentStatusresponse2 = NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
 				200);
 		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2, "status"), "equals",
 				"9");
@@ -1402,7 +1401,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		apiRoutes personURL = apiRoutes.valueOf("AddEnterprisePerson");
 		String finalURL = enterprisebaseURL + personURL.getRouteURL();
-		String personId = ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
+		String personId = NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
 		log("Step End: Person created with id " + personId);
 
 		logStep("Add Chart to patient");
@@ -1455,7 +1454,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		apiRoutes personURL = apiRoutes.valueOf("AddEnterprisePerson");
 		String finalURL = enterprisebaseURL + personURL.getRouteURL();
-		String personId = ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
+		String personId = NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
 		log("Step End: Person created with id " + personId);
 
 		logStep("Add Chart to patient");

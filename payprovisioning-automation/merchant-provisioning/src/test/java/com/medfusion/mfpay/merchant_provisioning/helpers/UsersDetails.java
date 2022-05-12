@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.helpers;
 
 import static io.restassured.RestAssured.given;
@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import com.medfusion.mfpay.merchant_provisioning.pojos.Roles;

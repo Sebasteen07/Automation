@@ -39,9 +39,8 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 		Response response = usersdetails.createPracticeUser(getusers, testData.getProperty("staff.username"),
 				testData.getProperty("practice.role"));
 
-		Validations validations = new Validations();
 		JsonPath jsonpath = new JsonPath(response.asString());
-		validations.validatePracticeRoles(jsonpath, practiceStaffId, testData.getProperty("practice.id"),
+		Validations.validatePracticeRoles(jsonpath, practiceStaffId, testData.getProperty("practice.id"),
 				Arrays.asList(testData.getProperty("practice.role")));
 	}
 
@@ -54,10 +53,9 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 		UsersDetails usersdetails = new UsersDetails();
 		Response response = usersdetails.createPracticeUser(getusers, username, practiceRole);
 
-		Validations validations = new Validations();
 		JsonPath jsonpath = new JsonPath(response.asString());
 		if (response.getStatusCode() == 200) {
-			validations.validatePracticeRoles(jsonpath, practiceStaffId, practiceId, Arrays.asList(practiceRole));
+			Validations.validatePracticeRoles(jsonpath, practiceStaffId, practiceId, Arrays.asList(practiceRole));
 		} else {
 			Assert.assertNotNull(jsonpath.get("error"));
 		}
@@ -72,7 +70,6 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 
 		Response response = usersdetails.getMerchantUserRoles(getusers);
 
-		Validations validations = new Validations();
 		JsonPath jsonpath = new JsonPath(response.asString());
 		Assert.assertEquals(jsonpath.get("practiceLevelRoles[0]").toString(), "PRACTICE_POS_ADMIN");
 		Assert.assertEquals(jsonpath.get("practiceStaffId").toString(), testData.getProperty("user.id"));
@@ -101,9 +98,8 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 		Response response = usersdetails.createPracticeUserWithMultipleRoles(getusers,
 				testData.getProperty("staff.username"), roleList);
 
-		Validations validations = new Validations();
 		JsonPath jsonPath = new JsonPath(response.asString());
-		validations.validatePracticeRoles(jsonPath, practiceStaffId, testData.getProperty("practice.id"), roleList);
+		Validations.validatePracticeRoles(jsonPath, practiceStaffId, testData.getProperty("practice.id"), roleList);
 
 		Object roleCheckAfterCreation = DBUtils.executeQueryOnDBGetResult("rcm",
 				"SELECT * FROM public.practice_user_role where p_org_staff_id=" + practiceStaffId, "role_name");

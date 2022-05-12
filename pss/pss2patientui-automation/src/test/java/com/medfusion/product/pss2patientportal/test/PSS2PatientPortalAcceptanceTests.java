@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
 import static org.testng.Assert.assertEquals;
@@ -67,8 +67,6 @@ import com.medfusion.product.pss2patientui.utils.PSSNewPatient;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 import com.medfusion.product.pss2patientui.utils.YopMailUtility;
-import com.medfusion.product.pss2patientui.utils.YopMailUtility;
-
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -7997,7 +7995,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Provider provider = location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 
@@ -8208,7 +8205,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Provider provider = location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -8280,7 +8276,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Provider provider = location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -8352,7 +8347,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Provider provider = location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());

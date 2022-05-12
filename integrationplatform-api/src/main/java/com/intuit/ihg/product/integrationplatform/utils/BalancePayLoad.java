@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.IOException;
@@ -22,8 +23,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 
 
 public class BalancePayLoad {

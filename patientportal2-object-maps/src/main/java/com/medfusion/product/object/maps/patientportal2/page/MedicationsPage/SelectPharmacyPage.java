@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 
 import static org.testng.Assert.assertFalse;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -119,14 +118,6 @@ public class SelectPharmacyPage extends MedfusionPage {
 	private WebElement rdoEditedPharmacyName;
 
 	WebDriverWait wait=new WebDriverWait(driver, 60);
-	private boolean areBasicPopUpPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(addPharmacyClosePopupbtn);
-		webElementsList.add(addYourPharmacy);
-		webElementsList.add(addProviderSuggestPharmacy);
-		return assessPageElements(webElementsList);
-	}
-
 	private boolean arePopupPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 

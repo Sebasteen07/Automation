@@ -2076,7 +2076,7 @@ public class AppointmentsPage extends BasePageObject {
 					}
 					log(("Color was") + " not retrieved. Trial number " + j + "/" + retries + "."
 							+ (j != retries
-									? " Waiting for Color" + (false ? "s" : "") + " to arrive for "
+									? " Waiting for Color" + ("") + " to arrive for "
 											+ TIME_TO_WAIT_MS / 1000 + " s."
 									: ""));
 					jse.executeScript("arguments[0].click();", refreshTab);
@@ -2107,7 +2107,7 @@ public class AppointmentsPage extends BasePageObject {
 					}
 					log(("Color was") + " not retrieved. Trial number " + j + "/" + retries + "."
 							+ (j != retries
-									? " Waiting for Color" + (false ? "s" : "") + " to arrive for "
+									? " Waiting for Color" + ("") + " to arrive for "
 											+ TIME_TO_WAIT_MS / 1000 + " s."
 									: ""));
 					jse.executeScript("arguments[0].click();", refreshTab);
@@ -2376,7 +2376,7 @@ public class AppointmentsPage extends BasePageObject {
 
 				} catch (Exception e) {
 					log(("Paper plane Icon") + " not retrieved. Trial number " + j + "/" + retries + "."
-							+ (j != retries	? " Waiting for Paper plane Icon" + (false ? "s" : "") + " to arrive for "
+							+ (j != retries	? " Waiting for Paper plane Icon" + ("") + " to arrive for "
 											+ TIME_TO_WAIT_MS / 1000 + " s.": ""));
 					log("unable to find Paper plane Icon" + e);
 				}
@@ -2403,7 +2403,7 @@ public class AppointmentsPage extends BasePageObject {
 
 				} catch (Exception e) {
 					log(("Paper plane Icon") + " not retrieved. Trial number " + j + "/" + retries + "."
-							+ (j != retries ? " Waiting for Paper plane Icon" + (false ? "s" : "") + " to arrive for "
+							+ (j != retries ? " Waiting for Paper plane Icon" + ("") + " to arrive for "
 											+ TIME_TO_WAIT_MS / 1000 + " s.": ""));
 					log("unable to find Paper plane Icon" + e);
 				}

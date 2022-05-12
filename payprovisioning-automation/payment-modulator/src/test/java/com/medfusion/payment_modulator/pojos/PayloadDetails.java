@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.pojos;
 
 import java.io.IOException;
@@ -12,9 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.gateway_proxy.helpers.GatewayProxyDigitalWalletResource;
-import io.restassured.response.Response;
-import org.testng.Assert;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "mfGatewayConsumer", "mfGatewayMerchant", "transactionAmount", "initialTransactionInSeries",

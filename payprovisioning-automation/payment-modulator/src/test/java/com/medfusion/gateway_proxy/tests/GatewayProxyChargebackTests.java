@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
@@ -139,8 +138,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		String chargebackIssuer = jsonPathCB.get("chargebackIssuer");
 		String chargebackAmount = String.valueOf(jsonPathCB.get("chargebackAmount"));
 
-		Map<String, String> chargeBackMP = chargeBack.getCBdetails(jsonPathCB);
-
 		Response getCBResponce = chargeBack.getChargeBack(token, testData.getProperty("proxy.chargeback.url"),
 				testData.getProperty("proxy.mmid"));
 
@@ -188,7 +185,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		GatewayProxyChargeBackResource chargeBack = new GatewayProxyChargeBackResource();
 
 		Response response = chargeBack.getChargeBack(token, testData.getProperty("proxy.chargeback.url"), "2560809338");
-		JsonPath jsonPath = new JsonPath(response.asString());
 
 		List<String> emptyList = response.jsonPath().getList("$");
 
