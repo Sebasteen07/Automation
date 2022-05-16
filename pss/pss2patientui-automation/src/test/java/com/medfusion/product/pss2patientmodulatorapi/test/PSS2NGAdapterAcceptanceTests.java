@@ -92,25 +92,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testnextAvailableSlotPost() throws IOException {
-
-		Response response = postAPIRequest.nextAvailableNG(propertyData.getProperty("practice.id.ng"),
-				PayloadNG.nextAvailable_New());
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testnextAvailableSlotWithoutBodyPost() throws IOException {
-
-		Response response = postAPIRequest.nextAvailableNG(propertyData.getProperty("practice.id.ng"), "");
-		aPIVerification.responseCodeValidation(response, 400);
-		aPIVerification.responseTimeValidation(response);
-
-	}
-
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentStatusGET() throws IOException {
 
@@ -142,7 +124,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "categoryName");
-		aPIVerification.responseKeyValidation(response, "displayName");
+//		aPIVerification.responseKeyValidation(response, "displayName");
 		aPIVerification.responseKeyValidation(response, "name");
 
 	}
@@ -244,7 +226,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		aPIVerification.responseKeyValidation(response, "name");
 		aPIVerification.responseKeyValidation(response, "categoryId");
 		aPIVerification.responseKeyValidation(response, "categoryName");
-		aPIVerification.responseKeyValidation(response, "displayName");
+//		aPIVerification.responseKeyValidation(response, "displayName");
 
 	}
 
@@ -271,24 +253,6 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		String msg = js.getString("message");
 		assertEquals(msg, "500 Unable to reschedule appointment");
 
-	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCancelAppointmentGet() throws IOException {
-
-		Response response = postAPIRequest.cancelAppointmentGET(propertyData.getProperty("practice.id.ng"),
-				propertyData.getProperty("appt.id.ng"));
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCancelAppointmentInvalidAppIdGet() throws IOException {
-
-		Response response = postAPIRequest.cancelAppointmentGET(propertyData.getProperty("practice.id.ng"),
-				propertyData.getProperty("invalidappt.id.ng"));
-		aPIVerification.responseCodeValidation(response, 500);
-		aPIVerification.responseTimeValidation(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)

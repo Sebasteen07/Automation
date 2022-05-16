@@ -294,7 +294,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
 		String msg = js.getString("message");
-		assertEquals(msg, "Required request parameter 'appointmentId' for method parameter type String is not present");
+		assertEquals(msg, "Required request parameter 'patientId' for method parameter type String is not present");
 
 	}
 

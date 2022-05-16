@@ -17,13 +17,13 @@ public class PayloadGW extends BaseTestNGWebDriver {
 
 		HashMap<String, Object> practiceProvision = new HashMap<String, Object>();
 		practiceProvision.put("active", true);
-		practiceProvision.put("practiceId", "24253");
-		practiceProvision.put("practiceName", "PSS-GW-12242@1#(%#(%(#%");
-		practiceProvision.put("practiceDisplayName", "PSS-GW-12242@1#(%#(%(#%");
+		practiceProvision.put("practiceId", "11691");
+		practiceProvision.put("practiceName", "PSS-GW-DEMO-ENV^");
+		practiceProvision.put("practiceDisplayName", "PSS-GW-DEMO-ENV^");
 		practiceProvision.put("practiceTimezone", "America/New_York");
 
 		hm.put("practiceProvision", practiceProvision);
-		hm.put("startDate", "05/05/2021 02:00:00");
+		hm.put("startDate", "05/16/2022 00:00:00");
 
 		return hm;
 	}
