@@ -1019,10 +1019,19 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
 
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+		int askaSubjectLength = askaSubject.length();
+		String askalength = String.valueOf(askaSubjectLength);
+
+		int questionLenth = questionText.length();
+		String questionTextLenth = String.valueOf(questionLenth);
 
 		logStep("Fill question and continue");
-		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinue(askaSubject, questionText);
-
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillDetails(askaSubject, questionText);
+		assertEquals(askalength + "/30", askPage1.getSubjectLength());
+		assertEquals(questionTextLenth + "/4000", askPage1.getQuestionLength());
+		
+		askPage1.continueClick();
+		
 		assertTrue(askaSubject.equals(askPage2.getSubject()),
 				"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
 		assertTrue(questionText.equals(askPage2.getQuestion()),
@@ -3210,8 +3219,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 	}
 
-	@Test(enabled = true, groups = { "acceptance-basics",
-			"commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUnlinkTrustedRepresentative() throws Exception {
 		createCommonPatient();
 		Patient trustedPatient = PatientFactory.createJalapenoPatient(
@@ -6272,5 +6280,46 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
 		assertEquals("Electronically", myAccountSecurityPage.getSelectedStatementPreference());
 
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testEditPharmacy() throws Exception {
+
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
+				testData.getProperty("med.wf.password"));
+
+		logStep("Click on Medications");
+		homePage.clickOnMedications(driver);
+
+		logStep("Initiating Medications 2.0 Request from Patient Portal");
+		MedicationsHomePage medPage = new MedicationsHomePage(driver);
+		medPage.clickOnRxRequest();
+
+		logStep("Select Location and Provider");
+		LocationAndProviderPage select = new LocationAndProviderPage(driver);
+		select.chooseLocationAndProvider();
+
+		logStep("Select a pharmacy");
+		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
+		pharmaPage.addPharmacy(driver);
+		pharmaPage.editPharmacy();
+		String editedPhName=pharmaPage.getUpdatedPharmcyName();
+		Thread.sleep(2000);
+		
+		logStep("Select Medications");
+		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
+		selectMedPage.selectMedications();
+		Thread.sleep(2000);
+
+		logStep("Confirm Medication Request from Patient Portal");
+		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
+		String editedPhName1=confirmPage.getPharamcyName(driver);
+		System.out.println(editedPhName1);
+		assertTrue(editedPhName1.contains(editedPhName));
+
+		String successMsg = confirmPage.confirmMedication(driver);
+		assertEquals(successMsg, "Your prescription request has been submitted.");
 	}
 }

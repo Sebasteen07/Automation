@@ -60,10 +60,10 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "phoneNumber1")
 	private WebElement pharmacyPhone1;
-	
+
 	@FindBy(how = How.ID, using = "phoneNumber2")
 	private WebElement pharmacyPhone2;
-	
+
 	@FindBy(how = How.ID, using = "phoneNumber3")
 	private WebElement pharmacyPhone3;
 
@@ -84,10 +84,10 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='modal-button']/button[@class='btn btn-secondary ng-binding']")
 	private WebElement popupBackbtn;
-	
+
 	@FindBy(how = How.XPATH, using = "//button[@class='close']")
 	private WebElement addPharmacyClosePopupbtn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Save & Continue')]")
 	private WebElement popupContinueBtn;
 
@@ -99,18 +99,24 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
 	private WebElement selectPharmacyName;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button selected']/../../..//a[text()='Delete']")
 	private WebElement btnDelete;
-	
+
 	@FindBy(how = How.ID, using = "removePharmacyOkButton")
 	private WebElement btnRemovePharmacyOkButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button selected']/../span[@class='pharmacy-name']")
 	private WebElement rdoPharmacy;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@id='pharmacy_list']//ol")
 	private WebElement listOfPharmacies;
+
+	@FindBy(how = How.XPATH, using = "//span[@class=\"pharmacy-radio-button selected\"]/ancestor::li/div//*[contains(text(),'Edit')]")
+	private WebElement btnEditPharmacy;
+
+	@FindBy(how = How.XPATH, using = "//span[@class=\"pharmacy-radio-button selected\"]/ancestor::li/div//*[@class=\"pharmacy-name\"]")
+	private WebElement rdoEditedPharmacyName;
 
 	WebDriverWait wait=new WebDriverWait(driver, 60);
 	private boolean areBasicPopUpPageElementsPresent() {
@@ -228,9 +234,9 @@ public class SelectPharmacyPage extends MedfusionPage {
 			log("Verify all the popup elements are present");
 			assertTrue(arePopupPageElementsPresent());
 		} 
-//		addYourPharmacy.click();
-//		log("Verify all the popup elements are present");
-//		assertTrue(arePopupPageElementsPresent());
+		//		addYourPharmacy.click();
+		//		log("Verify all the popup elements are present");
+		//		assertTrue(arePopupPageElementsPresent());
 		log("Enter Pharmacy Details");
 		pharmacyName.sendKeys(testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4));
 		pharmacyPhone1.sendKeys(IHGUtil.createRandomNumericString(3));
@@ -277,16 +283,70 @@ public class SelectPharmacyPage extends MedfusionPage {
 		List<WebElement> list = driver.findElements(By.xpath("//div[@id='pharmacy_list']//ol//li//div//label//span[@class='pharmacy-name']"));
 		for(WebElement e : list)
 		{
-		System.out.println(e.getText());
-		if(e.getText().equals(selectedPharmacy))
-		{
-			log("Dependent Pharmacy is found in Guardian account: FAIL");
-			return false;
-		}
+			System.out.println(e.getText());
+			if(e.getText().equals(selectedPharmacy))
+			{
+				log("Dependent Pharmacy is found in Guardian account: FAIL");
+				return false;
+			}
 		}
 		return true;
-		
 	}
 
+	public void addPharmacy(WebDriver driver) throws IOException, InterruptedException {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		IHGUtil.PrintMethodName();
+		
+		log("Click on Add a Pharmacy button");
+		Thread.sleep(2000);
+		addPharmacy.click();
+		
+		log("Click on Add Your Pharmacy button from the popup");
+		Thread.sleep(2000);
+		addYourPharmacy.click();
+		
+		log("Verify all the popup elements are present");
+		assertTrue(arePopupPageElementsPresent());
+		
+		log("Enter Pharmacy Details");
+		String pharmaName = testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4);
+		pharmacyName.sendKeys(pharmaName);
+		pharmacyFax.sendKeys(IHGUtil.createRandomNumericString(10));
+		pharmacyAddress.sendKeys(testData.getProperty("address1"));
+		pharmacyCity.sendKeys(testData.getProperty("city"));
+		pharmacyState.sendKeys(testData.getProperty("state"));
+		pharmacyState.sendKeys(Keys.ENTER);
+		pharmacyZip.sendKeys(testData.getProperty("zip.code"));
+		
+		log("Verifying continue button is disabled since Phone number is mandatory");
+		assertFalse(popupContinueBtn.isEnabled(), "Continue button is disabled");
+		pharmacyPhone1.sendKeys(IHGUtil.createRandomNumericString(3));
+		pharmacyPhone2.sendKeys(IHGUtil.createRandomNumericString(3));
+		pharmacyPhone3.sendKeys(IHGUtil.createRandomNumericString(4));
+		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(popupContinueBtn));
+		popupContinueBtn.click();
+		log("Pharmacy is added");
+		Thread.sleep(2000);// need to sleep because of modal disappearing time
+	}
+
+	public void editPharmacy() throws IOException, InterruptedException {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		IHGUtil.waitForElement(driver, 50, btnEditPharmacy);
+		btnEditPharmacy.click();
+		assertTrue(arePopupPageElementsPresent());
+		
+		log("Enter Pharmacy Details");
+		String editedPharmacyName = testData.getProperty("updated.pharmacy.name") + IHGUtil.createRandomNumericString(4);
+		pharmacyName.clear();
+		pharmacyName.sendKeys(editedPharmacyName);
+		Thread.sleep(2000);
+		popupContinueBtn.click();
+	}
+
+	public String getUpdatedPharmcyName() {
+		String pharmcyName= rdoEditedPharmacyName.getText();
+		btnContinue.click();
+		return pharmcyName;
+	}
 }
 
