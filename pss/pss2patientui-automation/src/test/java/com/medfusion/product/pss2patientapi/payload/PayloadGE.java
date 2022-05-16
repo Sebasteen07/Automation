@@ -126,16 +126,16 @@ public class PayloadGE {
 	public static String pastappointmentsPayload(String startDate,String endDate,String patientId,String practiceDisplayName,String practiceName,String practiceId) {
 		String pastappointments="{\r\n"
 				+ "  \"additionalFields\": {},\r\n"
-				+ "  \"endDate\": \"05/16/2022\",\r\n"
-				+ "  \"patientId\": \"28356\",\r\n"
+				+ "  \"endDate\": \""+endDate+"\",\r\n"
+				+ "  \"patientId\": \""+patientId+"\",\r\n"
 				+ "  \"practiceProvision\": {\r\n"
 				+ "    \"active\": true,\r\n"
-				+ "    \"practiceDisplayName\": \"PSS-Ge-PG2-DP\",\r\n"
-				+ "    \"practiceId\": \"11916\",\r\n"
-				+ "    \"practiceName\": \"PSS-Ge-PG2-DP\",\r\n"
+				+ "    \"practiceDisplayName\": \""+practiceDisplayName+"\",\r\n"
+				+ "    \"practiceId\": \""+practiceId+"\",\r\n"
+				+ "    \"practiceName\": \""+practiceName+"\",\r\n"
 				+ "    \"practiceTimezone\": \"\"\r\n"
 				+ "  },\r\n"
-				+ "  \"startDate\": \"05/12/2021\"\r\n"
+				+ "  \"startDate\": \""+startDate+"\"\r\n"
 				+ "}";
 		return pastappointments;
 	}
