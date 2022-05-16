@@ -8,28 +8,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 public class PayloadGW extends BaseTestNGWebDriver {
 	
-	
-
-	public Map<String, Object> pastApptPayload(String patientId) {
-		HashMap<String, Object> hm = new HashMap<String, Object>();
-		hm.put("endDate", null);
-		hm.put("patientId", patientId);
-
-		HashMap<String, Object> practiceProvision = new HashMap<String, Object>();
-		practiceProvision.put("active", true);
-		practiceProvision.put("practiceId", "11691");
-		practiceProvision.put("practiceName", "PSS-GW-DEMO-ENV^");
-		practiceProvision.put("practiceDisplayName", "PSS-GW-DEMO-ENV^");
-		practiceProvision.put("practiceTimezone", "America/New_York");
-
-		hm.put("practiceProvision", practiceProvision);
-		hm.put("startDate", "05/16/2022 00:00:00");
-
-		return hm;
-	}
-	
-
-	public Map<String, Object> pastApptPayloadWithoutPid() {
+	    public Map<String, Object> pastApptPayloadWithoutPid() {
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("endDate", null);
 
@@ -515,4 +494,20 @@ public class PayloadGW extends BaseTestNGWebDriver {
 		return reschedulePayload;
 	}
 
+	public String pastAppointmentPayload(String practiceDisplayName,String practiceName,String practiceId,String patientId,String startDate) {
+		String pastAppointmentPayload="{\r\n"
+				+ "    \"practiceProvision\": {\r\n"
+				+ "        \"practiceDisplayName\": \""+practiceDisplayName+"\",\r\n"
+				+ "        \"practiceName\": \""+practiceName+"\",\r\n"
+				+ "        \"practiceTimezone\": \"America/New_York\",\r\n"
+				+ "        \"practiceId\": \""+practiceId+"\",\r\n"
+				+ "        \"active\": true\r\n"
+				+ "    },\r\n"
+				+ "    \"endDate\": null,\r\n"
+				+ "    \"patientId\": \""+patientId+"\",\r\n"
+				+ "    \"startDate\": \""+startDate+"\"\r\n"
+				+ "}";		
+		
+		return pastAppointmentPayload;
+	}
 }

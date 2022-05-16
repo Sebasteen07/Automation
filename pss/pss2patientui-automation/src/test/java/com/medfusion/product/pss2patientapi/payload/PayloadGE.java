@@ -123,7 +123,7 @@ public class PayloadGE {
 		return cancelledApptStatus;
 	}
 	
-	public static String pastappointmentsPayload() {
+	public static String pastappointmentsPayload(String startDate,String endDate,String patientId,String practiceDisplayName,String practiceName,String practiceId) {
 		String pastappointments="{\r\n"
 				+ "  \"additionalFields\": {},\r\n"
 				+ "  \"endDate\": \"05/16/2022\",\r\n"

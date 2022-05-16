@@ -462,14 +462,21 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPastAppointmentsPost() throws IOException {
-		Response response=postAPIRequestge.pastAppointments(PayloadGE.pastappointmentsPayload(),propertyData.getProperty("practiceid.ge"));
-	apiVerification.responseCodeValidation(response, 200);
-	apiVerification.responseTimeValidation(response);
-	apiVerification.responseKeyValidationJson(response, "id");
-	apiVerification.responseKeyValidationJson(response, "patientId");
-	apiVerification.responseKeyValidationJson(response, "startDateTime");
-	apiVerification.responseKeyValidationJson(response, "endDateTime");
-	apiVerification.responseKeyValidationJson(response, "comments");
+		String startDate = propertyData.getProperty("start.date.time.ge");
+		String endDate = propertyData.getProperty("end.date.time.ge");
+		String patientId = propertyData.getProperty("past.patient.id");
+		String practiceDisplayName = propertyData.getProperty("practice.display.name.ge");
+		String practiceName = propertyData.getProperty("practice.name.ge");
+		String practiceId = propertyData.getProperty("practiceid.ge");
+		Response response = postAPIRequestge.pastAppointments(PayloadGE.pastappointmentsPayload(startDate, endDate,
+				patientId, practiceDisplayName, practiceName, practiceId), practiceId);
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "id");
+		apiVerification.responseKeyValidationJson(response, "patientId");
+		apiVerification.responseKeyValidationJson(response, "startDateTime");
+		apiVerification.responseKeyValidationJson(response, "endDateTime");
+		apiVerification.responseKeyValidationJson(response, "comments");
 
 	}
 	

@@ -124,7 +124,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "categoryName");
-//		aPIVerification.responseKeyValidation(response, "displayName");
+		aPIVerification.responseKeyValidation(response, "displayName");
 		aPIVerification.responseKeyValidation(response, "name");
 
 	}
@@ -226,7 +226,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		aPIVerification.responseKeyValidation(response, "name");
 		aPIVerification.responseKeyValidation(response, "categoryId");
 		aPIVerification.responseKeyValidation(response, "categoryName");
-//		aPIVerification.responseKeyValidation(response, "displayName");
+		aPIVerification.responseKeyValidation(response, "displayName");
 
 	}
 
