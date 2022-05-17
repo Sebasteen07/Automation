@@ -2332,3 +2332,57 @@ Feature: Test fuctionality of Appointment precheck
     And I again switch on page 1 click on banner message
     Then I verify broadcast message count from action button after clicking on banner message on page one
     And logout from practice provisioning portal
+
+  Scenario: verify patient personal information page
+    And I schedule an appointment
+    And I click on patient name
+    And I click on launch patient mode and change some of the fields
+    When user enter username and password
+    Then I verify appointment details should be updated
+    And logout from practice provisioning portal
+
+  Scenario: verify patient contact info page
+    When I schedule an appointment and update contact info
+    And I click on patient name and do the precheck
+    When user enter username and password
+    And I verify contact info page should be updated
+    And logout from practice provisioning portal
+
+  Scenario: verify by disabling the demographics on practice dashboard
+    When I click on settings tab
+    And I click on precheck tab and disable the demographics and save changes
+    And I schedule an appointment
+    And I click on patient name
+    And I click on patient mode to do the precheck
+    When user enter username and password
+    Then I verify precheck should not have personal info,contact info,pharmacy details
+    And logout from practice provisioning portal
+
+  Scenario: verify if user can add 3 tiers of insurances
+    And I schedule an appointment and add insurances
+    And I click on patient name and add 3 insurances during precheck
+    When user enter username and password
+    Then I verify in dashboard appointment details should have all the insurance info
+    And logout from practice provisioning portal
+
+  Scenario: verify if user can remove existing insurances
+    And I schedule an appointment and add insurances
+    And I click on patient name and add 3 insurances during precheck and edit the insurance cards and remove primary,secondary,tertiary insurances
+    When user enter username and password
+    Then I verify in dashboard insurance should be removed for that appointment
+    And logout from practice provisioning portal
+
+  Scenario: verify if user disable insurance checkbox and while doing precheck insurance stepper should not ne seen
+    And I disable insurance checkbox
+    When I schedule an appointment and precheck
+    And I click on patient name and do precheck and verify while doing precheck insurance stepper should not be seen
+    When user enter username and password
+    And enable insurance checkbox
+    And logout from practice provisioning portal
+
+  Scenario: verify if user pays copay amount by pay with credit card
+    When I schedule an appointment with copay
+    And I click on patient name and pay the copay amount by credit card while doing precheck
+    When user enter username and password
+    Then I verify in appointment dashboard for that appointment the copay amount is paid
+    And logout from practice provisioning portal

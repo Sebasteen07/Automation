@@ -52,6 +52,16 @@ public class PreCheckPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "(//textarea[@class='mf-form__input--text-area'])[3]")
 	private WebElement clearPrimaryInstructionsMessageInSpanish;
+	
+	@FindBy(how = How.XPATH, using = "(//li[@class='mf-nav__item mf-nav__secondary-menu__item']/a)[2]")
+	private WebElement precheckTab;
+	
+	@FindBy(how = How.XPATH, using = "//*[@for='demographics']")
+	private WebElement demographicsCheckbox;
+
+	@FindBy(how = How.XPATH, using = "//*[@for='insurance']")
+	private WebElement insuranceCheckbox;
+	
 
 	public PreCheckPage(WebDriver driver) {
 		super(driver);
@@ -191,6 +201,48 @@ public class PreCheckPage extends BasePageObject {
 			log("primary instructions not displayed in spanish");
 			return false;
 		}
+	}
+	
+	public void clickOnPreCheckTab() {
+		IHGUtil.waitForElement(driver, 5, precheckTab);
+		jse.executeScript("arguments[0].click();", precheckTab);
+		log("Switch on precheck tab");
+	}
+	
+	public void disableDemographicsCheckbox() {
+		IHGUtil.waitForElement(driver, 10, demographicsCheckbox);
+		boolean selected = demographicsCheckbox.isSelected();
+		if (!selected) {
+			jse.executeScript("arguments[0].click();", demographicsCheckbox);
+			log("demographics checkbox is disabled");
+		} else if (selected) {
+			log("demographics checkbox is enabled");
+		}
+		
+	}
+	
+	public void enableDemographicsCheckbox() {
+		IHGUtil.waitForElement(driver, 10, demographicsCheckbox);
+		demographicsCheckbox.click();
+	
+}
+	
+	public void disableInsuranceCheckbox() {
+		IHGUtil.waitForElement(driver, 10, insuranceCheckbox);
+		boolean selected = insuranceCheckbox.isSelected();
+		if (!selected) {
+			jse.executeScript("arguments[0].click();", insuranceCheckbox);
+			log("insurance checkbox is disabled");
+		} else if (selected) {
+			log("insurance checkbox is enabled");
+		}
+		
+	}
+		
+		public void enableInsuranceCheckbox() {
+			IHGUtil.waitForElement(driver, 10, insuranceCheckbox);
+			insuranceCheckbox.click();
+		
 	}
 	
 }

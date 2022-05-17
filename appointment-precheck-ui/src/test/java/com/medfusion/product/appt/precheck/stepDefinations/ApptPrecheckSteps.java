@@ -8261,4 +8261,280 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.enterLocation(propertyData.getProperty("location.name.ge"));
 		
 	}
+	
+	@When("I click on patient name")
+	public void i_click_on_patient_name() throws InterruptedException {
+	    apptPage.selectPatientIdAppt(Appointment.patientId);
+	    apptPage.clickonPatientName();
+	}
+	@When("I click on launch patient mode and change some of the fields")
+	public void i_click_on_launch_patient_mode_and_change_some_of_the_fields() throws InterruptedException {
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.enterMiddleName(propertyData.getProperty("precheck.middle.name"));
+		apptPage.clickOnGenderDropdown();
+		apptPage.selectGender();
+		apptPage.enterAddressline(propertyData.getProperty("precheck.address.line1"));
+		apptPage.enterCity(propertyData.getProperty("precheck.patient.city"));
+		apptPage.clickOnState();
+		apptPage.selectState();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkip();
+		apptPage.clickOnSkip();
+		apptPage.clickOnSkip();
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+	}
+	@Then("I verify appointment details should be updated")
+	public void i_verify_appointment_details_should_be_updated() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickonPatientName();
+		assertEquals(apptPage.visibilityOfMiddleNameofPatient(),"Previously not suppliedshan","text not match");
+		assertEquals(apptPage.visibilityOfAddressLine1(),"123 street lane123 street lane462 First Avenue","text not match");
+		assertEquals(apptPage.visibilityOfCity(),"LALANew York","text not match");
+		assertEquals(apptPage.visibilityOfState(),"NYAL","text not match");
+		apptPage.closeApptDetail();
+	}
+	@When("I schedule an appointment and update contact info")
+	public void i_schedule_an_appointment_and_update_contact_info() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@When("I click on patient name and do the precheck")
+	public void i_click_on_patient_name_and_do_the_precheck() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+	    apptPage.clickonPatientName();
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.updatePhoneNumberAndEmailFromPrecheck(propertyData.getProperty("precheck.page.title"),
+				propertyData.getProperty("precheck.phone.number"),
+				propertyData.getProperty("curbside.checkin.mail"));
+	}
+	@When("I verify contact info page should be updated")
+	public void i_verify_contact_info_page_should_be_updated() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+	    apptPage.clickonPatientName();
+		assertEquals(apptPage.visibiltyOfupdatePhoneNumber(),"858 314 6450713 231 0405","text not match");
+		assertEquals(apptPage.visibiltyOfupdateEmailAddress(),"jordan76936@YOPmail.comdolbie@YOPmail.com","text not match");
+		apptPage.closeApptDetail();
+	}
+	@When("I click on precheck tab and disable the demographics and save changes")
+	public void i_click_on_precheck_tab_and_disable_the_demographics_and_save_changes() throws InterruptedException {
+	   precheckPage.clickOnPreCheckTab();
+	   precheckPage.disableDemographicsCheckbox();
+	   precheckPage.clickOnsaveChanges();
+	   mainPage.clickOnAppointmentsTab();
+	}
+	@When("I click on patient mode to do the precheck")
+	public void i_click_on_patient_mode_to_do_the_precheck() throws InterruptedException {
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.clickOnSkip();
+		assertEquals(apptPage.visibilityOfInsuranceStepper(),"Insurance information","text not match");
+		apptPage.clickOnSkip();
+		apptPage.clickOnSkip();
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+	}
+	@Then("I verify precheck should not have personal info,contact info,pharmacy details")
+	public void i_verify_precheck_should_not_have_personal_info_contact_info_pharmacy_details() throws InterruptedException {
+	    mainPage.clickOnSettingTab();
+	    precheckPage.clickOnPreCheckTab();
+	    precheckPage.enableDemographicsCheckbox();
+		precheckPage.clickOnsaveChanges();
+	}
+	
+	@When("I click on patient name and add {int} insurances during precheck")
+	public void i_click_on_patient_name_and_add_insurances_during_precheck(Integer int1) throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+	    apptPage.clickonPatientName();
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.addInsurance();
+		apptPage.enterInsuranceName(propertyData.getProperty("precheck.primary.insurance.name"));
+		apptPage.subscriberId(propertyData.getProperty("precheck.primary.insurance.member.id"));;
+		apptPage.saveAndContinueButton();
+		apptPage.addInsuranceCard();
+		apptPage.enterInsuranceName(propertyData.getProperty("insurance.name"));
+		apptPage.subscriberId(propertyData.getProperty("insurance.member.id"));
+		apptPage.saveAndContinueButton();
+		apptPage.addInsuranceCard();
+		apptPage.enterInsuranceName(propertyData.getProperty("insurance.name.third"));
+		apptPage.subscriberId(propertyData.getProperty("insurance.member.id.third"));
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkip();
+		apptPage.clickOnSkip();
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+	}
+	@Then("I verify in dashboard appointment details should have all the insurance info")
+	public void i_verify_in_dashboard_appointment_details_should_have_all_the_insurance_info() throws InterruptedException, NullPointerException {
+		apptPage.filterPatientId(Appointment.patientId);
+		assertEquals(apptPage.insuranceCount(),"3","Count not match");
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(300, 2000, 10000);
+		apptPage.viewDetails();
+		assertEquals(apptPage.insuranceCardDetails(),"Added","Text not match");
+	}
+	@When("I click on patient name and add {int} insurances during precheck and edit the insurance cards and remove primary,secondary,tertiary insurances")
+	public void i_click_on_patient_name_and_add_insurances_during_precheck_and_edit_the_insurance_cards_and_remove_primary_secondary_tertiary_insurances(Integer int1) throws InterruptedException {
+			apptPage.selectPatientIdAppt(Appointment.patientId);
+		    apptPage.clickonPatientName();
+			apptPage.clickOnLaunchPatientModeButton();
+			apptPage.clickOnContinueButton();
+			apptPage.saveAndContinueButton();
+			apptPage.clickOkButton();
+			apptPage.addInsurance();
+			apptPage.enterInsuranceName(propertyData.getProperty("precheck.primary.insurance.name"));
+			apptPage.subscriberId(propertyData.getProperty("precheck.primary.insurance.member.id"));;
+			apptPage.saveAndContinueButton();
+			apptPage.addInsuranceCard();
+			apptPage.enterInsuranceName(propertyData.getProperty("insurance.name"));
+			apptPage.subscriberId(propertyData.getProperty("insurance.member.id"));
+			apptPage.saveAndContinueButton();
+			apptPage.addInsuranceCard();
+			apptPage.enterInsuranceName(propertyData.getProperty("insurance.name.third"));
+			apptPage.subscriberId(propertyData.getProperty("insurance.member.id.third"));
+			apptPage.saveAndContinueButton();
+			apptPage.saveAndContinueButton();
+			apptPage.clickOnSkip();
+			apptPage.clickOnSkip();
+			apptPage.editInsuranceCards();
+			apptPage.deleteInsurance();
+			apptPage.deleteButton();
+			apptPage.deleteInsurance();
+			apptPage.deleteButton();
+			apptPage.deleteInsurance();
+			apptPage.deleteButton();
+			apptPage.clickOnSkip();
+			apptPage.clickOnSkip();
+			apptPage.clickOnSkip();
+			apptPage.clickOnImDoneButton();
+			apptPage.clickOnLogOutButton();
+	}
+	@Then("I verify in dashboard insurance should be removed for that appointment")
+	public void i_verify_in_dashboard_insurance_should_be_removed_for_that_appointment() throws InterruptedException {
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(300, 2000, 10000);
+		apptPage.viewDetails();
+		assertEquals(apptPage.cardDetails(),"Removed by patient","Text not match");
+	}
+	@When("I disable insurance checkbox")
+	public void i_disable_insurance_checkbox() {
+		mainPage.clickOnSettingTab();
+		precheckPage.clickOnPreCheckTab();
+	    precheckPage.disableInsuranceCheckbox();
+	    precheckPage.clickOnsaveChanges();
+	    mainPage.clickOnAppointmentsTab();
+	}
+	@When("I schedule an appointment and precheck")
+	public void i_schedule_an_appointment_and_precheck() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@When("I click on patient name and do precheck and verify while doing precheck insurance stepper should not be seen")
+	public void i_click_on_patient_name_and_do_precheck_and_verify_while_doing_precheck_insurance_stepper_should_not_be_seen() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+	    apptPage.clickonPatientName();
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkip();
+		assertNotEquals(apptPage.visibilityOfInsuranceStepper(),"Insurance information","text not match");
+		apptPage.clickOnSkip();
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+	}
+	@When("enable insurance checkbox")
+	public void enable_insurance_checkbox() {
+		mainPage.clickOnSettingTab();
+		precheckPage.clickOnPreCheckTab();
+	    precheckPage.enableInsuranceCheckbox();
+	}
+	@When("I schedule an appointment and add insurances")
+	public void i_schedule_an_appointment_and_add_insurances() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	
+	@When("I schedule an appointment with copay")
+	public void i_schedule_an_appointment_with_copay() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentCopayPayload(plus20Minutes),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@When("I click on patient name and pay the copay amount by credit card while doing precheck")
+	public void i_click_on_patient_name_and_pay_the_copay_amount_by_credit_card_while_doing_precheck() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+	    apptPage.clickOnSecondPatientName();
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.clickOnGenderDropdown();
+		apptPage.selectGender();
+		apptPage.clickOnState();
+		apptPage.selectState();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnPayNow();
+		apptPage.enterNameOnCard(propertyData.getProperty("mf.scheduler.patient.name"));
+		apptPage.enterCardNumber(propertyData.getProperty("credit.card.number"));
+		apptPage.enterExpiryDate(propertyData.getProperty("expiry.date"));
+		apptPage.enterCVVCode(propertyData.getProperty("cvv.code"));
+		apptPage.enterPatientZipCode(propertyData.getProperty("precheck.patient.zip"));
+		apptPage.clickOnConfirmButtonOfPrecheck();
+		apptPage.clickOnPayButton();
+		apptPage.clickOnContinueButton();
+		apptPage.clickOnSkip();
+		apptPage.clickOnSkip();
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+	}
+	@Then("I verify in appointment dashboard for that appointment the copay amount is paid")
+	public void i_verify_in_appointment_dashboard_for_that_appointment_the_copay_amount_is_paid() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+	    apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+	    assertEquals(apptPage.visibilityOfCopay(),"$40.00 paid","text not match");
+	}
+
 }
