@@ -82,8 +82,8 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 				.log().all().extract().response();
 	}
 
-	public Response pastAppt(String practiceid, Map<String, Object> hm) throws Exception {
-		Response response = given().log().all().spec(requestSpec).body(hm).post(practiceid + "/pastappointments").then()
+	public Response pastAppt(String practiceid, String body) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(body).post(practiceid + "/pastappointments").then()
 				.log().all().assertThat().statusCode(200).extract().response();
 		return response;
 	}
