@@ -551,9 +551,6 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//button[@id='undefinedContinue']")
 	private WebElement clickOnContinueButton;
 	
-	@FindBy(how = How.XPATH, using = "//input[@id='middleName']")
-	private WebElement enterMiddleName;
-	
 	@FindBy(how = How.XPATH, using = "//div[@class='gender__indicator gender__dropdown-indicator css-tlfecz-indicatorContainer']")
 	private WebElement clickOnGenderDropdown;
 	
@@ -587,10 +584,10 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Log out')]")
 	private WebElement clickOnLogOutButton;
 	
-	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[12]")
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-delta-right-positive'])[1]")
 	private WebElement phoneNumber;
 	
-	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[14]")
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-delta-right-positive'])[2]")
 	private WebElement emailAddress;
 	
 	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Save & Continue')]")
@@ -2719,8 +2716,8 @@ public class AppointmentsPage extends BasePageObject {
 		
 		public void enterMiddleName(String middlename) {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterMiddleName);
-			enterMiddleName.sendKeys(middlename);
+			IHGUtil.waitForElement(driver, 10, midName);
+			midName.sendKeys(middlename);
 		}
 		
 		public void clickOnGenderDropdown() {
@@ -3010,7 +3007,7 @@ public class AppointmentsPage extends BasePageObject {
 		public void clickOnSecondPatientName(){
 			IHGUtil.PrintMethodName();
 			IHGUtil.waitForElement(driver, 5, clickOnSecondPatientName);
-			clickOnSecondPatientName.click();
+			jse.executeScript("arguments[0].click();", clickOnSecondPatientName);
 		}
 		
 		public void clickOnPayNow(){

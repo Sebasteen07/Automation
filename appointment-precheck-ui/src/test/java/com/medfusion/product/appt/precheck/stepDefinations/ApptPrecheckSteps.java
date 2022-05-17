@@ -8324,8 +8324,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_verify_contact_info_page_should_be_updated() throws InterruptedException {
 		apptPage.selectPatientIdAppt(Appointment.patientId);
 	    apptPage.clickonPatientName();
-		assertEquals(apptPage.visibiltyOfupdatePhoneNumber(),"858 314 6450713 231 0405","text not match");
-		assertEquals(apptPage.visibiltyOfupdateEmailAddress(),"jordan76936@YOPmail.comdolbie@YOPmail.com","text not match");
+		assertEquals(apptPage.visibiltyOfupdatePhoneNumber(),"713 231 0405","text not match");
+		assertEquals(apptPage.visibiltyOfupdateEmailAddress(),"dolbie@YOPmail.com","text not match");
 		apptPage.closeApptDetail();
 	}
 	@When("I click on precheck tab and disable the demographics and save changes")
