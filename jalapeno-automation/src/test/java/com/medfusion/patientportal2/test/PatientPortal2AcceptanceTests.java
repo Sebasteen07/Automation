@@ -6304,9 +6304,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
 		pharmaPage.addPharmacy(driver);
 		pharmaPage.editPharmacy();
-		String editedPhName=pharmaPage.getUpdatedPharmcyName();
 		Thread.sleep(2000);
-		
+		String editedPhName=pharmaPage.getUpdatedPharmcyName();
+				
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
 		selectMedPage.selectMedications();
@@ -6315,7 +6315,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Confirm Medication Request from Patient Portal");
 		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
 		String editedPhName1=confirmPage.getPharamcyName(driver);
-		System.out.println(editedPhName1);
 		assertTrue(editedPhName1.contains(editedPhName));
 
 		String successMsg = confirmPage.confirmMedication(driver);
