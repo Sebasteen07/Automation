@@ -2374,7 +2374,7 @@ Feature: Test fuctionality of Appointment precheck
 
   Scenario: verify if user disable insurance checkbox and while doing precheck insurance stepper should not ne seen
     When I disable insurance checkbox
-    When I schedule an appointment and precheck
+    And I schedule an appointment and precheck
     And I click on patient name and do precheck and verify while doing precheck insurance stepper should not be seen
     And user enter username and password
     And enable insurance checkbox
