@@ -241,7 +241,7 @@ public class PreCheckPage extends BasePageObject {
 		
 		public void enableInsuranceCheckbox() {
 			IHGUtil.waitForElement(driver, 10, insuranceCheckbox);
-			insuranceCheckbox.click();
+			jse.executeScript("arguments[0].click();", insuranceCheckbox);
 		
 	}
 	

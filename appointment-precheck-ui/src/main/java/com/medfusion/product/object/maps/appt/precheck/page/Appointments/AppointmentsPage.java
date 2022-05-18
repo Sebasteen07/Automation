@@ -548,59 +548,32 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//span[text()='AppScheduler One']")
 	private WebElement clickonPatientName;
 	
-	@FindBy(how = How.XPATH, using = "//button[@id='undefinedContinue']")
-	private WebElement clickOnContinueButton;
-	
 	@FindBy(how = How.XPATH, using = "//div[@class='gender__indicator gender__dropdown-indicator css-tlfecz-indicatorContainer']")
 	private WebElement clickOnGenderDropdown;
 	
 	@FindBy(how = How.XPATH, using = "//div[text()='Male']")
 	private WebElement selectGender;
 	
-	@FindBy(how = How.XPATH, using = "//input[@id='addressLine1']")
-	private WebElement enterAddressline;
-	
-	@FindBy(how = How.XPATH, using = "//input[@id='city']")
-	private WebElement enterCity;
-	
-	@FindBy(how = How.XPATH, using = "//select[@class='mf-select-dropdown']")
-	private WebElement clickOnState;
-	
 	@FindBy(how = How.XPATH, using = "//option[contains(text(),'AL')]")
 	private WebElement selectState;
 	
 	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[12]")
-	private WebElement middleNameOfPatient;
+	private WebElement middleNameOfPatientInApptAfterPrecheck;
 	
 	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[14]")
-	private WebElement addressLine;
+	private WebElement addressLineInApptAfterPrecheck;
 	
 	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[16]")
-	private WebElement updatedCity;
+	private WebElement updatedCityInApptAfterPrecheck;
 	
 	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[18]")
-	private WebElement updatedState;
-	
-	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Log out')]")
-	private WebElement clickOnLogOutButton;
+	private WebElement updatedStateInApptAfterPrecheck;
 	
 	@FindBy(how = How.XPATH, using = "(//span[@class='mf-delta-right-positive'])[1]")
-	private WebElement phoneNumber;
+	private WebElement phoneNumberInApptAfterPrecheck;
 	
 	@FindBy(how = How.XPATH, using = "(//span[@class='mf-delta-right-positive'])[2]")
-	private WebElement emailAddress;
-	
-	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Save & Continue')]")
-	private WebElement saveandcontinueButton;
-	
-	@FindBy(how = How.XPATH, using = "//button[@class='primary-button']")
-	private WebElement clickOkButton;
-	
-	@FindBy(how = How.XPATH, using = "//span[@class='line-link__message']")
-	private WebElement clickOnSkip;
-	
-	@FindBy(how = How.XPATH, using = "//button[contains(text(),\"I'm done\")]")
-	private WebElement clickOnImDoneButton;
+	private WebElement emailAddressInApptAfterPrecheck;
 	
 	@FindBy(how = How.XPATH, using = "//button[text() = 'Add insurance']")
 	private WebElement addInsurance;
@@ -633,13 +606,10 @@ public class AppointmentsPage extends BasePageObject {
 	private WebElement viewDetails;
 
 	@FindBy(how = How.XPATH, using = "//div[text()='Removed by patient']")
-	private WebElement cardDetails;
+	private WebElement cardDetailsInApptAfterPrecheck;
 	
 	@FindBy(how = How.XPATH, using = "//div[text()='Added']")
-	private WebElement insuranceCardDetails;
-	
-	@FindBy(how = How.XPATH, using = "//button[text()='Close']")
-	private WebElement closeApptDetails;
+	private WebElement insuranceCardDetailsInApptAfterPrecheck;
 	
 	@FindBy(how = How.XPATH, using = "//span[@class='stepper-text stepper-text--selected']")
 	private WebElement insuranceStepper;
@@ -668,9 +638,6 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//input[@name='cvv']")
 	private WebElement enterCVVCode;
 	
-	@FindBy(how = How.XPATH, using = "//input[@id='zip']")
-	private WebElement enterPatientZipCode;
-	
 	@FindBy(how = How.XPATH, using = "//button[@class='primary-button primary-btn-pay-std']")
 	private WebElement clickOnConfirmButtonOfPrecheck;
 
@@ -680,6 +647,12 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//span[text()='$40.00 paid']")
 	private WebElement copayAmount;
 
+	@FindBy(how = How.XPATH, using = "//input[@id='addressLine1']")
+	private WebElement enterAddresslineInPrecheck;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='zip']")
+	private WebElement enterPatientZipCodeOfCard;
+	
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -2734,20 +2707,20 @@ public class AppointmentsPage extends BasePageObject {
 		
 		public void enterAddressline(String address) {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterAddressline);
-			enterAddressline.sendKeys(address);
+			IHGUtil.waitForElement(driver, 10, enterAddresslineInPrecheck );
+			enterAddresslineInPrecheck.sendKeys(address);
 		}
 		
 		public void enterCity(String city) {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterCity);
-			enterCity.sendKeys(city);
+			IHGUtil.waitForElement(driver, 10, patientCity);
+			patientCity.sendKeys(city);
 		}
 		
 		public void clickOnState() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, clickOnState);
-			jse.executeScript("arguments[0].click();", clickOnState);
+			IHGUtil.waitForElement(driver, 10, patientStateDropdown);
+			jse.executeScript("arguments[0].click();", patientStateDropdown);
 			
 		}
 		
@@ -2760,26 +2733,38 @@ public class AppointmentsPage extends BasePageObject {
 		
 		public void clickOnLogOutButton() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, clickOnLogOutButton);
-			jse.executeScript("arguments[0].click();", clickOnLogOutButton);
+			IHGUtil.waitForElement(driver, 10, logOutButton);
+			jse.executeScript("arguments[0].click();", logOutButton);
 		}
 		
 		public void saveAndContinueButton() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, saveAndContinueButton);
+			IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
 			saveAndContinueButton.click();
 		}
 		
 		public void clickOkButton() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, clickOkButton);
-			jse.executeScript("arguments[0].click();", clickOkButton);
+			IHGUtil.waitForElement(driver, 10, okButton);
+			jse.executeScript("arguments[0].click();", okButton);
 		}
 		
-		public void clickOnSkip() {
+		public void clickOnSkipAddingInsurance() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, clickOnSkip);
-			jse.executeScript("arguments[0].click();", clickOnSkip);
+			IHGUtil.waitForElement(driver, 10, skipAddingInsurance);
+			jse.executeScript("arguments[0].click();", skipAddingInsurance);
+		}
+		
+		public void clickOnSkipAndPayInOffice() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, skipAndPayInOffice);
+			jse.executeScript("arguments[0].click();", skipAndPayInOffice );
+		}
+		
+		public void clickOnSkipAndFinishLater() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, skipAndFinishLater);
+			jse.executeScript("arguments[0].click();", skipAndFinishLater );
 		}
 		
 		public void clickOnImDoneButton() {
@@ -2790,42 +2775,42 @@ public class AppointmentsPage extends BasePageObject {
 		
 		public String visibilityOfMiddleNameofPatient() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 20, middleNameOfPatient);
-			return middleNameOfPatient.getText();
+			IHGUtil.waitForElement(driver, 20, middleNameOfPatientInApptAfterPrecheck);
+			return middleNameOfPatientInApptAfterPrecheck.getText();
 		}
 		
 		public String visibilityOfAddressLine1() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 20, addressLine );
-			return enterAddressline.getText();
+			IHGUtil.waitForElement(driver, 20, addressLineInApptAfterPrecheck );
+			return addressLineInApptAfterPrecheck.getText();
 			
 		}
 		
 		public String visibilityOfCity() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 20, updatedCity);
-			return updatedCity.getText();
+			IHGUtil.waitForElement(driver, 20, updatedCityInApptAfterPrecheck);
+			return updatedCityInApptAfterPrecheck.getText();
 			
 		}
 		
 		public String visibilityOfState() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 20, updatedState );
-			return updatedState.getText();
+			IHGUtil.waitForElement(driver, 20, updatedStateInApptAfterPrecheck );
+			return updatedStateInApptAfterPrecheck.getText();
 			
 		}
 		
 		public String visibiltyOfupdatePhoneNumber() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, phoneNumber);
-			return phoneNumber.getText();
+			IHGUtil.waitForElement(driver, 10, phoneNumberInApptAfterPrecheck);
+			return phoneNumberInApptAfterPrecheck.getText();
 			
 		}
 		
 		public String visibiltyOfupdateEmailAddress() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, emailAddress );
-			return emailAddress.getText();
+			IHGUtil.waitForElement(driver, 10, emailAddressInApptAfterPrecheck );
+			return emailAddressInApptAfterPrecheck.getText();
 			
 		}
 		
@@ -2885,14 +2870,14 @@ public class AppointmentsPage extends BasePageObject {
 		
 		public String cardDetails() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, cardDetails);
-			return cardDetails.getText();
+			IHGUtil.waitForElement(driver, 10, cardDetailsInApptAfterPrecheck);
+			return cardDetailsInApptAfterPrecheck.getText();
 		}
 		
 		public String insuranceCardDetails() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, insuranceCardDetails);
-			return insuranceCardDetails.getText();
+			IHGUtil.waitForElement(driver, 10, insuranceCardDetailsInApptAfterPrecheck);
+			return insuranceCardDetailsInApptAfterPrecheck.getText();
 		}
 		
 		
@@ -2915,30 +2900,35 @@ public class AppointmentsPage extends BasePageObject {
 					IHGUtil.waitForElement(driver, 5, okButton);
 					okButton.click();
 					
-					IHGUtil.waitForElement(driver, 5, clickOnSkip);
-					clickOnSkip.click();
-			
-				try {
-					IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
-					skipAndPayInOffice.click();
-				}catch(NoSuchElementException e){
-					IHGUtil.waitForElement(driver, 5, payInOfficeButton);
-					payInOfficeButton.click();
-				}
+					try {
+						IHGUtil.waitForElement(driver, 5, skipAddingInsurance );
+						skipAddingInsurance.click();
+					}catch(NoSuchElementException e){
+						IHGUtil.waitForElement(driver, 5, addInsurance );
+						addInsurance.click();
+					}
+					
+					try {
+						IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+						skipAndPayInOffice.click();
+					}catch(NoSuchElementException e){
+						IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+						payInOfficeButton.click();
+					}
 
-				try {
-					IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
-					skipAndFinishLater.click();
-				}catch(NoSuchElementException e){
-					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
-					saveAndContinueButton.click();
-				}
+					try {
+						IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
+						skipAndFinishLater.click();
+					}catch(NoSuchElementException e){
+						IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+						saveAndContinueButton.click();
+					}
+					
+					IHGUtil.waitForElement(driver, 5, iAmDoneButton);	
+					iAmDoneButton.click();
 				
-				IHGUtil.waitForElement(driver, 5, iAmDoneButton);	
-				iAmDoneButton.click();
-				
-				IHGUtil.waitForElement(driver, 5, logOutButton);
-				logOutButton.click();
+					IHGUtil.waitForElement(driver, 5, logOutButton);
+					logOutButton.click();
 				}
 			
 			}
@@ -2987,8 +2977,8 @@ public class AppointmentsPage extends BasePageObject {
 		
 		public void enterPatientZipCode(String zipcode) {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterPatientZipCode );
-			enterPatientZipCode.sendKeys(zipcode);
+			IHGUtil.waitForElement(driver, 10, enterPatientZipCodeOfCard );
+			enterPatientZipCodeOfCard.sendKeys(zipcode);
 			
 		}
 		

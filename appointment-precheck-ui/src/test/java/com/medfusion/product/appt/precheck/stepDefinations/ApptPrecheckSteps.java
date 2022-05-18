@@ -8280,9 +8280,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.selectState();
 		apptPage.saveAndContinueButton();
 		apptPage.clickOkButton();
-		apptPage.clickOnSkip();
-		apptPage.clickOnSkip();
-		apptPage.clickOnSkip();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
 	}
@@ -8339,10 +8339,10 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_click_on_patient_mode_to_do_the_precheck() throws InterruptedException {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
-		apptPage.clickOnSkip();
+		apptPage.clickOnSkipAddingInsurance();
 		assertEquals(apptPage.visibilityOfInsuranceStepper(),"Insurance information","text not match");
-		apptPage.clickOnSkip();
-		apptPage.clickOnSkip();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
 	}
@@ -8375,8 +8375,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.subscriberId(propertyData.getProperty("insurance.member.id.third"));
 		apptPage.saveAndContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOnSkip();
-		apptPage.clickOnSkip();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
 	}
@@ -8410,8 +8410,8 @@ public class ApptPrecheckSteps extends BaseTest {
 			apptPage.subscriberId(propertyData.getProperty("insurance.member.id.third"));
 			apptPage.saveAndContinueButton();
 			apptPage.saveAndContinueButton();
-			apptPage.clickOnSkip();
-			apptPage.clickOnSkip();
+			apptPage.clickOnSkipAndPayInOffice();
+			apptPage.clickOnSkipAndFinishLater();
 			apptPage.editInsuranceCards();
 			apptPage.deleteInsurance();
 			apptPage.deleteButton();
@@ -8419,9 +8419,9 @@ public class ApptPrecheckSteps extends BaseTest {
 			apptPage.deleteButton();
 			apptPage.deleteInsurance();
 			apptPage.deleteButton();
-			apptPage.clickOnSkip();
-			apptPage.clickOnSkip();
-			apptPage.clickOnSkip();
+			apptPage.clickOnSkipAddingInsurance();
+			apptPage.clickOnSkipAndPayInOffice();
+			apptPage.clickOnSkipAndFinishLater();
 			apptPage.clickOnImDoneButton();
 			apptPage.clickOnLogOutButton();
 	}
@@ -8463,9 +8463,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
 		apptPage.clickOkButton();
-		apptPage.clickOnSkip();
+		apptPage.clickOnSkipAndPayInOffice();
 		assertNotEquals(apptPage.visibilityOfInsuranceStepper(),"Insurance information","text not match");
-		apptPage.clickOnSkip();
+		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
 	}
@@ -8525,8 +8525,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnConfirmButtonOfPrecheck();
 		apptPage.clickOnPayButton();
 		apptPage.clickOnContinueButton();
-		apptPage.clickOnSkip();
-		apptPage.clickOnSkip();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
 	}
