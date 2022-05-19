@@ -8262,6 +8262,21 @@ public class ApptPrecheckSteps extends BaseTest {
 		
 	}
 	
+	
+	@When("I schedule an appointment and update personal information")
+	public void i_schedule_an_appointment_and_update_personal_information() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
 	@When("I click on patient name")
 	public void i_click_on_patient_name() throws InterruptedException {
 	    apptPage.selectPatientIdAppt(Appointment.patientId);
@@ -8272,12 +8287,10 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.enterMiddleName(propertyData.getProperty("precheck.middle.name"));
-		apptPage.clickOnGenderDropdown();
-		apptPage.selectGender();
+		apptPage.chooseGender();
 		apptPage.enterAddressline(propertyData.getProperty("precheck.address.line1"));
 		apptPage.enterCity(propertyData.getProperty("precheck.patient.city"));
-		apptPage.clickOnState();
-		apptPage.selectState();
+		apptPage.chooseState();
 		apptPage.saveAndContinueButton();
 		apptPage.clickOkButton();
 		apptPage.clickOnSkipAddingInsurance();
@@ -8285,6 +8298,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
 	}
 	@Then("I verify appointment details should be updated")
 	public void i_verify_appointment_details_should_be_updated() throws InterruptedException {
@@ -8319,6 +8334,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.updatePhoneNumberAndEmailFromPrecheck(propertyData.getProperty("precheck.page.title"),
 				propertyData.getProperty("precheck.phone.number"),
 				propertyData.getProperty("curbside.checkin.mail"));
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
 	}
 	@When("I verify contact info page should be updated")
 	public void i_verify_contact_info_page_should_be_updated() throws InterruptedException {
@@ -8345,6 +8362,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
+		
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
 	}
 	@Then("I verify precheck should not have personal info,contact info,pharmacy details")
 	public void i_verify_precheck_should_not_have_personal_info_contact_info_pharmacy_details() throws InterruptedException {
@@ -8379,6 +8399,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
 	}
 	@Then("I verify in dashboard appointment details should have all the insurance info")
 	public void i_verify_in_dashboard_appointment_details_should_have_all_the_insurance_info() throws InterruptedException, NullPointerException {
@@ -8424,6 +8446,8 @@ public class ApptPrecheckSteps extends BaseTest {
 			apptPage.clickOnSkipAndFinishLater();
 			apptPage.clickOnImDoneButton();
 			apptPage.clickOnLogOutButton();
+			loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+					propertyData.getProperty("practice.provisining.password.ge"));
 	}
 	@Then("I verify in dashboard insurance should be removed for that appointment")
 	public void i_verify_in_dashboard_insurance_should_be_removed_for_that_appointment() throws InterruptedException {
@@ -8468,6 +8492,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
 	}
 	@When("enable insurance checkbox")
 	public void enable_insurance_checkbox() {
@@ -8509,10 +8535,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	    apptPage.clickOnSecondPatientName();
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
-		apptPage.clickOnGenderDropdown();
-		apptPage.selectGender();
-		apptPage.clickOnState();
-		apptPage.selectState();
+		apptPage.chooseGender();
+		apptPage.chooseState();
 		apptPage.saveAndContinueButton();
 		apptPage.clickOkButton();
 		apptPage.saveAndContinueButton();
@@ -8529,6 +8553,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
 	}
 	@Then("I verify in appointment dashboard for that appointment the copay amount is paid")
 	public void i_verify_in_appointment_dashboard_for_that_appointment_the_copay_amount_is_paid() throws InterruptedException {

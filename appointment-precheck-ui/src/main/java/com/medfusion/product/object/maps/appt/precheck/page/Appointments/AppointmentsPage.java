@@ -548,8 +548,8 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//span[text()='AppScheduler One']")
 	private WebElement clickonPatientName;
 	
-	@FindBy(how = How.XPATH, using = "//div[@class='gender__indicator gender__dropdown-indicator css-tlfecz-indicatorContainer']")
-	private WebElement clickOnGenderDropdown;
+	@FindBy(how = How.XPATH, using = "//div[@class='select-gender']")
+	private WebElement chooseGender;
 	
 	@FindBy(how = How.XPATH, using = "//div[text()='Male']")
 	private WebElement selectGender;
@@ -2693,15 +2693,10 @@ public class AppointmentsPage extends BasePageObject {
 			midName.sendKeys(middlename);
 		}
 		
-		public void clickOnGenderDropdown() {
+		public void chooseGender() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 15, clickOnGenderDropdown);
-			clickOnGenderDropdown.click();
-		}
-		
-		public void selectGender() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 15, selectGender);
+			IHGUtil.waitForElement(driver, 15, chooseGender);
+			chooseGender.click();
 			selectGender.click();
 		}
 		
@@ -2717,17 +2712,11 @@ public class AppointmentsPage extends BasePageObject {
 			patientCity.sendKeys(city);
 		}
 		
-		public void clickOnState() {
+		public void chooseState() {
 			IHGUtil.PrintMethodName();
 			IHGUtil.waitForElement(driver, 10, patientStateDropdown);
 			jse.executeScript("arguments[0].click();", patientStateDropdown);
-			
-		}
-		
-		public void selectState() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, selectState);
-			selectState.click();
+			jse.executeScript("arguments[0].click();", selectState);
 			
 		}
 		

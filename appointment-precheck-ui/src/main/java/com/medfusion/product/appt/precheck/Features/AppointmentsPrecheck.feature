@@ -2334,10 +2334,9 @@ Feature: Test fuctionality of Appointment precheck
     And logout from practice provisioning portal
 
   Scenario: verify patient personal information page
-    When I schedule an appointment
+    When I schedule an appointment and update personal information
     And I click on patient name
     And I click on launch patient mode and change some of the fields
-    And user enter username and password
     Then I verify appointment details should be updated
     And logout from practice provisioning portal
 
@@ -2354,21 +2353,18 @@ Feature: Test fuctionality of Appointment precheck
     And I schedule an appointment
     And I click on patient name
     And I click on patient mode to do the precheck
-    And user enter username and password
     Then I verify precheck should not have personal info,contact info,pharmacy details
     And logout from practice provisioning portal
 
   Scenario: verify if user can add 3 tiers of insurances
     When I schedule an appointment and add insurances
     And I click on patient name and add 3 insurances during precheck
-    And user enter username and password
     Then I verify in dashboard appointment details should have all the insurance info
     And logout from practice provisioning portal
 
   Scenario: verify if user can remove existing insurances
     When I schedule an appointment and add insurances
     And I click on patient name and add 3 insurances during precheck and edit the insurance cards and remove primary,secondary,tertiary insurances
-    And user enter username and password
     Then I verify in dashboard insurance should be removed for that appointment
     And logout from practice provisioning portal
 
@@ -2376,13 +2372,11 @@ Feature: Test fuctionality of Appointment precheck
     When I disable insurance checkbox
     And I schedule an appointment and precheck
     And I click on patient name and do precheck and verify while doing precheck insurance stepper should not be seen
-    And user enter username and password
     And enable insurance checkbox
     And logout from practice provisioning portal
 
   Scenario: verify if user pays copay amount by pay with credit card
     When I schedule an appointment with copay
     And I click on patient name and pay the copay amount by credit card while doing precheck
-    And user enter username and password
     Then I verify in appointment dashboard for that appointment the copay amount is paid
     And logout from practice provisioning portal
