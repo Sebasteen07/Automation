@@ -37,6 +37,9 @@ public class PatientActivationPage extends BasePageObject {
 
 	@FindBy(css = "input[name='member_gender'][value='F']")
 	private WebElement female;
+	
+	@FindBy(css="input[name='member_gender'][value='UN']")
+	private WebElement undifferentiated;
 
 	@FindBy(css = "input[name='member_emrid']")
 	private WebElement patientId;
@@ -216,8 +219,10 @@ public class PatientActivationPage extends BasePageObject {
 		this.lastName.sendKeys(lastName);
 		if (gender.equals("M"))
 			this.male.click();
-		else
+		else if (gender.equals("F"))
 			this.female.click();
+		else
+			this.undifferentiated.click();
 
 		log("PatientID " + patientID);
 		this.patientId.sendKeys(patientID);
