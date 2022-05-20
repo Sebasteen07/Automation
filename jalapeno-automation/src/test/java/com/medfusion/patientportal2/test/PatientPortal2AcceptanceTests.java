@@ -6436,7 +6436,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
-	public void TestUndifferentiatedGenderValue() throws Exception {
+	public void testUndifferentiatedGenderValue() throws Exception {
 		
 		JalapenoHomePage homePage= new JalapenoHomePage(driver);
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
