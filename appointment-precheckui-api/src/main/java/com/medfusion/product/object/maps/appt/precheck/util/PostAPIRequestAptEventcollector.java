@@ -58,8 +58,8 @@ public class PostAPIRequestAptEventcollector extends BaseTestNGWebDriver {
 	public Response aptPostDailyAggregationIncorrectTime(String practiceId,Map<String, String> Header) {
 		log("Execute Post  request for daily aggregation resource");
 		Response response = given().when().
-				queryParam("startDate", "2021-06-17T14:35:09.17").
-				queryParam("endDate", "2021-06-17T14:35:09.179Z").
+				queryParam("startDate", "2021-06-1714:35:09.17").
+				queryParam("endDate", "2021-06-17T4:35:09.179Z").
 				headers(Header).log().all().when()
 				.post("aggregation/daily").then().log().all()
 				.extract().response();
@@ -155,7 +155,7 @@ public class PostAPIRequestAptEventcollector extends BaseTestNGWebDriver {
 	public Response aptGETEventTypeIncorrectDateFormat(String practiceId,Map<String, String> Header) {
 		log("Execute GET request for event");
 		Response response = given().when().
-				queryParam("timeRangeStart", "2021-06-17T09:45:13.854Z").
+				queryParam("timeRangeStart", "2021-06-1709:45:13.854Z").
 				queryParam("timeRangeEnd", "2021-06-17T09:50:13.85").
 				headers(Header).log().all().when()
 				.get("event/practiceId/"+ practiceId + "/eventType/TEXT_SENT").then().log().all()
