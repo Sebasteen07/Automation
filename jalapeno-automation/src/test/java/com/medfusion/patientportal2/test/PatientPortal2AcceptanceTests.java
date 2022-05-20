@@ -6434,5 +6434,46 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUndifferentiatedGenderValue() throws Exception {
+		
+		JalapenoHomePage homePage= new JalapenoHomePage(driver);
+		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
+		String patientLastName = patientLogin.replace("login", "last");
+		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
 
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		logStep("Register a patient");
+		String patientUrl = patientActivationPage.setInitialDetailsAllFields("Guardian", patientLastName, "UN",
+				patientLastName + "G", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
+				testData.getDOBDay(), testData.getDOBYear(), "address1", "address2", "city", "Alabama",
+				testData.getZipCode());
+
+		logStep("Finishing of patient activation: step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear());
+
+		logStep("Finishing of patient activation: step 2 - filling patient data");
+		accountDetailsPage.fillAccountDetailsAndContinue(patientLogin, testData.getPassword(), testData);
+
+		log("Login username of patient " + patientLogin);
+
+		logStep("Checking if the information are correct");
+		
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+		assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
+
+	}
 }
