@@ -6436,10 +6436,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
-	public void VerifyUndifferentiatedGenderValue() throws Exception {
-		JalapenoLoginPage loginPage;
+	public void TestUndifferentiatedGenderValue() throws Exception {
+		
 		JalapenoHomePage homePage= new JalapenoHomePage(driver);
-		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); // guardian login
+		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
 		String patientLastName = patientLogin.replace("login", "last");
 		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
 
@@ -6453,7 +6453,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Click on Add new Patient");
 		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
 
-		logStep("Register Guardian - Enter all the details and click on Register");
+		logStep("Register a patient");
 		String patientUrl = patientActivationPage.setInitialDetailsAllFields("Guardian", patientLastName, "UN",
 				patientLastName + "G", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
 				testData.getDOBDay(), testData.getDOBYear(), "address1", "address2", "city", "Alabama",
@@ -6467,16 +6467,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Finishing of patient activation: step 2 - filling patient data");
 		accountDetailsPage.fillAccountDetailsAndContinue(patientLogin, testData.getPassword(), testData);
 
-		log("Login username of Guardian is " + patientLogin);
+		log("Login username of patient " + patientLogin);
 
 		logStep("Checking if the information are correct");
 		
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
 		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
 		assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
-
-		logStep("Logging out");
-		loginPage = homePage.clickOnLogout();
 
 	}
 }
