@@ -6478,9 +6478,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMinorPatientUndifferentiatedGenderValue() throws Exception {
-	String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); // guardian's login
-	String patientLastName = patientLogin.replace("login", "last"); // lastname for both
-	String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com"; /// email for both
+	String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); 
+	String patientLastName = patientLogin.replace("login", "last"); 
+	String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com"; 
 
 	logStep("Login to Practice Portal");
 	PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
