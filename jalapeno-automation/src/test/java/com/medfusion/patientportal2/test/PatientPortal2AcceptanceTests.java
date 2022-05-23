@@ -6321,7 +6321,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(successMsg, "Your prescription request has been submitted.");
 	}
 	
-		public void testAskASpecialChar() throws Exception {
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAskASpecialChar() throws Exception {
 		String questionText = "wat!@#$%^&*()<>:/'+|-'";
 
 		logStep("Login patient");
