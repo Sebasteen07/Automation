@@ -2571,4 +2571,16 @@ public class AppointmentsPage extends BasePageObject {
 			action.sendKeys(locationFilter, locationName).sendKeys(Keys.ENTER).build().perform();
 			clickOnRefreshTab();
 		}
+		
+		public String  selectedPatientGetPriorEntryForEmail(String patientId,String apptId) throws InterruptedException{
+			IHGUtil.PrintMethodName();
+	        WebElement reminderEmailStatus= driver.findElement(By.xpath("(//input[@id='select-"+patientId+"-"+apptId+"']/following::div[@class='reminders-expanded-status'])[1]"));
+	        return reminderEmailStatus.getText();
+	    }
+	    
+	    public String getPriorEntryForTextForSelectedPatient(String patientId,String apptId) throws InterruptedException{
+	    	IHGUtil.PrintMethodName();
+	        WebElement reminderTextStatus= driver.findElement(By.xpath("(//input[@id='select-"+patientId+"-"+apptId+"']/following::div[@class='reminders-expanded-status'])[1]"));
+	        return reminderTextStatus.getText();
+	    }
 }

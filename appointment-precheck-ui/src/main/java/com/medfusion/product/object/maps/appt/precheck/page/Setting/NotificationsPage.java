@@ -3679,5 +3679,23 @@ public class NotificationsPage extends BasePageObject {
 			}
 		}
 	}
+	
+	public void enterInvalidTimingAndTimingUnit(int pathIndex, String timing, String timingUnit) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		log("Select timing and timing unit for: " + timing);
+		jse.executeScript("arguments[0].click();", driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]")));
+		Actions action = new Actions(driver);
+		action.sendKeys(driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]")),
+				timing).sendKeys(Keys.ENTER).build().perform();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]")).clear();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]"))
+				.sendKeys(timingUnit);
+		Thread.sleep(3000);
+	}
+	
+	public String getInvalidUnitText(int pathIndex) {
+		WebElement invalidText=driver.findElement(By.xpath("(//*[text()='Invalid Units'])["+pathIndex+"]"));
+		return invalidText.getText();
+	}
 
 }
