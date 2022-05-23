@@ -545,36 +545,6 @@ public class AppointmentsPage extends BasePageObject {
 	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
 	public List<WebElement> allTimeCheckboxes;
 	
-	@FindBy(how = How.XPATH, using = "//span[text()='AppScheduler One']")
-	private WebElement clickonPatientName;
-	
-	@FindBy(how = How.XPATH, using = "//div[@class='select-gender']")
-	private WebElement chooseGender;
-	
-	@FindBy(how = How.XPATH, using = "//div[text()='Male']")
-	private WebElement selectGender;
-	
-	@FindBy(how = How.XPATH, using = "//option[contains(text(),'AL')]")
-	private WebElement selectState;
-	
-	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[12]")
-	private WebElement middleNameOfPatientInApptAfterPrecheck;
-	
-	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[14]")
-	private WebElement addressLineInApptAfterPrecheck;
-	
-	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[16]")
-	private WebElement updatedCityInApptAfterPrecheck;
-	
-	@FindBy(how = How.XPATH, using = "(//p[@class='mf-list__element--primary'])[18]")
-	private WebElement updatedStateInApptAfterPrecheck;
-	
-	@FindBy(how = How.XPATH, using = "(//span[@class='mf-delta-right-positive'])[1]")
-	private WebElement phoneNumberInApptAfterPrecheck;
-	
-	@FindBy(how = How.XPATH, using = "(//span[@class='mf-delta-right-positive'])[2]")
-	private WebElement emailAddressInApptAfterPrecheck;
-	
 	@FindBy(how = How.XPATH, using = "//button[text() = 'Add insurance']")
 	private WebElement addInsurance;
 	
@@ -589,9 +559,6 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "(//div[@class='insurance-count'])[1]")
 	private WebElement insuranceCount;
-	
-	@FindBy(how = How.XPATH, using = "//p[@class='mf-list__element--primary']")
-	private WebElement patientInformation;
 	
 	@FindBy(how = How.XPATH, using = "(//p[text()='Edit'])[2]")
 	private WebElement editInsuranceCards;
@@ -617,9 +584,6 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//span[text()='Skip adding insurance']")
 	private WebElement skipAddingInsurance;
 	
-	@FindBy(how = How.XPATH, using = "//span[text()='Rijesh R3ichard']")
-	private WebElement clickOnSecondPatientName;
-	
 	@FindBy(how = How.XPATH, using = "//button[text()='Pay now']")
 	private WebElement clickOnPayNow;
 	
@@ -644,11 +608,8 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//button[@class='primary-button']")
 	private WebElement clickOnPayButton;
 	
-	@FindBy(how = How.XPATH, using = "//span[text()='$40.00 paid']")
+	@FindBy(how = How.XPATH, using = "//div[@class='copay-expanded-cell-content rt-td subrow-precheck-cell payment-expanded expanded-precheck-cell']")
 	private WebElement copayAmount;
-
-	@FindBy(how = How.XPATH, using = "//input[@id='addressLine1']")
-	private WebElement enterAddresslineInPrecheck;
 	
 	@FindBy(how = How.XPATH, using = "//input[@id='zip']")
 	private WebElement enterPatientZipCodeOfCard;
@@ -2348,7 +2309,7 @@ public class AppointmentsPage extends BasePageObject {
 					IHGUtil.waitForElement(driver, 5, okButton);
 					okButton.click();
 				}
-			
+				
 				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
 				saveAndContinueButton.click();
 			
@@ -2680,46 +2641,6 @@ public class AppointmentsPage extends BasePageObject {
 			clickOnRefreshTab();
 		}
 		
-		
-		public void clickonPatientName() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, clickonPatientName);
-			jse.executeScript("arguments[0].click();", clickonPatientName);
-		}
-		
-		public void enterMiddleName(String middlename) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, midName);
-			midName.sendKeys(middlename);
-		}
-		
-		public void chooseGender() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 15, chooseGender);
-			chooseGender.click();
-			selectGender.click();
-		}
-		
-		public void enterAddressline(String address) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterAddresslineInPrecheck );
-			enterAddresslineInPrecheck.sendKeys(address);
-		}
-		
-		public void enterCity(String city) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, patientCity);
-			patientCity.sendKeys(city);
-		}
-		
-		public void chooseState() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, patientStateDropdown);
-			jse.executeScript("arguments[0].click();", patientStateDropdown);
-			jse.executeScript("arguments[0].click();", selectState);
-			
-		}
-		
 		public void clickOnLogOutButton() {
 			IHGUtil.PrintMethodName();
 			IHGUtil.waitForElement(driver, 10, logOutButton);
@@ -2762,93 +2683,29 @@ public class AppointmentsPage extends BasePageObject {
 			jse.executeScript("arguments[0].click();", iAmDoneButton);
 		}
 		
-		public String visibilityOfMiddleNameofPatient() {
+		public String visibilityOfInsuranceStepper() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 20, middleNameOfPatientInApptAfterPrecheck);
-			return middleNameOfPatientInApptAfterPrecheck.getText();
+			IHGUtil.waitForElement(driver, 10,insuranceStepper );
+			return insuranceStepper.getText();
 		}
 		
-		public String visibilityOfAddressLine1() {
+		public void clickOnAddCard() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 20, addressLineInApptAfterPrecheck );
-			return addressLineInApptAfterPrecheck.getText();
+			IHGUtil.waitForElement(driver, 10, addCard);
+			jse.executeScript("arguments[0].click();", addCard);
 			
 		}
 		
-		public String visibilityOfCity() {
+		public String visibilityOfCopay() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 20, updatedCityInApptAfterPrecheck);
-			return updatedCityInApptAfterPrecheck.getText();
-			
-		}
-		
-		public String visibilityOfState() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 20, updatedStateInApptAfterPrecheck );
-			return updatedStateInApptAfterPrecheck.getText();
-			
-		}
-		
-		public String visibiltyOfupdatePhoneNumber() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, phoneNumberInApptAfterPrecheck);
-			return phoneNumberInApptAfterPrecheck.getText();
-			
-		}
-		
-		public String visibiltyOfupdateEmailAddress() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, emailAddressInApptAfterPrecheck );
-			return emailAddressInApptAfterPrecheck.getText();
-			
-		}
-		
-		public void addInsurance() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, addInsurance);
-			jse.executeScript("arguments[0].click();",addInsurance);	
-		}
-		
-		public void enterInsuranceName(String insurancename) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterInsuranceName);
-			enterInsuranceName.sendKeys(insurancename);
-		}
-		
-		public void subscriberId(String subscriberid) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, subscriberId);
-			subscriberId.sendKeys(subscriberid);
-		}
-		
-		public void addInsuranceCard() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, addInsuranceCard);
-			addInsuranceCard.click();
+			IHGUtil.waitForElement(driver, 10,copayAmount );
+			return copayAmount.getText();
 		}
 		
 		public String insuranceCount() {
 			IHGUtil.PrintMethodName();
 			IHGUtil.waitForElement(driver, 10, insuranceCount);
 			return insuranceCount.getText();
-		}
-		
-		public void editInsuranceCards() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, editInsuranceCards);
-			editInsuranceCards.click();
-		}
-		
-		public void deleteInsurance() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, deleteInsurance);
-			deleteInsurance.click();
-		}
-		
-		public void deleteButton() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, deleteButton);
-			deleteButton.click();
 		}
 		
 		public void viewDetails() {
@@ -2922,83 +2779,310 @@ public class AppointmentsPage extends BasePageObject {
 			
 			}
 		
-		
-		public String visibilityOfInsuranceStepper() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10,insuranceStepper );
-			return insuranceStepper.getText();
-		}
-		
-		public void clickOnAddCard() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, addCard);
-			jse.executeScript("arguments[0].click();", addCard);
+		public void addInsurancesFromPrecheck(String precheckPageTitle, String FirstInsuranceName, String FirstSubscriberId, 
+				String SecondInsuranceName, String SecondSubscriberId,
+				String ThirdInsuranceName, String ThirdSubscriberId) throws InterruptedException {
+
+			IHGUtil.waitForElement(driver, 40, driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")));
+			String patientInfoText = driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")).getText();
+			if (patientInfoText.equals(precheckPageTitle))
+				
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+				
+				IHGUtil.waitForElement(driver, 5, okButton);
+				okButton.click();
+				
+				try {
+					IHGUtil.waitForElement(driver, 5, addInsurance );
+					addInsurance.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, skipAddingInsurance );
+					skipAddingInsurance.click();
+				}
+				log("Enter first insurance");
+				IHGUtil.waitForElement(driver, 5, enterInsuranceName);
+				enterInsuranceName.sendKeys(FirstInsuranceName);
+					
+				IHGUtil.waitForElement(driver, 5, subscriberId);
+				subscriberId.sendKeys(FirstSubscriberId);
+					
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+					
+				log("Enter second insurance");
+				try {
+					IHGUtil.waitForElement(driver, 5, addInsuranceCard);
+					addInsuranceCard.click();
+				}catch(NoSuchElementException e) {
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}
+				
+				IHGUtil.waitForElement(driver, 5, enterInsuranceName);
+				enterInsuranceName.sendKeys(SecondInsuranceName);
+					
+				IHGUtil.waitForElement(driver, 5, subscriberId);
+				subscriberId.sendKeys(SecondSubscriberId);
+					
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+				
+				log("Enter third insurance");
+				try {
+					IHGUtil.waitForElement(driver, 5, addInsuranceCard);
+					addInsuranceCard.click();
+				}catch(NoSuchElementException e) {
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}
+				
+				IHGUtil.waitForElement(driver, 5, enterInsuranceName);
+				enterInsuranceName.sendKeys(ThirdInsuranceName);
+					
+				IHGUtil.waitForElement(driver, 5, subscriberId);
+				subscriberId.sendKeys(ThirdSubscriberId);
+					
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+				
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+				
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+					skipAndPayInOffice.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+					payInOfficeButton.click();
+				}
+
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
+					skipAndFinishLater.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}
+				
+				IHGUtil.waitForElement(driver, 5, iAmDoneButton);	
+				iAmDoneButton.click();
 			
-		}
+				IHGUtil.waitForElement(driver, 5, logOutButton);
+				logOutButton.click();
+					
+				}
 		
-		public void enterNameOnCard(String cardname) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterNameOnCard);
-			enterNameOnCard.sendKeys(cardname);
+		public void removeInsurancesFromPrecheck(String precheckPageTitle, String FirstInsuranceName, String FirstSubscriberId, 
+				String SecondInsuranceName, String SecondSubscriberId,
+				String ThirdInsuranceName, String ThirdSubscriberId) throws InterruptedException {
+
+			IHGUtil.waitForElement(driver, 40, driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")));
+			String patientInfoText = driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")).getText();
+			if (patientInfoText.equals(precheckPageTitle))
+				
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+				
+				IHGUtil.waitForElement(driver, 5, okButton);
+				okButton.click();
+				
+				try {
+					IHGUtil.waitForElement(driver, 5, addInsurance );
+					addInsurance.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, skipAddingInsurance );
+					skipAddingInsurance.click();
+				}
+				log("Enter first insurance");
+				IHGUtil.waitForElement(driver, 5, enterInsuranceName);
+				enterInsuranceName.sendKeys(FirstInsuranceName);
+					
+				IHGUtil.waitForElement(driver, 5, subscriberId );
+				subscriberId.sendKeys(FirstSubscriberId);
+					
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+					
+				log("Enter second insurance");
+				try {
+					IHGUtil.waitForElement(driver, 5, addInsuranceCard);
+					addInsuranceCard.click();
+				}catch(NoSuchElementException e) {
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}
+				IHGUtil.waitForElement(driver, 5, enterInsuranceName);
+				enterInsuranceName.sendKeys(SecondInsuranceName);
+					
+				IHGUtil.waitForElement(driver, 5, subscriberId);
+				subscriberId.sendKeys(SecondSubscriberId);
+					
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+				
+				log("Enter third insurance");
+				try {
+					IHGUtil.waitForElement(driver, 5, addInsuranceCard);
+					addInsuranceCard.click();
+				}catch(NoSuchElementException e) {
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}
+				
+				IHGUtil.waitForElement(driver, 5, enterInsuranceName);
+				enterInsuranceName.sendKeys(ThirdInsuranceName);
+					
+				IHGUtil.waitForElement(driver, 5, subscriberId);
+				subscriberId.sendKeys(ThirdSubscriberId);
+					
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+				
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+				
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+					skipAndPayInOffice.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+					payInOfficeButton.click();
+				}
+
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
+					skipAndFinishLater.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}
+				
+				IHGUtil.waitForElement(driver, 5, editInsuranceCards);
+				editInsuranceCards.click();
+				
+				for (int i = 0 ; i < 3 ; i++) {
+				deleteInsurance.click();
+				deleteButton.click();
+				}
+				
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAddingInsurance );
+					skipAddingInsurance.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, addInsurance );
+					addInsurance.click();
+					
+				}
+				
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+					skipAndPayInOffice.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+					payInOfficeButton.click();
+				}
+
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
+					skipAndFinishLater.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}
+				
+				IHGUtil.waitForElement(driver, 5, iAmDoneButton);	
+				iAmDoneButton.click();
 			
-		}
+				IHGUtil.waitForElement(driver, 5, logOutButton);
+				logOutButton.click();
+					
+				}
 		
-		public void enterCardNumber(String cardnumber) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterCardNumber);
-			enterCardNumber.sendKeys(cardnumber);
+		public void payCopayFromPrecheck(String precheckPageTitle, String gender, String state, String CardName,
+				String CardNumber, String ExpiryDate, String CVVCode, String ZipCode) throws InterruptedException {
+
+			IHGUtil.waitForElement(driver, 40, driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")));
+			String patientInfoText = driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")).getText();
+			if (patientInfoText.equals(precheckPageTitle));
+				
+			List<WebElement> element = driver.findElements(By.xpath("//div[@class='gender__value-container gender__value-container--has-value css-1hwfws3']"));
+			element.size();
 			
-		}
-		
-		public void enterExpiryDate(String expirydate) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterExpiryDate);
-			enterExpiryDate.sendKeys(expirydate);
+			for(int i=0; i<element.size(); i++) {
+				log(element.get(i).getText());
+				if(element.get(i).getText().equals(gender)) {
+					element.get(i).click();
+					break;
+				}
+			}
 			
-		}
-		
-		public void enterCVVCode(String cvvcode) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterCVVCode);
-			enterCVVCode.sendKeys(cvvcode);
+			List<WebElement> ele = driver.findElements(By.xpath("//select[@class='mf-select-dropdown']"));
+			ele.size();
 			
-		}
-		
-		public void enterPatientZipCode(String zipcode) {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10, enterPatientZipCodeOfCard );
-			enterPatientZipCodeOfCard.sendKeys(zipcode);
+			for(int i=0; i<ele.size(); i++) {
+				log(ele.get(i).getText());
+				if(ele.get(i).getText().equals(state)) {
+					ele.get(i).click();
+					break;
+				}
+			}
 			
-		}
-		
-		public void clickOnConfirmButtonOfPrecheck(){
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 5, clickOnConfirmButtonOfPrecheck);
-			clickOnConfirmButtonOfPrecheck.click();
-		}
-		
-		public void clickOnPayButton(){
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 5, clickOnPayButton);
-			clickOnPayButton.click();
-		}
-		
-		public void clickOnSecondPatientName(){
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 5, clickOnSecondPatientName);
-			jse.executeScript("arguments[0].click();", clickOnSecondPatientName);
-		}
-		
-		public void clickOnPayNow(){
-			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, okButton);
+			okButton.click();
+			
+			IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+			saveAndContinueButton.click();
+			
 			IHGUtil.waitForElement(driver, 5, clickOnPayNow);
 			clickOnPayNow.click();
-		}
+			
+			IHGUtil.waitForElement(driver, 5, enterNameOnCard);
+			enterNameOnCard.sendKeys(CardName);
 		
-		public String visibilityOfCopay() {
-			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 10,copayAmount );
-			return copayAmount.getText();
-		}
+			IHGUtil.waitForElement(driver, 5, enterCardNumber);
+			enterCardNumber.sendKeys(CardNumber);
+			
+			IHGUtil.waitForElement(driver, 5, enterExpiryDate);
+			enterExpiryDate.sendKeys(ExpiryDate);
+			
+			IHGUtil.waitForElement(driver, 5, enterCVVCode);
+			enterCVVCode.sendKeys(CVVCode);
+			
+			IHGUtil.waitForElement(driver, 5, enterPatientZipCodeOfCard);
+			enterPatientZipCodeOfCard.sendKeys(ZipCode);
+			
+			IHGUtil.waitForElement(driver, 5, clickOnConfirmButtonOfPrecheck);
+			clickOnConfirmButtonOfPrecheck.click();
+			
+			IHGUtil.waitForElement(driver, 5, clickOnPayButton);
+			clickOnPayButton.click();
+			
+			IHGUtil.waitForElement(driver, 5, continueButton);
+			continueButton.click();
+			
+			try {
+				IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+				skipAndPayInOffice.click();
+			}catch(NoSuchElementException e){
+				IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+				payInOfficeButton.click();
+			}
+
+			try {
+				IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
+				skipAndFinishLater.click();
+			}catch(NoSuchElementException e){
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+			}
+				
+			IHGUtil.waitForElement(driver, 5, iAmDoneButton);	
+			iAmDoneButton.click();
+			
+			IHGUtil.waitForElement(driver, 5, logOutButton);
+			logOutButton.click();
+					
+			}
 		
 }
