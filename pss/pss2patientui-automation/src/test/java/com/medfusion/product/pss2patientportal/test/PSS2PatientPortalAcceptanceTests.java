@@ -7995,6 +7995,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		location.searchProvider(testData.getLocation());
+		
 		log("address = " + location.getAddressValue());
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 
@@ -8205,6 +8207,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -8276,6 +8279,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -8347,6 +8351,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());

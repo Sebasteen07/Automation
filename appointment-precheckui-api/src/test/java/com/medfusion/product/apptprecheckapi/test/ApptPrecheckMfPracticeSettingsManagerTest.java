@@ -25,7 +25,6 @@ import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfPracticeSettingsManager;
-
 import io.restassured.response.Response;
 
 public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
@@ -85,7 +84,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutDeliveryMethod(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -115,7 +113,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutDeliveryMethod(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -443,7 +440,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyUpdateSettingsWithoutActiveValue(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)

@@ -1,4 +1,4 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.util;
 
 import static io.restassured.RestAssured.given;
@@ -47,8 +47,9 @@ public class PostAPIRequestAptPrecheckDada extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response retrievesApptAction(String payload, Map<String, String> Header, String practiceId) {
+	public Response retrievesApptAction(String baseurl,String payload, Map<String, String> Header, String practiceId) {
 		log("Execute Put request for Retrieves Appt Action");
+		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().headers(Header).body(payload).when()
 				.put("appointment_actions/practice/" + practiceId).then().log().all().extract().response();
 		return response;
@@ -81,9 +82,10 @@ public class PostAPIRequestAptPrecheckDada extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response deleteApptAction(Map<String, String> Header, String practiceId, String patientId, String apptId,
+	public Response deleteApptAction(String baseurl,Map<String, String> Header, String practiceId, String patientId, String apptId,
 			String apptAction) {
 		log("Execute delete request for Appt Action");
+		RestAssured.baseURI = baseurl;
 		Response response = given()
 				.log().all().headers(Header).when().delete("appointment_actions/practice/" + practiceId + "/patient/"
 						+ patientId + "/appointment/" + apptId + "/action/" + apptAction)
@@ -109,9 +111,10 @@ public class PostAPIRequestAptPrecheckDada extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response retrievesApptAction(Map<String, String> Header, String practiceId, String patientId, String apptId,
+	public Response retrievesApptAction(String baseurl,Map<String, String> Header, String practiceId, String patientId, String apptId,
 			String apptAction) {
 		log("Execute Get request for retrives an Appt Action");
+		RestAssured.baseURI = baseurl;
 		Response response = given()
 				.log().all().headers(Header).when().get("appointment_actions/practice/" + practiceId + "/patient/"
 						+ patientId + "/appointment/" + apptId + "/action/" + apptAction)

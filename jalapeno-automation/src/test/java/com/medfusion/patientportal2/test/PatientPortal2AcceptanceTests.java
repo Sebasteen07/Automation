@@ -1018,7 +1018,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillDetails(askaSubject, questionText);
 		assertEquals(askalength + "/30", askPage1.getSubjectLength());
 		assertEquals(questionTextLenth + "/4000", askPage1.getQuestionLength());
-		
 		askPage1.continueClick();
 		
 		assertTrue(askaSubject.equals(askPage2.getSubject()),
@@ -6285,9 +6284,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
 		pharmaPage.addPharmacy(driver);
 		pharmaPage.editPharmacy();
-		String editedPhName=pharmaPage.getUpdatedPharmcyName();
 		Thread.sleep(2000);
-		
+		String editedPhName=pharmaPage.getUpdatedPharmcyName();
+				
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
 		selectMedPage.selectMedications();
@@ -6296,10 +6295,183 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Confirm Medication Request from Patient Portal");
 		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
 		String editedPhName1=confirmPage.getPharamcyName(driver);
-		System.out.println(editedPhName1);
 		assertTrue(editedPhName1.contains(editedPhName));
 
 		String successMsg = confirmPage.confirmMedication(driver);
 		assertEquals(successMsg, "Your prescription request has been submitted.");
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAskASpecialChar() throws Exception {
+		String questionText = "wat!@#$%^&*()<>:/'+|-'";
+
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+
+		logStep("Click Ask A Staff tab");
+		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
+
+		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+		int askaSubjectLength = askaSubject.length();
+		String askalength = String.valueOf(askaSubjectLength);
+
+		int questionLenth = questionText.length();
+		String questionTextLenth = String.valueOf(questionLenth);
+
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillDetails(askaSubject, questionText);
+		assertEquals(askalength + "/30", askPage1.getSubjectLength());
+		assertEquals(questionTextLenth + "/4000", askPage1.getQuestionLength());
+		
+		askPage1.continueClick();
+		
+		assertTrue(askaSubject.equals(askPage2.getSubject()),
+				"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+		assertTrue(questionText.equals(askPage2.getQuestion()),
+				"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+		homePage = askPage2.submit();
+
+		logStep("Go back to the aska and check question history");
+		askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
+		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
+
+		logStep("Verify the subject and question in history detail match submission");
+		assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		logStep("Logout patient");
+		askHistoryDetail.clickOnLogout();
+
+		logStep("Login to practice portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("sa.provider.username"),
+				testData.getProperty("sa.provider.password"));
+
+		logStep("Click Ask A Staff tab");
+		AskAStaffSearchPage searchQ = practiceHome.clickAskAStaffTab();
+
+		logStep("Search for questions");
+		searchQ.searchForQuestions();
+		AskAStaffQuestionDetailStep1Page detailStep1 = searchQ.getQuestionDetails(askaSubject);
+		assertNotNull(detailStep1, "The submitted patient question was not found in the practice");
+
+		PerformanceReporter.getPageLoadDuration(driver, AskAStaffQuestionDetailStep1Page.PAGE_NAME);
+		logStep("Choose action on patient question");
+		AskAStaffQuestionDetailStep2Page detailStep2 = detailStep1.chooseProvideAdviceOnly();
+
+		logStep("Respond to patient question");
+		AskAStaffQuestionDetailStep3Page detailStep3 = detailStep2.processAndCommunicate("Automated Test",
+				"This message was generated by an automated test");
+
+		logStep("Confirm response details to patient");
+		AskAStaffQuestionDetailStep4Page detailStep4 = detailStep3.confirmProcessedQuestion();
+
+		logStep("Validate submit of confirmation");
+		assertTrue(detailStep4.isQuestionDetailPageLoaded());
+
+		logStep("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		logStep("Login patient");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		homePage = loginPage.login(testData.getProperty("aska.v2.user"), testData.getProperty("aska.v2.password"));
+
+		logStep("Go to messages");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+		logStep("Check if message was delivered");
+		assertTrue(messagesPage.isMessageDisplayed(driver,
+				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
+
+		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+
+		logStep("Click Ask A Staff tab");
+		askPage1 = homePageNew.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
+		askHistoryList = askPage1.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
+
+		logStep("Reverify subject and question in history detail, verify status is now completed");
+		assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Completed".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Completed" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		logStep("Logout patient");
+		askHistoryDetail.clickOnLogout();
+
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUndifferentiatedGenderValue() throws Exception {
+		
+		JalapenoHomePage homePage= new JalapenoHomePage(driver);
+		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
+		String patientLastName = patientLogin.replace("login", "last");
+		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
+
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		logStep("Register a patient");
+		String patientUrl = patientActivationPage.setInitialDetailsAllFields("Guardian", patientLastName, "UN",
+				patientLastName + "G", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
+				testData.getDOBDay(), testData.getDOBYear(), "address1", "address2", "city", "Alabama",
+				testData.getZipCode());
+
+		logStep("Finishing of patient activation: step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear());
+
+		logStep("Finishing of patient activation: step 2 - filling patient data");
+		accountDetailsPage.fillAccountDetailsAndContinue(patientLogin, testData.getPassword(), testData);
+
+		log("Login username of patient " + patientLogin);
+
+		logStep("Checking if the information are correct");
+		
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+		assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
+
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGenderValueUpdatedToUndifferentiated() throws Exception {
+		createCommonPatient();
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+		logStep("Checking if the information are correct");
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+		assertTrue(myAccountPage.checkGender(patient.getGender()));
+		
+		logStep("Update Gender value and Click on the save button");
+		myAccountPage.updateGenderValue(0, 'U');
+		logStep("Verify updated Gender value");
+		assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
 	}
 }

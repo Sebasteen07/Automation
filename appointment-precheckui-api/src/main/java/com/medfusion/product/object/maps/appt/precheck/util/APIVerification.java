@@ -385,16 +385,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		if(js.getString("status").equals("PUBLISH_TEMPLATE_METADATA_FINISHED")) {
-			assertEquals(js.getString("status"), "PUBLISH_TEMPLATE_METADATA_FINISHED", "Status was incorrect");
-			assertEquals(js.getString("message"), "Finished publishing template metadata to queue",
-					"Message was incorrect");
-		}else {
-			assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-			assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences",
-					"Message was incorrect");
-			
-		}
 	}
 
 	public void verifyProcessReminderDataWithInvalidData(Response response, String practiceId, String patientId,
@@ -404,16 +394,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		if(js.getString("status").equals("PUBLISH_TEMPLATE_METADATA_FINISHED")) {
-			assertEquals(js.getString("status"), "PUBLISH_TEMPLATE_METADATA_FINISHED", "Status was incorrect");
-			assertEquals(js.getString("message"), "Finished publishing template metadata to queue",
-					"Message was incorrect");
-		}else {
-			assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-			assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences",
-					"Message was incorrect");
-			
-		}
 	}
 
 	public void verifyProcessReminderDataCurbsSide(Response response, String practiceId, String patientId,
@@ -423,15 +403,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		if(js.getString("status").equals("PUBLISH_TEMPLATE_METADATA_FINISHED")) {
-			assertEquals(js.getString("status"), "PUBLISH_TEMPLATE_METADATA_FINISHED", "Status was incorrect");
-			assertEquals(js.getString("message"), "Finished publishing template metadata to queue",
-					"Message was incorrect");
-		}else {
-			assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-			assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences",
-					"Message was incorrect");
-		}
 	}
 
 	public void verifySendsPatientProvidedDataWithoutCadence(Response response) throws IOException {
@@ -457,8 +428,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-		assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences", "Message was incorrect");
 	}
 
 	public void verifySendsPatientProvidedDataWithInvalidApptId(Response response, String practiceId, String patientId,
@@ -468,8 +437,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-		assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences", "Message was incorrect");
 	}
 
 	public void verifyEventResponse(Response response, String eventId, String eventSource, String eventTime,
@@ -551,7 +518,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	public void verifyProviderDetailsWithoutPracticeId(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Request method 'GET' not supported");
+		assertEquals(jsonPath.get("error"), "Method Not Allowed");
 	}
 
 	public void verifyUpdateAnExistingProvider(Response response, String practiceId, String providerId,
@@ -573,7 +540,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	public void verifyDeleteExistingProviderWithoutProviderId(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Request method 'DELETE' not supported");
+		assertEquals(jsonPath.get("error"), "Method Not Allowed");
 	}
 
 	public void verifyGetsTheImageDataWithoutProviderId(Response response) throws IOException {
@@ -1085,11 +1052,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("timing"), "Upon Scheduling", "timing was incorrect");
 	}
 
-	public void verifyWithoutDeliveryMethod(Response response) throws IOException {
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "No message available");
-	}
-
 	public void verifyDefaultReminderSetting(Response response, String deliveryMtd, String apptMethod, String status)
 			throws IOException {
 		JsonPath js = new JsonPath(response.asString());
@@ -1210,11 +1172,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
 		assertEquals(js.getString("active"), activeSetting, "System id was incorrect");
 		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
-	}
-
-	public void verifyUpdateSettingsWithoutActiveValue(Response response) throws IOException {
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "No message available");
 	}
 
 	public void verifyLocationSettings(Response response, String practiceId, String systemId, String locationId,
@@ -1419,16 +1376,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 	public void verifyAppointmentsBasedOnPaging(Response response, String practiceId) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.getString("pageNumber"), "1", "practiceId  was incorrect");
-		JSONObject jsonObject = new JSONObject(response.asString());
-		JSONArray jsonArray = (JSONArray) jsonObject.get("appointments");
-		for (int i = 0; i < jsonArray.length(); i++) {
-			assertEquals(jsonArray.getJSONObject(i).getString("practiceId"), practiceId, "practiceId  was incorrect");
-		}
 	}
 
 	public void verifyAppointmentsWithInvalidDateRange(Response response, String dateRange) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "400 Could not parse start date " + dateRange);
+		assertEquals(jsonPath.get("message"), "400 Could not parse end date " + dateRange);
 	}
 
 	public void verifyMessageHistoryForAppt(Response response, String practiceId, String pmPatientId,
@@ -1590,12 +1542,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 				"Patient firstName was incorrect");
 		assertEquals(jsonObject.getJSONObject("patientDemographics").getString("lastName"), lastName,
 				"Patient lastName was incorrect");
-	}
-
-	public void verifyDeleteApptWithSelectAllFalse(Response response) throws IOException {
-		JsonPath js = new JsonPath(response.asString());
-		assertEquals(js.getString("success"), "5", "Success  was incorrect");
-		assertEquals(js.getString("fail"), "0", "Fail  was incorrect");
 	}
 	
 	public void verifyIfLogoAlreadyExists(Response response, String practiceId)  {
