@@ -6477,6 +6477,24 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGenderValueUpdatedToUndifferentiated() throws Exception {
+	createCommonPatient();
+	logStep("Load login page");
+	JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+	JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+	logStep("Checking if the information are correct");
+	JalapenoAccountPage accountPage = homePage.clickOnAccount();
+	JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+	assertTrue(myAccountPage.checkGender(patient.getGender()));
+
+	logStep("Update Gender value and Click on the save button");
+	myAccountPage.updateGenderValue(0, 'U');
+	logStep("Verify updated Gender value");
+	assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMinorPatientUndifferentiatedGenderValue() throws Exception {
 	String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); 
 	String patientLastName = patientLogin.replace("login", "last"); 
