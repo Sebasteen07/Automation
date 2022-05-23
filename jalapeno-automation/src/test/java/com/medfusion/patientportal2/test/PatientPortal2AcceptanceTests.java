@@ -6322,4 +6322,33 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String successMsg = confirmPage.confirmMedication(driver);
 		assertEquals(successMsg, "Your prescription request has been submitted.");
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAskAStaffCharCount () throws Exception {
+	String questionText = "wat";
+
+	logStep("Login patient");
+	JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+	JalapenoHomePage homePage = loginPage.login(testData.getProperty("aska.v2.user"),
+	testData.getProperty("aska.v2.password"));
+
+	logStep("Click Ask A Staff tab");
+	JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
+
+	String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+	String askalength = String.valueOf(askaSubject)+IHGUtil.createRandomNumericString(19);
+
+	String questionTextLenth = String.valueOf(questionText)+IHGUtil.createRandomNumericString(3999);
+
+	logStep("Fill question and continue");
+	JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillDetails(askalength, questionTextLenth);
+	assertEquals("30" + "/30", askPage1.getSubjectLength());
+	assertEquals("4000" + "/4000", askPage1.getQuestionLength());
+	askPage1.continueClick();
+
+	assertTrue(askalength.contains(askPage2.getSubject()),
+	"Expected: " + askalength + ", found: " + askPage2.getSubject());
+	assertTrue(questionTextLenth.contains(askPage2.getQuestion()),
+	"Expected: " + questionTextLenth + ", found: " + askPage2.getQuestion());
+	}
 }
