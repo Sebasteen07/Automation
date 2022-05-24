@@ -2284,34 +2284,32 @@ public class AppointmentsPage extends BasePageObject {
 
 		public void addPatientDetailsFromPrecheck(String firstName, String middleName,
 				String lastName, String email, String PhoneNo) throws InterruptedException {
-
+			
 			IHGUtil.waitForElement(driver, 40, precheckPageTitle);
-			boolean patientTitle = precheckPageTitle.isDisplayed();
-			if (patientTitle) {
+			
+			fName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			fName.sendKeys(Keys.BACK_SPACE);
+			fName.sendKeys(firstName);
 
-				fName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-				fName.sendKeys(Keys.BACK_SPACE);
-				fName.sendKeys(firstName);
+			midName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			midName.sendKeys(Keys.BACK_SPACE);
+			midName.sendKeys(middleName);
 
-				midName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-				midName.sendKeys(Keys.BACK_SPACE);
-				midName.sendKeys(middleName);
+			lName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			lName.sendKeys(Keys.BACK_SPACE);
+			lName.sendKeys(lastName);
+			log("Enter first name , middle name and last name");
 
-				lName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-				lName.sendKeys(Keys.BACK_SPACE);
-				lName.sendKeys(lastName);
-				log("Enter first name , middle name and last name");
+			phoneNo.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			phoneNo.sendKeys(Keys.BACK_SPACE);
+			phoneNo.sendKeys(PhoneNo);
 
-				phoneNo.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-				phoneNo.sendKeys(Keys.BACK_SPACE);
-				phoneNo.sendKeys(PhoneNo);
-
-				mail.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-				mail.sendKeys(Keys.BACK_SPACE);
-				mail.sendKeys(email);
-				submit.click();
-				
-				log("Completing precheck");
+			mail.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			mail.sendKeys(Keys.BACK_SPACE);
+			mail.sendKeys(email);
+			submit.click();
+			
+			log("Completing precheck");
 				try {
 					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
 					saveAndContinueButton.click();
@@ -2351,7 +2349,7 @@ public class AppointmentsPage extends BasePageObject {
 				IHGUtil.waitForElement(driver, 5, logOutButton);
 				logOutButton.click();
 				}	
-		}
+		
 		
 		public String getPatientNameFromApptDashboard(String patientId, String apptId) throws InterruptedException {
 			IHGUtil.PrintMethodName();
