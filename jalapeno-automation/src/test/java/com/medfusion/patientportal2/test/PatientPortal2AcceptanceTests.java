@@ -6474,24 +6474,70 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
 		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
 		assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
-
 	}
 	
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGenderValueUpdatedToUndifferentiated() throws Exception {
-		createCommonPatient();
-		logStep("Load login page");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+	createCommonPatient();
+	logStep("Load login page");
+	JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+	JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
-		logStep("Checking if the information are correct");
-		JalapenoAccountPage accountPage = homePage.clickOnAccount();
-		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
-		assertTrue(myAccountPage.checkGender(patient.getGender()));
-		
-		logStep("Update Gender value and Click on the save button");
-		myAccountPage.updateGenderValue(0, 'U');
-		logStep("Verify updated Gender value");
-		assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
+	logStep("Checking if the information are correct");
+	JalapenoAccountPage accountPage = homePage.clickOnAccount();
+	JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+	assertTrue(myAccountPage.checkGender(patient.getGender()));
+
+	logStep("Update Gender value and Click on the save button");
+	myAccountPage.updateGenderValue(0, 'U');
+	logStep("Verify updated Gender value");
+	assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
 	}
-}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMinorPatientUndifferentiatedGenderValue() throws Exception {
+	String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); 
+	String patientLastName = patientLogin.replace("login", "last"); 
+	String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com"; 
+
+	logStep("Login to Practice Portal");
+	PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+	PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+	logStep("Create under-age patient");
+	PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+	logStep("Click on Add new Patient");
+	PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+	logStep("Enter all the details and click on Register");
+	String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "UN",
+	patientLastName, testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(), testData.getDOBDay(),
+	testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama", testData.getZipCode());
+
+	logStep("Continue to Portal Inspired");
+	assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
+	PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, guardianUrl);
+
+	logStep("Identify patient");
+	AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+	testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+
+	logStep("Continue registration - check dependent info and fill guardian name");
+	linkAccountPage.checkDependentInfo("Dependent", patientLastName, patientEmail);
+	SecurityDetailsPage accountDetailsPage = linkAccountPage.continueToCreateGuardianOnly("Guardian",
+	patientLastName, "Parent");
+
+	logStep("Continue registration - create dependents credentials and continue to Home page");
+	JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
+	testData.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
+	testData.getPhoneNumber());
+
+	assertTrue(homePage.assessFamilyAccountElements(false));
+
+	JalapenoAccountPage accountPage = homePage.clickOnAccount();
+	JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditDependentAccount();
+	assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
+	}
+	
+	}
