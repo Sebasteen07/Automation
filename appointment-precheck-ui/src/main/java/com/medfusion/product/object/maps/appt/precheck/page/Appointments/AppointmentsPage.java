@@ -614,6 +614,16 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//input[@id='zip']")
 	private WebElement enterPatientZipCodeOfCard;
 	
+	@FindBy(how = How.XPATH, using = "//h1[text()='Verify patient information']")
+	private WebElement precheckPageTitle;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "//div[@class='gender__value-container gender__value-container--has-value css-1hwfws3']")})
+	private List<WebElement> chooseGender;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "//select[@class='mf-select-dropdown']")})
+	private List<WebElement> chooseState;
+	
+	
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -2272,12 +2282,12 @@ public class AppointmentsPage extends BasePageObject {
 			continueButton.click();
 		}
 
-		public void addPatientDetailsFromPrecheck(String precheckPageTitle, String firstName, String middleName,
+		public void addPatientDetailsFromPrecheck(String firstName, String middleName,
 				String lastName, String email, String PhoneNo) throws InterruptedException {
 
-			IHGUtil.waitForElement(driver, 40, driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")));
-			String patientInfoText = driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")).getText();
-			if (patientInfoText.equals(precheckPageTitle)) {
+			IHGUtil.waitForElement(driver, 40, precheckPageTitle);
+			boolean patientTitle = precheckPageTitle.isDisplayed();
+			if (patientTitle) {
 
 				fName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
 				fName.sendKeys(Keys.BACK_SPACE);
@@ -2727,12 +2737,8 @@ public class AppointmentsPage extends BasePageObject {
 		}
 		
 		
-		public void updatePhoneNumberAndEmailFromPrecheck(String precheckPageTitle, String PhoneNo, String email) throws InterruptedException {
-
-			IHGUtil.waitForElement(driver, 40, driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")));
-			String patientInfoText = driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")).getText();
-			if (patientInfoText.equals(precheckPageTitle)) {
-
+		public void updatePhoneNumberAndEmailFromPrecheck(String PhoneNo, String email) throws InterruptedException {
+			{
 				phoneNo.sendKeys(Keys.chord(Keys.CONTROL, "a"));
 				phoneNo.sendKeys(Keys.BACK_SPACE);
 				phoneNo.sendKeys(PhoneNo);
@@ -2779,13 +2785,9 @@ public class AppointmentsPage extends BasePageObject {
 			
 			}
 		
-		public void addInsurancesFromPrecheck(String precheckPageTitle, String FirstInsuranceName, String FirstSubscriberId, 
+		public void addInsurancesFromPrecheck(String FirstInsuranceName, String FirstSubscriberId, 
 				String SecondInsuranceName, String SecondSubscriberId,
 				String ThirdInsuranceName, String ThirdSubscriberId) throws InterruptedException {
-
-			IHGUtil.waitForElement(driver, 40, driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")));
-			String patientInfoText = driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")).getText();
-			if (patientInfoText.equals(precheckPageTitle))
 				
 				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
 				saveAndContinueButton.click();
@@ -2873,13 +2875,9 @@ public class AppointmentsPage extends BasePageObject {
 					
 				}
 		
-		public void removeInsurancesFromPrecheck(String precheckPageTitle, String FirstInsuranceName, String FirstSubscriberId, 
+		public void removeInsurancesFromPrecheck(String FirstInsuranceName, String FirstSubscriberId, 
 				String SecondInsuranceName, String SecondSubscriberId,
 				String ThirdInsuranceName, String ThirdSubscriberId) throws InterruptedException {
-
-			IHGUtil.waitForElement(driver, 40, driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")));
-			String patientInfoText = driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")).getText();
-			if (patientInfoText.equals(precheckPageTitle))
 				
 				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
 				saveAndContinueButton.click();
@@ -2999,31 +2997,23 @@ public class AppointmentsPage extends BasePageObject {
 					
 				}
 		
-		public void payCopayFromPrecheck(String precheckPageTitle, String gender, String state, String CardName,
+		public void payCopayFromPrecheck(String gender, String state, String CardName,
 				String CardNumber, String ExpiryDate, String CVVCode, String ZipCode) throws InterruptedException {
-
-			IHGUtil.waitForElement(driver, 40, driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")));
-			String patientInfoText = driver.findElement(By.xpath("//h1[text()='" + precheckPageTitle + "']")).getText();
-			if (patientInfoText.equals(precheckPageTitle));
 				
-			List<WebElement> element = driver.findElements(By.xpath("//div[@class='gender__value-container gender__value-container--has-value css-1hwfws3']"));
-			element.size();
-			
-			for(int i=0; i<element.size(); i++) {
-				log(element.get(i).getText());
-				if(element.get(i).getText().equals(gender)) {
-					element.get(i).click();
+			chooseGender.size();
+			for(int i=0; i<chooseGender.size(); i++) {
+				log(chooseGender.get(i).getText());
+				if(chooseGender.get(i).getText().equals(gender)) {
+					chooseGender.get(i).click();
 					break;
 				}
 			}
 			
-			List<WebElement> ele = driver.findElements(By.xpath("//select[@class='mf-select-dropdown']"));
-			ele.size();
-			
-			for(int i=0; i<ele.size(); i++) {
-				log(ele.get(i).getText());
-				if(ele.get(i).getText().equals(state)) {
-					ele.get(i).click();
+			chooseState.size();
+			for(int i=0; i<chooseState.size(); i++) {
+				log(chooseState.get(i).getText());
+				if(chooseState.get(i).getText().equals(state)) {
+					chooseState.get(i).click();
 					break;
 				}
 			}

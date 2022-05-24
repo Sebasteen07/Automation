@@ -6547,8 +6547,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		scrollAndWait(0, -3000, 5000);
 		apptPage.clickOnContinueButton();
-		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.page.title"),
-				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
+		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.first.name"), 
+				propertyData.getProperty("precheck.middle.name"),
 				propertyData.getProperty("precheck.last.name"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("precheck.phone.number"));
 	}
@@ -6618,8 +6618,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		scrollAndWait(0, -3000, 5000);
 		apptPage.clickOnContinueButton();
-		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.page.title"),
-				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
+		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.first.name"), 
+				propertyData.getProperty("precheck.middle.name"),
 				propertyData.getProperty("precheck.last.name"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("precheck.phone.number"));
 	}
@@ -8288,8 +8288,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		scrollAndWait(0, -3000, 5000);
 		apptPage.clickOnContinueButton();
-		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.page.title"),
-				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
+		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.first.name"), 
+				propertyData.getProperty("precheck.middle.name"),
 				propertyData.getProperty("precheck.last.name"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("precheck.phone.number"));
 	}
@@ -8329,8 +8329,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		scrollAndWait(0, -3000, 5000);
 		apptPage.clickOnContinueButton();
-		apptPage.updatePhoneNumberAndEmailFromPrecheck(propertyData.getProperty("precheck.page.title"),
-				propertyData.getProperty("precheck.phone.number"),
+		apptPage.updatePhoneNumberAndEmailFromPrecheck(propertyData.getProperty("precheck.phone.number"),
 				"jordan" + Appointment.randomNumber + "@YOPmail.com");		
 	}
 	@Then("I verify updated contact info page should be reflected in appointment dashboard")
@@ -8381,8 +8380,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		scrollAndWait(0, -3000, 5000);
 		apptPage.clickOnContinueButton();
-		apptPage.addInsurancesFromPrecheck(propertyData.getProperty("precheck.page.title"),
-				propertyData.getProperty("precheck.primary.insurance.name"), 
+		apptPage.addInsurancesFromPrecheck(propertyData.getProperty("precheck.primary.insurance.name"), 
 				propertyData.getProperty("precheck.primary.insurance.member.id"), 
 				propertyData.getProperty("insurance.name"), 
 				propertyData.getProperty("insurance.member.id"), 
@@ -8408,8 +8406,7 @@ public class ApptPrecheckSteps extends BaseTest {
 			apptPage.clickOnLaunchPatientModeButton();
 			scrollAndWait(0, -3000, 5000);
 			apptPage.clickOnContinueButton();
-			apptPage.removeInsurancesFromPrecheck(propertyData.getProperty("precheck.page.title"),
-					propertyData.getProperty("precheck.primary.insurance.name"), 
+			apptPage.removeInsurancesFromPrecheck(propertyData.getProperty("precheck.primary.insurance.name"), 
 					propertyData.getProperty("precheck.primary.insurance.member.id"), 
 					propertyData.getProperty("insurance.name"), 
 					propertyData.getProperty("insurance.member.id"), 
@@ -8506,8 +8503,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		scrollAndWait(0, -3000, 5000);
 		apptPage.clickOnContinueButton();
-		apptPage.payCopayFromPrecheck(propertyData.getProperty("precheck.page.title"),
-				"Male","AL",propertyData.getProperty("mf.scheduler.patient.name"), 
+		apptPage.payCopayFromPrecheck("Male","AL",propertyData.getProperty("mf.scheduler.patient.name"), 
 				propertyData.getProperty("credit.card.number"),
 				propertyData.getProperty("expiry.date"),
 				propertyData.getProperty("cvv.code"),
