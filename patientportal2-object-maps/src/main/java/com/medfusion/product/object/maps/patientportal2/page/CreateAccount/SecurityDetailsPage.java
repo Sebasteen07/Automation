@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.pojos.Patient;
@@ -94,12 +95,12 @@ public class SecurityDetailsPage extends MedfusionPage {
 		}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(Patient patient) throws InterruptedException {
-				return fillAccountDetailsAndContinue(patient.getUsername(), patient.getPassword(), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(),
+				return fillAccountDetailsAndContinue(patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(),
 						patient.getPhoneMobile(), 2);
 		}
 		
 		public JalapenoHomePage fillAccountDetailsAndContinueWithStatement(Patient patient, int statementValue)throws InterruptedException {
-			return fillAccountDetailsAndContinue(patient.getUsername(), patient.getPassword(), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(), 
+			return fillAccountDetailsAndContinue(patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(), 
 					patient.getPhoneMobile(), statementValue);	
 	}
 
