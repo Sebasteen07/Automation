@@ -1,6 +1,5 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package utils;
-
-import com.medfusion.common.utils.EnvironmentTypeUtil.EnvironmentType;
 
 public enum Role {
 	

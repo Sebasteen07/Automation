@@ -1,8 +1,7 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.utils;
 
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.medfusion.common.utils.IHGUtil;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;

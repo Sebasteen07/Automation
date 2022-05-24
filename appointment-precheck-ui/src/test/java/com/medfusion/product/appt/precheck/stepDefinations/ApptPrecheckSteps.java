@@ -114,7 +114,7 @@ public class ApptPrecheckSteps extends BaseTest {
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 			log("Getting patients since timestamp: " + plus20Minutes);
-			Response response = apptSched.aptPutAppointment(
+			apptSched.aptPutAppointment(
 					propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 					propertyData.getProperty("mf.apt.scheduler.practice.id"),
 					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.email"),
@@ -190,7 +190,7 @@ public class ApptPrecheckSteps extends BaseTest {
 			long now = System.currentTimeMillis();
 			long nowPlus2Days = now + TimeUnit.MINUTES.toMillis(4000);
 			log("Getting patients since timestamp: " + nowPlus2Days);
-			Response response = apptSched.aptPutAppointment(
+			apptSched.aptPutAppointment(
 					propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 					propertyData.getProperty("mf.apt.scheduler.practice.id"),
 					payload.putAppointmentPayload(nowPlus2Days, propertyData.getProperty("mf.apt.scheduler.email"),
@@ -362,7 +362,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
-		Response response = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, null, ""),
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
@@ -406,7 +406,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
-		Response response = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, "12345678", "abcxyzgmail.com"),
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
@@ -451,7 +451,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
-		Response response = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, "12345678", ""),
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
@@ -612,7 +612,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(5);
 		log("Getting patients since timestamp: " + plus20Minutes);
-		Response response = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
 						propertyData.getProperty("mf.apt.scheduler.email")),

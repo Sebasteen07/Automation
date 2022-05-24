@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.appt.precheck.payload;
 
 import java.time.LocalDateTime;
@@ -516,7 +517,7 @@ public class AptPrecheckPayload {
 			int dd = cal.get(Calendar.DATE) + 1;
 			int yyyy = cal.get(Calendar.YEAR);
 			int mm = cal.get(Calendar.MONTH)+1;
-
+			
 			String deleteAppt="{\r\n"
 					+ "    \"selectedAll\": true,\r\n"
 					+ "    \"pagingParameters\": {\r\n"

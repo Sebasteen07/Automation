@@ -1,13 +1,11 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.helpers;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.path.json.JsonPath.from;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

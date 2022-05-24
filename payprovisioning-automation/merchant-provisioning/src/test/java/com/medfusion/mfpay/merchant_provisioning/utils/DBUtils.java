@@ -1,10 +1,9 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.utils;
 
 import com.intuit.ifs.csscat.core.utils.DatabaseConnection;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
-import org.apache.commons.lang.StringUtils;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

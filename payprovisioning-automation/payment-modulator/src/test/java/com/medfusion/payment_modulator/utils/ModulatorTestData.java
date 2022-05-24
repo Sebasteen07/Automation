@@ -1,16 +1,12 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.utils;
 
 import java.io.IOException;
 
-import com.medfusion.common.utils.IHGUtil;
 import org.testng.annotations.DataProvider;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
-import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
-import com.medfusion.gateway_proxy.utils.MPUsersUtility;
-
-import io.restassured.response.Response;
 
 public class ModulatorTestData extends GatewayProxyBaseTest {
 

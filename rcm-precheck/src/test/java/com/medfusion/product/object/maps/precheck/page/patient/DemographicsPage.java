@@ -1,3 +1,4 @@
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.precheck.page.patient;
 
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
 
 public class DemographicsPage extends BasePageObject {
 
