@@ -8,6 +8,7 @@ locals {
   name                          = "${var.bitbucket_repository_name}_${terraform.workspace}"
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
+  encrypted_key                 = "JPQ0Fn4qZ0C0sSzSGbOULMxWlo0jeuseRQPbe3Y6AeCR63VEenEio2wXEZ8t"
 
 
   inputs = {
