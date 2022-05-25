@@ -1019,7 +1019,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(askalength + "/30", askPage1.getSubjectLength());
 		assertEquals(questionTextLenth + "/4000", askPage1.getQuestionLength());
 		askPage1.continueClick();
-		
+
 		assertTrue(askaSubject.equals(askPage2.getSubject()),
 				"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
 		assertTrue(questionText.equals(askPage2.getQuestion()),
@@ -4405,8 +4405,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear());
 
 		logStep("Finishing of patient activation: step 2 - filling patient data");
-		accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
-				testData.getProperty("password"), testData);
+		accountDetailsPage.fillAccountDetailsAndContinue(patientLogin, testData.getProperty("password"), testData);
 
 		logStep("Identify Dependent without logging out the patient");
 		patientVerificationPage.getToThisPage(guardianUrl);
@@ -5060,8 +5059,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		pPatientSearchPage.searchForPatientInPatientSearch(
 				testData.getProperty("trusted.rep.care.management.first.name"),
 				testData.getProperty("trusted.rep.care.management.last.name"));
-		pPatientSearchPage.clickOnPatient(
-				testData.getProperty("trusted.rep.care.management.first.name"),
+		pPatientSearchPage.clickOnPatient(testData.getProperty("trusted.rep.care.management.first.name"),
 				testData.getProperty("trusted.rep.care.management.last.name"));
 
 		logStep("Set Patient Search Fields");
@@ -6260,7 +6258,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals("Electronically", myAccountSecurityPage.getSelectedStatementPreference());
 
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testEditPharmacy() throws Exception {
 
@@ -6285,8 +6283,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		pharmaPage.addPharmacy(driver);
 		pharmaPage.editPharmacy();
 		Thread.sleep(2000);
-		String editedPhName=pharmaPage.getUpdatedPharmcyName();
-				
+		String editedPhName = pharmaPage.getUpdatedPharmcyName();
+
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
 		selectMedPage.selectMedications();
@@ -6294,13 +6292,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Confirm Medication Request from Patient Portal");
 		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
-		String editedPhName1=confirmPage.getPharamcyName(driver);
+		String editedPhName1 = confirmPage.getPharamcyName(driver);
 		assertTrue(editedPhName1.contains(editedPhName));
 
 		String successMsg = confirmPage.confirmMedication(driver);
 		assertEquals(successMsg, "Your prescription request has been submitted.");
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskASpecialChar() throws Exception {
 		String questionText = "wat!@#$%^&*()<>:/'+|-'";
@@ -6324,9 +6322,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillDetails(askaSubject, questionText);
 		assertEquals(askalength + "/30", askPage1.getSubjectLength());
 		assertEquals(questionTextLenth + "/4000", askPage1.getQuestionLength());
-		
+
 		askPage1.continueClick();
-		
+
 		assertTrue(askaSubject.equals(askPage2.getSubject()),
 				"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
 		assertTrue(questionText.equals(askPage2.getQuestion()),
@@ -6414,11 +6412,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUndifferentiatedGenderValue() throws Exception {
-		
-		JalapenoHomePage homePage= new JalapenoHomePage(driver);
+
+		JalapenoHomePage homePage = new JalapenoHomePage(driver);
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
 		String patientLastName = patientLogin.replace("login", "last");
 		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
@@ -6450,74 +6448,74 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		log("Login username of patient " + patientLogin);
 
 		logStep("Checking if the information are correct");
-		
+
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
 		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
 		assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGenderValueUpdatedToUndifferentiated() throws Exception {
-	createCommonPatient();
-	logStep("Load login page");
-	JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-	JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+		createCommonPatient();
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
-	logStep("Checking if the information are correct");
-	JalapenoAccountPage accountPage = homePage.clickOnAccount();
-	JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
-	assertTrue(myAccountPage.checkGender(patient.getGender()));
+		logStep("Checking if the information are correct");
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+		assertTrue(myAccountPage.checkGender(patient.getGender()));
 
-	logStep("Update Gender value and Click on the save button");
-	myAccountPage.updateGenderValue(0, 'U');
-	logStep("Verify updated Gender value");
-	assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
+		logStep("Update Gender value and Click on the save button");
+		myAccountPage.updateGenderValue(0, 'U');
+		logStep("Verify updated Gender value");
+		assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMinorPatientUndifferentiatedGenderValue() throws Exception {
-	String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); 
-	String patientLastName = patientLogin.replace("login", "last"); 
-	String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com"; 
+		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
+		String patientLastName = patientLogin.replace("login", "last");
+		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
 
-	logStep("Login to Practice Portal");
-	PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-	PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
-	logStep("Create under-age patient");
-	PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+		logStep("Create under-age patient");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 
-	logStep("Click on Add new Patient");
-	PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+		logStep("Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
 
-	logStep("Enter all the details and click on Register");
-	String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "UN",
-	patientLastName, testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(), testData.getDOBDay(),
-	testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama", testData.getZipCode());
+		logStep("Enter all the details and click on Register");
+		String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "UN",
+				patientLastName, testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(), testData.getDOBDay(),
+				testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama", testData.getZipCode());
 
-	logStep("Continue to Portal Inspired");
-	assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
-	PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, guardianUrl);
+		logStep("Continue to Portal Inspired");
+		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, guardianUrl);
 
-	logStep("Identify patient");
-	AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
-	testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+		logStep("Identify patient");
+		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
 
-	logStep("Continue registration - check dependent info and fill guardian name");
-	linkAccountPage.checkDependentInfo("Dependent", patientLastName, patientEmail);
-	SecurityDetailsPage accountDetailsPage = linkAccountPage.continueToCreateGuardianOnly("Guardian",
-	patientLastName, "Parent");
+		logStep("Continue registration - check dependent info and fill guardian name");
+		linkAccountPage.checkDependentInfo("Dependent", patientLastName, patientEmail);
+		SecurityDetailsPage accountDetailsPage = linkAccountPage.continueToCreateGuardianOnly("Guardian",
+				patientLastName, "Parent");
 
-	logStep("Continue registration - create dependents credentials and continue to Home page");
-	JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
-	testData.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
-	testData.getPhoneNumber());
+		logStep("Continue registration - create dependents credentials and continue to Home page");
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
+				testData.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
+				testData.getPhoneNumber());
 
-	assertTrue(homePage.assessFamilyAccountElements(false));
+		assertTrue(homePage.assessFamilyAccountElements(false));
 
-	JalapenoAccountPage accountPage = homePage.clickOnAccount();
-	JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditDependentAccount();
-	assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditDependentAccount();
+		assertTrue(myAccountPage.checkGender(myAccountPage.getGender()));
 	}
-	
-	}
+
+}

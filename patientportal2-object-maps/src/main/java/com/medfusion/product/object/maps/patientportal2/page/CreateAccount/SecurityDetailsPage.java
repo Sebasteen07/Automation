@@ -9,7 +9,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.medfusion.common.utils.EncryptionUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.pojos.Patient;
@@ -95,12 +94,12 @@ public class SecurityDetailsPage extends MedfusionPage {
 		}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(Patient patient) throws InterruptedException {
-				return fillAccountDetailsAndContinue(patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(),
+				return fillAccountDetailsAndContinue(patient.getUsername(), patient.getPassword(), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(),
 						patient.getPhoneMobile(), 2);
 		}
 		
 		public JalapenoHomePage fillAccountDetailsAndContinueWithStatement(Patient patient, int statementValue)throws InterruptedException {
-			return fillAccountDetailsAndContinue(patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(), 
+			return fillAccountDetailsAndContinue(patient.getUsername(), patient.getPassword(), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(), 
 					patient.getPhoneMobile(), statementValue);	
 	}
 
@@ -115,22 +114,17 @@ public class SecurityDetailsPage extends MedfusionPage {
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber,
 				int statementPreference) throws InterruptedException {
 			    IHGUtil.PrintMethodName();
-			    Thread.sleep(5000);
-				IHGUtil.PrintMethodName();
 				try {
-					IHGUtil.waitForElement(driver, 60, nextButton);
+					IHGUtil.waitForElement(driver, 15, nextButton);
 					nextButton.click();
 				}
 				catch(Exception e){
 					log("NextButton Not available");
 				}
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
-				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
-				scrollAndWait(0,300,3000);
 				log("Clicking finish btn");
 				buttonFinishStep.click();
-				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
-				Thread.sleep(8000);
+				selectStatementIfRequired(statementPreference);
 				handleWeNeedToConfirmSomethingModal();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
