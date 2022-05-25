@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.utils;
 
 import static io.restassured.RestAssured.given;
@@ -13,7 +13,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import com.medfusion.common.utils.PropertyFileLoader;
-import org.apache.commons.lang.StringUtils;
 
 public class GatewayProxyUtils {
 

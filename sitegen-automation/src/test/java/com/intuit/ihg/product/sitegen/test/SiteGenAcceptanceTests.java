@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.test;
 
 import static org.testng.Assert.assertFalse;
@@ -722,18 +722,16 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		pInfoPage.urlTextBox("ihgqaautomation");
 		String urlName = pInfoPage.getURLName();
-		String portalUrlLink = pInfoPage.getPortalURL();
 		
 		logStep("update the Url name and link");
 		pInfoPage.urlTextBox("japanese");
-		String portalUrlLink2 = pInfoPage.getPortalURL();
 		
 		logStep("Save the update Url name and link");
 		pInfoPage.saveEdit();
 
 		logStep("Login patient with the updated URl");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("updatedUrl"));
-		JalapenoHomePage homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
+		loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
 
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
 

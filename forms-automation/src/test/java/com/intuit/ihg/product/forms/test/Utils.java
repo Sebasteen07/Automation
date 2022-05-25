@@ -42,7 +42,8 @@ public class Utils {
 
 	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, Patient patient,
 			PropertyFileLoader testData) {
-		return loginPI(driver, practiceType, patient.getUsername(), patient.getPassword(), testData);
+		return loginPI(driver, practiceType, patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()),
+				testData);
 	}
 
 	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) {
@@ -77,11 +78,11 @@ public class Utils {
 
 		log("Create patient");
 		Patient patient = createPatientPI(driver, username, url, testData);
-		logLogin(url, patient.getUsername(), patient.getPassword());
+		logLogin(url, patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()));
 
 		log("Login");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
-		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()));
 		return homePage;
 	}
 

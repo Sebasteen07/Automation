@@ -4,22 +4,12 @@ package com.medfusion.mfpay.merchant_provisioning.helpers;
 import io.restassured.path.json.JsonPath;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-
 import org.testng.Assert;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.pojos.AccountDetails;
-import com.medfusion.mfpay.merchant_provisioning.pojos.ContractedRates;
-import com.medfusion.mfpay.merchant_provisioning.pojos.PaypalMerchantAccountDetails;
-import com.medfusion.mfpay.merchant_provisioning.pojos.RemitToAddress;
 import com.medfusion.mfpay.merchant_provisioning.utils.PracticeConstants;
-
-import javax.xml.ws.Response;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class Validations {
 

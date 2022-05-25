@@ -1,14 +1,6 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.utils;
 
-import com.medfusion.common.utils.PropertyFileLoader;
-import com.intuit.ifs.csscat.core.utils.*;
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.groovy.util.StringUtil;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.util.Base64;
 
 

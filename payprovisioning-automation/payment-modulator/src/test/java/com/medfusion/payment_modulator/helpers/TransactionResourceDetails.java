@@ -1,20 +1,15 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.helpers;
 
 import static io.restassured.RestAssured.given;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
 import com.medfusion.payment_modulator.tests.BaseRest;
-import com.medfusion.payment_modulator.utils.CommonUtils;
-import com.medfusion.payment_modulator.utils.Validations;
 
 public class TransactionResourceDetails extends BaseRest {
 

@@ -2155,7 +2155,7 @@ public class AppointmentsPage extends BasePageObject {
 					}
 					log(("Color was") + " not retrieved. Trial number " + j + "/" + retries + "."
 							+ (j != retries
-									? " Waiting for Color" + (false ? "s" : "") + " to arrive for "
+									? " Waiting for Color" + ("") + " to arrive for "
 											+ TIME_TO_WAIT_MS / 1000 + " s."
 									: ""));
 					jse.executeScript("arguments[0].click();", refreshTab);
@@ -2186,7 +2186,7 @@ public class AppointmentsPage extends BasePageObject {
 					}
 					log(("Color was") + " not retrieved. Trial number " + j + "/" + retries + "."
 							+ (j != retries
-									? " Waiting for Color" + (false ? "s" : "") + " to arrive for "
+									? " Waiting for Color" + ("") + " to arrive for "
 											+ TIME_TO_WAIT_MS / 1000 + " s."
 									: ""));
 					jse.executeScript("arguments[0].click();", refreshTab);
@@ -2453,7 +2453,7 @@ public class AppointmentsPage extends BasePageObject {
 
 				} catch (Exception e) {
 					log(("Paper plane Icon") + " not retrieved. Trial number " + j + "/" + retries + "."
-							+ (j != retries	? " Waiting for Paper plane Icon" + (false ? "s" : "") + " to arrive for "
+							+ (j != retries	? " Waiting for Paper plane Icon" + ("") + " to arrive for "
 											+ TIME_TO_WAIT_MS / 1000 + " s.": ""));
 					log("unable to find Paper plane Icon" + e);
 				}
@@ -2480,7 +2480,7 @@ public class AppointmentsPage extends BasePageObject {
 
 				} catch (Exception e) {
 					log(("Paper plane Icon") + " not retrieved. Trial number " + j + "/" + retries + "."
-							+ (j != retries ? " Waiting for Paper plane Icon" + (false ? "s" : "") + " to arrive for "
+							+ (j != retries ? " Waiting for Paper plane Icon" + ("") + " to arrive for "
 											+ TIME_TO_WAIT_MS / 1000 + " s.": ""));
 					log("unable to find Paper plane Icon" + e);
 				}
@@ -3073,4 +3073,15 @@ public class AppointmentsPage extends BasePageObject {
 					
 			}
 		
+		public String  selectedPatientGetPriorEntryForEmail(String patientId,String apptId) throws InterruptedException{
+			IHGUtil.PrintMethodName();
+	        WebElement reminderEmailStatus= driver.findElement(By.xpath("(//input[@id='select-"+patientId+"-"+apptId+"']/following::div[@class='reminders-expanded-status'])[1]"));
+	        return reminderEmailStatus.getText();
+	    }
+	    
+	    public String getPriorEntryForTextForSelectedPatient(String patientId,String apptId) throws InterruptedException{
+	    	IHGUtil.PrintMethodName();
+	        WebElement reminderTextStatus= driver.findElement(By.xpath("(//input[@id='select-"+patientId+"-"+apptId+"']/following::div[@class='reminders-expanded-status'])[1]"));
+	        return reminderTextStatus.getText();
+	    }
 }

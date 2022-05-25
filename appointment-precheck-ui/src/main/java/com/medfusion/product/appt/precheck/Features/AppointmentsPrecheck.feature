@@ -2377,4 +2377,27 @@ Feature: Test fuctionality of Appointment precheck
     When I schedule an appointment with copay
     And I click on patient name and pay the copay amount by credit card while doing precheck
     Then I verify in appointment dashboard for that appointment the copay amount is paid
+
+  Scenario: verify after sending curbside arrival instruction message to curbside checkin patient in reminder column section system should not show day prior entry in reminder section
+    When I click on setting tab and ON notification setting
+    And I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab and select patient
+    And I send "Come in the office now." message to selected patient
+    And I switch on appointment dashboard
+    Then I verify system should not show day prior entry in reminder section column
+    And logout from practice provisioning portal
+
+  Scenario: verify after sending curbside arrival instruction other message to curbside checkin patient in reminder column section system should not show day prior entry in reminder section
+    When I click on setting tab and ON notification setting
+    And I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab and select patient
+    And I send "Other" message to curbside checkin patient
+    And I switch on appointment dashboard
+    Then I verify system should not show day prior entry in reminder section column
+    And logout from practice provisioning portal
+
+  Scenario: verify system is not allowing user to enter invalid integers in timing unit section for email in appointment reminders
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    Then I verify system is not allowing to enter invalid integers in timing unit section for email in appointment reminders for 'Email'
     And logout from practice provisioning portal

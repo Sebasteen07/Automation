@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.util.List;
@@ -184,7 +184,6 @@ public class YopMailUtils extends MedfusionPage{
 
 		try {
 			this.driver.switchTo().frame(iframeInbox);
-			int initialMailCount = inboxRows.size();
 
 			if (this.isTextVisible(emailSubject)) {
 				this.clickOnElement(firstRowSubject);

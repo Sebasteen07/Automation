@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.digital_wallet.tests;
 
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -7,14 +7,9 @@ import com.medfusion.digital_wallet.utils.DigitalWalletAPIUtils;
 import com.medfusion.gateway_proxy.utils.DBUtils;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormatter;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class DigitalWalletTests extends DigitalWalletBaseTest {
 

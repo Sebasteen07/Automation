@@ -942,12 +942,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
 				testData.getResponsePath());
 		log("Step 4: Get processing status until it is completed");
-		boolean completed = false;
 		for (int j = 0; j < 3; j++) {
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
 				break;
 			}
 		}
@@ -1016,12 +1014,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
 				testData.getResponsePath());
 		log("Step 4: Get processing status until it is completed");
-		boolean completed = false;
 		for (int j = 0; j < 3; j++) {
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
 				break;
 			}
 		}
@@ -1046,12 +1042,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String processingUrlDelete = RestUtils.setupHttpPostRequest(testData.getRestUrl(), deletepayload,
 				testData.getResponsePath());
 		log("Step 9: Get processing status until it is completed");
-		boolean completed2 = false;
 		for (int j = 0; j < 3; j++) {
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrlDelete, testData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed2 = true;
 				break;
 			}
 		}
@@ -1110,12 +1104,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
 					testData.getResponsePath());
 			log("Step 4: Get processing status until it is completed");
-			boolean completed = false;
 			for (int j = 0; j < 3; j++) {
 				Thread.sleep(60000);
 				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
 				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-					completed = true;
 					break;
 				}
 			}
@@ -1141,12 +1133,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String processingUrlDelete = RestUtils.setupHttpPostRequest(testData.getRemoveMedicationRestUrl(),
 				payloadRemove, testData.getResponsePath());
 		log("Step 9: Get processing status until it is completed");
-		boolean completed = false;
 		for (int j = 0; j < 3; j++) {
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrlDelete, testData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
 				break;
 			}
 		}

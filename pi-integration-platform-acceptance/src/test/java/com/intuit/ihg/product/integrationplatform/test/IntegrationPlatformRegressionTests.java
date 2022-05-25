@@ -1793,7 +1793,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String workingDir = System.getProperty("user.dir");
 		workingDir = workingDir + testData.patientfilepath_FE;
 		formUtilsObject.setFormsTestData(workingDir, testData);
-		String randomString = IHGUtil.createRandomNumericString();
 		Long timestamp = System.currentTimeMillis();
 
 		Log4jUtil.log("Step 2: Fill in Pre check form 14 pages");
@@ -3781,16 +3780,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				bulkMessageTestData.OAuthPassword);
 
 		logStep("Prepare Attachemnt Payload");
-		AttachmentPayload attachmentObj = new AttachmentPayload();
-
 		String externalAttachmentID = PharmacyPayload.randomNumbers(14);
 		log("externalAttachmentID posted is : " + externalAttachmentID);
 		String attachmentName = "TestResults_" + externalAttachmentID + ".pdf";
-
 		log("attachmentName : " + attachmentName);
 		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(attchamentTestData, testData,
 				externalAttachmentID);
-
 		log("Attachment Payload: " + attahcmentPayload);
 
 		logStep("Do Attachment Post Request");

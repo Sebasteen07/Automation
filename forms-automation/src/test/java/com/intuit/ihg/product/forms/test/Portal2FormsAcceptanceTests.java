@@ -75,7 +75,7 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		driver.switchTo().defaultContent();
 		homePage.clickOnLogout();
 		logStep("Test if the DOB has not been changed");
-		homePage = loginPI(driver, PracticeType.SECONDARY, patient.getUsername(), patient.getPassword(), testData);
+		homePage = loginPI(driver, PracticeType.SECONDARY, patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()), testData);
 		assertTrue(homePage.areMenuElementsPresent());
 		JalapenoMyAccountProfilePage pMyAccountPage = homePage.clickOnAccount().clickOnEditMyAccount();
 		assertEquals(pMyAccountPage.getDOByear(), patient.getDOBYear());

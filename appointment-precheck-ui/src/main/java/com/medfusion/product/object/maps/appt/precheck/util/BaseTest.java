@@ -34,7 +34,7 @@ import io.cucumber.java.Scenario;
 import net.jsourcerer.webdriver.jserrorcollector.JavaScriptError;
 
 public class BaseTest {
-	public static WebDriver driver;
+	public WebDriver driver;
 	private int stepCounter;
 
 	public void setUp() throws Exception {

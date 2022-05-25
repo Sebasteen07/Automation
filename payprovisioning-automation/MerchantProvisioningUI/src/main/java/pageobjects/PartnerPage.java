@@ -158,8 +158,6 @@ public class PartnerPage extends MerchantDetailsPage{
         String xpath = row + "/td[2]";
 
         WebElement element = driver.findElement(By.xpath("//table/tbody/" + xpath));
-
-        String text = element.getText();
         Assert.assertEquals(element.getText(), editedUserName);
 
     }

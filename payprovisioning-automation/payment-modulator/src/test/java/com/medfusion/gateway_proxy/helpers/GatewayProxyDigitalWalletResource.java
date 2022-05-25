@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.helpers;
 
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -44,26 +44,25 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 	}
 
 	public Response createNewWalletWithDifferentEnv(String token, String env, String xpi, String customeruuid,
-													String consumerName, String cardType, String cardnumber,
-									String expiryDate, String cardAlias, String zipcode, boolean primaryCardFlag) throws Exception {
+			String consumerName, String cardType, String cardnumber, String expiryDate, String cardAlias,
+			String zipcode, boolean primaryCardFlag) throws Exception {
 		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForAddingCardToDigitalWallet(consumerName,
 				cardType, cardnumber, expiryDate, cardAlias, zipcode, primaryCardFlag);
 		Response response;
 
-		String url  = null;
-		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
+		String url = null;
+		if (env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")) {
 			url = customeruuid + "/wallets";
-			response = given().auth().oauth2(token)
-					.contentType(ContentType.JSON).body(digitalWallet).when().log().all()
+			response = given().auth().oauth2(token).contentType(ContentType.JSON).body(digitalWallet).when().log().all()
 					.post(url).then().extract().response();
-		}else {
+		} else {
 			url = customeruuid + "/pay/wallets";
-			response = given().auth().oauth2(token).header("x-api-key",xpi)
-					.contentType(ContentType.JSON).body(digitalWallet).when().log().all()
-					.post(url).then().log().all().extract().response();
+			response = given().auth().oauth2(token).header("x-api-key", xpi).contentType(ContentType.JSON)
+					.body(digitalWallet).when().log().all().post(url).then().log().all().extract().response();
 		}
 		return response;
 	}
+
 	public Response getListOfCardsInWallet(String token, String externalWalletId) throws IOException {
 
 		testData = new PropertyFileLoader();
@@ -150,8 +149,8 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		String externalWalletId = jsonPath.get("externalWalletId").toString();
 		String externalCardId = jsonPath.get("walletCards[0].externalCardId").toString();
 
-		Response deleteResponse = digitalWallet.deleteCardInWallet(token,
-				testData.getProperty("test.pay.customer.uuid"), externalWalletId, externalCardId);
+		digitalWallet.deleteCardInWallet(token, testData.getProperty("test.pay.customer.uuid"), externalWalletId,
+				externalCardId);
 
 		Response responseGet = digitalWallet.getListOfCardsInWallet(token, externalWalletId);
 		JsonPath jsonPathGet = new JsonPath(responseGet.asString());
