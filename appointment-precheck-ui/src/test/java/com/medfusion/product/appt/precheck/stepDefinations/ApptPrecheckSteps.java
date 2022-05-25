@@ -3491,7 +3491,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		mainPage.clickOnCurbsideTab();
 		assertTrue(curbsidePage.getCurbsideTitle().contains("Curbside Check-ins"));
 		log("User is on Curbside check in tab");
-		curbsidePage.selectPatient(Appointment.patientId, Appointment.apptId);
+		curbsidePage.filterPatientId(Appointment.patientId);
+		curbsidePage.selectPatientscheckbox();
 	}
 
 	@When("I click on dropdown and select {string} option")
@@ -8261,4 +8262,49 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.enterLocation(propertyData.getProperty("location.name.ge"));
 		
 	}
+	
+	@When("I send {string} message to curbside checkin patient")
+	public void i_send_message_to_curbside_checkin_patient(String other) throws InterruptedException {
+	    curbsidePage.selectOtherOptionFromDropdown(Appointment.apptId, other);
+	    String lastMessage = curbsidePage.sendCustomizedMessage(Appointment.apptId,
+				propertyData.getProperty("customized.message.from.other.option"));
+		log("Send customized message from other option");
+		assertEquals(lastMessage, "Last Message: " + propertyData.getProperty("customized.message.from.other.option"),
+				"Messsage was not same");
+	}
+	
+	@Then("I verify system should not show day prior entry in reminder section column")
+	public void i_verify_system_should_not_show_day_prior_entry_in_reminder_section_column() throws InterruptedException {
+		scrollAndWait(0, -2000, 10000);
+		apptPage.filterPatientId(Appointment.patientId);
+		Thread.sleep(5000);
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		assertNotEquals(apptPage.selectedPatientGetPriorEntryForEmail(Appointment.patientId, Appointment.apptId),"None","Email statuse was not match");
+		assertNotEquals(apptPage.getPriorEntryForTextForSelectedPatient(Appointment.patientId, Appointment.apptId),"None","Text statuse was not match");
+	}
+	
+	@Then("I verify system is not allowing to enter invalid integers in timing unit section for email in appointment reminders for {string}")
+	public void i_verify_system_is_not_allowing_to_enter_invalid_integers_in_timing_unit_section_for_email_in_appointment_reminders_for(String deliveriMethod) throws InterruptedException {
+		scrollAndWait(0, 200, 5000);
+		assertEquals(notifPage.getDeliveryMethod(), deliveriMethod, "Delivery method was not match");
+		log("Delivery Method:" + notifPage.getDeliveryMethod());
+		notifPage.addTimingAndTimingUnit();
+		notifPage.checkingFourthTimingIfPresent();
+		notifPage.enterInvalidTimingAndTimingUnit(1,"Hours","0");
+		assertEquals(notifPage.getInvalidUnitText(1),"Invalid Units","Invalid Units text was not match");
+		notifPage.enterInvalidTimingAndTimingUnit(2,"Hours","0");
+		assertEquals(notifPage.getInvalidUnitText(2),"Invalid Units","Invalid Units text was not match");
+		notifPage.enterInvalidTimingAndTimingUnit(3,"Hours","0");
+		assertEquals(notifPage.getInvalidUnitText(3),"Invalid Units","Invalid Units text was not match");
+		
+		notifPage.enterInvalidTimingAndTimingUnit(1,"Hours","0");
+		assertEquals(notifPage.getInvalidUnitText(1),"Invalid Units","Invalid Units text was not match");
+		notifPage.enterInvalidTimingAndTimingUnit(2,"Hours","0");
+		assertEquals(notifPage.getInvalidUnitText(2),"Invalid Units","Invalid Units text was not match");
+		notifPage.enterInvalidTimingAndTimingUnit(3,"Hours","0");
+		assertEquals(notifPage.getInvalidUnitText(3),"Invalid Units","Invalid Units text was not match");
+		notifPage.clickOnBackArrow();
+		scrollAndWait(0, -500, 5000);
+	}
+	
 }
