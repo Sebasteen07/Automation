@@ -41,8 +41,16 @@ public class BaseRest {
 	   .build();
 
 	}
-	
-	
-	
+
+	public static void setupRequestSpecBuilderV5() throws IOException
+	{
+		testData = new PropertyFileLoader();
+		RestAssured.baseURI = testData.getProperty("base.url.v5");
+		requestSpec	 = new RequestSpecBuilder()
+				.setContentType(ContentType.JSON).and()
+				.addFilter(new ResponseLoggingFilter())
+				.addFilter(new RequestLoggingFilter())
+				.build();
+	}
 
 }

@@ -86,7 +86,7 @@ public class Validations {
 
 	public void verifyInstaMedTransactionDetails(String responseCode, JsonPath jsonpath) throws IOException {
 		Assert.assertNotNull(jsonpath, "Response was null");
-		if (responseCode.equalsIgnoreCase("000") || responseCode.equalsIgnoreCase("051")) {
+		if (responseCode.equalsIgnoreCase("000") || responseCode.equalsIgnoreCase("051") || responseCode.equalsIgnoreCase("010")) {
 			Assert.assertTrue(!jsonpath.get("responseTime").toString().isEmpty(), "Response time was not found in the response");
 			Assert.assertTrue(!jsonpath.get("orderId").toString().isEmpty(), "Order id was not found in the response");
 			Assert.assertTrue(!jsonpath.get("externalTransactionId").toString().isEmpty(), "Transaction ID was not found in the response");

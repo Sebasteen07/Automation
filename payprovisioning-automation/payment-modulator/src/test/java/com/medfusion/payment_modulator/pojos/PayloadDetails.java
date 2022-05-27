@@ -355,18 +355,16 @@ public class PayloadDetails {
 
 	public static Map<String, Object> getPayloadForECheckSaleMap(String transactionamount, String accountnumber,
 																	String consumername, String paymentsource, String AccountType,
-																 	String AccountNumber, String RoutingNumber, String AccountHolderName,
-																    String zipcode, String lastname, String addressline1, String city,
-																	String state, String firstname) {
+																 	String AccountNumber, String RoutingNumber,
+																    String AccountHolderFirstName, String AccountHolderLastName) {
 
 		Map<String, Object> authorizesalemap = new HashMap<String, Object>();
 		authorizesalemap.put("transactionAmount", Integer.parseInt(transactionamount));
 		authorizesalemap.put("mfGatewayConsumer",
 				MFGatewayConsumer.getMFGatewayConsumerMap(accountnumber, consumername));
 		authorizesalemap.put("mfGatewayMerchant", MFGatewayMerchant.getMFGatewayMerchantMap(paymentsource));
-		authorizesalemap.put("account", Card.getBankMap(AccountType, AccountNumber, RoutingNumber, AccountHolderName));
-		authorizesalemap.put("billToAddress",
-				BillToAddress.getBillToAddressMap(zipcode, lastname, addressline1, city, state, firstname));
+		authorizesalemap.put("account", Card.getBankMap(AccountType, AccountNumber, RoutingNumber,
+				AccountHolderFirstName, AccountHolderLastName));
 		return authorizesalemap;
 	}
 }

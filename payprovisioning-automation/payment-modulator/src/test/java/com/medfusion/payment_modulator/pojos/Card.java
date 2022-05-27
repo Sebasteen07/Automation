@@ -191,12 +191,13 @@ public class Card {
 		}
 
 		public static Map<String, Object> getBankMap(String AccountType, String AccountNumber, String RoutingNumber,
-													 String AccountHolderName){
+													 String AccountHolderFirstName, String AccountHolderLastName){
 			Map<String, Object> cardmap = new HashMap<String, Object>();
 			cardmap.put("accountType", AccountType);
 			cardmap.put("accountNumber", AccountNumber);
 			cardmap.put("routingNumber", RoutingNumber);
-			cardmap.put("accountHolderName", AccountHolderName);
+			cardmap.put("accountHolderFirstName", AccountHolderFirstName);
+			cardmap.put("accountHolderLastName", AccountHolderLastName);
 			return cardmap;
 		}
 }
