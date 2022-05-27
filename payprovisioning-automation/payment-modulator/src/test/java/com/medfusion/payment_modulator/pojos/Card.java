@@ -190,7 +190,7 @@ public class Card {
 			return cardMap;
 		}
 
-		public static Map<String, Object> getBankMap(String AccountType, String AccountNumber, String RoutingNumber,
+		public static Map<String, Object> getBankDetailsMap(String AccountType, String AccountNumber, String RoutingNumber,
 													 String AccountHolderFirstName, String AccountHolderLastName){
 			Map<String, Object> cardmap = new HashMap<String, Object>();
 			cardmap.put("accountType", AccountType);

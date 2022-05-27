@@ -363,7 +363,7 @@ public class PayloadDetails {
 		authorizesalemap.put("mfGatewayConsumer",
 				MFGatewayConsumer.getMFGatewayConsumerMap(accountnumber, consumername));
 		authorizesalemap.put("mfGatewayMerchant", MFGatewayMerchant.getMFGatewayMerchantMap(paymentsource));
-		authorizesalemap.put("account", Card.getBankMap(AccountType, AccountNumber, RoutingNumber,
+		authorizesalemap.put("account", Card.getBankDetailsMap(AccountType, AccountNumber, RoutingNumber,
 				AccountHolderFirstName, AccountHolderLastName));
 		return authorizesalemap;
 	}
