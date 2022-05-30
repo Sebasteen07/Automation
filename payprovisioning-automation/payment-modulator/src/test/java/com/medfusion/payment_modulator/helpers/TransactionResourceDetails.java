@@ -120,5 +120,19 @@ public class TransactionResourceDetails extends BaseRest {
 		return response;
 	}
 
+	public Response makeAECheckSale(String mmid, String transactionAmount, String accountNumber, String consumerName,
+							  String paymentSource, String AccountType, String AccountNumber, String RoutingNumber,
+									String AccountHolderFirstName, String AccountHolderLastName) throws IOException {
+		testData = new PropertyFileLoader();
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForECheckSaleMap(
+				transactionAmount, accountNumber, consumerName, paymentSource,
+				AccountType, AccountNumber, RoutingNumber, AccountHolderFirstName, AccountHolderLastName);
+
+		Response response = given().spec(requestSpec).body(transactiondetails).when().post("sale/" + mmid).then()
+				.spec(responseSpec).and().extract().response();
+
+		return response;
+
+	}
 
 }

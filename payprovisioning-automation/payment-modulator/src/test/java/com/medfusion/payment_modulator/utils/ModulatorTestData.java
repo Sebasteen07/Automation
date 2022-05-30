@@ -1004,4 +1004,159 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 		};
 	}
 
+	@DataProvider(name = "instamed_echeck_positive_scenarios")
+	public static Object[][] dataProviderInstamedECheckHappyFlows() throws Exception {
+		testData = new PropertyFileLoader();
+
+		return new Object[][]{
+
+				{testData.getProperty("transaction.amount"), "000", "Approved"},
+				{testData.getProperty("transaction.amount.declined"), "005", "Declined"},
+				{testData.getProperty("transaction.amount.partial.approval"), "010", "Approved"}
+		};
+	}
+
+	@DataProvider(name = "echeck_sale")
+	public static Object[][] dataProviderInstamedECheck() throws Exception {
+		testData = new PropertyFileLoader();
+
+		return new Object[][] {
+
+				//Non-Instamed mmid
+				{ "2560819831", testData.getProperty("transaction.amount"),testData.getProperty("payment.source"),
+						testData.getProperty("bank.account.type"), testData.getProperty("bank.account.number"),
+						testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 404,
+						"Not Found", "Merchant account for id 2560819831 not found", ""},
+
+				//mmid in characters
+				{ "!@#$", testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						testData.getProperty("bank.account.number"), testData.getProperty("bank.routing.number"),
+						testData.getProperty("bank.account.holder.first.name"),testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "For input string: \"!@#$\"", "" },
+
+				//0 transaction amount
+				{ testData.getProperty("instamed.mmid"), "0",
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						testData.getProperty("bank.account.number"), testData.getProperty("bank.routing.number"),
+						testData.getProperty("bank.account.holder.first.name"), testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "Transaction amount cannot be less than 1", ""},
+
+				//Invalid payment source
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),"ABC",
+						testData.getProperty("bank.account.type"), testData.getProperty("bank.account.number"),
+						testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "Payment source provided is not valid", "" },
+
+				//Characters as payment source
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						"#$%", testData.getProperty("bank.account.type"), testData.getProperty("bank.account.number"),
+						testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "Payment source provided is not valid", "" },
+
+				//Null payment source
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						"", testData.getProperty("bank.account.type"), testData.getProperty("bank.account.number"),
+						testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "Payment source provided is not valid", "" },
+
+				//Null bank account type
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), " ", testData.getProperty("bank.account.number"),
+						testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "", "The AccountType field is required." },
+
+				//Invalid bank account type
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), "QWER", testData.getProperty("bank.account.number"),
+						testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "Account type must be of type checking, savings, business", ""},
+
+				//Characters in bank account type
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), "!@#$", testData.getProperty("bank.account.number"),
+						testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "Account type must be of type checking, savings, business", "" },
+
+				//Null bank account number
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						" ", testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "Invalid Request. 1. AccountNumber is a required field.", "" },
+
+				//Invalid bank account number
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						"ACCNO", testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "", "AccountNumber must be numbers 0-9" },
+
+				//Characters bank account number
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						"!@#$%", testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "", "AccountNumber must be numbers 0-9" },
+
+				//Null bank routing number
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						testData.getProperty("bank.account.number"), " ", testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "", "Invalid routing number." },
+
+				//Invalid bank routing number
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						testData.getProperty("bank.account.number"), "1234567", testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "", "RoutingNumber must be 9 characters." },
+
+				//Characters bank routing number
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						testData.getProperty("bank.account.number"), "#@$",
+						testData.getProperty("bank.account.holder.first.name"),
+						testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "", "RoutingNumber must be 9 characters." },
+
+				//Without First Name
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						testData.getProperty("bank.account.number"), testData.getProperty("bank.routing.number"),
+						"", testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "", "The CheckHolderFirstName field is required when market segment is WEBTEL." },
+
+				//With Charcters as First Name
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						testData.getProperty("bank.account.number"), testData.getProperty("bank.routing.number"),
+						"@#$", testData.getProperty("bank.account.holder.last.name"), 400,
+						"Bad Request", "", "CheckHolderFirstName contains invalid characters : @ $" },
+
+				//Without Last Name
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						testData.getProperty("bank.account.number"), testData.getProperty("bank.routing.number"),
+						testData.getProperty("bank.account.holder.first.name"), "", 400,
+						"Bad Request", "", "The CheckHolderLastName field is required when market segment is WEBTEL." },
+
+				//With Characters Last Name
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("payment.source"), testData.getProperty("bank.account.type"),
+						testData.getProperty("bank.account.number"), testData.getProperty("bank.routing.number"),
+						testData.getProperty("bank.account.holder.first.name"), "@#$", 400,
+						"Bad Request", "", "CheckHolderLastName contains invalid characters : @ $" },
+
+		};
+	}
+
 }

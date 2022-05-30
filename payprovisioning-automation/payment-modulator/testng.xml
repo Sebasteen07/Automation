@@ -15,13 +15,17 @@
 			<class
 				name="com.medfusion.gateway_proxy.utils.GatewayProxyUtils" />
 			<class
-				name="com.medfusion.payment_modulator.tests.PaypalTransactions" />
+				name="com.medfusion.payment_modulator.tests.InstamedTransactionsTests" />
 			<class
-				name="com.medfusion.payment_modulator.tests.ElementTransactions" />
+				name="com.medfusion.payment_modulator.tests.InstaMedECheckTransactionTests" />
+			<class
+				name="com.medfusion.payment_modulator.tests.PaypalTransactionsTests" />
+			<class
+				name="com.medfusion.payment_modulator.tests.ElementTransactionsTests" />
 			<class
 				name="com.medfusion.gateway_proxy.tests.GatewayProxyTransactionTests" />
 			<class
-				name="com.medfusion.payment_modulator.tests.QBPAYTransactions" />
+				name="com.medfusion.payment_modulator.tests.QBPayTransactionsTests" />
 			<class
 				name="com.medfusion.gateway_proxy.tests.GatewayProxyDigitalWalletTests" />
 		</classes>

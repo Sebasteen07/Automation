@@ -100,20 +100,7 @@ public class ElementTransactionsTests extends BaseRest {
 		String externalTransactionId = jsonPath.get("externalTransactionId").toString();
 		String orderId = jsonPath.get("orderId").toString();
 
-		Response responseCapture = transaction.makeACapture(testData.getProperty("element.mmid"), externalTransactionId,
-				"testorderId", transanctionAmount, testData.getProperty("account.number"),
-				testData.getProperty("consumer.name"), testData.getProperty("payment.source"),
-				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("card.number"),
-				testData.getProperty("expiration.number"), testData.getProperty("bin"), testData.getProperty("zipcode"),
-				testData.getProperty("last.name"), testData.getProperty("address.line1"), testData.getProperty("city"),
-				testData.getProperty("state"), testData.getProperty("first.name"));
-
-		JsonPath jsonPathCapture = new JsonPath(responseCapture.asString());
-		Assert.assertEquals(responseCapture.getStatusCode(), 404);
-		Assert.assertTrue(jsonPathCapture.get("error").toString().contains("Not Found"));
-		Assert.assertTrue(jsonPathCapture.get("message").toString().contains("Could not find transactionAmount"));
-
-		responseCapture = transaction.makeACapture(testData.getProperty("element.mmid"), externalTransactionId,
+		Response responseCapture  = transaction.makeACapture(testData.getProperty("element.mmid"), externalTransactionId,
 				orderId, transanctionAmount, testData.getProperty("account.number"),
 				testData.getProperty("consumer.name"), testData.getProperty("payment.source"),
 				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("card.number"),
@@ -123,7 +110,7 @@ public class ElementTransactionsTests extends BaseRest {
 
 		validate.verifyTransactionDetails(responseCapture.asString());
 
-		jsonPathCapture = new JsonPath(responseCapture.asString());
+		JsonPath jsonPathCapture = new JsonPath(responseCapture.asString());
 
 		Assert.assertEquals(responseCapture.getStatusCode(), 200);
 		Assert.assertTrue(!jsonPathCapture.get("externalTransactionId").toString().isEmpty());
