@@ -617,11 +617,50 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//h1[text()='Verify patient information']")
 	private WebElement precheckPageTitle;
 	
-	@FindAll({ @FindBy(how = How.XPATH, using = "//div[@class='gender__value-container gender__value-container--has-value css-1hwfws3']")})
+	@FindAll({ @FindBy(how = How.XPATH, using = "(//div[@class='gender__control css-yk16xz-control']//div)[2]")})
 	private List<WebElement> chooseGender;
 	
-	@FindAll({ @FindBy(how = How.XPATH, using = "//select[@class='mf-select-dropdown']")})
+	@FindAll({ @FindBy(how = How.XPATH, using = "//select[@id='state']//option")})
 	private List<WebElement> chooseState;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='Pay in office']")
+	private WebElement payInOfficeTextOfAppt;
+	
+	@FindBy(how = How.XPATH, using = "//h1[text()='Copay completed!']")
+	private WebElement copayCompletedTitle;
+	
+	@FindBy(how = How.XPATH, using = "//p[text()='You have already completed your co-payment.']")
+	private WebElement copayCompletedMessage;
+	
+	@FindBy(how = How.XPATH, using = "//h1[text()='Confirm payment']")
+	private WebElement confirmPaymentTitle;
+	
+	@FindBy(how = How.XPATH, using = "//p[@class='simple-modal__description']")
+	private WebElement processingPaymentMessage;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='gender__indicator gender__dropdown-indicator css-tlfecz-indicatorContainer']")
+	private WebElement genderDropdown;
+	
+	@FindBy(how = How.XPATH, using = "//select[@id='state']")
+	private WebElement stateDropdown;
+	
+	@FindBy(how = How.XPATH, using = "(//a[@class='stepper-item__main'])[4]")
+	private WebElement copayStepper;
+	
+	@FindBy(how = How.XPATH, using = "//h1[text()='Pay balance']")
+	private WebElement payBalanceTitle;
+	
+	@FindBy(how = How.XPATH, using = "//h2[@class='page-subheading']")
+	private WebElement subHeadingOfPayBalance;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='balance-decide-form_min-balance']")
+	private WebElement minimumPaymentAmount;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='Pay balance']")
+	private WebElement balanceStepper;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='demographics-cell-content']")
+	private WebElement confirmTickAfterPrecheck;
 	
 	
 	public AppointmentsPage(WebDriver driver) {
@@ -2998,19 +3037,20 @@ public class AppointmentsPage extends BasePageObject {
 		public void payCopayFromPrecheck(String gender, String state, String CardName,
 				String CardNumber, String ExpiryDate, String CVVCode, String ZipCode) throws InterruptedException {
 				
+			genderDropdown.click();
 			chooseGender.size();
-			for(int i=0; i<chooseGender.size(); i++) {
-				log(chooseGender.get(i).getText());
-				if(chooseGender.get(i).getText().equals(gender)) {
-					chooseGender.get(i).click();
-					break;
-				}
+			for(int i=0; i<=chooseGender.size()-1; i++) {
+				 if(chooseGender.get(i).getText().contains(gender)) {
+	                 chooseGender.get(i).click();
+		                break;
+				 }
 			}
 			
+			stateDropdown.click();
 			chooseState.size();
-			for(int i=0; i<chooseState.size(); i++) {
+			for(int i=0; i<=chooseState.size()-1; i++) {
 				log(chooseState.get(i).getText());
-				if(chooseState.get(i).getText().equals(state)) {
+				if(chooseState.get(i).getText().contains(state)) {
 					chooseState.get(i).click();
 					break;
 				}
@@ -3084,4 +3124,259 @@ public class AppointmentsPage extends BasePageObject {
 	        WebElement reminderTextStatus= driver.findElement(By.xpath("(//input[@id='select-"+patientId+"-"+apptId+"']/following::div[@class='reminders-expanded-status'])[1]"));
 	        return reminderTextStatus.getText();
 	    }
+	    
+	    public String visibilityOfPayInOfficeTextOfAppt() {
+			IHGUtil.PrintMethodName();
+	        return payInOfficeTextOfAppt.getText();
+	    }
+	    
+	    public String visibilityOfCopayCompletedTitle() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, copayCompletedTitle );
+			return copayCompletedTitle.getText();
+	    }
+	    
+	    public String visibilityOfCopayCompletedMessage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, copayCompletedMessage );
+			return copayCompletedMessage.getText();
+	    }
+	    
+	    public void editInsuranceCards() {
+	    IHGUtil.waitForElement(driver, 10, editInsuranceCards);
+		editInsuranceCards.click();
+	    
+	    }
+	   
+	    public void payCopayByPayInOfficeFromPrecheck(String gender, String state) throws InterruptedException {
+			
+	    	genderDropdown.click();
+			chooseGender.size();
+			for(int i=0; i<=chooseGender.size()-1; i++) {
+				 if(chooseGender.get(i).getText().contains(gender)) {
+	                 chooseGender.get(i).click();
+		                break;
+				 }
+			}
+			
+			stateDropdown.click();
+			chooseState.size();
+			for(int i=0; i<=chooseState.size()-1; i++) {
+				log(chooseState.get(i).getText());
+				if(chooseState.get(i).getText().contains(state)) {
+					chooseState.get(i).click();
+					break;
+				}
+			}
+			
+			IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+			saveAndContinueButton.click();
+			
+			IHGUtil.waitForElement(driver, 5, okButton);
+			okButton.click();
+			
+			IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+			saveAndContinueButton.click();
+			
+			try {
+				IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+				skipAndPayInOffice.click();
+			}catch(NoSuchElementException e){
+				IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+				payInOfficeButton.click();
+			}
+			
+			try {
+				IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+				skipAndPayInOffice.click();
+			}catch(NoSuchElementException e){
+				IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+				payInOfficeButton.click();
+			}
+
+			try {
+				IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
+				skipAndFinishLater.click();
+			}catch(NoSuchElementException e){
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+			}
+				
+			IHGUtil.waitForElement(driver, 5, iAmDoneButton);	
+			iAmDoneButton.click();
+			
+			IHGUtil.waitForElement(driver, 5, logOutButton);
+			logOutButton.click();
+					
+			}
+	    
+	    public void gender(String gender) {
+	    genderDropdown.click();
+		chooseGender.size();
+		for(int i=0; i<=chooseGender.size()-1; i++) {
+			 if(chooseGender.get(i).getText().contains(gender)) {
+                 chooseGender.get(i).click();
+	                break;
+			 }
+			 }
+		}
+		
+	    public void state(String state) {
+	    stateDropdown.click();
+		chooseState.size();
+		for(int i=0; i<=chooseState.size()-1; i++) {
+			log(chooseState.get(i).getText());
+			if(chooseState.get(i).getText().contains(state)) {
+				chooseState.get(i).click();
+				break;
+			}
+			}
+		}
+	    
+	    public void clickOnPayNow() {
+	    IHGUtil.waitForElement(driver, 5, clickOnPayNow);
+		clickOnPayNow.click();
+	    }
+		
+	    public void enterNameOnCard(String CardName) {
+		IHGUtil.waitForElement(driver, 5, enterNameOnCard);
+		enterNameOnCard.sendKeys(CardName);
+	    }
+	
+	    public void enterCardNumber(String CardNumber) {
+		IHGUtil.waitForElement(driver, 5, enterCardNumber);
+		enterCardNumber.sendKeys(CardNumber);
+	    }
+		
+	    public void enterExpiryDate(String ExpiryDate) {
+		IHGUtil.waitForElement(driver, 5, enterExpiryDate);
+		enterExpiryDate.sendKeys(ExpiryDate);
+	    }
+		
+	    public void enterCVVCode(String CVVCode) {
+		IHGUtil.waitForElement(driver, 5, enterCVVCode);
+		enterCVVCode.sendKeys(CVVCode);
+	    }
+		
+	    public void enterPatientZipCodeOfCard(String ZipCode) {
+		IHGUtil.waitForElement(driver, 5, enterPatientZipCodeOfCard);
+		enterPatientZipCodeOfCard.sendKeys(ZipCode);
+	    }
+		
+	    public void clickOnConfirmButtonOfPrecheck() {
+		IHGUtil.waitForElement(driver, 5, clickOnConfirmButtonOfPrecheck);
+		clickOnConfirmButtonOfPrecheck.click();
+	    }
+	    
+	    public boolean visibilityOfConfirmPaymentTitle(){
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, confirmPaymentTitle);
+			if(confirmPaymentTitle.isDisplayed()) {
+				log("confirm payment title is displayed");
+				return true;
+			}
+			else {
+				log("confirm payment title is not displayed");
+				return false;
+			}
+		}
+		
+	    public void clickOnPayButton() {
+		IHGUtil.waitForElement(driver, 5, clickOnPayButton);
+		clickOnPayButton.click();
+	    }
+		
+	    public String visibilityOfProcessingPayment(){
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, processingPaymentMessage );
+			return processingPaymentMessage.getText();
+			
+		}
+	    
+	    public String visibilityOfCopayStepper() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, copayStepper);
+			return copayStepper.getText();
+			
+		}
+	    
+	    public String visibilityOfPayBalanceTitle() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, payBalanceTitle);
+			return payBalanceTitle.getText();
+			
+		}
+		
+		public String visibilityOfSubHeadingOfPayBalance() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, subHeadingOfPayBalance);
+			return subHeadingOfPayBalance.getText();
+			
+		}
+	    
+		public String visibilityOfMinimumPaymentAmountText() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, minimumPaymentAmount);
+			return minimumPaymentAmount.getText();
+			
+		}
+		
+		public String visibilityOfBalanceStepper() {
+			IHGUtil.waitForElement(driver, 5, balanceStepper);
+			return balanceStepper.getText();
+		}
+		
+		public void patientPrecheck() throws InterruptedException {
+			
+			log("Completing precheck");
+			try {
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+			}catch(NoSuchElementException e){
+				IHGUtil.waitForElement(driver, 5, okButton);
+				okButton.click();
+			}
+		
+			IHGUtil.waitForElement(driver, 5, okButton);
+			okButton.click();
+		
+			try {
+				IHGUtil.waitForElement(driver, 5, skipAddingInsurance);
+				skipAddingInsurance.click();
+			}catch(NoSuchElementException e){
+				IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+				payInOfficeButton.click();
+			}
+			
+			try {
+				IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+				skipAndPayInOffice.click();
+			}catch(NoSuchElementException e){
+				IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+				payInOfficeButton.click();
+			}
+
+			try {
+				IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
+				skipAndFinishLater.click();
+			}catch(NoSuchElementException e){
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+			}
+				
+			iAmDoneButton.click();
+			IHGUtil.waitForElement(driver, 5, logOutButton);
+			logOutButton.click();
+			}
+		
+		public boolean visibilityOfconfirmTickAfterPrecheck() {
+			IHGUtil.waitForElement(driver, 5, confirmTickAfterPrecheck);
+			if(confirmTickAfterPrecheck.isDisplayed()) {
+				log("precheck for patient is done");
+				return true;
+			} else {
+				log("precheck for patient os not done");
+				return false;
+			}
+		}
 }

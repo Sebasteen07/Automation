@@ -2401,3 +2401,58 @@ Feature: Test fuctionality of Appointment precheck
     And I hit edit button of email for appointment reminder
     Then I verify system is not allowing to enter invalid integers in timing unit section for email in appointment reminders for 'Email'
     And logout from practice provisioning portal
+
+  Scenario: verify if the patient skips 'PayInOffice'
+    When user schedule an appointment and skips
+    And I do the precheck and click on skip 'PayInOffice'
+    And I verify in appointment dashboard skips icon is seen for that appointment
+    And logout from practice provisioning portal
+
+  Scenario: verify if copay payments are already done
+    When I schedule an appointment with copay
+    And I do the precheck for copay
+    Then I verify again after doing precheck for that appointment to check if copay and balance payments are already done
+    And logout from practice provisioning portal
+
+  Scenario: verify if user pays copay amount by pay in office button
+    When I schedule an appointment with copay
+    And I click on patient name and pay the copay amount by pay in office while doing precheck
+    Then I verify in appointment dashboard for that appointment the copay should show pay in office
+    And logout from practice provisioning portal
+
+  Scenario: verify successful payment in copay
+    When I schedule an appointment with copay
+    And I pay copay with credit card and enter card details
+    Then I verify confirm payment and processing payment message should be displayed
+    And logout from practice provisioning portal
+
+  Scenario: verify if disable copay from precheck settings
+    When I disable copayment from precheck settings
+    And I schedule an appointment with copay
+    And I do the precheck after disabling copayment
+    Then I verify copay page should not be seen in precheck
+    And logout from practice provisioning portal
+
+  Scenario: verify display of title and other headlines of Pay Balance
+    When I schedule an appointment for paybalance
+    And I do the precheck for pay balance
+    Then I verify title and other details of pay balance should be seen proper
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enable minimum balance amount in practice precheck settings
+    When I enable minimum balance amount in precheck settings and enter minimum balance amount
+    And I schedule an appointment for paybalance
+    Then I verify precheck UI does not allow less than the amount payment
+    And logout from practice provisioning portal
+
+  Scenario: verify if user disables balance from practice precheck settings
+    When I disable balance from practice precheck settings
+    And I schedule an appointment for paybalance
+    Then I verify balance page should not be seen during precheck
+    And logout from practice provisioning portal
+
+  Scenario: verify if patient has multiple appointments and does precheck for one of the appointments should update only that appointment
+    When I schedule multiple appointments
+    And I do the precheck for one appointment
+    Then I verify system will show the appointment details of precheck completed not for other appointment whose precheck is not done
+    And logout from practice provisioning portal

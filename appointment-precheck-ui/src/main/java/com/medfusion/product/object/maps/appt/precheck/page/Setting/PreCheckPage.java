@@ -62,6 +62,18 @@ public class PreCheckPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@for='insurance']")
 	private WebElement insuranceCheckbox;
 	
+	@FindBy(how = How.XPATH, using = "//*[@for='copayment']")
+	private WebElement copaymentCheckbox;
+	
+	@FindBy(how = How.XPATH, using = "//label[@for='enableMinBalance']")
+	private WebElement enableMinimumBalancePayment;
+	
+	@FindBy(how = How.XPATH, using = "//input[@name='minBalanceAmount']")
+	private WebElement enterMinimumBalancePayment;
+	
+	@FindBy(how = How.XPATH, using = "//label[@for='balance']")
+	private WebElement balanceCheckbox;
+	
 
 	public PreCheckPage(WebDriver driver) {
 		super(driver);
@@ -244,5 +256,50 @@ public class PreCheckPage extends BasePageObject {
 			jse.executeScript("arguments[0].click();", insuranceCheckbox);
 		
 	}
+		
+		public void disableCopaymentCheckbox() {
+			IHGUtil.waitForElement(driver, 10, copaymentCheckbox);
+			boolean selected = copaymentCheckbox.isSelected();
+			if (!selected) {
+				jse.executeScript("arguments[0].click();", copaymentCheckbox);
+				log("copayment checkbox is disabled");
+			} else if (selected) {
+				log("copayment checkbox is enabled");
+			}
+			
+		}
+			
+			public void enableCopaymentCheckbox() {
+				IHGUtil.waitForElement(driver, 10, copaymentCheckbox);
+				jse.executeScript("arguments[0].click();", copaymentCheckbox);
+			
+		}
+		
+		public void clickOnEnableMinimumBalancePayment() {
+			IHGUtil.waitForElement(driver, 10, enableMinimumBalancePayment);
+			jse.executeScript("arguments[0].click();", enableMinimumBalancePayment);
+	}
+		
+		public void enterMinimumBalancePayment(String minimumbalancepayment) {
+			IHGUtil.waitForElement(driver, 10, enterMinimumBalancePayment);
+			enterMinimumBalancePayment.sendKeys(minimumbalancepayment);
+		}
+		
+		public void disableBalance() {
+			IHGUtil.waitForElement(driver, 5, balanceCheckbox);
+			boolean selected = balanceCheckbox.isSelected();
+			if(!selected) {
+				jse.executeScript("arguments[0].click();", balanceCheckbox);	
+				log("balance checkbox is disabled");
+			} else if(selected) {
+				log("balance checkbox is enabled");
+				
+			}
+		}
+			
+			public void enableBalance() {
+				IHGUtil.waitForElement(driver, 5, balanceCheckbox);
+				balanceCheckbox.click();
+		}	
 	
 }
