@@ -90,7 +90,7 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//*[@id='appt']/form/fieldset/div/div/button")
 	private WebElement buttonSave;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='appt']/div/form[2]/fieldset/div/div/button")
+	@FindBy(how = How.XPATH, using = "//*[@id='appt']/div/form/fieldset/div/div/button")
 	private WebElement pcpbuttonSave;
 
 	public AdminAppointment(WebDriver driver) {

@@ -577,14 +577,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
-		adminuser.setRule(patientflow.getRule());
-		Log4jUtil.log("rule= " + patientflow.getRule());
-		setRulesNoSpecialitySet1(patientflow);
-		appointment.setResourcetoggleStatus(patientflow.resourcetoggleStatus());
-		Log4jUtil.log("Resource is Enabled= " + patientflow.resourcetoggleStatus());
-		if (patientflow.resourcetoggleStatus() == false) {
-			patientflow.clickonProviderToggle();
-		}
+		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
 		appointment.setInsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
@@ -666,6 +659,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		linkTab.getURL(testData.getLinkProvider());
 		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		setRulesNoSpecialitySet1(patientflow);
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
@@ -684,6 +678,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
 		linkTab.searchLinkandRemove(testData.getLinkProvider());
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		setRulesNoSpecialitySet1(patientflow);
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
@@ -836,7 +831,8 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		setRulesNoSpecialitySet3(patientflow);
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
-		ManageSpecialty manageSpecialty = pss2practiceconfig.gotoSpeciality();
+		ManageSpecialty manageSpecialty = pss2practiceconfig.gotoSpeciality();	
+		Log4jUtil.log("speciality name is" + appointment.getSpeciality());
 		manageSpecialty.selectSpecility(appointment.getSpeciality());
 		Log4jUtil.log("Status of Checkbox" + manageSpecialty.checkBoxStatus());
 		manageSpecialty.ageRule();
@@ -894,7 +890,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminPatientMatching.patientMatchingSelection();
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
-		manageResource.selectResource(testData.getProvider());
+		manageResource.selectResource(testData.getLinkProvider());
 		manageResource.clickLocation();
 		manageResource.offAllLocationToggle();
 		patientFlow.logout();
