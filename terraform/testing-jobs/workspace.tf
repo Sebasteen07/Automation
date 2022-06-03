@@ -92,6 +92,8 @@ locals {
     qa1-patientportal-regression2        = "qa1-patientportal-regression2"
     qa1-patientportal-regression3        = "qa1-patientportal-regression3"
     qa1-patientportal-regression4        = "qa1-patientportal-regression4"
+    dev3-practiceportal-regression1      = "dev3-practiceportal-regression1"
+    qa1-practiceportal-regression1       = "qa1-practiceportal-regression1"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }

@@ -1376,6 +1376,36 @@ locals {
       chrome_driver_version = "101.0.4951.41"
       cron_shedule          = "cron(30 2 ? * 1 *)"
     }
+
+    "dev3-practiceportal-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "dev3"
+      suite_xml             = "practice-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "102.0.5005.61-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(15 18 ? * 1-5 *)"
+    }
+
+    "qa1-practiceportal-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "qa1"
+      suite_xml             = "practice-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "102.0.5005.61-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(40 2 ? * 1 *)"
+    }
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)
