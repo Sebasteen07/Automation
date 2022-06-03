@@ -2456,3 +2456,61 @@ Feature: Test fuctionality of Appointment precheck
     And I do the precheck for one appointment
     Then I verify system will show the appointment details of precheck completed not for other appointment whose precheck is not done
     And logout from practice provisioning portal
+
+  Scenario: verify if user removes existing insurance
+    When I schedule an appointment to remove the existing insurance
+    And I do the precheck and remove existing insurances and then I verify the message after removal of insurances
+    And logout from practice provisioning portal
+
+  Scenario: verify if user click On 'Im done button' after doing precheck
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the appointment scheduled
+    Then I verify the message after clicking on 'Im done button'
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see 'logout button' and 'cancel button' while doing precheck
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the scheduled appointment
+    Then I verify that user is able to see 'logout button' and 'cancel button'
+    And logout from practice provisioning portal
+
+  Scenario: verify if user after doing precheck clicks on cancel button it should bring back to Appointment details page
+    When I schedule an appointment for doing precheck
+    And I do the precheck and I click on cancel button
+    Then I verify after clicking on cancel button it should bring back to Appointment details page
+    And logout from practice provisioning portal
+
+  Scenario: verify if user after doing precheck clicks on logout button it should logout from patient mode
+    When I schedule an appointment for doing precheck
+    And I click on logout button and I verify it should logout from patient mode
+    And logout from practice provisioning portal
+
+  Scenario: verify appointment details page after precheck
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the scheduled appointment
+    Then I verify appointment details page is seen properly after doing precheck
+    And logout from practice provisioning portal
+
+  Scenario: verify check-in information in appointment details page for patient information
+    When I schedule an appointment for doing precheck
+    And I click on edit of patient information
+    Then I verify it takes to precheck demographics, patient can be able to do precheck details
+    And logout from practice provisioning portal
+
+  Scenario: verify check-in information in appointment details page for insurance cards
+    When I schedule an appointment for doing precheck
+    And I click on edit of insurance cards
+    Then I verify it takes to precheck insurance, patient can be able to do precheck for insurance details
+    And logout from practice provisioning portal
+
+  Scenario: verify menu options on all precheck pages
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the scheduled appointment
+    Then I verify all the menu options are seen properly on precheck page
+    And logout from practice provisioning portal
+
+  Scenario: verify signout options on precheck page
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the scheduled appointment and click on signout link
+    Then I verify signout link should take to the logout model for confirmation
+    And logout from practice provisioning portal

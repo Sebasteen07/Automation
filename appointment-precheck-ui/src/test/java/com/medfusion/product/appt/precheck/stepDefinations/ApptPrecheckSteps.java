@@ -8863,4 +8863,246 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
 		assertTrue(apptPage.visibilityOfconfirmTickAfterPrecheck());
 	}
+	
+	@When("I schedule an appointment to remove the existing insurance")
+	public void i_schedule_an_appointment_to_remove_the_existing_insurance() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@When("I do the precheck and remove existing insurances and then I verify the message after removal of insurances")
+	public void i_do_the_precheck_and_remove_existing_insurances_and_then_i_verify_the_message_after_removal_of_insurances() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.addInsurance();
+		apptPage.enterInsuranceName("Health Insurance");
+		apptPage.subscriberId("24131");
+		apptPage.saveAndContinueButton();
+		apptPage.deleteInsurance();
+		assertEquals(apptPage.getMessageAfterDeletingExistingInsurances(),"Are you sure you want to delete the existing insurance information?","text not match");
+		assertTrue(apptPage.visibilityOfCancelButton());
+		assertTrue(apptPage.visibilityOfDeleteButton());
+		apptPage.deleteButton();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@When("I schedule an appointment for doing precheck")
+	public void i_schedule_an_appointment_for_doing_precheck() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@When("I do the precheck for the appointment scheduled")
+	public void i_do_the_precheck_for_the_appointment_scheduled() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+	}
+	@Then("I verify the message after clicking on {string}")
+	public void i_verify_the_message_after_clicking_on(String string) throws NullPointerException, InterruptedException {
+		assertTrue(apptPage.visibilityOfIAmDoneButton());
+		apptPage.clickOnImDoneButton();
+		assertEquals(apptPage.getMessageAfterClickingOnImDoneButton(),"Thank you for checking in!","text not match");
+		assertEquals(apptPage.getPatientModeCompletionMessageClickingOnImDoneButton(),propertyData.getProperty("patient.mode.completion.message"),"text not match");
+		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@When("I do the precheck for the scheduled appointment")
+	public void i_do_the_precheck_for_the_scheduled_appointment() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+	}
+	@Then("I verify that user is able to see {string} and {string}")
+	public void i_verify_that_user_is_able_to_see_and(String string, String string2) throws NullPointerException, InterruptedException {
+		apptPage.clickOnImDoneButton();
+		assertTrue(apptPage.visibilityOfLogOutButton());
+		assertTrue(apptPage.visibilityOfCancelButton());
+		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	@When("I do the precheck and I click on cancel button")
+	public void i_do_the_precheck_and_i_click_on_cancel_button() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+	}
+	@Then("I verify after clicking on cancel button it should bring back to Appointment details page")
+	public void i_verify_after_clicking_on_cancel_button_it_should_bring_back_to_appointment_details_page() throws NullPointerException, InterruptedException {
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnCancel();
+		assertEquals(apptPage.visibilityOfPrecheckDoneTitle(),"You're PreChecked!","text not match");
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@When("I click on logout button and I verify it should logout from patient mode")
+	public void i_click_on_logout_button_and_i_verify_it_should_logout_from_patient_mode() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+		assertTrue(loginPage.visibilityOfMedfusionLogo(), "Medfusion logo not displayed");
+		assertTrue(loginPage.logInText().contains("Please log in."));
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@Then("I verify appointment details page is seen properly after doing precheck")
+	public void i_verify_appointment_details_page_is_seen_properly_after_doing_precheck() throws NullPointerException, InterruptedException {
+		assertEquals(apptPage.visibilityOfProviderTextInApptDetailsPage(),"Provider","text not match");
+		assertEquals(apptPage.visibilityOfDateAndTimeTextInApptDetailsPage(),"Date and time","text not match");
+		assertEquals(apptPage.visibilityOfPrecheckInformationTextInApptDetailsPage(),"Precheck information","text not match");
+		assertEquals(apptPage.visibilityOfPatientFormsTextInApptDetailsPage(),"Patient forms","text not match");
+		assertTrue(apptPage.visibilityOfIAmDoneButton());
+		assertTrue(apptPage.visibilityOfUpcomingApptsButtonInApptDetailsPage());
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@When("I click on edit of patient information")
+	public void i_click_on_edit_of_patient_information() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+		apptPage.editPatientInformation();
+	}
+	@Then("I verify it takes to precheck demographics, patient can be able to do precheck details")
+	public void i_verify_it_takes_to_precheck_demographics_patient_can_be_able_to_do_precheck_details() throws NullPointerException, InterruptedException {
+		assertEquals(apptPage.visibilityOfPrecheckPageTitle(),"Verify patient information","text not match");
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@When("I click on edit of insurance cards")
+	public void i_click_on_edit_of_insurance_cards() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+		apptPage.editInsuranceCards();
+	}
+	@Then("I verify it takes to precheck insurance, patient can be able to do precheck for insurance details")
+	public void i_verify_it_takes_to_precheck_insurance_patient_can_be_able_to_do_precheck_for_insurance_details() throws NullPointerException, InterruptedException {
+	   assertEquals(apptPage.visibilityOfInsurancePageTitle(),"Insurance information","text not match");
+	   apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+		apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@Then("I verify all the menu options are seen properly on precheck page")
+	public void i_verify_all_the_menu_options_are_seen_properly_on_precheck_page() throws NullPointerException, InterruptedException {
+	    assertEquals(apptPage.visibilityOfPatientNameTextInMenuOfPrecheckPage(),"Patient: AppScheduler One","text not match");
+	    assertEquals(apptPage.visibilityOfOfficeNumberTextInMenuOfPrecheckPage(),"Office number:","text not match");
+	    assertEquals(apptPage.visibilityOfLanguageTextInMenuOfPrecheckPage(),"Ver en español","text not match");
+	    assertEquals(apptPage.visibilityOfSignOutTextInMenuOfPrecheckPage(),"Sign out","text not match");
+	    apptPage.clickOnImDoneButton();
+		apptPage.clickOnLogOutButton();
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@When("I do the precheck for the scheduled appointment and click on signout link")
+	public void i_do_the_precheck_for_the_scheduled_appointment_and_click_on_signout_link() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnLaunchPatientModeButton();
+		apptPage.clickOnContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOkButton();
+		apptPage.clickOnSkipAddingInsurance();
+		apptPage.clickOnSkipAndPayInOffice();
+		apptPage.clickOnSkipAndFinishLater();
+		apptPage.clickOnSignOutTextInMenuOfPrecheckPage();
+	}
+	@Then("I verify signout link should take to the logout model for confirmation")
+	public void i_verify_signout_link_should_take_to_the_logout_model_for_confirmation() throws NullPointerException, InterruptedException {
+	   assertTrue(apptPage.visibilityOfLogOutIcon());
+	   assertEquals(apptPage.getlogOutMessageInPrecheck(),"Are you sure you want to logout?","text not match");
+	   assertTrue(apptPage.visibilityOfYesLogMeOutButton());
+	   assertTrue(apptPage.visibilityOfCancelButton());
+	   apptPage.clickYeslogMeOut();
+	   loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
 }
