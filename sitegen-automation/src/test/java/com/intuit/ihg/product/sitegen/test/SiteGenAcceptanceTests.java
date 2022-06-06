@@ -695,7 +695,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
-	public void testPortalURL() throws Exception {
+	public void testPortalURLSU() throws Exception {
 
 		SiteGenLoginPage loginpage;
 		SiteGenHomePage pSiteGenHomePage;
@@ -757,4 +757,34 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		pInfoPage.saveEdit();
 
 	}
+	
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
+	private void testUpdateEnterpriseForAPracticeSU() throws Exception {
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage;
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
+		
+		pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
+		pSiteGenHomePage = loginpage.clickOnLoginAsInternalEmployee();
+		logStep("navigate to SiteGen PracticeHomePage");
+		assertTrue(pSiteGenHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen HomePage  to be loaded, but it was not.");
+		pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("practice.name"));
+
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+		
+		logStep("Click on Practice Information and navigate to practice information page");
+		pSiteGenPracticeHomePage.clickPracticeInformation();
+		
+		logStep("Click on edit practice Information Page");
+		PracticeInfoPage pInfoPage = new PracticeInfoPage(driver);
+		
+		pInfoPage.edit();
+		
+		logStep("Update the Enteprise Association of the Practice");
+		pInfoPage.updateEnterprise();
+		
+	}
+
 }
