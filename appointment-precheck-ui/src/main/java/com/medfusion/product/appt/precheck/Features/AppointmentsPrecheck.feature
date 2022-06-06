@@ -2459,7 +2459,8 @@ Feature: Test fuctionality of Appointment precheck
 
   Scenario: verify if user removes existing insurance
     When I schedule an appointment to remove the existing insurance
-    And I do the precheck and remove existing insurances and then I verify the message after removal of insurances
+    And I do the precheck and remove existing insurances and
+    Then I verify the message after removal of insurances
     And logout from practice provisioning portal
 
   Scenario: verify if user click On 'Im done button' after doing precheck
@@ -2482,7 +2483,8 @@ Feature: Test fuctionality of Appointment precheck
 
   Scenario: verify if user after doing precheck clicks on logout button it should logout from patient mode
     When I schedule an appointment for doing precheck
-    And I click on logout button and I verify it should logout from patient mode
+    And I click on logout button
+    Then I verify it should logout from patient mode
     And logout from practice provisioning portal
 
   Scenario: verify appointment details page after precheck

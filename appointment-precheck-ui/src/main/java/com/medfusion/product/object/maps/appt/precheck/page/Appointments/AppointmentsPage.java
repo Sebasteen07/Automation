@@ -713,9 +713,6 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//div[@class='simple-modal__icon sign-out-modal__icon']")
 	private WebElement logOutIcon;
 	
-	@FindBy(how = How.XPATH, using = "//button[text()='Yes log me out']")
-	private WebElement clickYeslogMeOut;
-	
 	@FindBy(how = How.XPATH, using = "//p[@class='simple-modal__description']")
 	private WebElement logOutMessageInPrecheck;
 	
@@ -3439,17 +3436,12 @@ public class AppointmentsPage extends BasePageObject {
 		
 		public void deleteInsurance() {
 			IHGUtil.waitForElement(driver, 5, deleteInsurance);
-			{
 				deleteInsurance.click();
-				
-			}
 		}
 		
 		public void deleteButton() {
 			IHGUtil.waitForElement(driver, 5, deleteButton);
-			{
 				deleteButton.click();
-			}
 		}
 		
 		
@@ -3648,8 +3640,8 @@ public class AppointmentsPage extends BasePageObject {
 		
 		public boolean visibilityOfYesLogMeOutButton() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 5, clickYeslogMeOut);
-			if(clickYeslogMeOut.isDisplayed()) {
+			IHGUtil.waitForElement(driver, 5, yesLogMeOut);
+			if(yesLogMeOut.isDisplayed()) {
 				log("yes log out icon is displayed");
 				return true;
 			}
@@ -3661,8 +3653,8 @@ public class AppointmentsPage extends BasePageObject {
 		
 		public void clickYeslogMeOut() {
 			IHGUtil.PrintMethodName();
-			IHGUtil.waitForElement(driver, 5, clickYeslogMeOut);
-			clickYeslogMeOut.click();
+			IHGUtil.waitForElement(driver, 5, yesLogMeOut);
+			yesLogMeOut.click();
 		}
 		
 		public String getlogOutMessageInPrecheck() {

@@ -8878,8 +8878,8 @@ public class ApptPrecheckSteps extends BaseTest {
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 				Appointment.apptId);
 	}
-	@When("I do the precheck and remove existing insurances and then I verify the message after removal of insurances")
-	public void i_do_the_precheck_and_remove_existing_insurances_and_then_i_verify_the_message_after_removal_of_insurances() throws InterruptedException {
+	@When("I do the precheck and remove existing insurances and")
+	public void i_do_the_precheck_and_remove_existing_insurances_and() throws InterruptedException {
 		apptPage.selectPatientIdAppt(Appointment.patientId);
 		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
 		apptPage.clickOnLaunchPatientModeButton();
@@ -8891,6 +8891,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.subscriberId("24131");
 		apptPage.saveAndContinueButton();
 		apptPage.deleteInsurance();
+	}
+	@Then("I verify the message after removal of insurances")
+	public void i_verify_the_message_after_removal_of_insurances() throws NullPointerException, InterruptedException {
 		assertEquals(apptPage.getMessageAfterDeletingExistingInsurances(),"Are you sure you want to delete the existing insurance information?","text not match");
 		assertTrue(apptPage.visibilityOfCancelButton());
 		assertTrue(apptPage.visibilityOfDeleteButton());
@@ -8984,9 +8987,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
 				propertyData.getProperty("practice.provisining.password.ge"));
 	}
-	
-	@When("I click on logout button and I verify it should logout from patient mode")
-	public void i_click_on_logout_button_and_i_verify_it_should_logout_from_patient_mode() throws InterruptedException {
+	@When("I click on logout button")
+	public void i_click_on_logout_button() throws InterruptedException {
 		apptPage.selectPatientIdAppt(Appointment.patientId);
 		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
 		apptPage.clickOnLaunchPatientModeButton();
@@ -8998,6 +9000,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
+	}
+	@Then("I verify it should logout from patient mode")
+	public void i_verify_it_should_logout_from_patient_mode() throws NullPointerException, InterruptedException {
 		assertTrue(loginPage.visibilityOfMedfusionLogo(), "Medfusion logo not displayed");
 		assertTrue(loginPage.logInText().contains("Please log in."));
 		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
