@@ -9077,7 +9077,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	
 	@Then("I verify all the menu options are seen properly on precheck page")
 	public void i_verify_all_the_menu_options_are_seen_properly_on_precheck_page() throws NullPointerException, InterruptedException {
-	    assertEquals(apptPage.visibilityOfPatientNameTextInMenuOfPrecheckPage(),"Patient: AppScheduler One","text not match");
+	    assertEquals(apptPage.visibilityOfPatientNameTextInMenuOfPrecheckPage(),propertyData.getProperty("precheck.menu.patient.name"),"text not match");
 	    assertEquals(apptPage.visibilityOfOfficeNumberTextInMenuOfPrecheckPage(),"Office number:","text not match");
 	    assertEquals(apptPage.visibilityOfLanguageTextInMenuOfPrecheckPage(),"Ver en español","text not match");
 	    assertEquals(apptPage.visibilityOfSignOutTextInMenuOfPrecheckPage(),"Sign out","text not match");
