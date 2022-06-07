@@ -5,7 +5,7 @@
 	<parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-parent-pom</artifactId>
-	  <version>22.3.0rc-SNAPSHOT</version>
+	  <version>22.4.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>sitegen-automation</artifactId>
@@ -14,7 +14,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>22.3.0rc-SNAPSHOT</ihg.version>
+        <ihg.version>22.4.0-SNAPSHOT</ihg.version>
     </properties>
     
     <repositories>
