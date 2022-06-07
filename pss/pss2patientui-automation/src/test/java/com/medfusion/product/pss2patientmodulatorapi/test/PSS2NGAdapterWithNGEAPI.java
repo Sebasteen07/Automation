@@ -16,6 +16,7 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.ParseJSONFile;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
+import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNGE;
 import com.medfusion.product.pss2patientapi.payload.PayloadNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadNGEAPI;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -32,7 +33,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	public static PayloadNGEAPI payload;
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
-	public static PostAPIRequestNG postAPIRequest;
+	public static PostAPIRequestNGE postAPIRequest;
 	public static PSSPatientUtils pSSPatientUtils;
 	public static String practiceId;
 	APIVerification aPIVerification = new APIVerification();
@@ -42,11 +43,11 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 		payload = new PayloadNGEAPI();
 		propertyData = new PSSPropertyFileLoader();
-		postAPIRequest = new PostAPIRequestNG();
+		postAPIRequest = new PostAPIRequestNGE();
 		pSSPatientUtils= new PSSPatientUtils();
 		log("I am before Test");
-		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.ng"));
-		log("BASE URL-" + propertyData.getProperty("base.url.ng"));
+		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.nge"));
+		log("BASE URL-" + propertyData.getProperty("base.url.nge"));
 		
 		practiceId=propertyData.getProperty("practice.id.nge.api");
 	}
@@ -160,13 +161,18 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testschedule_Resc_NGPOST() throws NullPointerException, Exception {
-		
+	public void test_Avai_Schedule_Resc_Cancel_NGPOST() throws NullPointerException, Exception {
 
-		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:SS");
-		String enddate = pSSPatientUtils.addDaysToDate(startdate, "1", "MM/dd/yyyy HH:MM:SS");
-
-		String b = PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate);
+//		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:ss");
+//		String enddate = pSSPatientUtils.addDaysToDate(startdate, "1", "MM/dd/yyyy HH:MM:ss");
+		String startdate = "05/18/2022 17:45:00";
+		String enddate = "06/30/2022 18:45:00";
+		String patinetId = "597d7141-79ec-4e27-a089-d6ca280ce687";
+		String fname = "";
+		String lname = "";
+		int maxPerDay = 0;
+		String b = PayloadNGEAPI.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate,
+				maxPerDay);
 
 		Response response = postAPIRequest.availableSlots(b, practiceId);
 
@@ -176,22 +182,28 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		JsonPath js = new JsonPath(response.asString());
 		String startDateTime = js.getString("availableSlots[0].startDateTime");
 		String startDateTimeResch = js.getString("availableSlots[1].startDateTime");
+		String startDateTimeResch1 = js.getString("availableSlots[2].startDateTime");
+		String startDateTimeResch4 = js.getString("availableSlots[3].startDateTime");
 		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(practiceId,
-				PayloadNG.schedule_Payload(startDateTime, propertyData.getProperty("slot.end.time.ng")));
+				PayloadNGEAPI.schedule_Payload(startDateTime, startDateTimeResch));
 		aPIVerification.responseCodeValidation(scheduleApptResponse, 200);
 		aPIVerification.responseTimeValidation(scheduleApptResponse);
 		String apptid = aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
 		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
 		log("Appointment id - " + apptid);
 
-		Response rescheduleResponse = postAPIRequest.rescheduleApptNG(practiceId,
-				PayloadNG.reschedule_Payload(startDateTimeResch,
-						propertyData.getProperty("end.date.time.ng"), propertyData.getProperty("patient.id.ng"),
-						propertyData.getProperty("first.name.ng"), propertyData.getProperty("first.name.ng"), apptid));
+		Response rescheduleResponse = postAPIRequest.rescheduleApptNG(practiceId, PayloadNGEAPI
+				.reschedule_Payload(startDateTimeResch1, startDateTimeResch4, patinetId, fname, lname, apptid));
 		aPIVerification.responseTimeValidation(rescheduleResponse);
 		aPIVerification.responseCodeValidation(rescheduleResponse, 200);
-		aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
+		String apptCancelId = aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
 		aPIVerification.responseKeyValidationJson(rescheduleResponse, "slotAlreadyTaken");
+		log("Appointment id Reschedule- " + apptCancelId);
+
+		Response responseCancel = postAPIRequest.cancelAppointmentPOST(practiceId,
+				PayloadNGEAPI.cancelAppointment(apptCancelId));
+		aPIVerification.responseCodeValidation(responseCancel, 200);
+		aPIVerification.responseTimeValidation(responseCancel);
 
 	}
 
@@ -294,15 +306,15 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseTimeValidation(response);
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCancelAppointmentPost() throws IOException {
-
-		Response response = postAPIRequest.cancelAppointmentPOST(practiceId,
-				payload.cancelAppointment);
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-	}
+//	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+//	public void testCancelAppointmentPost() throws IOException {
+//
+//		Response response = postAPIRequest.cancelAppointmentPOST(practiceId,
+//				payload.cancelAppointment);
+//		aPIVerification.responseCodeValidation(response, 200);
+//		aPIVerification.responseTimeValidation(response);
+//
+//	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentWithoutBodyPost() throws IOException {
@@ -431,8 +443,8 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDemographicsGET() throws IOException {
-
-		Response response = postAPIRequest.demographics(practiceId);
+        String patientId="93c7d062-e9f7-42e0-9197-72cd031eb2f2";
+		Response response = postAPIRequest.demographics(practiceId,patientId);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "id");
@@ -443,8 +455,8 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDemographicsWithoutPracticeIdGET() throws IOException {
-
-		Response response = postAPIRequest.demographics("");
+		String patientId="93c7d062-e9f7-42e0-9197-72cd031eb2f2";
+		Response response = postAPIRequest.demographics("",patientId);
 		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -638,5 +650,36 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseTimeValidation(response);
 
 	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAvaliableSlots() throws NullPointerException, Exception {
+		
 
+//		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:ss");
+//		String enddate = pSSPatientUtils.addDaysToDate(startdate, "1", "MM/dd/yyyy HH:MM:ss");
+		String startdate = "05/18/2022 17:45:00";
+		String enddate ="06/30/2022 18:45:00";
+		int maxPerDay=0;
+		String b = PayloadNGEAPI.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate,maxPerDay);
+
+		Response response = postAPIRequest.availableSlots(b, practiceId);
+
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+public void testAvaliableSlotswithMaxperDay() throws NullPointerException, Exception {
+	
+
+//	String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:ss");
+//	String enddate = pSSPatientUtils.addDaysToDate(startdate, "1", "MM/dd/yyyy HH:MM:ss");
+	String startdate = "05/18/2022 17:45:00";
+	String enddate ="06/30/2022 18:45:00";
+	int maxPerDay=1;
+	String b = PayloadNGEAPI.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate,maxPerDay);
+
+	Response response = postAPIRequest.availableSlots(b, practiceId);
+	aPIVerification.responseCodeValidation(response, 200);
+	aPIVerification.responseTimeValidation(response);
+}
 }

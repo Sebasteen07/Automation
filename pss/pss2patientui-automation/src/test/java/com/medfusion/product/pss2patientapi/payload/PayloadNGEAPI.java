@@ -46,14 +46,22 @@ public class PayloadNGEAPI {
 			"    \"rule\": \"L,T,B\",\r\n" + 
 			"    \"leafNode\": null\r\n" + 
 			"}";
-	public String cancelAppointment = "{\r\n" +
-			"  \"appointmentId\": \"59f90f71-f4b9-4752-9810-24792ad5412b\",\r\n" + 
-			"  \"cancellationMap\": {\r\n" + 
-			"    \"additionalProp1\": \"string\",\r\n" + 
-			"    \"additionalProp2\": \"string\",\r\n" + 
-			"    \"additionalProp3\": \"string\"\r\n" + 
-			"  }\r\n" + 
-			"}";
+	
+	
+	
+	
+public static String cancelAppointment(String appointmentId) {
+		
+		String cancelAppointment="{\r\n"
+				+ "    \"appointmentId\": \""+appointmentId+"\",\r\n"
+				+ "    \"cancellationMap\": {\r\n"
+				+ "        \"id\": \"4791929E-0999-46FC-9624-B9B2E415AFCD\",\r\n"
+				+ "        \"name\": \"Other\"\r\n"
+				+ "    }\r\n"
+				+ "}";
+		
+		return cancelAppointment;
+	}
 	
 	String body1="[{\"group\":\"NG_WEBSERVICES\",\"key\":\"NGAPIBaseUrl\",\"value\":\"https://dev-nge-test-pss-nge-int-test.dev.mf.pxp.nextgenaws.net:7205/api\"}]";
 	String available_Slot_Payload ="{\"locationId\":\"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
@@ -100,35 +108,27 @@ public class PayloadNGEAPI {
 		return past_appt;
 	}
 
-	public static String nextAvailable_Payload(String patientId, String startdate,  String enddate) {
+	public static String nextAvailable_Payload(String patientId, String startdate,  String enddate,int maxPerDay) {
 		
 		String nextAvailable="{\r\n"
-				+ "    \"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
-				+ "    \"appointmentCategoryId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
-				+ "    \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
-				+ "    \"resourceCategoryId\": \"C8E55131-F1D8-401D-A107-F90222DBD977\",\r\n"
-				+ "    \"resourceId\": \"F49641D6-CDF1-4264-B5A5-7489F7E58F8D\",\r\n"
-				+ "    \"startDate\": \""+startdate+"\",\r\n"
-				+ "    \"endDate\": \""+enddate+"\",\r\n"				
-				+ "    \"slotSize\": \"15\",\r\n"
-				+ "    \"patientId\": null,\r\n"
-				+ "    \"reservedForSameDay\": false,\r\n"
-				+ "    \"apptTypeAllocated\": true,\r\n"
-				+ "    \"nextAvailability\": false,\r\n"
-				+ "    \"stackingFlag\": false,\r\n"
-				+ "    \"preventScheduling\": 0,\r\n"
-				+ "    \"sameDayAppointment\": false,\r\n"
-				+ "    \"contiguous\": false,\r\n"
-				+ "    \"maxPerDay\": 0,\r\n"
-				+ "    \"leadTime\": 0,\r\n"
-				+ "    \"slotCount\": 1,\r\n"
-				+ "    \"allowSameDayAppts\": true,\r\n"
-				+ "    \"reservedForSameDate\": \"n\",\r\n"
-				+ "    \"appointmentTypeDBId\": \"205755\",\r\n"
-				+ "    \"locationDBId\": \"205605\",\r\n"
-				+ "    \"providerDBId\": \"205664\",\r\n"
-				+ "    \"practiceTimezone\": \"America/New_York\",\r\n"
-				+ "    \"nextAvailable\": true\r\n"
+				+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+				+ "  \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+				+ "  \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
+				+ "  \"startDate\": \"06/18/2022 17:45:00\",\r\n"
+				+ "  \"endDate\": \"06/30/2022 18:45:00\",\r\n"
+				+ "  \"slotSize\": \"05\",\r\n"
+				+ "  \"reservedForSameDay\": false,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"patientId\": \"597d7141-79ec-4e27-a089-d6ca280ce687\",\r\n"
+				+ "  \"contiguous\": false,\r\n"
+				+ "  \"maxPerDay\": 0,\r\n"
+				+ "  \"nextAvailability\": false,\r\n"
+				+ "  \"stackingFlag\": false,\r\n"
+				+ "  \"preventScheduling\": 0,\r\n"
+				+ "  \"sameDayAppointment\": false,\r\n"
+				+ "  \"leadTime\": 0,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"nextAvailable\": false\r\n"
 				+ "}";
 		
 		return nextAvailable;
@@ -162,74 +162,69 @@ public static String nextAvailable_New() {
 		return nextAvailable;
 	}
 	
-	public static String reschedule_Payload(String startDateTime, String endDateTime, String patientid, String firstName, String lastName, String apptid) {
-		
-		String reschedule="{\r\n"
-				+ "\"locationId\":\"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
-				+ "\"appointmentCategoryId\":\"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
-				+ "\"appointmentTypeId\":\"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
-				+ "\"duration\":0,\r\n"
-				+ "\"comments\":\"CustomQuestion:hello~(pss) 231365 02/23/2021 09:33:19~\",\r\n"
-				+ "\"startDateTime\":\""+startDateTime+"\",\r\n"
-				+ "\"endDateTime\":\""+endDateTime+"\",\r\n"
-				+ "\"patientId\":\""+patientid+"\",\r\n"
-				+ "\"resourceCategoryId\":\"10F8A2F7-4291-4855-BBFA-87AB3E3A6C60\",\r\n"
-				+ "\"resourceId\":\"6A6269EE-E9F3-4880-B36F-C90E51EB33CF\",\r\n"
-				+ "\"slotId\":\"0001\",\r\n"
-				+ "\"stackingFlag\":false,\r\n"
-				+ "\"schedulingDuration\":0,\r\n"
-				+ "\"additionalProperties\":{\r\n"
-				+ "\"FN\":\""+firstName+"\",\r\n"
-				+ "\"LN\":\""+lastName+"\"\r\n"
-				+ "},\r\n"
-				+ "\"notesProperties\":{\r\n"
-				+ "\"apptIndicatorWithConfirmationNo\":\"(pss) 231365 03/23/2021 09:33:19\",\r\n"
-				+ "\"customQuestion\":\"hello\"\r\n"
-				+ "},\r\n"
-				+ "\"existingAppointment\":{\r\n"
-				+ "\"duration\":0,\r\n"
-				+ "\"stackingFlag\":false,\r\n"
-				+ "\"schedulingDuration\":0,\r\n"
-				+ "\"appointmentId\":\""+apptid+"\"\r\n"
-				+ "},\r\n"
-				+ "\"rescheduleReason\":{\r\n"
-				+ "\"name\":\"otherCancelReason\"\r\n"
-				+ "},\r\n"
-				+ "\"practiceTimezone\":\"America/New_York\"\r\n"
-				+ "}";
-		
-		return reschedule;
-	}
+public static String reschedule_Payload(String startDateTime, String endDateTime, String patientid, String firstName, String lastName, String apptid) {
+	
+	String reschedule="{\r\n"
+			+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+			+ "  \"appointmentCategoryId\": \"aa81a2da-5781-46e7-8b67-19b873eb3cdb\",\r\n"
+			+ "  \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+			+ "  \"duration\": 0,\r\n"
+			+ "  \"comments\": \"~(pss) 239797 01/24/2022 05:20:04~\",\r\n"
+			+ "  \"startDateTime\": \""+startDateTime+"\",\r\n"
+			+ "  \"endDateTime\": \""+endDateTime+"\",\r\n"
+			+ "  \"patientId\": \""+patientid+"\",\r\n"
+			+ "  \"resourceCategoryId\": \"58e61653-fe3d-448b-ba06-8bcdbfa1cf0f\",\r\n"
+			+ "  \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
+			+ "  \"slotId\": \"0001\",\r\n"
+			+ "  \"stackingFlag\": false,\r\n"
+			+ "  \"schedulingDuration\": 0,\r\n"
+			+ "  \"additionalProperties\": {\r\n"
+			+ "    \"ZIP\": \"12345\",\r\n"
+			+ "    \"PHONE\": \"808-201-6243\",\r\n"
+			+ "    \"EMAIL\": \"Ketan@yopmail.com\"\r\n"
+			+ "  },\r\n"
+			+ "  \"notesProperties\": {\r\n"
+			+ "    \"apptIndicatorWithConfirmationNo\": \"(pss) 239797 01/24/2022 05:20:04\"\r\n"
+			+ "  },\r\n"
+			+ "  \"existingAppointment\": {\r\n"
+			+ "    \"duration\": 0,\r\n"
+			+ "    \"stackingFlag\": false,\r\n"
+			+ "    \"schedulingDuration\": 0,\r\n"
+			+ "    \"appointmentId\": \""+apptid+"\"\r\n"
+			+ "  },\r\n"
+			+ "  \"rescheduleReason\": {\r\n"
+			+ "    \"id\": \"8EED1E6A-1FA2-4CCF-9660-0F553B1D8C17\",\r\n"
+			+ "    \"name\": \"Laurie\"\r\n"
+			+ "  },\r\n"
+			+ "  \"practiceTimezone\": \"America/New_York\"\r\n"
+			+ "}";
+	
+	return reschedule;
+}
 	
 	public static String schedule_Payload(String slotStartTime, String slotEndTime) {
 		
 		String schedule="{\r\n"
-				+ "  \"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
-				+ "  \"appointmentCategoryId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
-				+ "  \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
-				+ "  \"duration\": 0,\r\n"
-				+ "  \"comments\": \"~(pss) 231701 03/12/2021 04:34:27~\",\r\n"
-				+ "  \"startDateTime\": \""+slotStartTime+"\",\r\n"
-				+ "  \"endDateTime\": \""+slotEndTime+"\",\r\n"
-				+ "  \"patientId\": \"50245\",\r\n"
-				+ "  \"resourceCategoryId\": \"C8E55131-F1D8-401D-A107-F90222DBD977\",\r\n"
-				+ "  \"resourceId\": \"F49641D6-CDF1-4264-B5A5-7489F7E58F8D\",\r\n"
-				+ "  \"slotId\": \"0001\",\r\n"
-				+ "  \"stackingFlag\": false,\r\n"
-				+ "  \"schedulingDuration\": 0,\r\n"
-				+ "  \"additionalProperties\": {\r\n"
-				+ "    \"FN\": \"mai\",\r\n"
-				+ "    \"LN\": \"mai\",\r\n"
-				+ "    \"DOB\": \"01/01/2001\",\r\n"
-				+ "    \"GENDER\": \"F\",\r\n"
-				+ "    \"EMAIL\": \"Shweta.Sontakke@crossasyst.com\",\r\n"
-				+ "    \"PHONE\": \"961-992-1668\",\r\n"
-				+ "    \"ZIP\": \"12345\"\r\n"
-				+ "  },\r\n"
-				+ "  \"notesProperties\": {\r\n"
-				+ "    \"apptIndicatorWithConfirmationNo\": \"(pss) 231701 03/12/2021 04:34:27\"\r\n"
-				+ "  },\r\n"
-				+ "  \"practiceTimezone\": \"America/New_York\"\r\n"
+				+ "    \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+				+ "    \"appointmentCategoryId\": \"aa81a2da-5781-46e7-8b67-19b873eb3cdb\",\r\n"
+				+ "    \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+				+ "    \"duration\": 0,\r\n"
+				+ "    \"comments\": \"~(pss) 239797 01/24/2022 05:20:04~\",\r\n"
+				+ "    \"startDateTime\": \""+slotStartTime+"\",\r\n"
+				+ "    \"endDateTime\": \""+slotEndTime+"\",\r\n"
+				+ "    \"patientId\": \"597d7141-79ec-4e27-a089-d6ca280ce687\",\r\n"
+				+ "    \"resourceCategoryId\": \"58e61653-fe3d-448b-ba06-8bcdbfa1cf0f\",\r\n"
+				+ "    \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
+				+ "    \"slotId\": \"0001\",\r\n"
+				+ "    \"stackingFlag\": false,\r\n"
+				+ "    \"schedulingDuration\": 0,\r\n"
+				+ "    \"additionalProperties\": {\r\n"
+				+ "        \"EMAIL\": \"ketan@yopmail.com\"\r\n"
+				+ "    },\r\n"
+				+ "    \"notesProperties\": {\r\n"
+				+ "        \"apptIndicatorWithConfirmationNo\": \"(pss) 239797 01/24/2022 05:20:04\"\r\n"
+				+ "    },\r\n"
+				+ "    \"practiceTimezone\": \"America/New_York\"\r\n"
 				+ "}";
 		
 		return schedule;
