@@ -62,6 +62,16 @@ public static String cancelAppointment(String appointmentId) {
 		
 		return cancelAppointment;
 	}
+
+public static String appointmentSearch() {
+	
+	String cancelAppointment="{\r\n"
+			+ "    \"eventId\": null,\r\n"
+			+ "    \"eventName\": \"Annual\"\r\n"
+			+ "}";
+	
+	return cancelAppointment;
+}
 	
 	String body1="[{\"group\":\"NG_WEBSERVICES\",\"key\":\"NGAPIBaseUrl\",\"value\":\"https://dev-nge-test-pss-nge-int-test.dev.mf.pxp.nextgenaws.net:7205/api\"}]";
 	String available_Slot_Payload ="{\"locationId\":\"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
@@ -379,7 +389,7 @@ public static String reschedule_Payload(String startDateTime, String endDateTime
 		 		+ "            \"entity\": \"Patient Last Name\",\r\n"
 		 		+ "            \"isMandatory\": true,\r\n"
 		 		+ "            \"code\": \"LN\",\r\n"
-		 		+ "            \"value\": \"lad1\",\r\n"
+		 		+ "            \"value\": \"Ketan124\",\r\n"
 		 		+ "            \"selected\": true,\r\n"
 		 		+ "            \"search\": true,\r\n"
 		 		+ "            \"error\": \"\",\r\n"
@@ -393,7 +403,7 @@ public static String reschedule_Payload(String startDateTime, String endDateTime
 		 		+ "            \"entity\": \"Patient First Name (Legal Name)\",\r\n"
 		 		+ "            \"isMandatory\": true,\r\n"
 		 		+ "            \"code\": \"FN\",\r\n"
-		 		+ "            \"value\": \"shweta1\",\r\n"
+		 		+ "            \"value\": \"Ketan124\",\r\n"
 		 		+ "            \"selected\": true,\r\n"
 		 		+ "            \"search\": true,\r\n"
 		 		+ "            \"error\": \"\",\r\n"
@@ -432,12 +442,33 @@ public static String reschedule_Payload(String startDateTime, String endDateTime
 		 		+ "            \"seq\": 4\r\n"
 		 		+ "        }\r\n"
 		 		+ "    ],\r\n"
-		 		+ "    \"maxCriteria\": \"11\",\r\n"
+		 		+ "    \"maxCriteria\": \"4\",\r\n"
 		 		+ "    \"allowDuplicatePatient\": false,\r\n"
 		 		+ "    \"practiceTimezone\": \"America/New_York\"\r\n"
 		 		+ "}";
 		return matchpatient;
 	}
+	
+public static String careProvider() {
+		
+		String careProvider="{\r\n"
+				+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+				+ "  \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+				+ "  \"appointmentTypeCatId\": \"aa81a2da-5781-46e7-8b67-19b873eb3cdb\",\r\n"
+				+ "  \"startDateTime\": \"06/07/2022 04:00:28\",\r\n"
+				+ "  \"endDateTime\": \"06/09/2022 04:00:28\",\r\n"
+				+ "  \"careProvider\": [\r\n"
+				+ "    {\r\n"
+				+ "      \"resourceCatId\": \"58e61653-fe3d-448b-ba06-8bcdbfa1cf0f\",\r\n"
+				+ "      \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
+				+ "      \"slotSize\": \"5\"\r\n"
+				+ "    }\r\n"
+				+ "  ]\r\n"
+				+ "}";
+		
+		return careProvider;
+	}
+
 		
 		String patientrecordbyapptypes="{\r\n"
 				+ "  \"additionalProperties\": {},\r\n"

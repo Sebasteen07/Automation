@@ -38,8 +38,15 @@ public class PostAPIRequestNGE extends BaseTestNGWebDriver {
 
 	public Response appointmentType(String practiceid) {
 
-		Response response = given().spec(requestSpec).log().all().when().get(practiceid + APIPath.apiPath.Apt_Type)
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/appointmenttypes")
 				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response appointmentTypeSearch(String practiceid, String b) {
+
+		Response response = given().spec(requestSpec).log().all().body(b)
+				.post(practiceid + "/appointmenttypesearch").then().log().all().extract().response();
 		return response;
 	}
 
@@ -143,13 +150,21 @@ public class PostAPIRequestNGE extends BaseTestNGWebDriver {
 	public Response insuranceCarrier(String practiceid) {
 
 		Response response = given().when().spec(requestSpec).log().all()
-				.get(practiceid + APIPath.apiPath.insurancecarrierNG).then().log().all().extract().response();
+				.get(practiceid + "/insurancecarrier").then().log().all().extract().response();
 		return response;
 	}
 
 	public Response locations(String practiceid) {
 
-		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.locationsNG).then().log().all()
+		Response response = given().log().all().when().get(practiceid +"/locations").then().log().all()
+				.extract().response();
+		return response;
+
+	}
+	
+	public Response lastSeenGET(String practiceid) {
+
+		Response response = given().log().all().when().get(practiceid +"/patientlastvisit").then().log().all()
 				.extract().response();
 		return response;
 
@@ -177,16 +192,16 @@ public class PostAPIRequestNGE extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response patientLastVisit(String practiceid) {
+	public Response patientLastVisit(String practiceid,String patientId) {
 
-		Response response = given().log().all().queryParam("patientId", "50056").when()
-				.get(practiceid + APIPath.apiPath.patientLastVisistNG).then().log().all().extract().response();
+		Response response = given().log().all().when()
+				.get(practiceid +"/patientlastvisit/"+patientId).then().log().all().extract().response();
 		return response;
 	}
 
 	public Response patietStatus(String practiceid) {
 
-		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.patientStatusNG).then().log()
+		Response response = given().log().all().when().get(practiceid + "/patientstatus").then().log()
 				.all().extract().response();
 
 		return response;
@@ -231,7 +246,7 @@ public class PostAPIRequestNGE extends BaseTestNGWebDriver {
 
 	public Response fetchNGBookList(String practiceid) {
 
-		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.booklistNG).then().log().all()
+		Response response = given().log().all().when().get(practiceid + "/books").then().log().all()
 				.extract().response();
 
 		return response;
