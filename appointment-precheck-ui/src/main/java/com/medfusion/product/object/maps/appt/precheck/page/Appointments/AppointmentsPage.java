@@ -662,6 +662,60 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//div[@class='demographics-cell-content']")
 	private WebElement confirmTickAfterPrecheck;
 	
+	@FindBy(how = How.XPATH, using = "//div[@class='modal-body']//p")
+	private WebElement messageAfterDeletingExistingInsurances;
+	
+	@FindBy(how = How.XPATH, using = "//h1[text()='Thank you for checking in!']")
+	private WebElement messageAfterClickingOnImdoneButton;
+	
+	@FindBy(how = How.XPATH, using = "//p[@class='simple-modal__description']/span")
+	private WebElement patientModeCompletionMessageClickingOnImDoneButton;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='text-center']")
+	private WebElement precheckDoneTitle;
+	
+	@FindBy(how = How.XPATH, using = "//div//p[text()='Provider']")
+	private WebElement providerTextInApptDetailsPage;
+	
+	@FindBy(how = How.XPATH, using = "//div//p[text()='Date and time']")
+	private WebElement dateAndTimeTextInApptDetailsPage;
+	
+	@FindBy(how = How.XPATH, using = "//div//p[text()='Location']")
+	private WebElement locationTextInApptDetailsPage;
+	
+	@FindBy(how = How.XPATH, using = "//h2[text()='Precheck information']")
+	private WebElement precheckInformationTextInApptDetailsPage;
+	
+	@FindBy(how = How.XPATH, using = "//h2[text()='Patient forms']")
+	private WebElement patientFormsTextInApptDetailsPage;
+	
+	@FindBy(how = How.XPATH, using = "//button[text()='View upcoming appointments']")
+	private WebElement upcomingApptsButtonInApptDetailsPage;
+	
+	@FindBy(how = How.XPATH, using = "(//p[text()='Edit'])[1]")
+	private WebElement editPatientInformation;
+	
+	@FindBy(how = How.XPATH, using = "//h1[text()='Insurance information']")
+	private WebElement insurancePageTitle;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='menu-item-patient-name']")
+	private WebElement patientNameTextInMenuOfPrecheckPage;
+	
+	@FindBy(how = How.XPATH, using = "//li[@class='menu-items__item'][1]")
+	private WebElement officeNumberTextInMenuOfPrecheckPage;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='menu-items__item'][2]")
+	private WebElement languageTextInMenuOfPrecheckPage;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='menu-items__item'][3]")
+	private WebElement signOutTextInMenuOfPrecheckPage;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='simple-modal__icon sign-out-modal__icon']")
+	private WebElement logOutIcon;
+	
+	@FindBy(how = How.XPATH, using = "//p[@class='simple-modal__description']")
+	private WebElement logOutMessageInPrecheck;
+	
 	
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -3378,5 +3432,234 @@ public class AppointmentsPage extends BasePageObject {
 				log("precheck for patient os not done");
 				return false;
 			}
+		}
+		
+		public void deleteInsurance() {
+			IHGUtil.waitForElement(driver, 5, deleteInsurance);
+				deleteInsurance.click();
+		}
+		
+		public void deleteButton() {
+			IHGUtil.waitForElement(driver, 5, deleteButton);
+				deleteButton.click();
+		}
+		
+		
+		public String getMessageAfterDeletingExistingInsurances() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, messageAfterDeletingExistingInsurances);
+			return messageAfterDeletingExistingInsurances.getText();
+			
+		}
+		
+		public boolean visibilityOfDeleteButton() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, deleteButton);
+			if(deleteButton.isDisplayed()) {
+				log("delete button is displayed");
+				return true;
+			}
+			else {
+				log("delete button is not displayed");
+				return false;
+			}
+			
+		}
+		
+		public boolean visibilityOfCancelButton() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, cancelButtonFromRemove);
+			if(cancelButtonFromRemove.isDisplayed()) {
+				log("cancel button is displayed");
+				return true;
+			}
+			else {
+				log("cancel button is not displayed");
+				return false;
+			}
+			
+		}
+		
+		public void addInsurance() {
+		IHGUtil.waitForElement(driver, 5, addInsurance );
+		addInsurance.click();
+		}
+		
+		public void enterInsuranceName(String InsuranceName) {
+		IHGUtil.waitForElement(driver, 5, enterInsuranceName);
+		enterInsuranceName.sendKeys(InsuranceName);
+		}
+		
+		public void subscriberId(String SubscriberId) {
+		IHGUtil.waitForElement(driver, 5, subscriberId);
+		subscriberId.sendKeys(SubscriberId);
+		}
+		
+		public boolean visibilityOfIAmDoneButton() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, iAmDoneButton);
+			if(iAmDoneButton.isDisplayed()) {
+				log("I m done button is displayed");
+				return true;
+				
+			}
+			else {
+				log("Im done button is not displayed");
+				return false;
+			}
+		}
+		
+		public String getMessageAfterClickingOnImDoneButton() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, messageAfterClickingOnImdoneButton);
+			return messageAfterClickingOnImdoneButton.getText();
+		}
+		
+		public String getPatientModeCompletionMessageClickingOnImDoneButton() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, patientModeCompletionMessageClickingOnImDoneButton);
+			return patientModeCompletionMessageClickingOnImDoneButton.getText();
+		}
+		
+		public boolean visibilityOfLogOutButton() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, logOutButton);
+			if(logOutButton.isDisplayed()) {
+				log("logout button is displayed");
+				return true;
+			}
+			else {
+				log("logout button is not displayed");
+				return false;
+			}
+		}
+		
+		public String visibilityOfPrecheckDoneTitle() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, precheckDoneTitle);
+			return precheckDoneTitle.getText();
+		}
+		
+		public String visibilityOfProviderTextInApptDetailsPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, providerTextInApptDetailsPage);
+			return providerTextInApptDetailsPage.getText();
+		}
+		
+		public String visibilityOfDateAndTimeTextInApptDetailsPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, dateAndTimeTextInApptDetailsPage);
+			return dateAndTimeTextInApptDetailsPage.getText();
+		}
+		
+		public String visibilityOfPrecheckInformationTextInApptDetailsPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, precheckInformationTextInApptDetailsPage);
+			return precheckInformationTextInApptDetailsPage.getText();
+		}
+		
+		public String visibilityOfPatientFormsTextInApptDetailsPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, patientFormsTextInApptDetailsPage);
+			return patientFormsTextInApptDetailsPage.getText();
+		}
+		
+		public boolean visibilityOfUpcomingApptsButtonInApptDetailsPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, upcomingApptsButtonInApptDetailsPage);
+			if(upcomingApptsButtonInApptDetailsPage.isDisplayed()) {
+				log("upcoming appt is displayed");
+				return true;
+			}
+			else {
+				log("upcoming appt is not displayed");
+				return false;
+			}
+		}
+		
+		public void editPatientInformation() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, editPatientInformation);
+			editPatientInformation.click();
+		}
+		
+		public String visibilityOfPrecheckPageTitle() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, precheckPageTitle);
+			return precheckPageTitle.getText();
+		}
+		
+		public String visibilityOfInsurancePageTitle() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, insurancePageTitle);
+			return insurancePageTitle.getText();
+		}
+		
+		public String visibilityOfPatientNameTextInMenuOfPrecheckPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, patientNameTextInMenuOfPrecheckPage);
+			return patientNameTextInMenuOfPrecheckPage.getText();
+		}
+		
+		public String visibilityOfLanguageTextInMenuOfPrecheckPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, languageTextInMenuOfPrecheckPage);
+			return languageTextInMenuOfPrecheckPage.getText();
+		}
+		
+		public String visibilityOfOfficeNumberTextInMenuOfPrecheckPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, officeNumberTextInMenuOfPrecheckPage);
+			return officeNumberTextInMenuOfPrecheckPage.getText();
+		}
+		
+		public String visibilityOfSignOutTextInMenuOfPrecheckPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, signOutTextInMenuOfPrecheckPage);
+			return signOutTextInMenuOfPrecheckPage.getText();
+		}
+		
+		public void clickOnSignOutTextInMenuOfPrecheckPage() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, signOutTextInMenuOfPrecheckPage);
+			signOutTextInMenuOfPrecheckPage.click();
+		}
+		
+		public boolean visibilityOfLogOutIcon() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, logOutIcon);
+			if(logOutIcon.isDisplayed()) {
+				log("log out icon is displayed");
+				return true;
+			}
+			else {
+				log("log out icon is not displayed");
+				return false;
+			}
+		}
+		
+		public boolean visibilityOfYesLogMeOutButton() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, yesLogMeOut);
+			if(yesLogMeOut.isDisplayed()) {
+				log("yes log out icon is displayed");
+				return true;
+			}
+			else {
+				log("yes log out icon is not displayed");
+				return false;
+			}
+		}
+		
+		public void clickYeslogMeOut() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, yesLogMeOut);
+			yesLogMeOut.click();
+		}
+		
+		public String getlogOutMessageInPrecheck() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, logOutMessageInPrecheck);
+			return logOutMessageInPrecheck.getText();
 		}
 }
