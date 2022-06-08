@@ -8,6 +8,7 @@ locals {
   name                          = "${var.bitbucket_repository_name}_${terraform.workspace}"
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
+  encrypted_key                 = "JPQ0Fn4qZ0C0sSzSGbOULMxWlo0jeuseRQPbe3Y6AeCR63VEenEio2wXEZ8t"
 
 
   inputs = {
@@ -1224,6 +1225,186 @@ locals {
       google_chrome_version = "100.0.4896.127-1"
       chrome_driver_version = "100.0.4896.20"
       cron_shedule          = "cron(15 18 ? * 1-5 *)"
+    }
+
+    "dev3-patientportal-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "jalapeno-automation"
+      test_environment      = "dev3"
+      suite_xml             = "patientportal2-acceptance-basics.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(30 18 ? * 1-5 *)"
+    }
+
+    "dev3-patientportal-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "jalapeno-automation"
+      test_environment      = "dev3"
+      suite_xml             = "patientportal2-acceptance-solutions.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(30 19 ? * 1-5 *)"
+    }
+
+    "dev3-patientportal-regression3" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "jalapeno-automation"
+      test_environment      = "dev3"
+      suite_xml             = "patientportal2-acceptance-linkedaccounts.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(0 19 ? * 1-5 *)"
+    }
+
+    "dev3-patientportal-regression4" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "jalapeno-automation"
+      test_environment      = "dev3"
+      suite_xml             = "patientportal2-acceptance-MU3.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "100.0.4896.20"
+      cron_shedule          = "cron(30 19 ? * 1-5 *)"
+    }
+
+    "qa1-forms-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "forms-automation"
+      test_environment      = "qa1"
+      suite_xml             = "forms-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(30 2 ? * 1 *)"
+    }
+
+    "qa1-forms-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "forms-automation"
+      test_environment      = "qa1"
+      suite_xml             = "forms-calculated-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(30 2 ? * 1 *)"
+    }
+
+    "qa1-patientportal-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "jalapeno-automation"
+      test_environment      = "qa1"
+      suite_xml             = "patientportal2-acceptance-basics.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(30 2 ? * 1 *)"
+    }
+
+    "qa1-patientportal-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "jalapeno-automation"
+      test_environment      = "qa1"
+      suite_xml             = "patientportal2-acceptance-solutions.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(30 2 ? * 1 *)"
+    }
+
+    "qa1-patientportal-regression3" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "jalapeno-automation"
+      test_environment      = "qa1"
+      suite_xml             = "patientportal2-acceptance-linkedaccounts.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(30 2 ? * 1 *)"
+    }
+
+    "qa1-patientportal-regression4" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "jalapeno-automation"
+      test_environment      = "qa1"
+      suite_xml             = "patientportal2-acceptance-MU3.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "101.0.4951.54-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(30 2 ? * 1 *)"
+    }
+
+    "dev3-practiceportal-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "dev3"
+      suite_xml             = "practice-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "102.0.5005.61-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(15 18 ? * 1-5 *)"
+    }
+
+    "qa1-practiceportal-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "qa1"
+      suite_xml             = "practice-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "102.0.5005.61-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(40 2 ? * 1 *)"
     }
   }
 

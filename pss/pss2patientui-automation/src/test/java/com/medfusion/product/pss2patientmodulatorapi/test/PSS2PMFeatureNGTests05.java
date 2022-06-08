@@ -5,10 +5,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-
-import javax.validation.constraints.AssertTrue;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +22,6 @@ import com.medfusion.product.pss2patientapi.payload.PayloadAM02;
 import com.medfusion.product.pss2patientapi.payload.PayloadAdapterModulator;
 import com.medfusion.product.pss2patientapi.payload.PayloadPM02;
 import com.medfusion.product.pss2patientapi.payload.PayloadPssPMNG;
-import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;

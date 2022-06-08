@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package pageobjects;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -112,12 +113,9 @@ public class MerchantSearchPage extends NavigationMenu {
 	public void duplicateRecords() {
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOf(merchantSearchTable));
-		WebElement merchantIDRow = merchantSearchTable.findElement(By.xpath("//tbody/tr"));
 
-		List<WebElement> col = tableColumn;
 		List<WebElement> rows = mmidRow;
 
-		int noOfCol = col.size();
 		int noOfRows = rows.size();
 
 		List<String> list = new ArrayList<String>();

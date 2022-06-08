@@ -1,4 +1,4 @@
-//Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 /************************
  * 
  * @author Narora
@@ -48,9 +48,9 @@ public class NGAPIRestFlows {
 	public NGAPIRestFlows(PropertyFileLoader propertyLoaderObj) throws Throwable {
 		ngAPIRestUtils = new NGAPIRestUtils(propertyLoaderObj);
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterprisebaseURL = ngAPIRestUtils.getRelativeBaseUrl();
+			enterprisebaseURL = NGAPIRestUtils.getRelativeBaseUrl();
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterprisebaseURL = ngAPIRestUtils.getRelativeBaseUrl();
+			enterprisebaseURL = NGAPIRestUtils.getRelativeBaseUrl();
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}

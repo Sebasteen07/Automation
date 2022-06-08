@@ -2,8 +2,6 @@
 package com.medfusion.product.object.maps.practice.page.onlinebillpay;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.isoreporting.page;
 
 import org.openqa.selenium.Keys;
@@ -6,9 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
-
 import java.util.List;
 
 public class ReportingSummaryReportPage extends ReportingNavigationMenu{

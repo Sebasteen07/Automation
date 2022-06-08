@@ -2332,3 +2332,127 @@ Feature: Test fuctionality of Appointment precheck
     And I again switch on page 1 click on banner message
     Then I verify broadcast message count from action button after clicking on banner message on page one
     And logout from practice provisioning portal
+
+  Scenario: verify patient personal information page
+    When I schedule an appointment and update personal information
+    And I click on patient name
+    And I click on launch patient mode and change some of the fields
+    Then I verify updated personal information should be reflected for the appointment in the appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify patient contact info page
+    When I schedule an appointment and update contact info
+    And I click on patient name and do the precheck
+    Then I verify updated contact info page should be reflected in appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify by disabling the demographics on practice dashboard
+    When I click on settings tab
+    And I click on precheck tab and disable the demographics and save changes
+    And I schedule an appointment
+    And I click on patient name
+    And I click on patient mode to do the precheck
+    Then I verify precheck should not have personal info,contact info,pharmacy details
+    And logout from practice provisioning portal
+
+  Scenario: verify if user can add 3 tiers of insurances
+    When I schedule an appointment and add insurances
+    And I click on patient name and add 3 insurances during precheck
+    Then I verify in appointment dashboard for that appointment 3 insurances are reflected
+    And logout from practice provisioning portal
+
+  Scenario: verify if user can remove existing insurances
+    When I schedule an appointment and add insurances
+    And I click on patient name and add 3 insurances during precheck and edit the insurance cards and remove primary,secondary,tertiary insurances
+    Then I verify in appointment dashboard insurances should be removed for that appointment
+    And logout from practice provisioning portal
+
+  Scenario: verify if user disable insurance checkbox and while doing precheck insurance stepper should not ne seen
+    When I disable insurance checkbox
+    And I schedule an appointment and precheck
+    And I click on patient name and do precheck and verify while doing precheck insurance stepper should not be seen
+    And logout from practice provisioning portal
+
+  Scenario: verify if user pays copay amount by pay with credit card
+    When I schedule an appointment with copay
+    And I click on patient name and pay the copay amount by credit card while doing precheck
+    Then I verify in appointment dashboard for that appointment the copay amount is paid
+
+  Scenario: verify after sending curbside arrival instruction message to curbside checkin patient in reminder column section system should not show day prior entry in reminder section
+    When I click on setting tab and ON notification setting
+    And I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab and select patient
+    And I send "Come in the office now." message to selected patient
+    And I switch on appointment dashboard
+    Then I verify system should not show day prior entry in reminder section column
+    And logout from practice provisioning portal
+
+  Scenario: verify after sending curbside arrival instruction other message to curbside checkin patient in reminder column section system should not show day prior entry in reminder section
+    When I click on setting tab and ON notification setting
+    And I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab and select patient
+    And I send "Other" message to curbside checkin patient
+    And I switch on appointment dashboard
+    Then I verify system should not show day prior entry in reminder section column
+    And logout from practice provisioning portal
+
+  Scenario: verify system is not allowing user to enter invalid integers in timing unit section for email in appointment reminders
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    Then I verify system is not allowing to enter invalid integers in timing unit section for email in appointment reminders for 'Email'
+    And logout from practice provisioning portal
+
+  Scenario: verify if the patient skips 'PayInOffice'
+    When user schedule an appointment and skips
+    And I do the precheck and click on skip 'PayInOffice'
+    And I verify in appointment dashboard skips icon is seen for that appointment
+    And logout from practice provisioning portal
+
+  Scenario: verify if copay payments are already done
+    When I schedule an appointment with copay
+    And I do the precheck for copay
+    Then I verify again after doing precheck for that appointment to check if copay and balance payments are already done
+    And logout from practice provisioning portal
+
+  Scenario: verify if user pays copay amount by pay in office button
+    When I schedule an appointment with copay
+    And I click on patient name and pay the copay amount by pay in office while doing precheck
+    Then I verify in appointment dashboard for that appointment the copay should show pay in office
+    And logout from practice provisioning portal
+
+  Scenario: verify successful payment in copay
+    When I schedule an appointment with copay
+    And I pay copay with credit card and enter card details
+    Then I verify confirm payment and processing payment message should be displayed
+    And logout from practice provisioning portal
+
+  Scenario: verify if disable copay from precheck settings
+    When I disable copayment from precheck settings
+    And I schedule an appointment with copay
+    And I do the precheck after disabling copayment
+    Then I verify copay page should not be seen in precheck
+    And logout from practice provisioning portal
+
+  Scenario: verify display of title and other headlines of Pay Balance
+    When I schedule an appointment for paybalance
+    And I do the precheck for pay balance
+    Then I verify title and other details of pay balance should be seen proper
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enable minimum balance amount in practice precheck settings
+    When I enable minimum balance amount in precheck settings and enter minimum balance amount
+    And I schedule an appointment for paybalance
+    Then I verify precheck UI does not allow less than the amount payment
+    And logout from practice provisioning portal
+
+  Scenario: verify if user disables balance from practice precheck settings
+    When I disable balance from practice precheck settings
+    And I schedule an appointment for paybalance
+    Then I verify balance page should not be seen during precheck
+    And logout from practice provisioning portal
+
+  Scenario: verify if patient has multiple appointments and does precheck for one of the appointments should update only that appointment
+    When I schedule multiple appointments
+    And I do the precheck for one appointment
+    Then I verify system will show the appointment details of precheck completed not for other appointment whose precheck is not done
+    And logout from practice provisioning portal

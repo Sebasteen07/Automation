@@ -78,7 +78,10 @@ public class JalapenoMyAccountSecurityPage extends JalapenoMyAccountPage {
 
 		@FindBy(how = How.XPATH, using = "//ul[contains(@class, 'myAccountList')]")
 		private WebElement myAccountList;
-
+		
+		@FindBy(how = How.XPATH, using = "//span[contains(text(),'This password does not match our records.')]")
+		private WebElement txtCurrentPasswordErrorMsg;
+		
 		private static final String VERIFICATION_XPATH = ".//div/text()[normalize-space(.)='%s']/parent::*";
 
 		public JalapenoMyAccountSecurityPage(WebDriver driver) {
@@ -109,39 +112,59 @@ public class JalapenoMyAccountSecurityPage extends JalapenoMyAccountPage {
 		}
 
 		public void changeEmailAndVerify(String currentPassword, String newEmail) {
-				currentPasswordInput.sendKeys(currentPassword);
-				newEmailInput.sendKeys(newEmail);
-				confirmEmailInput.sendKeys(newEmail);
-				saveAccountChanges.click();
-				new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(emailSuccessfulUpdateMessage));
-				findDivInMyAccountListWithTextValue(newEmail);
+			currentPasswordInput.sendKeys(IHGUtil.createRandomNumericString(8));
+			newEmailInput.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(txtCurrentPasswordErrorMsg));
+			currentPasswordInput.clear();
+			currentPasswordInput.sendKeys(currentPassword);
+			newEmailInput.click();
+			newEmailInput.sendKeys(newEmail);
+			confirmEmailInput.sendKeys(newEmail);
+			saveAccountChanges.click();
+			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(emailSuccessfulUpdateMessage));
+			findDivInMyAccountListWithTextValue(newEmail);
 		}
 
 		public void changeUserNameAndVerify(String currentPassword, String newUserName) throws InterruptedException {
-				currentPasswordInput.sendKeys(currentPassword);
-				newUserNameInput.sendKeys(newUserName);
-				confirmUserNameInput.sendKeys(newUserName);
-				scrollAndWait(0,300,3000);
-				saveAccountChanges.click();
-				new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(userNameSuccessfulUpdateMessage));
-				findDivInMyAccountListWithTextValue(newUserName);
+			currentPasswordInput.sendKeys(IHGUtil.createRandomNumericString(8));
+			newUserNameInput.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(txtCurrentPasswordErrorMsg));
+			currentPasswordInput.clear();
+			currentPasswordInput.sendKeys(currentPassword);
+			newUserNameInput.click();
+			newUserNameInput.sendKeys(newUserName);
+			confirmUserNameInput.sendKeys(newUserName);
+			scrollAndWait(0,300,5000);
+			saveAccountChanges.click();
+			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(userNameSuccessfulUpdateMessage));
+			findDivInMyAccountListWithTextValue(newUserName);
 		}
 
 		public void changeSecurityQuestionAndVerify(String currentPassword, String newSecurityQuestion, String newSecurityQuestionAnswer) {
-				currentPasswordInput.sendKeys(currentPassword);
-				new Select(secretQuestionSelect).selectByValue(newSecurityQuestion);
-				secretQuestionAnswerInput.sendKeys(newSecurityQuestionAnswer);
-				saveAccountChanges.click();
-				new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(securityQuestionSuccessfulUpdateMessage));
-				findDivInMyAccountListWithTextValue(newSecurityQuestion);
+			currentPasswordInput.sendKeys(IHGUtil.createRandomNumericString(8));
+			secretQuestionAnswerInput.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(txtCurrentPasswordErrorMsg));
+			currentPasswordInput.clear();
+			currentPasswordInput.sendKeys(currentPassword);
+			secretQuestionAnswerInput.click();
+			new Select(secretQuestionSelect).selectByValue(newSecurityQuestion);
+			secretQuestionAnswerInput.sendKeys(newSecurityQuestionAnswer);
+			saveAccountChanges.click();
+			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(securityQuestionSuccessfulUpdateMessage));
+			findDivInMyAccountListWithTextValue(newSecurityQuestion);
 		}
 
 		public void changePassword(String currentPassword, String newPassword) {
-				currentPasswordInput.sendKeys(currentPassword);
-				newPasswordInput.sendKeys(newPassword);
-				confirmPasswordInput.sendKeys(newPassword);
-				saveAccountChanges.click();
-				new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(passwordSuccessfulUpdateMessage));
+			currentPasswordInput.sendKeys(IHGUtil.createRandomNumericString(8));
+			newPasswordInput.click();
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(txtCurrentPasswordErrorMsg));
+			currentPasswordInput.clear();
+			currentPasswordInput.sendKeys(currentPassword);
+			newPasswordInput.click();
+			newPasswordInput.sendKeys(newPassword);
+			confirmPasswordInput.sendKeys(newPassword);
+			saveAccountChanges.click();
+			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(passwordSuccessfulUpdateMessage));
 		}
 
 		public JalapenoMyAccountPreferencesPage goToPrefererencesTab() {

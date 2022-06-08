@@ -1,9 +1,7 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.By;
@@ -13,14 +11,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 
 public class NotificationsPage extends BasePageObject {
@@ -3678,6 +3674,24 @@ public class NotificationsPage extends BasePageObject {
 				addButtonInEdit.click();
 			}
 		}
+	}
+	
+	public void enterInvalidTimingAndTimingUnit(int pathIndex, String timing, String timingUnit) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		log("Select timing and timing unit for: " + timing);
+		jse.executeScript("arguments[0].click();", driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]")));
+		Actions action = new Actions(driver);
+		action.sendKeys(driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]")),
+				timing).sendKeys(Keys.ENTER).build().perform();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]")).clear();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]"))
+				.sendKeys(timingUnit);
+		Thread.sleep(3000);
+	}
+	
+	public String getInvalidUnitText(int pathIndex) {
+		WebElement invalidText=driver.findElement(By.xpath("(//*[text()='Invalid Units'])["+pathIndex+"]"));
+		return invalidText.getText();
 	}
 
 }

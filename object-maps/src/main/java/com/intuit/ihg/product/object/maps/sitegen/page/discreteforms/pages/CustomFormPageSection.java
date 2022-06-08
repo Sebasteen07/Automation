@@ -7,15 +7,12 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 
 public class CustomFormPageSection extends BasePageObject {
 
 	private String sectionOrdinalString;
-	private String sectionName;
 	private static final String SECTION_IDENTIFIER = "//div[@data-section-id = 'custom%s_section']";
 	private static final String ITEM_IDENTIFIER = SECTION_IDENTIFIER + "/ul/li[%d]";
 	private static final String METADATA_PATH = "/fieldset/div[@class='metadata']/ul/li";
@@ -27,7 +24,6 @@ public class CustomFormPageSection extends BasePageObject {
 
 	public void fillSectionName(String sectionName) {
 		driver.findElement(By.id("custom_title_custom" + sectionOrdinalString + "_section_0")).sendKeys(sectionName);
-		this.sectionName = sectionName;
 	}
 
 	public void addQuestionItem(String questionType, String title, boolean required, boolean prefilled) throws InterruptedException {

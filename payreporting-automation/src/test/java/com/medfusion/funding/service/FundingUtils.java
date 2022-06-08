@@ -1,15 +1,13 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package com.medfusion.funding.service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Properties;
 import static io.restassured.RestAssured.given;
 import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.funding.pojo.Reports;
 import io.restassured.response.Response;
 
 public class FundingUtils extends BaseTestNG {

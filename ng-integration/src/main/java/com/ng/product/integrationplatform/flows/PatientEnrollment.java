@@ -1,3 +1,4 @@
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.flows;
 
 import static org.testng.Assert.assertNotNull;
@@ -12,7 +13,6 @@ import org.xml.sax.SAXException;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
@@ -201,14 +201,14 @@ public class PatientEnrollment {
 		Log4jUtil.log("Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String postEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", postEnrollmentURL, "", 409);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", postEnrollmentURL, "", 409);
 		Log4jUtil.log("Step End: MF agent initiate the enrollment automatically");
 
 		Log4jUtil.log(
 				"Step Begins: Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
 		String getEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-		String GetEnrollmentStatusresponse = ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
+		String GetEnrollmentStatusresponse = NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
 				200);
 
 		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse, "status"), "equals",
@@ -289,7 +289,7 @@ public class PatientEnrollment {
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterprise_id, practice_id);
 		String getEnrollmentURL = enterprisebaseURL
 				+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", personId);
-		String getEnrollmentStatusresponse2 = ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
+		String getEnrollmentStatusresponse2 = NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway", getEnrollmentURL,
 				200);
 		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2, "status"), "equals",
 				"9");

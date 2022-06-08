@@ -4,7 +4,6 @@ package com.medfusion.gateway_proxy.tests;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.helpers.GatewayProxyDigitalWalletResource;
-import com.medfusion.gateway_proxy.helpers.GatewayProxyTransactionResource;
 import com.medfusion.gateway_proxy.utils.GatewayProxyDigitalWalletUtils;
 import com.medfusion.gateway_proxy.utils.GatewayProxyTestData;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
@@ -132,8 +131,6 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertTrue(!jsonPath.get("walletCards[0].externalCardId").toString().isEmpty());
 		Assert.assertEquals("VI-1111-1226", jsonPath.get("walletCards[0].cardAlias"));
 
-		String externalWalletId = jsonPath.get("externalWalletId").toString();
-		Response responseGet = digitalWallet.getListOfCardsInWallet(token, externalWalletId);
 		JsonPath jsonPathGet = new JsonPath(response.asString());
 
 		Assert.assertTrue(!jsonPathGet.get("externalWalletId").toString().isEmpty());

@@ -114,22 +114,17 @@ public class SecurityDetailsPage extends MedfusionPage {
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber,
 				int statementPreference) throws InterruptedException {
 			    IHGUtil.PrintMethodName();
-			    Thread.sleep(5000);
-				IHGUtil.PrintMethodName();
 				try {
-					IHGUtil.waitForElement(driver, 60, nextButton);
+					IHGUtil.waitForElement(driver, 15, nextButton);
 					nextButton.click();
 				}
 				catch(Exception e){
 					log("NextButton Not available");
 				}
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
-				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
-				scrollAndWait(0,300,3000);
 				log("Clicking finish btn");
 				buttonFinishStep.click();
-				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
-				Thread.sleep(8000);
+				selectStatementIfRequired(statementPreference);
 				handleWeNeedToConfirmSomethingModal();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}

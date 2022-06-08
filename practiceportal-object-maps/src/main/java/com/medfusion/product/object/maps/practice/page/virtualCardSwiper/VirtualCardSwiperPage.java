@@ -1,8 +1,7 @@
-//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.virtualCardSwiper;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,7 +10,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-// import com.intuit.ihg.product.portal.page.MyPatientPage;
 
 public class VirtualCardSwiperPage extends BasePageObject {
 
@@ -196,9 +194,6 @@ public class VirtualCardSwiperPage extends BasePageObject {
 
 	public void addCreditCardMandatoryInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String zip, String swipe, String PAccount,String PName) {
 		IHGUtil.PrintMethodName();
-
-		JavascriptExecutor jse = (JavascriptExecutor) driver;
-
 		driver.switchTo().frame("iframe");
 		cardHolderName.sendKeys(ccName);
 

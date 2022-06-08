@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.pojos;
 
 import java.util.ArrayList;
@@ -31,7 +31,6 @@ public class Card {
 		private Boolean cardPresent;
 		private String cardAlias;
 		private String zipCode;
-		private String primaryCardFlag;
 		
 		@JsonIgnore
 		private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -89,7 +88,7 @@ public class Card {
 			return cardHolderName;
 		}
 
-		public void setCardHolderName(String cvvNumber) {
+		public void setCardHolderName(String cardHolderName) {
 			this.cardHolderName = cardHolderName;
 		}
 
@@ -188,5 +187,16 @@ public class Card {
 			}
 
 			return cardMap;
+		}
+
+		public static Map<String, Object> getBankDetailsMap(String AccountType, String AccountNumber, String RoutingNumber,
+													 String AccountHolderFirstName, String AccountHolderLastName){
+			Map<String, Object> cardmap = new HashMap<String, Object>();
+			cardmap.put("accountType", AccountType);
+			cardmap.put("accountNumber", AccountNumber);
+			cardmap.put("routingNumber", RoutingNumber);
+			cardmap.put("accountHolderFirstName", AccountHolderFirstName);
+			cardmap.put("accountHolderLastName", AccountHolderLastName);
+			return cardmap;
 		}
 }
