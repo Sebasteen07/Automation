@@ -93,6 +93,41 @@ public class InstaMedECheckTransactionTests extends BaseRest {
         }
         Assert.assertTrue(jsonPath.get("propertyMessages").toString().contains(prop));
     }
+
+    @Test(priority = 4, enabled = true)
+    public void testInstaMedViewReceiptForECheckSale() throws Exception {
+
+        TransactionResourceDetails transaction = new TransactionResourceDetails();
+        Validations validate = new Validations();
+        Response response = transaction.makeAECheckSale(testData.getProperty("instamed.mmid"),
+                    testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
+                    testData.getProperty("consumer.name"), testData.getProperty("payment.source.patient.portal"),
+                    testData.getProperty("bank.account.type"), testData.getProperty("bank.account.number"),
+                    testData.getProperty("bank.routing.number"), testData.getProperty("bank.account.holder.first.name"),
+                    testData.getProperty("bank.account.holder.last.name"));
+
+        JsonPath jsonPathSale = new JsonPath(response.asString());
+
+        Response responseOfViewReceipt =
+                transaction.viewReceipt(testData.getProperty("base.url.v2"), testData.getProperty("instamed.mmid"),
+                        jsonPathSale.get("externalTransactionId").toString(), jsonPathSale.get("orderId").toString());
+
+        JsonPath jsonpath = new JsonPath(responseOfViewReceipt.asString());
+        Assert.assertNotNull(jsonpath, "Response was null");
+        validate.verifyInstamedReceiptCommonDetails(jsonpath);
+
+        Assert.assertNull(jsonpath.get("cardType"));
+        Assert.assertNull(jsonpath.get("cardHolderName"));
+        Assert.assertTrue(jsonpath.get("cardSuffix")
+                    .equals(testData.getProperty("bank.account.number").substring(testData.getProperty("bank.account.number").length()-4)));
+        Assert.assertTrue(jsonpath.get("patientAccount").equals(testData.getProperty("account.number")));
+        Assert.assertTrue(jsonpath.get("consumerName").equals(testData.getProperty("consumer.name")));
+        Assert.assertTrue(jsonpath.get("instamedDetail.accountType").equals(testData.getProperty("bank.account.type")));
+        Assert.assertTrue(jsonpath.get("instamedDetail.routingNumber").equals(testData.getProperty("bank.routing.number")));
+        Assert.assertTrue(jsonpath.get("instamedDetail.accountHolderName")
+                    .equals(testData.getProperty("bank.account.holder.first.name")+" "+testData.getProperty("bank.account.holder.last.name")));
+
+    }
 }
 
 

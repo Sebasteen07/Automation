@@ -64,7 +64,7 @@ public class Validations {
 		JsonPath jsonpath = new JsonPath(response);
 		Assert.assertNotNull(jsonpath, "Response was null");
 		Assert.assertEquals(jsonpath.get("responseCode"), "000", "Response code was: " + jsonpath.get("responseCode"));
-		Assert.assertTrue(jsonpath.get("responseMessage").equals("Success") || jsonpath.get("responseMessage").equals("Approved"), "Response message was: " + jsonpath.get("message"));
+		Assert.assertTrue(jsonpath.get("responseMessage").equals("Success") || jsonpath.get("responseMessage").equals("Approved") || jsonpath.get("responseMessage").equals("APPROVAL"), "Response message was: " + jsonpath.get("message"));
 		Assert.assertTrue(!jsonpath.get("transactionDate").toString().isEmpty(), "Transaction date was not found in the response");
 		Assert.assertTrue(!jsonpath.get("amount").toString().isEmpty(), "Transaction amount was not found in the response");
 
@@ -99,5 +99,14 @@ public class Validations {
 			Assert.assertNull(jsonpath.get("authCode"), "Authorization Code was NOT null");
 		}
 
+	}
+
+	public void verifyInstamedReceiptCommonDetails(JsonPath jsonpath) throws IOException {
+		Assert.assertNotNull(jsonpath, "Response was null");
+		Assert.assertTrue(jsonpath.get("responseCode").equals("000"));
+		Assert.assertTrue(jsonpath.get("responseMessage").equals("APPROVAL"), "Transaction is not Approved");
+		Assert.assertNotNull(jsonpath.get("instamedDetail.authCode"), "Approved transaction does not have authCode!");
+		Assert.assertNotNull(jsonpath.get("transactionDate"), "Transaction does not have a date");
+		Assert.assertNotNull(jsonpath.get("amount"), "Amount is null!");
 	}
 }
