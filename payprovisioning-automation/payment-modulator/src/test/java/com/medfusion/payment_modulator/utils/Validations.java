@@ -64,7 +64,7 @@ public class Validations {
 		JsonPath jsonpath = new JsonPath(response);
 		Assert.assertNotNull(jsonpath, "Response was null");
 		Assert.assertEquals(jsonpath.get("responseCode"), "000", "Response code was: " + jsonpath.get("responseCode"));
-		Assert.assertTrue(jsonpath.get("responseMessage").equals("Success") || jsonpath.get("responseMessage").equals("Approved") || jsonpath.get("responseMessage").equals("APPROVAL"), "Response message was: " + jsonpath.get("message"));
+		Assert.assertTrue(jsonpath.get("responseMessage").equals("Success") || jsonpath.get("responseMessage").equals("Approved"), "Response message was: " + jsonpath.get("message"));
 		Assert.assertTrue(!jsonpath.get("transactionDate").toString().isEmpty(), "Transaction date was not found in the response");
 		Assert.assertTrue(!jsonpath.get("amount").toString().isEmpty(), "Transaction amount was not found in the response");
 
