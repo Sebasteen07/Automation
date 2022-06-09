@@ -49,6 +49,10 @@ public abstract class MedfusionPage extends BasePageObject {
 		@FindBy(how = How.XPATH, using = "//input[@name='statementDelivery']")
 		private WebElement statementPreferenceRadioButton;
 
+		@FindBy(how = How.XPATH, using = "	//button[.='No Thanks']")
+		private WebElement feedbackNoThanksButton;
+
+
 		public MedfusionPage(WebDriver driver) {
 				this(driver, null);
 		}
@@ -94,7 +98,7 @@ public abstract class MedfusionPage extends BasePageObject {
 		}
 		//handles modal dialogs in Portal (accepting NPP, statement preference selection)
 		public void handleWeNeedToConfirmSomethingModal(){
-			
+			// button[.='No Thanks']
 			 log("Trying to handle survey pop up by adding cookie");
              String name = "QSI_SI_0CUNpSFNBlJ5QGN_intercept";               
              String value = "true";
@@ -123,6 +127,12 @@ public abstract class MedfusionPage extends BasePageObject {
 				}
 			}
 
+			public void selectFeedbackNoThanksButton() {
+				if (new IHGUtil(driver).exists(feedbackNoThanksButton)) {
+					log("FeedbackNoThanksButton is displayed");
+					feedbackNoThanksButton.click();
+				}
+			}
 
 		public String elementToString(WebElement element) {
 				return "Element (id: " + element.getAttribute("id") + ", tag: " + element.getTagName() + ")";

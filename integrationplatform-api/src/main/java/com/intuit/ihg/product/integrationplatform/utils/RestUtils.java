@@ -17,7 +17,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +62,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.ibm.icu.text.DateFormatSymbols;
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
@@ -1357,6 +1357,68 @@ public class RestUtils {
 
 	}
 
+	public static String setupHttpPostRequestWithOauthToken(String strUrl, String payload, String responseFilePath, String token) throws IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("Post Request Url: " + strUrl);
+
+		HttpPost request = new HttpPost();
+		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		request.setURI(new URI(strUrl));
+		request.setEntity(new StringEntity(payload));
+		request.setHeader("Connection", "keep-alive");
+		request.setHeader("Accept-Encoding", "gzip, deflate, br");
+		request.addHeader("Content-Type", "application/xml");
+		request.setHeader("Authorization", "Bearer " + token);
+		Log4jUtil.log("Post Request Url4: ");
+		HttpResponse response = client.execute(request);
+		String sResp = EntityUtils.toString(response.getEntity());
+		Log4jUtil.log("Check for http 200/202 response");
+		assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
+				"Get Request response is " + response.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
+		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
+		writeFile(responseFilePath, sResp);
+
+		if (response.containsHeader(IntegrationConstants.LOCATION_HEADER)) {
+			Header[] h = response.getHeaders(IntegrationConstants.LOCATION_HEADER);
+			return h[0].getValue();
+		}
+		return null;
+
+	}
+
+
+	public static void setupHttpPostRequestForOauth(String strUrl, String payload, String responseFilePath, String token)
+			throws IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("Post Request Url: " + strUrl);
+
+		HttpPost request = new HttpPost();
+		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		request.setURI(new URI(strUrl));
+		request.setEntity(new StringEntity(payload));
+		// request.setHeader("Noun", "Encounter");
+		// request.setHeader("Verb", "Completed");
+		request.addHeader("Authorization", "Basic " + token);
+		request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+		request.setHeader("Accept", "application/json");
+
+		Log4jUtil.log("Post Request Url4: ");
+		HttpResponse response = client.execute(request);
+		String sResp = EntityUtils.toString(response.getEntity());
+		Log4jUtil.log("Check for http 200/202 response");
+		assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
+				"Get Request response is " + response.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
+		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
+		Log4jUtil.log(sResp);
+		writeFile(responseFilePath, sResp);
+
+
+
+	}
 	/**
 	 * 
 	 * @param responsePath

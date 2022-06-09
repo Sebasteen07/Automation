@@ -87,6 +87,44 @@ public class LoadPreTestData {
 		return testData;
 	}
 
+	public TokenData loadTokenDataFromProperty(TokenData testData) throws IOException {
+
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+
+		testData.Url = propertyData.geturlAMDC();
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.OAuthAppToken = propertyData.getOAuthAppTokenAMDC();
+		testData.OAuthUsername = propertyData.getOAuthUsernameAMDC();
+		testData.OAuthPassword = propertyData.getOAuthPasswordAMDC();
+		testData.UserName = propertyData.getUserNameAMDC();
+		testData.Password = propertyData.getPasswordAMDC();
+		testData.RestUrl = propertyData.getRestUrlAMDC();
+		testData.From = propertyData.getFromAMDC();
+		testData.ReadCommuniationURL = propertyData.getReadCommunicationUrlAMDC();
+		testData.Sender3 = propertyData.getSender3AMDC();
+		testData.GmailUserName = propertyData.getGmailUserNameAMDC();
+		testData.GmailPassword = propertyData.getGmailPasswordAMDC();
+		testData.AllowReply = propertyData.getAllowReply();
+		testData.Message = propertyData.getMessageAMDC();
+		testData.PatientExternalId = propertyData.getPatientExternalIdAMDC();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.IntegrationPracticeID = propertyData.getIntegrationPracticeID();
+		testData.allowAttachment = propertyData.getAllowAttachment();
+		testData.categoryType = propertyData.getCategoryType();
+		testData.fileName = propertyData.getFileNameAMDC();
+		testData.mimeType = propertyData.getMimeType();
+		testData.attachmentBody = propertyData.getAttachmentBody();
+		testData.downloadLocation = propertyData.getDownloadFileLocation();
+		testData.portalCategoryType = propertyData.getPortalCategoryType();
+		testData.RestV3Url = propertyData.getRestUrlV3AMDC();
+		testData.ReadCommuniationURLV3 = propertyData.getReadCommunicationUrlV3AMDC();
+		testData.tokenUrl = propertyData.getTokenUrl();
+		testData.tokenClient = propertyData.getTokenClient();
+
+		return testData;
+	}
+
 	public MU2GetEventData loadAPITESTDATAFromProperty(MU2GetEventData testData) throws IOException {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();

@@ -159,7 +159,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoMessagesPage showMessages(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 60, messages);
+		IHGUtil.waitForElement(driver, 360, messages);
 		messages.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}

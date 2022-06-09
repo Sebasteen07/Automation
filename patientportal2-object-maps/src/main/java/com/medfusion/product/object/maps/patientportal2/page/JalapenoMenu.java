@@ -120,7 +120,11 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	private void openMenuIfClosed() {
 		driver.navigate().refresh();
+		try {
 		driver.manage().window().maximize();
+		} catch (Exception e) {
+			log("Exception while maximizing window. " + e);
+		}
 		log("Maximized the page to see the HOME menu. Current size= " + driver.manage().window().getSize());
 		IHGUtil.waitForElement(driver, 50, homeMenu);
 

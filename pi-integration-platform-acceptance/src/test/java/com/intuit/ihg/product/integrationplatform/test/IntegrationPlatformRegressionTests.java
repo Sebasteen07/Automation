@@ -8,6 +8,8 @@ import static org.testng.Assert.assertTrue;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -25,6 +29,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.SkipException;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -71,6 +76,7 @@ import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessageUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementsMessagePayload;
+import com.intuit.ihg.product.integrationplatform.utils.TokenData;
 import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -107,6 +113,8 @@ import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import com.medfusion.product.practice.api.pojo.Practice;
 
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
+
+	String newToken = "";
 	@Test(enabled = true, dataProvider = "channelVersion", groups = { "RegressionTests1",
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testEHDCSendCCD(String version, Method method) throws Exception {
@@ -175,7 +183,54 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = { "RegressionTests1",
+	@BeforeClass(enabled = true, groups = {"RegressionTests2", "AcceptanceTests"})
+	public void testOauthTokenExpiryCases() throws Exception {
+
+		log("Test Case: testOauthTokenExpiryCases");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Step 1: Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		TokenData testData = new TokenData();
+
+		LoadPreTestDataObj.loadTokenDataFromProperty(testData);
+
+		String body = String.format("grant_type=password&username=%s&password=%s", testData.OAuthUsername, testData.OAuthPassword);
+		log("message :- " + body);
+
+			log("Step 4: Do Message Post Request");
+
+			RestUtils.setupHttpPostRequestForOauth(testData.tokenUrl, body, testData.ResponsePath, testData.tokenClient);
+
+			try {
+				InputStream is = new FileInputStream(testData.ResponsePath);
+				String jsonTxt = IOUtils.toString(is, "UTF-8");
+				System.out.println(jsonTxt);
+				JSONObject json = new JSONObject(jsonTxt);
+
+				int timeDuration = Integer.parseInt(json.get("expiresIn") + "");
+
+				if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3") || IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+					if (timeDuration == 2579999) {
+						assertTrue(true);
+					}
+				} else if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+					if (timeDuration == 1799) {
+						assertTrue(true);
+					}
+				}
+
+				newToken = json.get("accessToken").toString();
+				log("++++++++++++++++++++ newToken is set here +++++++++++++");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+	}
+
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {"RegressionTests1",
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessages(String version) throws Exception {
 		if (version.equals("v2"))
@@ -212,7 +267,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
-				Thread.sleep(60000);
+				Thread.sleep(70000);
 				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
 				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 					completed = true;
@@ -781,7 +836,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = { "RegressionTests2",
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {"RegressionTests2",
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testStatementEventForExistingPatient(String version) throws Exception {
 		if (version.equals("v2"))
@@ -860,7 +915,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		sEventObj.generateViewEvent(driver, testData, 'N', version);
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = { "RegressionTests2",
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {"RegressionTests2",
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBulkSecureMessage(String version) throws Exception {
 		if (version.equals("v2"))
@@ -1044,7 +1099,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests2" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"RegressionTests2"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDirectorySearch() throws Exception {
 		DirectorySearchUtils DirectorySearchUtilsObj = new DirectorySearchUtils();
 		DirectorySearchUtilsObj.directorySearchParam("all");
@@ -1596,9 +1651,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				+ testData.ToEmalID + "/message/" + testData.invalidUID + "/delete";
 		log(invalidMessageUIDURLDelete);
 		int responseCodeInvalidMsgDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidMessageUIDURLDelete,
-				testData.ResponsePath, testData.token);
+				testData.ResponsePath, newToken);
 		log("responseCode for InvalidMsg Delete API is " + responseCodeInvalidMsgDelete);
-		assertEquals(responseCodeInvalidMsgDelete, 401);
+		assertEquals(responseCodeInvalidMsgDelete, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				testData.invalidUID);
 
@@ -1606,7 +1661,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String invalidEmailIDDelete = testData.messageHeaderURL + testData.validPracticeID + "/directmessage/"
 				+ testData.invalidEmailMessageHeaderURL + "/message/1/delete";
 		int responseCodeInvalidEmailDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidEmailIDDelete,
-				testData.ResponsePath, testData.token);
+				testData.ResponsePath, newToken);
 		log("responseCode for InvalidEmailDelete is " + responseCodeInvalidEmailDelete);
 		assertEquals(responseCodeInvalidEmailDelete, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
@@ -1645,9 +1700,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 6 : execute Delete API and Verify the response");
 		String messageDeleteURL = testData.messageStatusUpdate + "/" + msgUid + "/delete";
-		RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath, testData.token);
+		RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath, newToken);
 		int responseCode = RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath,
-				testData.token);
+				newToken);
 		log("responseCode is " + responseCode + " message not found !!!");
 		assertEquals(responseCode, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
@@ -1712,19 +1767,19 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 11: Post Read message to delete with message Status as DELETE");
 		messageUpdateURL1 = messageUpdateURL1.replaceAll("status/READ", "delete");
 		int responseCode1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath,
-				testData.token);
+				newToken);
 		log("responseCode1 is " + responseCode1);
 		assertEquals(responseCode1, 200);
 
 		log("Step 12: Post Unread message to delete with message Status as DELETE");
 		int responseCode2 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath,
-				testData.token);
+				newToken);
 		log("responseCode2 is " + responseCode2);
 		assertEquals(responseCode2, 200);
 
 		log("Step 13: Verify deletion of read message in get getMessageBody API " + messageUpdateURL1);
 		int responseCodeE = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath,
-				testData.token);
+				newToken);
 		log("responseCodeE is " + responseCodeE);
 		String ErrorMsg1 = "Error GetMessage No Message for Message Uid = " + msgUid + ".";
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
@@ -1732,7 +1787,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 14: Verify deletion of unread message message in getMessageBody API  " + messageUpdateURL2);
 		int responseCodeE1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath,
-				testData.token);
+				newToken);
 		log("responseCodeE1 is " + responseCodeE1);
 		String ErrorMsg2 = "Error GetMessage No Message for Message Uid = " + msgUid1 + ".";
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
@@ -1756,7 +1811,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				+ testData.FromEmalID + "/message/" + msgUid + "/delete";
 		log(senderEmail);
 		int senderEmailID = RestUtils.setupHttpDeleteRequestExceptOauth(senderEmail, testData.ResponsePath,
-				testData.token);
+				newToken);
 		log("responseCode for InvalidEmailDelete is " + senderEmailID);
 		assertEquals(senderEmailID, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
@@ -4085,7 +4140,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 
 
-	@Test(enabled = true, dataProvider = "channelVersion", retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {""}, dataProvider = "channelVersion", retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessagesBatchInvalid(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
@@ -4205,7 +4260,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 
 
-	@Test(enabled = true, dataProvider = "channelVersion", retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {""}, dataProvider = "channelVersion", retryAnalyzer = RetryAnalyzer.class)
 	public void testBulkSecureMessageInvalid(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
@@ -4385,7 +4440,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 
 
-	@Test(enabled = true, groups = {"RegressionTests3"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {""}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentDataExistingPatientBulkInvalidTimeZoneV4() throws Exception {
 		log("Test Case: Appointment Request for Existing Patient From Partner");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -4408,7 +4463,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.FirstName = testData.FirstName;
 		testData.LastName = testData.LastName;
 		testData.EmailUserName = testData.EmailUserName;
-		testData.BatchSize = "30";
+		testData.BatchSize = "10";
 
 		testData.Time = testData.appointmentDetailList.get(1).getTime();
 		testData.appointmentType = "FUTURE";
@@ -4431,7 +4486,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 
 
-	@Test(enabled = true, groups = {"RegressionTests3"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {""}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentDataExistingPatientBulkInvalidTimeZoneV3() throws Exception {
 		log("Test Case: Appointment Request for Existing Patient From Partner");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -4454,7 +4509,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.FirstName = testData.FirstName;
 		testData.LastName = testData.LastName;
 		testData.EmailUserName = testData.EmailUserName;
-		testData.BatchSize = "30";
+		testData.BatchSize = "10";
 
 		testData.Time = testData.appointmentDetailList.get(1).getTime();
 		testData.appointmentType = "FUTURE";
@@ -4476,7 +4531,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		dataJobIDs.add(dataJobID);
 	}
 
-	@Test(enabled = true, groups = {"RegressionTests3", "AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"", "AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentRequestForExistingPatientBulkInvalidTimeZone() throws Exception {
 		log("Test Case: Appointment Request for Existing Patient From Partner");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -4497,7 +4552,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.FirstName = testData.FirstName;
 		testData.LastName = testData.LastName;
 		testData.EmailUserName = testData.EmailUserName;
-		testData.BatchSize = "20";
+		testData.BatchSize = "10";
 
 		testData.Time = testData.appointmentDetailList.get(1).getTime();
 		testData.appointmentType = "FUTURE";

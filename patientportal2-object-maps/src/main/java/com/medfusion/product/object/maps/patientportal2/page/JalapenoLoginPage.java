@@ -13,7 +13,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
-import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
 
@@ -52,7 +51,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='featureCard messaging']//a[contains(.,'Messages')]")
+	@FindBy(how = How.XPATH, using = "//div[@class='featureCard messaging']//a[contains(.,'Messages')] | (//li[.='Sign Out'])[2]")
 	private WebElement loginProof;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='same']")
@@ -82,6 +81,8 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "credential")
 	private WebElement wrongPwdAccounLockout;
 	
+	@FindBy(how = How.XPATH, using = "	//button[.='No Thanks']")
+	private WebElement feedbackNoThanksButton;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -108,12 +109,20 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	public JalapenoHomePage login(String username, String password) {
 		makeLogin(username, password);
-		IHGUtil.waitForElement(driver, 120, loginProof);
+		IHGUtil.waitForElement(driver, 240, loginProof);
 		log("User is logged in");
 		handleWeNeedToConfirmSomethingModal();
+		selectFeedbackNoThanksButton();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 	
+	public void selectFeedbackNoThanksButton() {
+		if (new IHGUtil(driver).exists(feedbackNoThanksButton)) {
+			log("FeedbackNoThanksButton is displayed");
+			feedbackNoThanksButton.click();
+		}
+	}
+
 	public JalapenoHomePage loginWithPreference(String username, String password) throws InterruptedException {
 		makeLogin(username, password);
 		log("User is logged in");

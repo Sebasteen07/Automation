@@ -228,6 +228,14 @@ public class PropertyFileLoader {
 		return property.getProperty("readcommunicationurlv3.amdc");
 	}
 
+	public String getTokenUrl() {
+		return property.getProperty("token.url");
+	}
+
+	public String getTokenClient() {
+		return property.getProperty("token.client");
+	}
+
 	public String getBatchUsername1() {
 		return property.getProperty("patient.externalid1");
 	}
