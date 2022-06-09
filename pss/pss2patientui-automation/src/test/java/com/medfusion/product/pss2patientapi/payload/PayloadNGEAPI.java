@@ -129,7 +129,7 @@ public static String appointmentSearch() {
 				+ "  \"slotSize\": \"05\",\r\n"
 				+ "  \"reservedForSameDay\": false,\r\n"
 				+ "  \"apptTypeAllocated\": true,\r\n"
-				+ "  \"patientId\": \"597d7141-79ec-4e27-a089-d6ca280ce687\",\r\n"
+				+ "  \"patientId\": \""+patientId+"\",\r\n"
 				+ "  \"contiguous\": false,\r\n"
 				+ "  \"maxPerDay\": 0,\r\n"
 				+ "  \"nextAvailability\": false,\r\n"
@@ -139,6 +139,58 @@ public static String appointmentSearch() {
 				+ "  \"leadTime\": 0,\r\n"
 				+ "  \"slotCount\": 1,\r\n"
 				+ "  \"nextAvailable\": false\r\n"
+				+ "}";
+		
+		return nextAvailable;
+	}
+	
+public static String nextAvailableMaxPerDay_Payload(String patientId, String startdate,  String enddate,int maxPerDay) {
+		
+		String nextAvailable="{\r\n"
+				+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+				+ "  \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+				+ "  \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
+				+ "  \"startDate\": \"06/18/2022 17:45:00\",\r\n"
+				+ "  \"endDate\": \"06/30/2022 18:45:00\",\r\n"
+				+ "  \"slotSize\": \"05\",\r\n"
+				+ "  \"reservedForSameDay\": false,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"patientId\": \""+patientId+"\",\r\n"
+				+ "  \"contiguous\": false,\r\n"
+				+ "  \"maxPerDay\": "+maxPerDay+",\r\n"
+				+ "  \"nextAvailability\": false,\r\n"
+				+ "  \"stackingFlag\": false,\r\n"
+				+ "  \"preventScheduling\": 0,\r\n"
+				+ "  \"sameDayAppointment\": false,\r\n"
+				+ "  \"leadTime\": 0,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"nextAvailable\": false\r\n"
+				+ "}";
+		
+		return nextAvailable;
+	}
+	
+
+	public static String available_ShowOFFPayload(String patientId, String startdate,  String enddate,int maxPerDay) {
+		
+		String nextAvailable="{\r\n"
+				+ "    \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+				+ "    \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+				+ "    \"startDate\": \"06/18/2022 17:45:00\",\r\n"
+				+ "    \"endDate\": \"06/30/2022 18:45:00\",\r\n"
+				+ "    \"slotSize\": \"05\",\r\n"
+				+ "    \"reservedForSameDay\": false,\r\n"
+				+ "    \"apptTypeAllocated\": true,\r\n"
+				+ "    \"patientId\": \"597d7141-79ec-4e27-a089-d6ca280ce687\",\r\n"
+				+ "    \"contiguous\": false,\r\n"
+				+ "    \"maxPerDay\": 0,\r\n"
+				+ "    \"nextAvailability\": false,\r\n"
+				+ "    \"stackingFlag\": false,\r\n"
+				+ "    \"preventScheduling\": 0,\r\n"
+				+ "    \"sameDayAppointment\": false,\r\n"
+				+ "    \"leadTime\": 0,\r\n"
+				+ "    \"slotCount\": 1,\r\n"
+				+ "    \"nextAvailable\": false\r\n"
 				+ "}";
 		
 		return nextAvailable;
@@ -172,7 +224,7 @@ public static String nextAvailable_New() {
 		return nextAvailable;
 	}
 	
-public static String reschedule_Payload(String startDateTime, String endDateTime, String patientid, String firstName, String lastName, String apptid) {
+public static String reschedule_Payload(String startDateTime, String endDateTime, String patientid, String apptid) {
 	
 	String reschedule="{\r\n"
 			+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
@@ -185,6 +237,44 @@ public static String reschedule_Payload(String startDateTime, String endDateTime
 			+ "  \"patientId\": \""+patientid+"\",\r\n"
 			+ "  \"resourceCategoryId\": \"58e61653-fe3d-448b-ba06-8bcdbfa1cf0f\",\r\n"
 			+ "  \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
+			+ "  \"slotId\": \"0001\",\r\n"
+			+ "  \"stackingFlag\": false,\r\n"
+			+ "  \"schedulingDuration\": 0,\r\n"
+			+ "  \"additionalProperties\": {\r\n"
+			+ "    \"ZIP\": \"12345\",\r\n"
+			+ "    \"PHONE\": \"808-201-6243\",\r\n"
+			+ "    \"EMAIL\": \"Ketan@yopmail.com\"\r\n"
+			+ "  },\r\n"
+			+ "  \"notesProperties\": {\r\n"
+			+ "    \"apptIndicatorWithConfirmationNo\": \"(pss) 239797 01/24/2022 05:20:04\"\r\n"
+			+ "  },\r\n"
+			+ "  \"existingAppointment\": {\r\n"
+			+ "    \"duration\": 0,\r\n"
+			+ "    \"stackingFlag\": false,\r\n"
+			+ "    \"schedulingDuration\": 0,\r\n"
+			+ "    \"appointmentId\": \""+apptid+"\"\r\n"
+			+ "  },\r\n"
+			+ "  \"rescheduleReason\": {\r\n"
+			+ "    \"id\": \"8EED1E6A-1FA2-4CCF-9660-0F553B1D8C17\",\r\n"
+			+ "    \"name\": \"Laurie\"\r\n"
+			+ "  },\r\n"
+			+ "  \"practiceTimezone\": \"America/New_York\"\r\n"
+			+ "}";
+	
+	return reschedule;
+}
+
+public static String reschedule_PayloadShowOFF(String startDateTime, String endDateTime, String patientid, String apptid) {
+	
+	String reschedule="{\r\n"
+			+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+			+ "  \"appointmentCategoryId\": \"aa81a2da-5781-46e7-8b67-19b873eb3cdb\",\r\n"
+			+ "  \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+			+ "  \"duration\": 0,\r\n"
+			+ "  \"comments\": \"~(pss) 239797 01/24/2022 05:20:04~\",\r\n"
+			+ "  \"startDateTime\": \""+startDateTime+"\",\r\n"
+			+ "  \"endDateTime\": \""+endDateTime+"\",\r\n"
+			+ "  \"patientId\": \""+patientid+"\",\r\n"
 			+ "  \"slotId\": \"0001\",\r\n"
 			+ "  \"stackingFlag\": false,\r\n"
 			+ "  \"schedulingDuration\": 0,\r\n"
@@ -225,6 +315,32 @@ public static String reschedule_Payload(String startDateTime, String endDateTime
 				+ "    \"patientId\": \"597d7141-79ec-4e27-a089-d6ca280ce687\",\r\n"
 				+ "    \"resourceCategoryId\": \"58e61653-fe3d-448b-ba06-8bcdbfa1cf0f\",\r\n"
 				+ "    \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
+				+ "    \"slotId\": \"0001\",\r\n"
+				+ "    \"stackingFlag\": false,\r\n"
+				+ "    \"schedulingDuration\": 0,\r\n"
+				+ "    \"additionalProperties\": {\r\n"
+				+ "        \"EMAIL\": \"ketan@yopmail.com\"\r\n"
+				+ "    },\r\n"
+				+ "    \"notesProperties\": {\r\n"
+				+ "        \"apptIndicatorWithConfirmationNo\": \"(pss) 239797 01/24/2022 05:20:04\"\r\n"
+				+ "    },\r\n"
+				+ "    \"practiceTimezone\": \"America/New_York\"\r\n"
+				+ "}";
+		
+		return schedule;
+	}
+	
+public static String schedule_PayloadShowOFF(String slotStartTime, String slotEndTime) {
+		
+		String schedule="{\r\n"
+				+ "    \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+				+ "    \"appointmentCategoryId\": \"aa81a2da-5781-46e7-8b67-19b873eb3cdb\",\r\n"
+				+ "    \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+				+ "    \"duration\": 0,\r\n"
+				+ "    \"comments\": \"~(pss) 239797 01/24/2022 05:20:04~\",\r\n"
+				+ "    \"startDateTime\": \""+slotStartTime+"\",\r\n"
+				+ "    \"endDateTime\": \""+slotEndTime+"\",\r\n"
+				+ "    \"patientId\": \"597d7141-79ec-4e27-a089-d6ca280ce687\",\r\n"
 				+ "    \"slotId\": \"0001\",\r\n"
 				+ "    \"stackingFlag\": false,\r\n"
 				+ "    \"schedulingDuration\": 0,\r\n"

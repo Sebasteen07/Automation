@@ -175,18 +175,13 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void test_Avai_Schedule_Resc_Cancel_NGPOST() throws NullPointerException, Exception {
+	public void test_Avai_Schedule_Resc_Cancel_NGPOSTOFF() throws NullPointerException, Exception {
 
-//		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:ss");
-//		String enddate = pSSPatientUtils.addDaysToDate(startdate, "1", "MM/dd/yyyy HH:MM:ss");
-		String startdate = "05/18/2022 17:45:00";
-		String enddate = "06/30/2022 18:45:00";
-		String patinetId = "597d7141-79ec-4e27-a089-d6ca280ce687";
-		String fname = "";
-		String lname = "";
+		String startDate = propertyData.getProperty("start.date.time.nge");
+		String endDate = propertyData.getProperty("end.date.time.nge");
+		String patinetId = propertyData.getProperty("patient.id.nge");
 		int maxPerDay = 0;
-		String b = PayloadNGEAPI.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate,
-				maxPerDay);
+		String b = PayloadNGEAPI.available_ShowOFFPayload(patinetId, startDate, endDate, maxPerDay);
 
 		Response response = postAPIRequest.availableSlots(b, practiceId);
 
@@ -195,11 +190,11 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 		JsonPath js = new JsonPath(response.asString());
 		String startDateTime = js.getString("availableSlots[0].startDateTime");
-		String startDateTimeResch = js.getString("availableSlots[1].startDateTime");
+		String endDateTime = js.getString("availableSlots[1].startDateTime");
 		String startDateTimeResch1 = js.getString("availableSlots[2].startDateTime");
-		String startDateTimeResch4 = js.getString("availableSlots[3].startDateTime");
+		String startDateTimeResch2 = js.getString("availableSlots[3].startDateTime");
 		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(practiceId,
-				PayloadNGEAPI.schedule_Payload(startDateTime, startDateTimeResch));
+				PayloadNGEAPI.schedule_PayloadShowOFF(startDateTime, endDateTime));
 		aPIVerification.responseCodeValidation(scheduleApptResponse, 200);
 		aPIVerification.responseTimeValidation(scheduleApptResponse);
 		String apptid = aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
@@ -207,7 +202,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		log("Appointment id - " + apptid);
 
 		Response rescheduleResponse = postAPIRequest.rescheduleApptNG(practiceId, PayloadNGEAPI
-				.reschedule_Payload(startDateTimeResch1, startDateTimeResch4, patinetId, fname, lname, apptid));
+				.reschedule_PayloadShowOFF(startDateTimeResch1, startDateTimeResch2, patinetId, apptid));
 		aPIVerification.responseTimeValidation(rescheduleResponse);
 		aPIVerification.responseCodeValidation(rescheduleResponse, 200);
 		String apptCancelId = aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
@@ -220,6 +215,47 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseTimeValidation(responseCancel);
 
 	}
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test_Avai_Schedule_Resc_Cancel_NGPOST() throws NullPointerException, Exception {
+		String startDate = propertyData.getProperty("start.date.time.nge");
+		String endDate = propertyData.getProperty("end.date.time.nge");
+		String patinetId = propertyData.getProperty("patient.id.nge");
+		int maxPerDay = 0;
+		String b = PayloadNGEAPI.nextAvailable_Payload(patinetId, startDate, endDate, maxPerDay);
+		Response response = postAPIRequest.availableSlots(b, practiceId);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+
+		JsonPath js = new JsonPath(response.asString());
+		String startDateTime = js.getString("availableSlots[0].startDateTime");
+		String endDateTime = js.getString("availableSlots[1].startDateTime");
+		String startDateTimeResch = js.getString("availableSlots[2].startDateTime");
+		String endDateTimeResch = js.getString("availableSlots[3].startDateTime");
+		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(practiceId,
+				PayloadNGEAPI.schedule_Payload(startDateTime, endDateTime));
+		aPIVerification.responseCodeValidation(scheduleApptResponse, 200);
+		aPIVerification.responseTimeValidation(scheduleApptResponse);
+		String apptid = aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
+		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
+		log("Appointment id - " + apptid);
+
+		Response rescheduleResponse = postAPIRequest.rescheduleApptNG(practiceId, PayloadNGEAPI
+				.reschedule_Payload(startDateTimeResch, endDateTimeResch, patinetId,apptid));
+		aPIVerification.responseTimeValidation(rescheduleResponse);
+		aPIVerification.responseCodeValidation(rescheduleResponse, 200);
+		String apptCancelId = aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
+		aPIVerification.responseKeyValidationJson(rescheduleResponse, "slotAlreadyTaken");
+		log("Appointment id Reschedule- " + apptCancelId);
+
+		Response responseCancel = postAPIRequest.cancelAppointmentPOST(practiceId,
+				PayloadNGEAPI.cancelAppointment(apptCancelId));
+		aPIVerification.responseCodeValidation(responseCancel, 200);
+		aPIVerification.responseTimeValidation(responseCancel);
+
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testscheduleWithoutBody() throws NullPointerException, Exception {
@@ -319,16 +355,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseCodeValidation(response, 500);
 		aPIVerification.responseTimeValidation(response);
 	}
-
-//	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-//	public void testCancelAppointmentPost() throws IOException {
-//
-//		Response response = postAPIRequest.cancelAppointmentPOST(practiceId,
-//				payload.cancelAppointment);
-//		aPIVerification.responseCodeValidation(response, 200);
-//		aPIVerification.responseTimeValidation(response);
-//
-//	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentWithoutBodyPost() throws IOException {
@@ -457,7 +483,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDemographicsGET() throws IOException {
-        String patientId="5B78A0B6-5349-4B16-9CA8-121F964DAFD1";
+        String patientId= propertyData.getProperty("demographics.patient.id.nge");
 		Response response = postAPIRequest.demographics(practiceId,patientId);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -486,6 +512,9 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseKeyValidation(response, "type");
 
 	}
+	
+
+	
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMatchPatientPOST() throws IOException {
@@ -507,11 +536,11 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientLastVisitGET() throws IOException {
-        String patientId="e47ea31b-8436-40df-8152-c9ef9d8721fe";
+        String patientId= propertyData.getProperty("lastvisit.patient.id.nge");
 		Response response = postAPIRequest.patientLastVisit(practiceId,patientId);
 		aPIVerification.responseCodeValidation(response, 200);
-//		aPIVerification.responseTimeValidation(response);
-//		aPIVerification.responseKeyValidationJson(response, "lastVisitDateTime");
+		aPIVerification.responseTimeValidation(response);
+		aPIVerification.responseKeyValidationJson(response, "lastVisitDateTime");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -664,36 +693,35 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseTimeValidation(response);
 
 	}
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvaliableSlots() throws NullPointerException, Exception {
 		
 
-//		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:ss");
-//		String enddate = pSSPatientUtils.addDaysToDate(startdate, "1", "MM/dd/yyyy HH:MM:ss");
-		String startdate = "05/18/2022 17:45:00";
-		String enddate ="06/30/2022 18:45:00";
-		int maxPerDay=0;
-		String b = PayloadNGEAPI.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate,maxPerDay);
-
+		String startDate = propertyData.getProperty("start.date.time.nge");
+		String endDate = propertyData.getProperty("end.date.time.nge");
+		String patinetId = propertyData.getProperty("patient.id.nge");
+		int maxPerDay = 0;
+		String b = PayloadNGEAPI.nextAvailable_Payload(patinetId, startDate, endDate, maxPerDay);
 		Response response = postAPIRequest.availableSlots(b, practiceId);
-
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
+
 	}
 	
 @Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 public void testAvaliableSlotswithMaxperDay() throws NullPointerException, Exception {
 	
 
-//	String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:ss");
-//	String enddate = pSSPatientUtils.addDaysToDate(startdate, "1", "MM/dd/yyyy HH:MM:ss");
-	String startdate = "05/18/2022 17:45:00";
-	String enddate ="06/30/2022 18:45:00";
-	int maxPerDay=1;
-	String b = PayloadNGEAPI.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate,maxPerDay);
 
+	String startDate = propertyData.getProperty("start.date.time.nge");
+	String endDate = propertyData.getProperty("end.date.time.nge");
+	String patinetId = propertyData.getProperty("patient.id.nge");
+	int maxPerDay = 1;
+	String b = PayloadNGEAPI.nextAvailableMaxPerDay_Payload(patinetId, startDate, endDate, maxPerDay);
 	Response response = postAPIRequest.availableSlots(b, practiceId);
 	aPIVerification.responseCodeValidation(response, 200);
 	aPIVerification.responseTimeValidation(response);
+
 }
 }
