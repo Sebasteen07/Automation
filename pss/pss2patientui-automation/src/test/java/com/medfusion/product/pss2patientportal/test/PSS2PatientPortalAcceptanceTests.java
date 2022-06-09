@@ -3815,7 +3815,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			Log4jUtil.log("Step 11: Verify Location Page and location = " + testData.getAppointmenttype());
 			AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
-			Thread.sleep(6000);
 			psspatientutils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
 		}
 		Log4jUtil.log("Max per day appointment booked and now verifying the current date is disabled or Not");
@@ -3831,6 +3830,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Step 11: Verify Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDateforMaxPDay(testData.getIsNextDayBooking());
+		log("Current date is disabled  " + aptDateTime.disabledate());
+		assertTrue(aptDateTime.disabledate());
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
