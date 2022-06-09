@@ -1,14 +1,18 @@
 package com.intuti.ihg.product.object.maps.sitegen.page.medfusionadmin;
 
+import java.io.IOException;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 
 public class PracticeInfoPage extends BasePageObject {
 
@@ -32,6 +36,15 @@ public class PracticeInfoPage extends BasePageObject {
 
 	@FindBy(className = "return")
 	private WebElement returnToMainButton;
+	
+	@FindBy(name = "associatedEnterprise")
+	private WebElement associatedEnterprise;
+	
+	@FindBy(xpath ="//*[@value=\"Confirm Your Changes\"]")
+	private WebElement btnConfirmChanges;
+	
+	@FindBy(xpath="//div[@class='content']//table//tr//td[@id='associatedEnterprise']")
+	private WebElement existingEnterpriseName;
 
 	public PracticeInfoPage(WebDriver driver) {
 		super(driver);
@@ -91,4 +104,20 @@ public class PracticeInfoPage extends BasePageObject {
 		portalUrlName.sendKeys(newUrlName);
 
 	}
+	
+	public void updateEnterprise()throws InterruptedException, IOException {
+	IHGUtil.PrintMethodName();
+	PropertyFileLoader testData = new PropertyFileLoader();
+
+		Select newEnterprise = new Select(associatedEnterprise);
+		newEnterprise.selectByVisibleText(testData.getProperty("enterpriseTwo"));
+
+	
+	log("Click on Confirm your changes to save");
+	JavascriptExecutor js = (JavascriptExecutor) driver;
+	js.executeScript("window.scrollBy(0,250)", "");
+	IHGUtil.waitForElement(driver, 10, btnConfirmChanges);
+	btnConfirmChanges.click();	
+	
+}
 }
