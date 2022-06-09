@@ -8356,7 +8356,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_click_on_patient_mode_to_do_the_precheck() throws InterruptedException {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
 		assertEquals(apptPage.visibilityOfInsuranceStepper(),"Insurance information","text not match");
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
@@ -8392,7 +8392,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
 				propertyData.getProperty("practice.provisining.password.ge"));
 		apptPage.filterPatientId(Appointment.patientId);
-		assertEquals(apptPage.insuranceCount(),"3","Count not match");
+		assertEquals(apptPage.insuranceCount(),"9","Count not match");
 		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
 		scrollAndWait(300, 2000, 10000);
 		apptPage.viewDetails();
@@ -8456,9 +8456,10 @@ public class ApptPrecheckSteps extends BaseTest {
 		scrollAndWait(0, -3000, 5000);
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
+		apptPage.saveAndContinueButton();
 		apptPage.clickOnSkipAndPayInOffice();
 		assertNotEquals(apptPage.visibilityOfInsuranceStepper(),"Insurance information","text not match");
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
@@ -8491,7 +8492,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("apt.precheck.practice.id"),
-				payload.putAppointmentCopayPayload(plus20Minutes),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 				Appointment.apptId);
 	}
@@ -8645,7 +8647,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	    apptPage.clickOnLaunchPatientModeButton();
 	    scrollAndWait(0, -3000, 5000);
 	    apptPage.clickOnContinueButton();
-	    apptPage.payCopayByPayInOfficeFromPrecheck("Male", "AL");
+	    apptPage.payCopayByPayInOfficeFromPrecheck();
 	}
 	@Then("I verify in appointment dashboard for that appointment the copay should show pay in office")
 	public void i_verify_in_appointment_dashboard_for_that_appointment_the_copay_should_show_pay_in_office() throws InterruptedException {
@@ -8664,10 +8666,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		scrollAndWait(0, -3000, 5000);
 		apptPage.clickOnContinueButton();
-		apptPage.gender("Male");
-		apptPage.state("AL");
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
+		apptPage.saveAndContinueButton();
 		apptPage.saveAndContinueButton();
 		apptPage.clickOnPayNow();
 		apptPage.enterNameOnCard(propertyData.getProperty("mf.scheduler.patient.name"));
@@ -8706,10 +8706,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		 apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
 		 apptPage.clickOnLaunchPatientModeButton();
 		 apptPage.clickOnContinueButton();
-		 apptPage.gender("Male");;
-		 apptPage.state("AL");
 		 apptPage.saveAndContinueButton();
-		 apptPage.clickOkButton();
+		 apptPage.saveAndContinueButton();
 		 apptPage.saveAndContinueButton();   
 	}
 	@Then("I verify copay page should not be seen in precheck")
@@ -8748,8 +8746,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		 apptPage.clickOnLaunchPatientModeButton();
 		 apptPage.clickOnContinueButton();
 		 apptPage.saveAndContinueButton();
-		 apptPage.clickOkButton();
-		 apptPage.clickOnSkipAddingInsurance();
+		 apptPage.saveAndContinueButton();
+		 apptPage.saveAndContinueButton();
+		 apptPage.clickOnSkipAndPayInOffice();
 		 assertEquals(apptPage.visibilityOfPayBalanceTitle(),"Pay balance","text not match");
 		 assertEquals(apptPage.visibilityOfSubHeadingOfPayBalance(),"Balance due $15.00","text not match");
 		 apptPage.clickOnPayNow();
@@ -8790,8 +8789,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		assertEquals(apptPage.visibilityOfMinimumPaymentAmountText(),"Minimum payment amount is $5.00","text not match");
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
@@ -8816,10 +8816,10 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
-		assertNotEquals(apptPage.visibilityOfBalanceStepper(),"Pay balance");
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
 		apptPage.clickOnSkipAndPayInOffice();
+		assertTrue(apptPage.visibilityOfBalanceStepper());
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
 		apptPage.clickOnLogOutButton();
@@ -8885,8 +8885,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.addInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.addInsuranceCard();
 		apptPage.enterInsuranceName("Health Insurance");
 		apptPage.subscriberId("24131");
 		apptPage.saveAndContinueButton();
@@ -8898,7 +8898,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(apptPage.visibilityOfCancelButton());
 		assertTrue(apptPage.visibilityOfDeleteButton());
 		apptPage.deleteButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
@@ -8928,8 +8929,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 	}
@@ -8951,8 +8953,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 	}
@@ -8972,8 +8975,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 	}
@@ -8994,8 +8998,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
@@ -9030,8 +9035,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.editPatientInformation();
@@ -9040,8 +9046,9 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_verify_it_takes_to_precheck_demographics_patient_can_be_able_to_do_precheck_details() throws NullPointerException, InterruptedException {
 		assertEquals(apptPage.visibilityOfPrecheckPageTitle(),"Verify patient information","text not match");
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
@@ -9057,8 +9064,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.editInsuranceCards();
@@ -9066,7 +9074,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify it takes to precheck insurance, patient can be able to do precheck for insurance details")
 	public void i_verify_it_takes_to_precheck_insurance_patient_can_be_able_to_do_precheck_for_insurance_details() throws NullPointerException, InterruptedException {
 	   assertEquals(apptPage.visibilityOfInsurancePageTitle(),"Insurance information","text not match");
-	   apptPage.clickOnSkipAddingInsurance();
+	    apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnImDoneButton();
@@ -9094,8 +9103,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnLaunchPatientModeButton();
 		apptPage.clickOnContinueButton();
 		apptPage.saveAndContinueButton();
-		apptPage.clickOkButton();
-		apptPage.clickOnSkipAddingInsurance();
+		apptPage.saveAndContinueButton();
+		apptPage.saveAndContinueButton();
+		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndPayInOffice();
 		apptPage.clickOnSkipAndFinishLater();
 		apptPage.clickOnSignOutTextInMenuOfPrecheckPage();
@@ -9110,4 +9120,134 @@ public class ApptPrecheckSteps extends BaseTest {
 	   loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
 				propertyData.getProperty("practice.provisining.password.ge"));
 	}
+	@When("I do the precheck for the appointment")
+	public void i_do_the_precheck_for_the_appointment() throws InterruptedException {
+		 apptPage.selectPatientIdAppt(Appointment.patientId);
+		 apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		 apptPage.clickOnLaunchPatientModeButton();
+		 apptPage.clickOnContinueButton();
+		 apptPage.saveAndContinueButton();
+		 apptPage.saveAndContinueButton();
+		 apptPage.saveAndContinueButton();
+	}
+	@Then("I verify that disclaimer message for copay is seen properly")
+	public void i_verify_that_disclaimer_message_for_copay_is_seen_properly() throws NullPointerException, InterruptedException {
+	    apptPage.copayDisclaimer();
+	    assertEquals(apptPage.getCopayDisclaimerText(),propertyData.getProperty("copay.disclaimer.message"),"text not match");
+	    apptPage.clickOnSkipAndPayInOffice();
+	    apptPage.clickOnSkipAndPayInOffice();
+	    apptPage.clickOnSkipAndFinishLater();
+	    apptPage.clickOnImDoneButton();
+	    apptPage.clickOnLogOutButton();
+	    loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@When("I schedule an appointment with dob before {int}")
+	public void i_schedule_an_appointment_with_dob_before(Integer int1) throws NullPointerException, InterruptedException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),	
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@Then("I verify that user complete precheck both from reminders as well as from patient mode")
+	public void i_verify_that_user_complete_precheck_both_from_reminders_as_well_as_from_patient_mode() throws InterruptedException {
+		 apptPage.selectPatientIdAppt(Appointment.patientId);
+		 apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		 scrollAndWait(0, -3000, 5000);
+		 apptPage.clickOnLaunchPatientModeButton();
+		 scrollAndWait(0, -3000, 5000);
+		 apptPage.clickOnContinueButton();
+		 apptPage.saveAndContinueButton();
+		 apptPage.saveAndContinueButton();
+		 apptPage.saveAndContinueButton();
+		 apptPage.clickOnSkipAndPayInOffice();
+		 apptPage.clickOnSkipAndPayInOffice();
+		 apptPage.clickOnSkipAndFinishLater();
+		 apptPage.clickOnImDoneButton();
+		 apptPage.clickOnLogOutButton();
+		 loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+					propertyData.getProperty("practice.provisining.password.ge"));
+	}
+	
+	@When("I schedule an appointment for adding images to insurances")
+	public void i_schedule_an_appointment_for_adding_images_to_insurances() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),	
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@When("I do the precheck for adding images to insurances")
+	public void i_do_the_precheck_for_adding_images_to_insurances() throws InterruptedException, NullPointerException, AWTException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		 apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		 scrollAndWait(0, -3000, 5000);
+		 apptPage.clickOnLaunchPatientModeButton();
+		 scrollAndWait(0, -3000, 5000);
+		 apptPage.clickOnContinueButton();
+		 apptPage.addInsuranceImagesFromPrecheck(propertyData.getProperty("front.insurance.image"), 
+				 propertyData.getProperty("back.insurance.image"),
+				 propertyData.getProperty("precheck.primary.insurance.name"),
+				 propertyData.getProperty("precheck.primary.insurance.member.id"), 
+				 propertyData.getProperty("insurance.name"),
+				 propertyData.getProperty("insurance.member.id"),
+				 propertyData.getProperty("insurance.name.third"), 
+				 propertyData.getProperty("insurance.member.id.third"));
+	}
+	@Then("I verify that images for {string} should be added")
+	public void i_verify_that_images_for_should_be_added(String string) throws NullPointerException, InterruptedException {
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+	 apptPage.selectPatientIdAppt(Appointment.patientId);
+	 apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+	 apptPage.viewDetails();
+	 apptPage.clickArrowDropdownForFirstInsurance();
+	 scrollAndWait(0, -365, 5000);
+	 assertTrue(apptPage.visibilityOfInsuranceImages());
+	 apptPage.clickArrowDropdownForFirstInsurance();
+	 apptPage.clickArrowDropdownForSecondInsurance();
+	 scrollAndWait(0, -365, 5000);
+	 assertTrue(apptPage.visibilityOfInsuranceImages());
+	 apptPage.clickArrowDropdownForFirstInsurance();
+	 apptPage.clickArrowDropdownForThirdInsurance();
+	 scrollAndWait(0, -365, 5000);
+	 assertTrue(apptPage.visibilityOfInsuranceImages());
+	 apptPage.clickArrowDropdownForFirstInsurance();
+	 apptPage.closeApptDetail();
+	}
+	@Then("I verify that error message should be seen")
+	public void i_verify_that_error_message_should_be_seen() throws InterruptedException, NullPointerException, AWTException {
+		 apptPage.selectPatientIdAppt(Appointment.patientId);
+		 apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		 scrollAndWait(0, -3000, 5000);
+		 apptPage.clickOnLaunchPatientModeButton();
+		 scrollAndWait(0, -3000, 5000);
+		 apptPage.clickOnContinueButton();
+		 apptPage.saveAndContinueButton();
+		 apptPage.saveAndContinueButton();
+		 apptPage.addInsuranceCard();
+		 apptPage.frontInsuranceImage(propertyData.getProperty("invalid.front.insurance.image"));
+		 assertEquals(apptPage.getErrorMessageAfterUploadingInvalidImage(),propertyData.getProperty("insurance.image.error.message"),"text not match");
+		 apptPage.clickOnSignOutTextInMenuOfPrecheckPage();
+		 apptPage.clickYeslogMeOut();
+		 loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+					propertyData.getProperty("practice.provisining.password.ge"));
+	}
+
+	
+
 }
