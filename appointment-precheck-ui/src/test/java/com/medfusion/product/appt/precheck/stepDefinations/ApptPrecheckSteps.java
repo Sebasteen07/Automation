@@ -8554,12 +8554,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.enterInvalidTimingAndTimingUnit(3,"Hours","0");
 		assertEquals(notifPage.getInvalidUnitText(3),"Invalid Units","Invalid Units text was not match");
 		
-		notifPage.enterInvalidTimingAndTimingUnit(1,"Hours","0");
-		assertEquals(notifPage.getInvalidUnitText(1),"Invalid Units","Invalid Units text was not match");
-		notifPage.enterInvalidTimingAndTimingUnit(2,"Hours","0");
-		assertEquals(notifPage.getInvalidUnitText(2),"Invalid Units","Invalid Units text was not match");
-		notifPage.enterInvalidTimingAndTimingUnit(3,"Hours","0");
-		assertEquals(notifPage.getInvalidUnitText(3),"Invalid Units","Invalid Units text was not match");
+		notifPage.enterInvalidTimingAndTimingUnit(1,"Days","1");
+		notifPage.enterInvalidTimingAndTimingUnit(2,"Days","3");
+		notifPage.enterInvalidTimingAndTimingUnit(3,"Days","5");
 		notifPage.clickOnBackArrow();
 		scrollAndWait(0, -500, 5000);
 	}
