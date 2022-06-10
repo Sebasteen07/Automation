@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.appt.precheck.payload;
 
 public class IMHProxyServicePayload {

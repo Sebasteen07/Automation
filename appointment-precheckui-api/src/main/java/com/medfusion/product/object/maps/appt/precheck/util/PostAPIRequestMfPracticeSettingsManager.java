@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.util;
 
 import static io.restassured.RestAssured.given;
