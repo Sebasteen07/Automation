@@ -230,7 +230,7 @@ public class MfPracticeSettingsManagerPayload {
 				+ "        },\r\n"
 				+ "        \"defaultArrivalMessage\": {\r\n"
 				+ "            \"en\": \"The practice front office staff has been notified that you have arrived. Wait in the parking lot until you receive a message to come in. Call the office at [appointment phone number] if you have been waiting more than 15 minutes.\",\r\n"
-				+ "            \"es\": \"Se ha notificado al personal de recepción de la práctica que ha llegado. Espere en el estacionamiento hasta que reciba un mensaje para entrar. Llame a la oficina al [número de teléfono de la cita] si ha estado esperando más de 15 minutos.\"\r\n"
+				+ "            \"es\": \"Se ha notificado al personal de recepciï¿½n de la prï¿½ctica que ha llegado. Espere en el estacionamiento hasta que reciba un mensaje para entrar. Llame a la oficina al [nï¿½mero de telï¿½fono de la cita] si ha estado esperando mï¿½s de 15 minutos.\"\r\n"
 				+ "        }\r\n"
 				+ "    },\r\n"
 				+ "    \"merchantSettings\": {\r\n"
@@ -1116,7 +1116,7 @@ public class MfPracticeSettingsManagerPayload {
 				+ "    \"arrivalMessage\": {},\r\n"
 				+ "    \"defaultArrivalMessage\": {\r\n"
 				+ "      \"en\": \"The practice front office staff has been notified that you have arrived. Wait in the parking lot until you receive a message to come in. Call the office at [appointment phone number] if you have been waiting more than 15 minutes.\",\r\n"
-				+ "      \"es\": \"Se ha notificado al personal de recepción de la práctica que ha llegado. Espere en el estacionamiento hasta que reciba un mensaje para entrar. Llame a la oficina al [número de teléfono de la cita] si ha estado esperando más de 15 minutos.\"\r\n"
+				+ "      \"es\": \"Se ha notificado al personal de recepciï¿½n de la prï¿½ctica que ha llegado. Espere en el estacionamiento hasta que reciba un mensaje para entrar. Llame a la oficina al [nï¿½mero de telï¿½fono de la cita] si ha estado esperando mï¿½s de 15 minutos.\"\r\n"
 				+ "    }\r\n"
 				+ "  },\r\n"
 				+ "  \"merchantSettings\": {\r\n"
@@ -1162,6 +1162,275 @@ public class MfPracticeSettingsManagerPayload {
 				+ "  \"updated\": null\r\n"
 				+ "}";
 		return updateSettings;
+	}
+	
+	public String getSaveImhFormPayload(String conceptId, String conceptName, String formId, String practiceId) {
+		String saveImhForm = "{\r\n"
+				+ "  \"conceptId\": \""+conceptId+"\",\r\n"
+				+ "  \"conceptName\": \""+conceptName+"\",\r\n"
+				+ "  \"formId\": \""+formId+"\",\r\n"
+				+ "  \"formSource\": \"IMH\",\r\n"
+				+ "  \"id\": null,\r\n"
+				+ "  \"practiceId\": \""+practiceId+"\"\r\n"
+				+ "}";
+		return saveImhForm;
+	}
+	
+	public String getUpdateFormPayload(boolean apptType,String title) {
+		String saveImhForm = "[\r\n"
+				+ "  {\r\n"
+				+ "	\"appointmentTypes\":[ null\r\n"
+				+ "	],\r\n"
+				+ "	\"enabledByAppointmentType\": \""+apptType+"\",\r\n"
+				+ "	\"formSource\": null,\r\n"
+				+ "	\"id\": null,\r\n"
+				+ "	\"title\": \""+title+"\",\r\n"
+				+ "	\"url\": \"https://dev3.dev.medfusion.net/consumer/index.php/externalForms/start/51353c10-09f3-43d0-a537-303b439c3909/24249\"\r\n"
+				+ "	}\r\n"
+				+ "	]";
+		return saveImhForm;
+	}
+	
+	public String getUpdateAppointmentTypesPayload(boolean apptType, String firstApptType,String secApptType,String thirdApptType, String  forthApptType,String title) {
+		String saveImhForm = "[\r\n"
+				+ "  {\r\n"
+				+ " \"appointmentTypes\": [\r\n"
+				+ " \""+firstApptType+"\",\r\n"
+				+ " \""+secApptType+"\",\r\n"
+				+ " \""+thirdApptType+"\",\r\n"
+				+ " \""+forthApptType+"\"\r\n"
+				+ " ],\r\n"
+				+ "	\"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ " \"formSource\": \"Medfusion\",\r\n"
+				+ "	\"id\": null,\r\n"
+				+ "	\"title\": \""+title+"\",\r\n"
+				+ " \"url\": \"www.medfusion.com\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return saveImhForm;
+	}
+	
+	public String getUpdateAppointmentTypesPayload(boolean apptType, String firstApptType,String secApptType,String title,String formSource) {
+		String saveImhForm = "[\r\n"
+				+ "  {\r\n"
+				+ " \"appointmentTypes\": [\r\n"
+				+ " \""+firstApptType+"\",\r\n"
+				+ " \""+secApptType+"\"\r\n"
+				+ " ],\r\n"
+				+ "	\"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ " \"formSource\": \""+formSource+"\",\r\n"
+				+ "	\"id\": null,\r\n"
+				+ "	\"title\": \""+title+"\",\r\n"
+				+ " \"url\": \"www.medfusion.com\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return saveImhForm;
+	}
+	
+	public String getUpdateNoAppointmentTypesAssociatedPayload(boolean apptType, String title) {
+		String saveImhForm = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "    \r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \"Medfusion\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \""+title+"\",\r\n"
+				+ "        \"url\": \"www.medfusion.com\"\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return saveImhForm;
+	}
+	
+	public String getUpdateApptTypesFotImhFormPayload(boolean apptType, String firstApptType,String secApptType,String thirdApptType, String  forthApptType,String title) {
+		String saveImhForm = "[\r\n"
+				+ "  {\r\n"
+				+ " \"appointmentTypes\": [\r\n"
+				+ " \""+firstApptType+"\",\r\n"
+				+ " \""+secApptType+"\",\r\n"
+				+ " \""+thirdApptType+"\",\r\n"
+				+ " \""+forthApptType+"\"\r\n"
+				+ " ],\r\n"
+				+ "	\"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ " \"formSource\": \"Medfusion\",\r\n"
+				+ "	\"id\": null,\r\n"
+				+ "	\"title\": \""+title+"\",\r\n"
+				+ " \"url\": \"www.medfusion.com\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return saveImhForm;
+	}
+	
+	public String getActiveOrInactiveApptTypePayload(boolean apptTypeStatus, String apptType,String title) {
+		String saveImhForm = "[\r\n"
+				+ "  {\r\n"
+				+ " \"appointmentTypes\": [\r\n"
+				+ " \""+apptType+"\"\r\n"
+				+ " ],\r\n"
+				+ "	\"enabledByAppointmentType\": "+apptTypeStatus+",\r\n"
+				+ " \"formSource\": \"Medfusion\",\r\n"
+				+ "	\"id\": null,\r\n"
+				+ "	\"title\": \""+title+"\",\r\n"
+				+ " \"url\": \"www.medfusion.com\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return saveImhForm;
+	}
+	
+	public String getAllAssociatedApptTypePayload(boolean apptType, String title,String formSource) {
+		String saveImhForm = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "          \"fea628e7-0ccc-4f45-b8e0-e6ad1cb0c28c\",\r\n"
+				+ "          \"29826a00-553e-44df-b307-8482afe34925\",\r\n"
+				+ "          \"95e643b5-3e6c-48b6-a835-14c54f97e49e\",\r\n"
+				+ "          \"050d37bd-7e1b-4fae-9a75-ba8ce7d359c9\",\r\n"
+				+ "          \"4ddedf8e-8478-4d16-8a49-e938097fe5d1\",\r\n"
+				+ "          \"10b898b4-fba6-4eca-b9da-114ca45a5d0a\",\r\n"
+				+ "          \"96c09af6-52ed-4043-ad5c-d4ed7c88a5fd\",\r\n"
+				+ "          \"522f384d-7d55-41c3-b1fb-06995c40201d\",\r\n"
+				+ "          \"97d9d554-603d-4ab4-a9b9-6ca27988f5d2\",\r\n"
+				+ "          \"510c67f5-8e21-463b-a230-40035bea12da\"\r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+formSource+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \""+title+"\",\r\n"
+				+ "        \"url\": \"www.medfusion.com\"\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return saveImhForm;
+	}
+	
+	public String getAddImhAndMedfusionFormPayload(boolean apptType,String imhFormSrc,String medfusionFormSrc) {
+		String saveImhForm = " [\r\n"
+				+ "      {\r\n"
+				+ "        \"appointmentTypes\": [ ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+imhFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \"NECk Pain\",\r\n"
+				+ "        \"url\": \"www.imh.com\"\r\n"
+				+ "      },\r\n"
+				+ " {\r\n"
+				+ "        \"appointmentTypes\": [ ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+medfusionFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \"Custom Form\",\r\n"
+				+ "        \"url\": \"www.medfusion.com\"\r\n"
+				+ "      }\r\n"
+				+ "    ]";
+		return saveImhForm;
+	}
+	
+	public String getAddDuplicateFormPayload(boolean apptType,String imhFormSrc,String medfusionFormSrc) {
+		String saveImhForm = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "            \r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+imhFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \"NECk Pain\",\r\n"
+				+ "        \"url\": \"www.imh.com\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "            \r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+medfusionFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \"Custom Form\",\r\n"
+				+ "        \"url\": \"www.medfusion.com\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "            \r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+imhFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \"NECk Pain\",\r\n"
+				+ "        \"url\": \"www.imh.com\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "            \r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+medfusionFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \"Custom Form\",\r\n"
+				+ "        \"url\": \"www.medfusion.com\"\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return saveImhForm;
+	}
+	
+	public String getAddMultipleImhAndMedfusionFormPayload(boolean apptType,String imhFormSrc, String title1,String title2,
+			String medfusionFormSrc,String title3,String title4) {
+		String saveImhForm = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "            \r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+imhFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \""+title1+"\",\r\n"
+				+ "        \"url\": \"www.imh.com\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "            \r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+medfusionFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \""+title2+"\",\r\n"
+				+ "        \"url\": \"www.medfusion.com\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "            \r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+imhFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \""+title3+"\",\r\n"
+				+ "        \"url\": \"www.imh.com\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "        \"appointmentTypes\": [\r\n"
+				+ "            \r\n"
+				+ "        ],\r\n"
+				+ "        \"enabledByAppointmentType\": "+apptType+",\r\n"
+				+ "        \"formSource\": \""+medfusionFormSrc+"\",\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"title\": \""+title4+"\",\r\n"
+				+ "        \"url\": \"www.medfusion.com\"\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return saveImhForm;
+	}
+	
+	public String addFormPayload(boolean apptType,String formSource,String title) {
+		String saveImhForm = "[\r\n"
+				+ "  {\r\n"
+				+ "	\"appointmentTypes\":[ null\r\n"
+				+ "	],\r\n"
+				+ "	\"enabledByAppointmentType\": \""+apptType+"\",\r\n"
+				+ "	\"formSource\": \""+formSource+"\",\r\n"
+				+ "	\"id\": null,\r\n"
+				+ "	\"title\": \""+title+"\",\r\n"
+				+ "	\"url\": \"https://dev3.dev.medfusion.net/consumer/index.php/externalForms/start/51353c10-09f3-43d0-a537-303b439c3909/24249\"\r\n"
+				+ "	}\r\n"
+				+ "	]";
+		return saveImhForm;
 	}
 				
 }
