@@ -267,4 +267,13 @@ public class PostAPIRequestNGE extends BaseTestNGWebDriver {
 
 		return response;
 	}
+	
+	public Response cancelStatus(String practiceid, String b) {
+
+		Response response = given().spec(requestSpec).log().all().when().body(b).post(practiceid + "/cancelstatus").then()
+				.log().all().extract().response();
+
+		return response;
+	}
+	
 }

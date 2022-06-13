@@ -128,17 +128,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAppointmentStatusWithoutPidGET() throws IOException {
-
-		Response response = postAPIRequest.appointmentStatus(practiceId, "");
-		aPIVerification.responseCodeValidation(response, 500);
-		aPIVerification.responseTimeValidation(response);
-		JsonPath js = new JsonPath(response.asString());
-		String msg = js.getString("message");
-		assertEquals(msg, "PatientId Should Not Be Empty...!!!");
-	}
-
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentTypesGET() throws IOException {
 
@@ -165,14 +155,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAppointmentTypesInvalidPathGET() throws IOException {
-
-		Response response = postAPIRequest.appointmentType("");
-		aPIVerification.responseCodeValidation(response, 404);
-		aPIVerification.responseTimeValidation(response);
-
-	}
+	
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test_Avai_Schedule_Resc_Cancel_NGPOSTOFF() throws NullPointerException, Exception {
@@ -314,31 +297,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAppointmentTypesListInvalidPathGET() throws IOException {
-
-		Response response = postAPIRequest.appointmentType("");
-		aPIVerification.responseCodeValidation(response, 404);
-		aPIVerification.responseTimeValidation(response);
-
-	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testRescheduleApptNGPInvalidAppIdPOST() throws IOException {
-		// this test case actual failed case
-		Response response = postAPIRequest.rescheduleApptNG(practiceId,
-				PayloadNG.reschedule_Payload(propertyData.getProperty("start.date.time.ng"),
-						propertyData.getProperty("end.date.time.ng"), propertyData.getProperty("patient.id.ng"),
-						propertyData.getProperty("first.name.ng"), propertyData.getProperty("first.name.ng"),
-						propertyData.getProperty("invalidappt.id.ng")));
-		aPIVerification.responseCodeValidation(response, 400);
-		aPIVerification.responseTimeValidation(response);
-		JsonPath js = new JsonPath(response.asString());
-		String msg = js.getString("message");
-		assertEquals(msg, "500 Unable to reschedule appointment");
-
-	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentGet() throws IOException {
 
 		Response response = postAPIRequest.cancelAppointmentGET(practiceId,
@@ -347,23 +305,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseTimeValidation(response);
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCancelAppointmentInvalidAppIdGet() throws IOException {
-
-		Response response = postAPIRequest.cancelAppointmentGET(practiceId,
-				propertyData.getProperty("invalidappt.id.ng"));
-		aPIVerification.responseCodeValidation(response, 500);
-		aPIVerification.responseTimeValidation(response);
-	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCancelAppointmentWithoutBodyPost() throws IOException {
-
-		Response response = postAPIRequest.cancelAppointmentPOST(practiceId, "");
-		aPIVerification.responseCodeValidation(response, 400);
-		aPIVerification.responseTimeValidation(response);
-
-	}
+	
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancellationReasonGET() throws IOException {
@@ -377,13 +319,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseKeyValidation(response, "reasonType");
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCancellationReasonWithoutPracticeIdGET() throws IOException {
 
-		Response response = postAPIRequest.cancellationReason("");
-		aPIVerification.responseCodeValidation(response, 404);
-		aPIVerification.responseTimeValidation(response);
-	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareproviderAvailabilityPOST() throws IOException {
@@ -395,15 +331,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCareproviderAvailabilityWithoutBodyPOST() throws IOException {
-
-		Response response = postAPIRequest.careproviderAvailability(practiceId, "");
-
-		aPIVerification.responseCodeValidation(response, 400);
-		aPIVerification.responseTimeValidation(response);
-
-	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInsuranceCarrierGET() throws IOException {
@@ -416,16 +343,9 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testInsuranceCarrierWithoutPracticeIdGET() throws IOException {
-
-		Response response = postAPIRequest.insuranceCarrier("");
-		aPIVerification.responseCodeValidation(response, 404);
-		aPIVerification.responseTimeValidation(response);
-	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLocationsListNGGET() throws IOException {
+	public void testLocationsListGET() throws IOException {
 
 		Response response = postAPIRequest.locations(practiceId);
 		aPIVerification.responseCodeValidation(response, 200);
@@ -437,15 +357,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	}
 	
 	
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLocationsListWithoutPracticeIdGET() throws IOException {
-
-		Response response = postAPIRequest.locations("");
-		aPIVerification.responseCodeValidation(response, 404);
-		aPIVerification.responseTimeValidation(response);
-	}
-
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddPatientDemographics() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -473,14 +384,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseTimeValidation(responseDemographics);
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAddPatientWithoutBodyPOST() throws IOException {
-
-		Response response = postAPIRequest.addPatient(practiceId, "");
-		aPIVerification.responseCodeValidation(response, 400);
-		aPIVerification.responseTimeValidation(response);
-	}
-
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDemographicsGET() throws IOException {
         String patientId= propertyData.getProperty("demographics.patient.id.nge");
@@ -493,13 +397,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseKeyValidationJson(response, "dateOfBirth");
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testDemographicsWithoutPracticeIdGET() throws IOException {
-		String patientId="93c7d062-e9f7-42e0-9197-72cd031eb2f2";
-		Response response = postAPIRequest.demographics("",patientId);
-		aPIVerification.responseCodeValidation(response, 404);
-		aPIVerification.responseTimeValidation(response);
-	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLockoutGET() throws IOException {
@@ -525,14 +423,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMatchPatientWithoutBodyPOST() throws IOException {
-
-		Response response = postAPIRequest.matchPatientPOST(practiceId, "");
-		aPIVerification.responseCodeValidation(response, 400);
-		aPIVerification.responseTimeValidation(response);
-
-	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientLastVisitGET() throws IOException {
@@ -543,13 +433,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseKeyValidationJson(response, "lastVisitDateTime");
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientLastVisitWithoutPracticeIdGET() throws IOException {
-		  String patientId="e47ea31b-8436-40df-8152-c9ef9d8721fe";
-		Response response = postAPIRequest.patientLastVisit("",patientId);
-		aPIVerification.responseCodeValidation(response, 404);
-		aPIVerification.responseTimeValidation(response);
-	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientRecordbyApptTypePOST() throws IOException {
@@ -560,13 +443,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseTimeValidation(response);
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientRecordbyApptTypeWithoutBodyPOST() throws IOException {
-
-		Response response = postAPIRequest.patientRecordbyApptTypePOST(practiceId, "");
-		aPIVerification.responseCodeValidation(response, 400);
-		aPIVerification.responseTimeValidation(response);
-	}
+	
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSearchPatientPOST() throws IOException {
@@ -581,13 +458,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseKeyValidation(response, "dateOfBirth");
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testSearchPatientWithoutBodyPOST() throws IOException {
-
-		Response response = postAPIRequest.searchpatient(practiceId, "");
-		aPIVerification.responseCodeValidation(response, 400);
-		aPIVerification.responseTimeValidation(response);
-	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientStatusGET() throws IOException {
@@ -599,13 +469,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseKeyValidation(response, "value");
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientStatusWithoutPracticeIdGET() throws IOException {
-
-		Response response = postAPIRequest.patietStatus("");
-		aPIVerification.responseCodeValidation(response, 404);
-		aPIVerification.responseTimeValidation(response);
-	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrerequisteappointmenttypesPOST() throws IOException {
@@ -620,14 +483,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPrerequisteappointmenttypesWithoutBodyPOST() throws IOException {
-
-		Response response = postAPIRequest.prerequisteappointmenttypesPOST(practiceId,
-				"");
-		aPIVerification.responseCodeValidation(response, 400);
-		aPIVerification.responseTimeValidation(response);
-	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientrecordbybooksPOST() throws IOException {
@@ -653,11 +508,11 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	public void testLastseenProviderPOST() throws IOException {
 
 		Response response = postAPIRequest.lastseenProvider(practiceId,
-				payload.lastseenprovider);
+				PayloadNGEAPI.lastSeenProvider());
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
+		aPIVerification.responseKeyValidationJson(response, "lastSeenDateTime");
 		aPIVerification.responseKeyValidationJson(response, "resourceId");
-		aPIVerification.responseKeyValidationJson(response, "providerAvailability");
 
 	}
 
@@ -722,6 +577,17 @@ public void testAvaliableSlotswithMaxperDay() throws NullPointerException, Excep
 	Response response = postAPIRequest.availableSlots(b, practiceId);
 	aPIVerification.responseCodeValidation(response, 200);
 	aPIVerification.responseTimeValidation(response);
+
+}
+
+@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+public void testCancelStatusPost() throws IOException {
+
+	Response response = postAPIRequest.cancelStatus(practiceId, PayloadNGEAPI.cancelStatus());
+
+	aPIVerification.responseCodeValidation(response, 200);
+	aPIVerification.responseTimeValidation(response);
+	aPIVerification.responseKeyValidationJson(response, "checkCancelAppointmentStatus");
 
 }
 }

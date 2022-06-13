@@ -63,6 +63,23 @@ public static String cancelAppointment(String appointmentId) {
 		return cancelAppointment;
 	}
 
+public static String lastSeenProvider() {
+	
+	String cancelAppointment="{\r\n"
+			+ "    \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+			+ "    \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+			+ "    \"noOfDays\": \"1\",\r\n"
+			+ "    \"patientId\": \"090f22f6-116b-4fe9-9afc-0bad333898c6\",\r\n"
+			+ "    \"lastSeenProvider\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
+			+ "    \"appointmentTypeCatId\": \"aa81a2da-5781-46e7-8b67-19b873eb3cdb\",\r\n"
+			+ "    \"resourceCatId\": \"58e61653-fe3d-448b-ba06-8bcdbfa1cf0f\",\r\n"
+			+ "    \"duration\": \"5\"\r\n"
+			+ "}";
+	
+	return cancelAppointment;
+}
+
+
 public static String appointmentSearch() {
 	
 	String cancelAppointment="{\r\n"
@@ -700,4 +717,18 @@ public static String careProvider() {
 				+ "  \"resourceId\": \"78E497EF-0C8F-4D59-AD40-FE7BE12B9842\",\r\n"
 				+ "  \"slotCount\": 0\r\n"
 				+ "}";
+		
+		public static String cancelStatus() {
+			
+			String cancelStatus="{\r\n"
+					+ "    \"numberOfDays\": 1,\r\n"
+					+ "    \"appointmentTypeId\": \"2273a0b4-add6-4f8a-9b36-b6857e2fd344\",\r\n"
+					+ "    \"patientId\": \"6d042c21-2d20-46cf-8197-be1f6a69b5fe\"\r\n"
+					+ "}";
+			
+			return cancelStatus;
+		}
+
 }
+
+
