@@ -1244,6 +1244,30 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientFlow.logout();
 	}
 	
+	public void preventReschedOnCancelSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, 
+			String appointmentType, String i) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointmentType);
+		manageAppointmentType.prevReschedOnCancelSettings(appointmentType, i);
+		pageRefresh(driver);
+		manageAppointmentType.logout();
+	}
+	
+	public void resetPreventReschedOnCancelSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, 
+			String appointmentType) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointmentType);
+		manageAppointmentType.resetPrevReschedOnCancelSettings(appointmentType);
+		manageAppointmentType.logout();
+	}
+	
 	public void providerOffSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
 			throws Exception {
 

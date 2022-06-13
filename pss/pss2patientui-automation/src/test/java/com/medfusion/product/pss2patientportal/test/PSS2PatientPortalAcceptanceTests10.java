@@ -15,6 +15,7 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.DismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
+import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -22,6 +23,7 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSAdminUtils;
 import com.medfusion.product.pss2patientui.utils.PSSConstants;
 import com.medfusion.product.pss2patientui.utils.PSSNewPatient;
+import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
@@ -163,6 +165,95 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		}else {
 			Assert.assertTrue(false);
 		}
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyApptSchedAndReschedForPreventRescheduleOnCancelSettingsNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		PSSNewPatient newPatient = new PSSNewPatient();
+		String i = propertyData.getProperty("prevent.reschedule.cancel.days.ng");
+		adminUtils.preventReschedOnCancelSettings(driver, adminUser, testData, testData.getAppointmenttype(), i);
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		newPatient.createPatientDetails(testData);
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		patientUtils.bookAppointmentWithLTBFlow(homepage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
+		log("Cancelling an appointment");
+		homepage.cancelAppointmentWithoutReasonEnabled();
+		homepage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = homepage.skipInsurance(driver);
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		String expPreventReschedOnCancelMsg ="The selected provider does not allow rescheduling or cancellation";
+		String actPreventReschedOnCancelMsg = appointment.preventReschedOnCancelMsg(testData.getAppointmenttype());
+	
+		assertEquals(actPreventReschedOnCancelMsg, expPreventReschedOnCancelMsg, "Prevent Reschedule on cancel Error message is not matches with expected message");
+		appointment.pressOkBtn();
+		
+		adminUtils.resetPreventReschedOnCancelSettings(driver, adminUser, testData, testData.getAppointmenttype());
+	
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyApptSchedAndReschedForPreventRescheduleOnCancelSettingsGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		PSSNewPatient newPatient = new PSSNewPatient();
+		String i = propertyData.getProperty("prevent.reschedule.cancel.days.ge");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		adminUtils.pageRefresh(driver);
+		manageAppointmentType.selectAppointment(testData.getAppointmenttype());
+		manageAppointmentType.prevReschedOnCancelSettings(testData.getAppointmenttype(), i);
+		adminUtils.pageRefresh(driver);
+		manageAppointmentType.logout();
+		logStep("Move to PSS patient Portal 2.0 to login and then book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		newPatient.createPatientDetails(testData);
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		patientUtils.bookAppointmentWithLTBFlow(homepage, testData, driver, testData.getProvider(), 
+				testData.getAppointmenttype(), testData.getLocation());
+		log("Cancelling an appointment");
+		homepage.cancelAppointmentWithoutReasonEnabled();
+		homepage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = homepage.skipInsurance(driver);
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		String expPreventReschedOnCancelMsg ="The selected provider does not allow rescheduling or cancellation";
+		String actPreventReschedOnCancelMsg = appointment.preventReschedOnCancelMsg(testData.getAppointmenttype());
+	
+		assertEquals(actPreventReschedOnCancelMsg, expPreventReschedOnCancelMsg, "Prevent Reschedule on cancel Error message is not matches with expected message");
+		appointment.pressOkBtn();
+		
+		adminUtils.resetPreventReschedOnCancelSettings(driver, adminUser, testData, testData.getAppointmenttype());
 	}
 	
 }
