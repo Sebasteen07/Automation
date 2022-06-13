@@ -29,7 +29,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.SkipException;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -183,7 +183,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 	}
 
-	@BeforeClass(enabled = true, groups = {"RegressionTests2", "AcceptanceTests"})
+	@BeforeTest(enabled = true, groups = {"RegressionTests2", "AcceptanceTests"})
 	public void testOauthTokenExpiryCases() throws Exception {
 
 		log("Test Case: testOauthTokenExpiryCases");
@@ -3529,6 +3529,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				testData.getOAuthUsername(), testData.getOAuthPassword());
 		String prescriptionId = null;
 		String sigCodes = "";
+		String SigCodeAbbreviation = "";
 		if (version.equals("v1")) {
 			log("For V1 endpoint");
 			logStep("Get Prescription Rest call");
@@ -3550,7 +3551,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			String postXML = RestUtils.findValueOfMedicationNodeNew(testData.getResponsePath(), "Medication",
 					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPath());
 
-			String SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
+			SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
 			String SigCodeMeaning = RestUtils.SigCodeMeaning;
 
 			sigCodes = SigCodeAbbreviation + " - " + SigCodeMeaning;
@@ -3598,7 +3599,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPathV3());
 
 			log(postXML);
-			String SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
+			SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
 			String SigCodeMeaning = RestUtils.SigCodeMeaning;
 
 			sigCodes = SigCodeAbbreviation + " - " + SigCodeMeaning;
@@ -3663,6 +3664,16 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		logStep("Search for Today's RxRenewal in Practice Portal");
 		rxRenewalSearchPage.searchForRxRenewalToday(1);
+		Thread.sleep(10000);
+
+		logStep("Get the RxRenewal Details in Practice Portal");
+		rxRenewalSearchPage.getRxRenewalDetails();
+
+		logStep("Update the RxRenewal Fields in Practice Portal ");
+		rxRenewalSearchPage.updateMedicationDetails(SigCodeAbbreviation);
+
+		logStep("Search for Today's RxRenewal in Practice Portal");
+		rxRenewalSearchPage.searchForRxRenewalToday(2);
 		Thread.sleep(10000);
 
 		logStep("Get the RxRenewal Details in Practice Portal");
