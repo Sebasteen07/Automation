@@ -57,7 +57,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 		String edate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy");
 
-		String patientId = "b1d6f475-2074-42e7-a2f8-f9e3fbc8ea9d";
+		String patientId = propertyData.getProperty("patient.id.past.nge");
 		Response response = postAPIRequest.pastApptNG(practiceId, PayloadNGEAPI.past_appt_payload(patientId, edate));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -69,7 +69,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testnextAvailableSlotPost() throws IOException {
 
-		Response response = postAPIRequest.nextAvailableNG(practiceId, PayloadNG.nextAvailable_New());
+		Response response = postAPIRequest.nextAvailableNG(practiceId, PayloadNGEAPI.nextAvailable_New());
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 
