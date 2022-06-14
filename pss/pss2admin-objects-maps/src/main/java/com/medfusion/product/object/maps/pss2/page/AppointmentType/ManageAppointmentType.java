@@ -75,7 +75,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
 	private WebElement timeMarkOption;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[2]/div/div/button[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='tabX13']/form/fieldset[2]/div/div/button[1]")
 	private WebElement saveConfig;
 
 	@FindBy(how = How.XPATH, using = "//label[@for='allowSameDayAppts']//input")
