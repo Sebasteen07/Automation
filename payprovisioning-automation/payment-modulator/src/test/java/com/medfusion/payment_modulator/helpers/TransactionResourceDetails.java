@@ -135,4 +135,13 @@ public class TransactionResourceDetails extends BaseRest {
 
 	}
 
+	public Response viewReceipt (String basev2url, String mmid, String transactionid, String orderid) {
+		Response response = given().when()
+				.get(basev2url + "merchant/" + mmid + "/receipt/" + transactionid + "/order/" + orderid)
+				.then().spec(responseSpec).and().log().all().extract()
+				.response();
+
+		return response;
+	}
+
 }

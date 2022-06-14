@@ -2516,3 +2516,25 @@ Feature: Test fuctionality of Appointment precheck
     And I do the precheck for the scheduled appointment and click on signout link
     Then I verify signout link should take to the logout model for confirmation
     And logout from practice provisioning portal
+
+  Scenario: verify disclaimer message for copay
+    When I schedule an appointment with copay
+    And I do the precheck for the appointment
+    Then I verify that disclaimer message for copay is seen properly
+    And logout from practice provisioning portal
+
+  Scenario: verify appointment with dob before '1970'
+    When I schedule an appointment with dob before 1970
+    Then I verify that user complete precheck both from reminders as well as from patient mode
+    And logout from practice provisioning portal
+
+  Scenario: verify by adding insurance images to first/second/tertiary insurance from UI
+    When I schedule an appointment for adding images to insurances
+    And I do the precheck for adding images to insurances
+    Then I verify that images for 'first,second,tertiary insurance ' should be added
+    And logout from practice provisioning portal
+
+  Scenario: verify that it is not possible to upload an insurance card that is not jpeg, png or gif
+    When I schedule an appointment for adding images to insurances
+    Then I verify that error message should be seen
+    And logout from practice provisioning portal

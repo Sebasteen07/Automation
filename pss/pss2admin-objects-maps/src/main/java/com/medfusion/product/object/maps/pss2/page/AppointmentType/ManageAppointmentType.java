@@ -50,6 +50,12 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	
 	@FindBy(how = How.XPATH, using = "//input[@id='appointmentType.preventScheduling']")
 	private WebElement prevSchedSettingAdmin;
+
+	@FindBy(how = How.XPATH, using = "//label[normalize-space()='Prevent Reschedule On Cancel (Days)']")
+	private WebElement prevReschedOnCancelDaysLabel;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='appointmentType.preventRescheduleOnCancel']")
+	private WebElement fillPrevReschedOnCancelDays;
 	
 	@FindBy(how = How.XPATH, using = "//form[@role='form']//fieldset//div//div//button[@type='submit'][normalize-space()='Save']")
 	private WebElement aptTypeSettingSaveBtn;
@@ -207,6 +213,26 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		commonMethods.highlightElement(prevSchedSettingAdmin);
 		prevSchedSettingAdmin.clear();
 		prevSchedSettingAdmin.sendKeys("0");
+		commonMethods.highlightElement(aptTypeSettingSaveBtn);
+		aptTypeSettingSaveBtn.click();
+	}
+	
+	public void prevReschedOnCancelSettings(String aptType, String i) {
+		commonMethods.highlightElement(prevReschedOnCancelDaysLabel);
+		log("PrevSched Setting Label- "+prevReschedOnCancelDaysLabel.getText());
+		commonMethods.highlightElement(fillPrevReschedOnCancelDays);
+		fillPrevReschedOnCancelDays.clear();
+		fillPrevReschedOnCancelDays.sendKeys(i);
+		commonMethods.highlightElement(aptTypeSettingSaveBtn);
+		aptTypeSettingSaveBtn.click();
+	}
+	
+	public void resetPrevReschedOnCancelSettings(String aptType) {
+		commonMethods.highlightElement(prevReschedOnCancelDaysLabel);
+		log("PrevSched Setting Label- "+prevReschedOnCancelDaysLabel.getText());
+		commonMethods.highlightElement(fillPrevReschedOnCancelDays);
+		fillPrevReschedOnCancelDays.clear();
+		fillPrevReschedOnCancelDays.sendKeys("0");
 		commonMethods.highlightElement(aptTypeSettingSaveBtn);
 		aptTypeSettingSaveBtn.click();
 	}
