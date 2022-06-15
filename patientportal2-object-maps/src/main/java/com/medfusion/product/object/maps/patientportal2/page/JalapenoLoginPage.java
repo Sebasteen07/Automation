@@ -51,7 +51,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='featureCard messaging']//a[contains(.,'Messages')] | (//li[.='Sign Out'])[2]")
+	@FindBy(how = How.XPATH, using = "(//li/a[.='My Account'])[1]")
 	private WebElement loginProof;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='same']")
@@ -109,10 +109,10 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	public JalapenoHomePage login(String username, String password) {
 		makeLogin(username, password);
-		IHGUtil.waitForElement(driver, 240, loginProof);
+		if(waitForElement(driver, 60, loginProof)) {
 		log("User is logged in");
+		}
 		handleWeNeedToConfirmSomethingModal();
-		selectFeedbackNoThanksButton();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 	
@@ -274,5 +274,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 		return wrongPwdAccounLockout.isDisplayed();
 
 	}
+	
+	
 
 }

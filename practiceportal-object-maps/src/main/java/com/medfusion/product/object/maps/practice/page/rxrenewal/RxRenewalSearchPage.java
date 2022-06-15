@@ -164,7 +164,7 @@ public class RxRenewalSearchPage extends BasePageObject {
 
 	public RxRenewalDetailPage getRxRenewalDetails() throws Exception {
 		IHGUtil.PrintMethodName();
-		PracticeUtil.setPracticeFrame(driver);
+//		PracticeUtil.setPracticeFrame(driver);
 
 		try {
 			searchResults.isDisplayed();
@@ -278,6 +278,7 @@ public class RxRenewalSearchPage extends BasePageObject {
 		quantityTextField.sendKeys("2");
 		subjectTextField.sendKeys(PracticeConstants.MESSAGE_SUBJECT);
 		bodyTextField.sendKeys(PracticeConstants.MESSAGE_BODY);
+		communicateAndProcessRxRenewalButton.click();
 		setActionRadioButton();
 		goToRxRenewalPageButton.click();
 	}

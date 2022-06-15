@@ -128,9 +128,10 @@ public abstract class MedfusionPage extends BasePageObject {
 			}
 
 			public void selectFeedbackNoThanksButton() {
+				IHGUtil.PrintMethodName();
 				if (new IHGUtil(driver).exists(feedbackNoThanksButton)) {
-					log("FeedbackNoThanksButton is displayed");
-					feedbackNoThanksButton.click();
+				feedbackNoThanksButton.click();
+				log("FeedbackNoThanksButton is closed");
 				}
 			}
 
@@ -193,9 +194,10 @@ public abstract class MedfusionPage extends BasePageObject {
 		 * @throws InterruptedException 
 		 */
 		public void clickOnElement(WebElement element) {
+			 IHGUtil.PrintMethodName();
 				if (element != null) {
-						log("Click on: " + elementToString(element));
 						javascriptClick(element);
+						log("Clicked on: " + elementToString(element));
 				} else {
 						throw new UnsupportedOperationException("Error when clicking element - element is null. " + elementToString(element));
 				}
@@ -318,4 +320,16 @@ public abstract class MedfusionPage extends BasePageObject {
 				return new StringSelection("<!DOCTYPE html>" + ccdViewerHtmlTag.getAttribute("outerHTML"));
 		}
 
+		 public boolean waitForElement(WebDriver driver, int n, WebElement ele) {
+		        IHGUtil.PrintMethodName();
+		        selectFeedbackNoThanksButton();
+		        WebDriverWait wait = new WebDriverWait(driver, n);
+		        boolean found = false;
+		        try {
+		            found = wait.until(ExpectedConditions.visibilityOf(ele)) != null;
+		        } catch (Exception e) {
+		            log("Exception found: " + e);
+		        }
+		        return found;
+		    }
 }

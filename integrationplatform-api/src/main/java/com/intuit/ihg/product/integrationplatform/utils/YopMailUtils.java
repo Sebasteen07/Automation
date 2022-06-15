@@ -60,7 +60,14 @@ public class YopMailUtils extends MedfusionPage{
 		this.driver.get(YOPMAIL_URL);
 		mailIdTextBox.clear();
 		mailIdTextBox.sendKeys(username);
-		this.clickOnElement(goToMailbox);
+		try {
+		if (goToMailbox.isDisplayed()) {
+			log("Mailbox search button is present in the Yopmail UI.");
+			this.clickOnElement(goToMailbox);
+		}
+		}catch (Exception e) {
+			log(e.getMessage());
+		}		
 
 		try {
 			if (recaptchaPopup.isDisplayed()) {
