@@ -17,7 +17,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 public class DCFAdminToolUtils extends MedfusionPage{
 
 	private static final String ADMIN_TOOL_URL = "http://d3-pp-aphp01.dev.medfusion.net:83/index.php/pages/view/activityStatus/";
-	// private static final String ADMIN_TOOL_URL = "http://vip-pp-aphp03.demo.medfusion.net/index.php/pages/view/activityStatus/";
+	private static final String ADMIN_TOOL_URL_DEMO = "http://vip-pp-aphp03.demo.medfusion.net/index.php/pages/view/activityStatus/";
 
 	private static final int TIME_TO_WAIT_MS = 10000;
 

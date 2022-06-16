@@ -64,7 +64,6 @@ public class AppointmentDataUtils {
 		Log4jUtil.log("Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
-		// String[] timeArray = null;
 		Log4jUtil.log(" Fetch Dashboard Next Time slot");
 		if (!testData.Status.equalsIgnoreCase("CANCEL")) {
 			Log4jUtil.log("Next Time slot is from Dashboard: " + homePage.getNextScheduledApptDate());

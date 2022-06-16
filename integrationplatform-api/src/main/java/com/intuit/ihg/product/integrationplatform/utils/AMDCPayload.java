@@ -18,6 +18,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+
 public class AMDCPayload {
 	static String output;
 	public static String messageID;
@@ -171,9 +173,9 @@ public class AMDCPayload {
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
 		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+			Log4jUtil.log(pce.toString());
 		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
+			Log4jUtil.log(tfe.toString());
 		}
 		return output;
 	}
@@ -256,10 +258,10 @@ public class AMDCPayload {
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		}  catch (ParserConfigurationException pce) {
+			Log4jUtil.log(pce.toString());
 		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
+			Log4jUtil.log(tfe.toString());
 		}
 		return output;
 	}
@@ -340,10 +342,10 @@ public class AMDCPayload {
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		}  catch (ParserConfigurationException pce) {
+			Log4jUtil.log(pce.toString());
 		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
+			Log4jUtil.log(tfe.toString());
 		}
 		return output;
 	}
@@ -531,16 +533,15 @@ public class AMDCPayload {
 
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			// transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 			DOMSource source = new DOMSource(doc);
 
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		}  catch (ParserConfigurationException pce) {
+			Log4jUtil.log(pce.toString());
 		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
+			Log4jUtil.log(tfe.toString());
 		}
 		return output;
 	}

@@ -1399,9 +1399,7 @@ public class RestUtils {
 		HttpPost request = new HttpPost();
 		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		request.setURI(new URI(strUrl));
-		request.setEntity(new StringEntity(payload));
-		// request.setHeader("Noun", "Encounter");
-		// request.setHeader("Verb", "Completed");
+		request.setEntity(new StringEntity(payload));		
 		request.addHeader("Authorization", "Basic " + token);
 		request.addHeader("Content-Type", "application/x-www-form-urlencoded");
 		request.setHeader("Accept", "application/json");
