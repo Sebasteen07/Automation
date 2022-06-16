@@ -164,8 +164,6 @@ public class RxRenewalSearchPage extends BasePageObject {
 
 	public RxRenewalDetailPage getRxRenewalDetails() throws Exception {
 		IHGUtil.PrintMethodName();
-//		PracticeUtil.setPracticeFrame(driver);
-
 		try {
 			searchResults.isDisplayed();
 		} catch (Exception e) {
@@ -292,7 +290,7 @@ public class RxRenewalSearchPage extends BasePageObject {
 		Log4jUtil
 				.log("Searching: SigCode Abbreviation & Meaning is:" + sigCode + ", and Actual SigCode Abbreviation & Meaning is:" + frequency.getText().toString());
 		assertEquals(mediactionName.getText(), medicationName, "Invalid Medication Name was found");
-		// assertEquals(frequency.getText(), sigCode, "Invalid SigCode Abbreviation & Meaning were found");
+		assertEquals(frequency.getText(), sigCode, "Invalid SigCode Abbreviation & Meaning were found");
 	}
 
 	public void verifyPrescriptionConfirmationSection(String subject2, String drugDosage) {
