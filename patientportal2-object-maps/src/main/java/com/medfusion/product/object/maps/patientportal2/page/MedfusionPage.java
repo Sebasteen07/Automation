@@ -98,7 +98,6 @@ public abstract class MedfusionPage extends BasePageObject {
 		}
 		//handles modal dialogs in Portal (accepting NPP, statement preference selection)
 		public void handleWeNeedToConfirmSomethingModal(){
-			// button[.='No Thanks']
 			 log("Trying to handle survey pop up by adding cookie");
              String name = "QSI_SI_0CUNpSFNBlJ5QGN_intercept";               
              String value = "true";
@@ -127,14 +126,14 @@ public abstract class MedfusionPage extends BasePageObject {
 				}
 			}
 
-			public void selectFeedbackNoThanksButton() {
+		public void selectFeedbackNoThanksButton() {
 				IHGUtil.PrintMethodName();
 				if (new IHGUtil(driver).exists(feedbackNoThanksButton)) {
 				feedbackNoThanksButton.click();
 				log("FeedbackNoThanksButton is closed");
 				}
 			}
-
+		
 		public String elementToString(WebElement element) {
 				return "Element (id: " + element.getAttribute("id") + ", tag: " + element.getTagName() + ")";
 		}
@@ -195,6 +194,7 @@ public abstract class MedfusionPage extends BasePageObject {
 		 */
 		public void clickOnElement(WebElement element) {
 			 IHGUtil.PrintMethodName();
+			 selectFeedbackNoThanksButton();
 				if (element != null) {
 						javascriptClick(element);
 						log("Clicked on: " + elementToString(element));

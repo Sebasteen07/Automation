@@ -206,8 +206,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			try {
 				InputStream is = new FileInputStream(testData.ResponsePath);
-				String jsonTxt = IOUtils.toString(is, "UTF-8");
-				System.out.println(jsonTxt);
+				String jsonTxt = IOUtils.toString(is, "UTF-8");				
 				JSONObject json = new JSONObject(jsonTxt);
 
 				int timeDuration = Integer.parseInt(json.get("expiresIn") + "");
@@ -223,9 +222,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				}
 
 				newToken = json.get("accessToken").toString();
-				log("++++++++++++++++++++ newToken is set here +++++++++++++");
+				log("newToken is set here!!!");
 			} catch (Exception e) {
-				e.printStackTrace();
+				log("Exception found : "+e);
 			}
 			
 	}
@@ -592,7 +591,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
 
-		log("Step 1: Setup Oauth client");
 		EHDC EHDCObj = new EHDC();
 
 		LoadPreTestDataObj.loadEHDCDataFromProperty(EHDCObj);

@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
@@ -144,7 +144,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		JavascriptExecutor ex = (JavascriptExecutor) driver;
 		ex.executeScript("arguments[0].scrollIntoView();",leftMenuToggle ); 
 		IHGUtil.waitForElement(driver, 50, leftMenuToggleXpath);
-		leftMenuToggleXpath.click();
+		clickOnElement(leftMenuToggleXpath);
 		if (IHGUtil.waitForElement(driver, 50, homeMenu)) {
 			log("Menu toggle clicked and Jalapeno menu is opened");
 		}
@@ -153,49 +153,49 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	public JalapenoHomePage clickOnMenuHome() {
 		openMenuIfClosed();
 		log("Clicking on Home menu button");
-		homeMenu.click();
+		clickOnElement(homeMenu);
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
 	public JalapenoMessagesPage clickOnMenuMessages() {
 		openMenuIfClosed();
 		log("Clicking on Messages menu button");
-		messagesMenu.click();
+		clickOnElement(messagesMenu);
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
 	public JalapenoAppointmentsPage clickOnMenuAppointments() {
 		openMenuIfClosed();
 		log("Clicking on Appointments menu button");
-		appointmentsMenu.click();
+		clickOnElement(appointmentsMenu);
 		return PageFactory.initElements(driver, JalapenoAppointmentsPage.class);
 	}
 
 	public JalapenoAskAStaffPage clickOnMenuAskAQuestionMenu() {
 		openMenuIfClosed();
 		log("Clicking on Ask a Question menu button");
-		askAQuestionMenu.click();
+		clickOnElement(askAQuestionMenu);
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
 	}
 
 	public JalapenoPrescriptionsPage clickOnMenuPrescriptions() {
 		openMenuIfClosed();
 		log("Clicking on Prescriptions menu button");
-		prescriptionsMenu.click();
+		clickOnElement(prescriptionsMenu);
 		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
 	}
 
 	public JalapenoPayBillsMakePaymentPage clickOnMenuPayBills() {
 		openMenuIfClosed();
 		log("Clicking on Pay Bills menu button");
-		payBillsMenu.click();
+		clickOnElement(payBillsMenu);
 		return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
 	}
 
 	public HealthFormListPage clickOnMenuHealthForms() {
 		openMenuIfClosed();
 		log("Clicking on Health Forms menu button");
-		healthFormsMenu.click();
+		clickOnElement(healthFormsMenu);
 		IHGUtil.setFrame(driver, "iframe");
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
@@ -214,14 +214,14 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 		} catch (NoSuchElementException ex) {
 			log("Did not find Account button, trying mobile version size");
-			rightDropdownButton.click();
+			clickOnElement(rightDropdownButton);
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountDropdownButton));
-			accountDropdownButton.click();
+			clickOnElement(accountDropdownButton);
 		} catch (ElementNotInteractableException ex) {
 			log("Did not find Account button, trying mobile version size for linked Account");
-			rightDropdownButton.click();
+			clickOnElement(rightDropdownButton);
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(accountDropdownLinkedButton));
-			accountDropdownLinkedButton.click();
+			clickOnElement(accountDropdownLinkedButton);
 
 		}
 		return PageFactory.initElements(driver, JalapenoAccountPage.class);
@@ -230,12 +230,12 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	public JalapenoMyAccountProfilePage clickOnMyAccount() throws InterruptedException {
 		log("Clicking on Account button - regular resolution");
 		try {
-			myAccount.click();
+			clickOnElement(myAccount);
 		} catch (ElementNotInteractableException ex) {
 			log("Did not find Account button, trying mobile version size");
 			javascriptClick(rightDropdownButton);
 			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(myAccountDropdownButton));
-			myAccountDropdownButton.click();
+			clickOnElement(myAccountDropdownButton);
 		}
 		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 	}
@@ -255,19 +255,19 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 		} catch (NoSuchElementException ex) {
 			log("Did not find Logout button, trying mobile version size");
-			rightDropdownButton.click();
+			clickOnElement(rightDropdownButton);
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
-			signoutDropdownButton.click();
+			clickOnElement(signoutDropdownButton);
 		} catch (ElementNotVisibleException ex) {
 			log("Element is not currently visible, trying mobile version size");
-			rightDropdownButton.click();
+			clickOnElement(rightDropdownButton);
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
-			signoutDropdownButton.click();
+			clickOnElement(signoutDropdownButton);
 		} catch (ElementNotInteractableException ex) {
 			log("Element is not currently not intractable, trying mobile version size");
-			rightDropdownLinkedButton.click();
+			clickOnElement(rightDropdownLinkedButton);
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownLinkedButton));
-			signoutDropdownLinkedButton.click();
+			clickOnElement(signoutDropdownLinkedButton);
 		}
 
 		return PageFactory.initElements(driver, JalapenoLoginPage.class);
@@ -282,19 +282,19 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 		} catch (NoSuchElementException ex) {
 			log("Did not find Logout button, trying mobile version size");
-			rightDropdownButton.click();
+			clickOnElement(rightDropdownButton);
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
-			signoutDropdownButton.click();
+			clickOnElement(signoutDropdownButton);
 		} catch (ElementNotVisibleException ex) {
 			log("Element is not currently visible, trying mobile version size");
-			rightDropdownButton.click();
+			clickOnElement(rightDropdownButton);
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownButton));
-			signoutDropdownButton.click();
+			clickOnElement(signoutDropdownButton);
 		} catch (ElementNotInteractableException ex) {
 			log("Element is not currently not intractable, trying mobile version size");
-			rightDropdownLinkedButton.click();
+			clickOnElement(rightDropdownLinkedButton);
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(signoutDropdownLinkedButton));
-			signoutDropdownLinkedButton.click();
+			clickOnElement(signoutDropdownLinkedButton);
 		}
 
 		return PageFactory.initElements(driver, JalapenoLoginEnrollment.class);
@@ -303,19 +303,18 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	public MedicalRecordSummariesPage goToHealthRecordsPage() {
 		openMenuIfClosed();
 		log("Clicking on Health Record menu button");
-		healthRecordMenu.click();
-
+		clickOnElement(healthRecordMenu);
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
 	}
 
 	public DocumentsPage goToDocumentsPageFromMenu() {
 		openMenuIfClosed();
 		log("Clicking on Health Record menu button");
-		healthRecordMenu.click();
+		clickOnElement(healthRecordMenu);
 		try {
 			WebElement otherDocumentsButton =
 					new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(driver.findElement(By.linkText("Other documents"))));
-			otherDocumentsButton.click();
+			clickOnElement(otherDocumentsButton);
 		} catch (NoSuchElementException e) {
 			log("Other documents button not found within 30 seconds, are you on the correct page?");
 		}
@@ -326,11 +325,11 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		openMenuIfClosed();
 		log("Clicking on Health Record menu button");
 		try {
-			healthRecordMenu.click();
+			clickOnElement(healthRecordMenu);
 		} catch (NoSuchElementException e) {
 			driver.navigate().refresh();
 			new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(healthRecordMenu));
-			healthRecordMenu.click();
+			clickOnElement(healthRecordMenu);
 		}
 	}
 
