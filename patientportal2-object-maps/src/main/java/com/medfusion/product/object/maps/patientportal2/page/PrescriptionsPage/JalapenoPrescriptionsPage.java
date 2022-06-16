@@ -138,7 +138,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			@FindBy(how = How.XPATH, using = "//select[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList:select']/optgroup[2]/option") })
 	public List<WebElement> optionFromOtherPharmacy;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='ng-value-container']/div[contains(.,'Search by pharmacy name')]/../div[2]/input")
+	@FindBy(how = How.XPATH, using = "//div[@class='ng-value-container']/div[contains(.,'Search requires 3 characters')]/../div[2]/input")
 	private WebElement pharmacySearchTextField;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='ng-value-container']/div[contains(.,'Search by pharmacy name')]/../../span")
