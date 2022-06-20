@@ -2135,7 +2135,11 @@ public class NotificationsPage extends BasePageObject {
 	public void selectEnglishSpanishPracticePrefLang() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, englishSpanishPracticePrefenceLang);
-		englishSpanishPracticePrefenceLang.click();
+		boolean displayed = englishSpanishPracticePrefenceLang.isDisplayed();
+		if(!displayed) {
+			englishSpanishPracticePrefenceLang.click();
+			log("english and spanish language is selected");
+		}
 	}
 
 	public boolean visiblityOfBroadcastMessageTextBoxInEnEs() {

@@ -2538,3 +2538,29 @@ Feature: Test fuctionality of Appointment precheck
     When I schedule an appointment for adding images to insurances
     Then I verify that error message should be seen
     And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then appointment reminder email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard
+    Then I verify from email appointment reminder email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then broadcast message email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send broadcast message is english and spanish
+    Then I verify from email broadcast message email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then curbside reminder email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard for curbside reminder
+    Then I verify from email curbside reminder email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then manual reminder email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send manual reminder from appointment dashboard
+    Then I verify from email manual reminder email should be recieved in both languages
+    And logout from practice provisioning portal
