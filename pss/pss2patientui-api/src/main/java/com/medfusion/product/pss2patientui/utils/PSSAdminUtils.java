@@ -371,25 +371,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("--------------------------------WAIT FOR RULE LTB TO BE ADDED--------------------------------");
 	}
 	
-	public void setRulesNoProviderSet2(PatientFlow patientflow) throws InterruptedException {
-		patientflow.removeAllRules();
-		log("-----------------------------------------------------------------------------------------");
-		patientflow.addNewRulesButton();
-		patientflow.selectRuleName("Location");
-		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
-		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
-		patientflow.saveRule();
-		Thread.sleep(5000);
-		log("--------------------------------WAIT FOR RULE LT TO BE ADDED--------------------------------");
-		patientflow.addNewRulesButton();
-		patientflow.selectRuleName("AppointmentType");
-		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
-		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
-		patientflow.saveRule();
-		Thread.sleep(1000);
-		log("--------------------------------WAIT FOR RULE TL TO BE ADDED--------------------------------");
-	}
-	
 	public void addRuleWithoutBook(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
