@@ -283,37 +283,37 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@name=\"address2\"]")
 	private WebElement addressline2;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"city\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='city']")
 	private WebElement patientCity;
 
-	@FindBy(how = How.XPATH, using = "//*[@class=\"mf-select-dropdown\"]")
+	@FindBy(how = How.XPATH, using = "//*[@class= 'mf-select-dropdown']")
 	private WebElement patientStateDropdown;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"zip\"]")
+	@FindBy(how = How.XPATH, using = "//input[@name='zip']")
 	private WebElement patientZip;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"providerName\"]")
+	@FindBy(how = How.XPATH, using = "//input[@name='providerName']")
 	private WebElement providerName;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"copay\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='copay']")
 	private WebElement copay;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"balance\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='balance']")
 	private WebElement balance;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"primaryInsuranceName\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='primaryInsuranceName']")
 	private WebElement primaryInsuranceName;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"primaryInsuranceGroupNumber\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='primaryInsuranceGroupNumber']")
 	private WebElement primaryInsuranceGroupNumber;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"primaryInsuranceMemberId\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='primaryInsuranceMemberId']")
 	private WebElement primaryInsuranceMemberId;
 
-	@FindBy(how = How.XPATH, using = "//*[text()=\"Create appointment\"]")
+	@FindBy(how = How.XPATH, using = "//*[text()='Create appointment']")
 	private WebElement createAppointmentButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@class=\"rt-td\"][1]")
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-td'][1]")
 	private WebElement selectCreatedPatient;
 
 	@FindBy(how = How.XPATH, using = "//*[@class=\"rt-td\"]//following-sibling::div[3][@class='rt-td patient-name-cell'][1]")
@@ -735,6 +735,9 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//div[@class='image-container']")
 	private WebElement visibilityOfInsuranceImages;
+	
+	@FindBy(how = How.XPATH, using = "//button[text()='Remove']")
+	private WebElement clickOnRemoveOption;
 	
 	
 	public AppointmentsPage(WebDriver driver) {
@@ -1349,7 +1352,7 @@ public class AppointmentsPage extends BasePageObject {
 	}
 
 	public void clickOnConfirm() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, cancelButtonFromRemove);
+		IHGUtil.waitForElement(driver, 10, confirmButtonFromRemove);
 		confirmButtonFromRemove.click();
 		Thread.sleep(10000);
 	}
@@ -1455,7 +1458,7 @@ public class AppointmentsPage extends BasePageObject {
 	}
 
 	public void createNewPatient(String lName, String apptType, String pId, String fName, String mName, String lstName,
-			String dob, String phoneNo, String emailId, String address1, String city, String state, String zip,
+			String dob, String phoneNo, String emailId, String address1, String city, String zip,
 			String pName, String copayAmount, String balanceAmount, String primaryInsName, String primaryInsGroupNo,
 			String primaryInsMemberId) throws InterruptedException {
 		log("Add patient details");
@@ -1473,7 +1476,7 @@ public class AppointmentsPage extends BasePageObject {
 		patientCity.sendKeys(city);
 		patientStateDropdown.click();
 		Select select = new Select(patientStateDropdown);
-		select.selectByVisibleText(state);
+		select.selectByIndex(2);
 		patientZip.sendKeys(zip);
 		providerName.sendKeys(pName);
 		copay.sendKeys(copayAmount);
@@ -3880,7 +3883,25 @@ public class AppointmentsPage extends BasePageObject {
 		public void addInsuranceCard() {
 		IHGUtil.waitForElement(driver, 10, addInsuranceCard);
 		addInsuranceCard.click();
+		
 		}
 		
+		public void clickOnRemoveOptionFromRemoveButton() throws InterruptedException {
+			IHGUtil.waitForElement(driver, 20, clickOnRemoveOption);
+			clickOnRemoveOption.click();
+			
+		}
+		
+		public boolean isPatientPresent(String patientId) {
+			IHGUtil.PrintMethodName();
+			boolean visibility = false;
+			try {
+				visibility= driver.findElement(By.xpath("//*[text()='" + patientId + "']")).isDisplayed();
+			return visibility;
+			}catch(NoSuchElementException e) {
+				return visibility;
+			}
+		}
+
 
 }

@@ -1065,7 +1065,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("precheck.last.name"), propertyData.getProperty("precheck.dob"),
 				propertyData.getProperty("precheck.phone"), propertyData.getProperty("precheck.email"),
 				propertyData.getProperty("precheck.address.line1"), propertyData.getProperty("precheck.patient.city"),
-				propertyData.getProperty("precheck.patient.state"), propertyData.getProperty("precheck.patient.zip"),
+				propertyData.getProperty("precheck.patient.zip"),
 				propertyData.getProperty("precheck.provider.name"), propertyData.getProperty("precheck.copay"),
 				propertyData.getProperty("precheck.balance"),
 				propertyData.getProperty("precheck.primary.insurance.name"),
@@ -3393,7 +3393,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("verify curbside reminder is not receive to patient")
 	public void verify_curbside_reminder_is_not_receive_to_patient() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertFalse(yopMail.isMessageInInbox(propertyData.getProperty("curbside.checkin.mail"),
+		assertFalse(yopMail.isMessageInEmailInbox(propertyData.getProperty("curbside.checkin.mail"),
 				propertyData.getProperty("curbside.checkin.mail.subject"),
 				propertyData.getProperty("curbside.checkin.mail.title"), 5));
 	}
@@ -3449,7 +3449,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("verify curbside reminder is receive to patient")
 	public void verify_curbside_reminder_is_receive_to_patient() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox(propertyData.getProperty("curbside.checkin.mail"),
+		assertTrue(yopMail.isMessageInEmailInbox(propertyData.getProperty("curbside.checkin.mail"),
 				propertyData.getProperty("curbside.checkin.mail.subject"),
 				propertyData.getProperty("curbside.checkin.mail.title"), 5));
 	}
@@ -4202,7 +4202,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("verify on mail no cadence reminder is sent when send notifiaction is off")
 	public void verify_on_mail_no_cadence_reminder_is_sent_when_send_notifiaction_is_off() throws Exception {
 	   YopMail yopMail = new YopMail(driver);
-	   yopMail.isMessageInInbox(propertyData.getProperty("curbside.checkin.mail"), "Your appointment is coming up!", "Appointment Reminder", 5);
+	   yopMail.isMessageInEmailInbox(propertyData.getProperty("curbside.checkin.mail"), "Your appointment is coming up!", "Appointment Reminder", 5);
 	}
 	
 	@Then("I hit edit button of email for appointment reminder")
@@ -5098,7 +5098,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_verify_on_while_sending_broadcast_only_english_language_option_text_box_should_be_seen_in_broadcast_and_email_should_be_recieved_in_english_only() throws NullPointerException, Exception {
 		String practiceName=apptPage.getPracticeName();
 		YopMail yopMail= new YopMail(driver);
-	    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 	    		"Important Message from"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "
 						+ propertyData.getProperty("broadcast.message.en"), 10));
 	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
@@ -5132,11 +5132,11 @@ public class ApptPrecheckSteps extends BaseTest {
 		String practiceName=apptPage.getPracticeName();
 		YopMail yopMail= new YopMail(driver);
 		log("Message should get in english and spanish");
-	    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 	    		"Important Message from"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "
 						+ propertyData.getProperty("broadcast.message.en"), 10));
 	    
-	    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 	    		"Un mensaje importantede"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "+ propertyData.getProperty("broadcast.message.en")+" / "+"Lo llamaremos en breve para recopilar la información de su seguro.", 10));
 	    log("Make notification setting ON");
 	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
@@ -5190,13 +5190,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify system should send reminder,curbside mail to patient")
 	public void i_verify_system_should_send_reminder_curbside_mail_to_patient() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),
 				propertyData.getProperty("appointment.email.title"), 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),
 				"Appointment Reminder", 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),
 				propertyData.getProperty("curbside.checkin.mail.title"), 5));
 		
@@ -5225,13 +5225,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify system should not send reminder,curbside mail to patient")
 	public void i_verify_system_should_not_send_reminder_curbside_mail_to_patient() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),
 				propertyData.getProperty("appointment.email.title"), 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),
 				"Appointment Reminder", 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),
 				propertyData.getProperty("curbside.checkin.mail.title"), 5));
 		
@@ -5525,16 +5525,16 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify system should send reminder,curbside,broadcast on email")
 	public void i_verify_system_should_send_reminder_curbside_broadcast_on_email() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),
 				propertyData.getProperty("appointment.email.title"), 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("broadcast.email.subject"),
 				propertyData.getProperty("broadcast.email.title"), 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),
 				"Appointment Reminder", 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),
 				propertyData.getProperty("curbside.checkin.mail.title"), 5));
 		
@@ -5562,13 +5562,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify system should not send reminder,curbside on email")
 	public void i_verify_system_should_not_send_reminder_curbside_on_email() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),
 				propertyData.getProperty("appointment.email.title"), 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),
 				"Appointment Reminder", 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),
 				propertyData.getProperty("curbside.checkin.mail.title"), 5));
 		
@@ -5691,7 +5691,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify appointment should be received from {string} in email")
 	public void i_verify_appointment_should_be_received_from_in_email(String string) throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),
 				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
 		
@@ -5699,28 +5699,28 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify confirmation reminder for appointment should be received from {string} in email")
 	public void i_verify_confirmation_reminder_for_appointment_should_be_received_from_in_email(String string) throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),
 				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
 	}
 	@Then("I verify appointment should be received from {string} in email for curbside reminder")
 	public void i_verify_appointment_should_be_received_from_in_email_for_curbside_reminder(String string) throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),
 				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
 	}
 	@Then("I verify appointment should be received from {string} in email for broadcast reminder")
 	public void i_verify_appointment_should_be_received_from_in_email_for_broadcast_reminder(String string) throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("broadcast.email.subject"),
 				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
 	}
 	@Then("I verify appointment should be received from {string} in email for manual reminder")
 	public void i_verify_appointment_should_be_received_from_in_email_for_manual_reminder(String string) throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),
 				"PSS-GE-24333-PRACTICE@@@#&%^&&%&^% <no-reply@medfusion.net>", 5));
 	}
@@ -5849,7 +5849,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify system should send emails and text in English and Spanish language")
 	public void i_verify_system_should_send_emails_and_text_in_english_and_spanish_language() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),"Appointment Scheduled Cita programada" , 5));
 		
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
@@ -5877,7 +5877,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify system should send emails and text in English language")
 	public void i_verify_system_should_send_emails_and_text_in_english_language() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),
 				propertyData.getProperty("appointment.email.title") , 5));
 		
@@ -5902,13 +5902,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify user is able to see first name in manual reminder,scheduled reminder,confirmation reminder,curbside reminder in mail")
 	public void i_verify_user_is_able_to_see_first_name_in_manual_reminder_scheduled_reminder_confirmation_reminder_curbside_reminder_in_mail() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),"jordan, your appointment has been scheduled" , 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),"jordan, we provide curbside check-in. Click on the button below when you have arrived in the parking lot." , 5));
 		
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
@@ -5922,15 +5922,15 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify user is able to see first name in appointment scheduled reminder,appointment confirmation reminder , curbside reminder,broadcast in mail")
 	public void i_verify_user_is_able_to_see_first_name_in_appointment_scheduled_reminder_appointment_confirmation_reminder_curbside_reminder_broadcast_in_mail() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),"jordan, your appointment has been scheduled" , 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),"jordan, we provide curbside check-in. Click on the button below when you have arrived in the parking lot." , 5));
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("broadcast.email.subject"),
 				propertyData.getProperty("broadcast.email.title"), 5));
 		
@@ -5943,13 +5943,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify user is not able to see first name in manual reminder,scheduled reminder,confirmation reminder,curbside reminderin mail")
 	public void i_verify_user_is_not_able_to_see_first_name_in_manual_reminder_scheduled_reminder_confirmation_reminder_curbside_reminderin_mail() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),"jordan, your appointment is coming up." , 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appointment.email.subject"),"jordan, your appointment has been scheduled" , 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),"jordan, we provide curbside check-in. Click on the button below when you have arrived in the parking lot." , 5));
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("broadcast.email.subject"),
 				propertyData.getProperty("broadcast.email.title"), 5));
 		
@@ -6343,7 +6343,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify system should send curbside checkin reminder within next one hour")
 	public void i_verify_system_should_send_curbside_checkin_reminder_within_next_one_hour() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),
 				propertyData.getProperty("curbside.checkin.mail.title"), 5));
 		
@@ -6358,7 +6358,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("I verify system should not send curbside reminder")
 	public void i_verify_system_should_not_send_curbside_reminder() throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("curbside.checkin.mail.subject"),
 				propertyData.getProperty("curbside.checkin.mail.title"), 5));
 		
@@ -6531,10 +6531,10 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void appointment_should_be_scheduled_and_reminder_confirmation_email_should_be_received_to_patient()
 			throws NullPointerException, Exception {
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.schedule.subject"), propertyData.getProperty("appt.schedule.title"),10));
 
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.title"), 10));
 	}
 
@@ -6601,7 +6601,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		Thread.sleep(20000);
 
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", practiceName,
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", practiceName,
 				propertyData.getProperty("precheck.first.name") + "," + " "+ propertyData.getProperty("broadcast.message.en"),10));
 
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
@@ -6677,7 +6677,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		Thread.sleep(20000);
 
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", practiceName,
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", practiceName,
 				propertyData.getProperty("precheck.first.name") + "," + " "
 						+ propertyData.getProperty("broadcast.message.en"),
 				10));
@@ -6738,7 +6738,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify appointment scheduled confirmation mail recieved should not show first name")
 		public void i_verify_appointment_scheduled_confirmation_mail_recieved_should_not_show_first_name() throws NullPointerException, Exception {
 		   YopMail yopMail = new YopMail(driver);
-		   assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		   assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				   propertyData.getProperty("appt.schedule.subject"),
 				   propertyData.getProperty("patient.name"),5));
 		   
@@ -6766,7 +6766,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify appointment reminder recieved in mail should not show first name")
 		public void i_verify_appointment_reminder_recieved_in_mail_should_not_show_first_name() throws NullPointerException, Exception {
 			 YopMail yopMail = new YopMail(driver);
-			   assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+			   assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 					   propertyData.getProperty("appt.email.subject"),
 					   propertyData.getProperty("patient.name"),5));
 			   
@@ -6801,7 +6801,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify broadcast message recieved in mail should not show first name")
 		public void i_verify_broadcast_message_recieved_in_mail_should_not_show_first_name() throws NullPointerException, Exception {
 			YopMail yopMail = new YopMail(driver);
-			   assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+			   assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 					   propertyData.getProperty("broadcast.email.subject"),
 					   propertyData.getProperty("patient.name"),5));
 			   
@@ -6829,7 +6829,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify curbside reminder recieved in mail should not show first name")
 		public void i_verify_curbside_reminder_recieved_in_mail_should_not_show_first_name() throws NullPointerException, Exception {
 			YopMail yopMail = new YopMail(driver);
-			   assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+			   assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 					   propertyData.getProperty("curbside.checkin.mail.subject"),
 					   propertyData.getProperty("patient.name"),5));
 			   
@@ -6864,7 +6864,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify manual reminder recieved in mail should not show first name")
 		public void i_verify_manual_reminder_recieved_in_mail_should_not_show_first_name() throws NullPointerException, Exception {
 			YopMail yopMail = new YopMail(driver);
-			   assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+			   assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 					   propertyData.getProperty("appt.email.subject"),
 					   propertyData.getProperty("patient.name"),5));
 			   
@@ -7033,7 +7033,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify appointment scheduled confirmation mail recieved should show first name")
 		public void i_verify_appointment_scheduled_confirmation_mail_recieved_should_show_first_name() throws NullPointerException, Exception {
 			YopMail yopMail = new YopMail(driver);
-			   assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+			   assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 					   propertyData.getProperty("appt.schedule.subject"),
 					   propertyData.getProperty("patient.name"),5));
 			   
@@ -7059,7 +7059,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify appointment reminder recieved in mail should show first name")
 		public void i_verify_appointment_reminder_recieved_in_mail_should_show_first_name() throws NullPointerException, Exception {
 			 YopMail yopMail = new YopMail(driver);
-			   assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+			   assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 					   propertyData.getProperty("appt.email.subject"),
 					   propertyData.getProperty("patient.name"),5));
 			   
@@ -7085,7 +7085,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify broadcast message recieved in mail should show first name")
 		public void i_verify_broadcast_message_recieved_in_mail_should_show_first_name() throws NullPointerException, Exception {
 			YopMail yopMail = new YopMail(driver);
-			   assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+			   assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 					   propertyData.getProperty("broadcast.email.subject"),
 					   propertyData.getProperty("patient.name"),5));
 			   
@@ -7111,7 +7111,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify curbside reminder recieved in mail should show first name")
 		public void i_verify_curbside_reminder_recieved_in_mail_should_show_first_name() throws NullPointerException, Exception {
 			YopMail yopMail = new YopMail(driver);
-			   assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+			   assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 					   propertyData.getProperty("curbside.checkin.mail.subject"),
 					   propertyData.getProperty("patient.name"),5));
 			   
@@ -7137,7 +7137,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify manual reminder recieved in mail should show first name")
 		public void i_verify_manual_reminder_recieved_in_mail_should_show_first_name() throws NullPointerException, Exception {
 			YopMail yopMail = new YopMail(driver);
-			   assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+			   assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 					   propertyData.getProperty("appt.email.subject"),
 					   propertyData.getProperty("patient.name"),5));
 			   
@@ -7399,14 +7399,14 @@ public class ApptPrecheckSteps extends BaseTest {
 		public void i_received_message_in_email_in_spanish_language(String message) throws Exception {
 			scrollAndWait(0, -500, 5000);
 			YopMail yopMail = new YopMail(driver);
-			assertTrue(yopMail.isMessageInInbox("jordan"+Appointment.randomNumber+"@YOPmail.com","Actualización sobre su registro en la acera",propertyData.getProperty("patient.name")+", "+message, 10));
+			assertTrue(yopMail.isMessageInEmailInbox("jordan"+Appointment.randomNumber+"@YOPmail.com","Actualización sobre su registro en la acera",propertyData.getProperty("patient.name")+", "+message, 10));
 		}
 		
 		@Then("I verify message {string} receive in spanish language")
 		public void i_verify_message_receive_in_spanish_language(String message) throws Exception {
 			scrollAndWait(0, -500, 5000);
 			YopMail yopMail = new YopMail(driver);
-			assertTrue(yopMail.isMessageInInbox("jordan"+Appointment.randomNumber+"@YOPmail.com","Actualización sobre su registro en la acera",propertyData.getProperty("patient.name")+", "+message, 10));
+			assertTrue(yopMail.isMessageInEmailInbox("jordan"+Appointment.randomNumber+"@YOPmail.com","Actualización sobre su registro en la acera",propertyData.getProperty("patient.name")+", "+message, 10));
 			loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 		}
 
@@ -7707,7 +7707,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify arrival notification msg should show mobile number of appointment location in the arrival text msg and msg should come in English language")
 		public void i_verify_arrival_notification_msg_should_show_mobile_number_of_appointment_location_in_the_arrival_text_msg_and_msg_should_come_in_english_language() throws Exception {
 		    YopMail yopMail = new YopMail(driver);
-		    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 		    		propertyData.getProperty("curbside.mail.subject.en.es"),
 		    		propertyData.getProperty("location.and.phone.number"),5));
 		    
@@ -7739,7 +7739,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify arrival notification message should show mobile number of appointment location in the arrival text msg and Msg should come in English language")
 		public void i_verify_arrival_notification_message_should_show_mobile_number_of_appointment_location_in_the_arrival_text_msg_and_msg_should_come_in_english_language() throws NullPointerException, Exception {
 			YopMail yopMail = new YopMail(driver);
-		    assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 		    		propertyData.getProperty("curbside.checkin.mail.subject"),
 		    		propertyData.getProperty("location.and.phone.number"),5));
 		    
@@ -7772,7 +7772,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		@Then("I verify arrival notification msg should not show {string} text  in the arrival text msg")
 		public void i_verify_arrival_notification_msg_should_not_show_text_in_the_arrival_text_msg(String string) throws NullPointerException, Exception {
 			YopMail yopMail = new YopMail(driver);
-		    assertFalse(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		    assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 		    		propertyData.getProperty("curbside.checkin.mail.subject"),
 		    		propertyData.getProperty("location.and.phone.number"),5));
 		    
@@ -9245,6 +9245,251 @@ public class ApptPrecheckSteps extends BaseTest {
 					propertyData.getProperty("practice.provisining.password.ge"));
 	}
 
+	@When("I select practice language preference as English and Spanish from notification in setting")
+	public void i_select_practice_language_preference_as_english_and_spanish_from_notification_in_setting()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		log("user select english and spanish practice preference language");
+		notifPage.saveNotification();
+	}
+
+	@When("I schedule an appointment from appointment dashboard")
+	public void i_schedule_an_appointment_from_appointment_dashboard()
+			throws NullPointerException, InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.clickOnActions();
+		apptPage.clickOnCreate();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		apptPage.createNewPatient(propertyData.getProperty("precheck.location"),
+				propertyData.getProperty("precheck.appt.type"), Appointment.patientId,
+				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
+				propertyData.getProperty("precheck.last.name"), propertyData.getProperty("precheck.dob"),
+				propertyData.getProperty("precheck.phone"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.address.line1"),
+				propertyData.getProperty("precheck.patient.city"),
+				propertyData.getProperty("precheck.patient.zip"), propertyData.getProperty("precheck.provider.name"),
+				propertyData.getProperty("precheck.copay"), propertyData.getProperty("precheck.balance"),
+				propertyData.getProperty("precheck.primary.insurance.name"),
+				propertyData.getProperty("precheck.primary.insurance.group.No"),
+				propertyData.getProperty("precheck.primary.insurance.member.id"));
+		
+	}
+	
+	@Then("I verify from email appointment reminder email should be recieved in both languages")
+	public void i_verify_from_email_appointment_reminder_email_should_be_recieved_in_both_languages() throws Exception {
+		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("appt.reminder.in.en"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("appt.reminder.in.es"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("confirm.appt.link.title"),
+				10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("start.precheck.link"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("unsubscribe.in.en.es"),
+				10));
+		
+       log(propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en.es"));
+		
+       assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),
+				propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en.es"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),
+				propertyData.getProperty("message.in.mail.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),
+				"Por favor, no responda a este mensaje automático.. Si tiene preguntas, favor de ponerse en contacto con el consultorio médico.", 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),propertyData.getProperty("confidentiality.notice.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),"Aviso de confidencialidad: Este email es confidencial y tiene el solo próposito de su uso por el individuo designado como receptor. Si Ud. ha recibido este email o sus adjuntos por error, por favor, ni lea, ni distribuya, ni revele ninguna de la información. Inmediatemente notifique al remitente y destruya toda la información que pertenece a esta correspondencia.", 10));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+
+	}
+	
+	@When("I select patient and send broadcast message is english and spanish")
+	public void i_select_patient_and_send_broadcast_message_is_english_and_spanish()
+			throws NullPointerException, Exception {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.selectAllCheckboxes();
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+		Thread.sleep(50000);
+	}
+	@Then("I verify from email broadcast message email should be recieved in both languages")
+	public void i_verify_from_email_broadcast_message_email_should_be_recieved_in_both_languages() throws Exception {
+		String practiceName = apptPage.getPracticeName();
+		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
+				"Important Message from "+practiceName+"/ Un mensaje importantede "+practiceName, 
+				propertyData.getProperty("broadcast.email.title"), 5));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
+				"Important Message from "+practiceName+"/ Un mensaje importantede "+practiceName, 
+				propertyData.getProperty("broadcast.title.es"), 5));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				"Important Message from "+practiceName+"/ Un mensaje importantede "+practiceName, "we will call you shortly to collect your insurance information. / Lo llamaremos en breve para recopilar la información de su seguro.",
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				"Important Message from "+practiceName+"/ Un mensaje importantede "+practiceName, propertyData.getProperty("unsubscribe.in.en.es"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				"Important Message from "+practiceName+"/ Un mensaje importantede "+practiceName,
+				propertyData.getProperty("message.in.mail.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				"Important Message from "+practiceName+"/ Un mensaje importantede "+practiceName,
+				"Por favor, no responda a este mensaje automático.. Si tiene preguntas, favor de ponerse en contacto con el consultorio médico.", 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				"Important Message from "+practiceName+"/ Un mensaje importantede "+practiceName,propertyData.getProperty("confidentiality.notice.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				"Important Message from "+practiceName+"/ Un mensaje importantede "+practiceName,"Aviso de confidencialidad: Este email es confidencial y tiene el solo próposito de su uso por el individuo designado como receptor. Si Ud. ha recibido este email o sus adjuntos por error, por favor, ni lea, ni distribuya, ni revele ninguna de la información. Inmediatemente notifique al remitente y destruya toda la información que pertenece a esta correspondencia.", 10));
+
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I schedule an appointment from appointment dashboard for curbside reminder")
+	public void i_schedule_an_appointment_from_appointment_dashboard_for_curbside_reminder() throws NullPointerException, InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.clickOnActions();
+		apptPage.clickOnCreate();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		apptPage.createNewPatient(propertyData.getProperty("precheck.location"),
+				propertyData.getProperty("precheck.appt.type"), Appointment.patientId,
+				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
+				propertyData.getProperty("precheck.last.name"), propertyData.getProperty("precheck.dob"),
+				propertyData.getProperty("precheck.phone"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.address.line1"),
+				propertyData.getProperty("precheck.patient.city"),
+				propertyData.getProperty("precheck.patient.zip"), propertyData.getProperty("precheck.provider.name"),
+				propertyData.getProperty("precheck.copay"), propertyData.getProperty("precheck.balance"),
+				propertyData.getProperty("precheck.primary.insurance.name"),
+				propertyData.getProperty("precheck.primary.insurance.group.No"),
+				propertyData.getProperty("precheck.primary.insurance.member.id"));
+	}
+	@Then("I verify from email curbside reminder email should be recieved in both languages")
+	public void i_verify_from_email_curbside_reminder_email_should_be_recieved_in_both_languages() throws NullPointerException, Exception {
+		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.msg.inbox.title"), propertyData.getProperty("curbside.msg.title.en"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.msg.inbox.title"), propertyData.getProperty("curbside.msg.title.es"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.msg.inbox.title"), "we provide curbside check-in. Click on the button below when you have arrived in the parking lot./ Estamos proporcionando registro en la acera. Haga clic en en botón cuando haya llegado al estacionamiento.",
+				10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.msg.inbox.title"), propertyData.getProperty("arrived.link.in.en.es"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.msg.inbox.title"), propertyData.getProperty("unsubscribe.in.en.es"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.msg.inbox.title"),
+				propertyData.getProperty("message.in.mail.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.msg.inbox.title"),
+				"Por favor, no responda a este mensaje automático.. Si tiene preguntas, favor de ponerse en contacto con el consultorio médico.", 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.msg.inbox.title"),propertyData.getProperty("confidentiality.notice.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.msg.inbox.title"),"Aviso de confidencialidad: Este email es confidencial y tiene el solo próposito de su uso por el individuo designado como receptor. Si Ud. ha recibido este email o sus adjuntos por error, por favor, ni lea, ni distribuya, ni revele ninguna de la información. Inmediatemente notifique al remitente y destruya toda la información que pertenece a esta correspondencia.", 10));
+
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I select patient and send manual reminder from appointment dashboard")
+	public void i_select_patient_and_send_manual_reminder_from_appointment_dashboard() throws InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.selectFirstPatient();
+		scrollAndWait(-1000, 0, 20000);
+		apptPage.clickOnActions();
+		apptPage.clickOnSendReminder();
+	}
+	@Then("I verify from email manual reminder email should be recieved in both languages")
+	public void i_verify_from_email_manual_reminder_email_should_be_recieved_in_both_languages() throws NullPointerException, Exception {
+		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("appt.reminder.in.en"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("appt.reminder.in.es"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("confirm.appt.link.title"),
+				10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("start.precheck.link"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"), propertyData.getProperty("unsubscribe.in.en.es"),
+				10));
+		
+       log(propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en.es"));
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),
+				propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en.es"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),
+				propertyData.getProperty("message.in.mail.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),
+				"Por favor, no responda a este mensaje automático.. Si tiene preguntas, favor de ponerse en contacto con el consultorio médico.", 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),propertyData.getProperty("confidentiality.notice.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.reminder.title.in.es.en"),"Aviso de confidencialidad: Este email es confidencial y tiene el solo próposito de su uso por el individuo designado como receptor. Si Ud. ha recibido este email o sus adjuntos por error, por favor, ni lea, ni distribuya, ni revele ninguna de la información. Inmediatemente notifique al remitente y destruya toda la información que pertenece a esta correspondencia.", 10));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
 	
 
 }
