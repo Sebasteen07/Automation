@@ -152,6 +152,12 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	
 	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']/following-sibling::i")
 	private WebElement overBookingToggleClick;
+	
+	@FindBy(how = How.XPATH, using = "//*[@name='slotCount']")
+	private WebElement slotCount;
+	
+	@FindBy(how = How.NAME, using = "slotSize")
+	private WebElement slotSizeValue;
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
@@ -384,5 +390,21 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	public void overBookingClick() {
 		overBookingToggleClick.click();
 		appointmenttypeSave.click();
+	}
+	
+	public void slotCount(String slotValue) {
+		Select selectOptions = new Select(slotCount);
+		selectOptions.selectByVisibleText(slotValue);
+		slotCount.click();
+		commonMethods.highlightElement(appointmenttypeSave);
+		appointmenttypeSave.click();
+	}
+	
+	public String getslotSize() {
+		commonMethods.highlightElement(slotSizeValue);
+		Select selectOptions = new Select(slotSizeValue);
+		WebElement slotSizeValue1=selectOptions.getFirstSelectedOption();
+		String selectedValue=slotSizeValue1.getText();
+		return selectedValue;
 	}
 }

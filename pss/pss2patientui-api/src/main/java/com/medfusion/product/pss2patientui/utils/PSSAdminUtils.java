@@ -1343,6 +1343,26 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.logout();
 	}
 	
+	public void mergeSlotWithShowProviderOff(WebDriver driver, AdminUser adminUser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOnProvider();
+		setRulesNoProviderSet1(patientFlow);
+		patientFlow.turnOffProvider();
+		adminUser.setRule(patientFlow.getRule());
+		Log4jUtil.log("rule= " + patientFlow.getRule());
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+		manageAppointmentType.slotCount(appointment.getSlotValue());
+		appointment.setSlotSize(manageAppointmentType.getslotSize());
+		log("Slot Size is  " + appointment.getSlotSize());
+		pageRefresh(driver);
+		manageAppointmentType.logout();
+	}
 	
 	public void acceptForSameDayWithShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
 			throws Exception {
