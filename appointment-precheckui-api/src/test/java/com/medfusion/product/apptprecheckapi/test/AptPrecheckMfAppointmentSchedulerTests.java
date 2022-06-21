@@ -318,9 +318,51 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 	}
 	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGETApptWithDifferentOldApptId() throws IOException {		
+		log("Schedule new Appointments");
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
+		String diffApptId = commonMtd.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		Response response = postAPIRequest.appointmentPayload(
+				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId,diffApptId);
+	
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGETApptsForV5() throws IOException {		
+		log("Schedule new Appointments");
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		Response response = postAPIRequest.aptPutAppointmentPss(
+				propertyData.getProperty("baseurl.v5.updated.mf.appt"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+		
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyGetAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"), Appointment.patientId,
+				Appointment.apptId);
+	}
+	
 	@BeforeMethod(enabled = true, groups = { "APItest" })
 	public void getMethodName(ITestResult result) throws IOException {
 		log("Method Name-- " + result.getMethod().getMethodName());
-		
 	}
 }

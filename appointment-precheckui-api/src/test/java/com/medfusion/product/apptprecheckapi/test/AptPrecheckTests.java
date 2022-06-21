@@ -1417,6 +1417,106 @@ public class AptPrecheckTests extends BaseTestNG {
 				propertyData.getProperty("apt.precheck.balance.complete.status"));
 	}
 
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPUTDemographicsGuestPhoneType() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		String responseGuestToken = postAPIRequest.aptGuestSessionsSession(
+				propertyData.getProperty("apt.precheck.test.practice.id"), payload.getGuestSessionPayload(),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+		log("Response guest token- " + responseGuestToken);
+
+		Response response = postAPIRequest.aptPutDemographicsGuest(
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getDemographicsPayloadGuest(propertyData.getProperty("phone.type.work")), responseGuestToken,
+				Appointment.patientId, Appointment.apptId, headerConfig.defaultHeader());
+
+		log("Verify Put Demographics");
+		assertEquals(response.getStatusCode(), 200);
+		apiVerification.verifyGuestDemographics(response, propertyData.getProperty("apt.precheck.test.practice.id"),
+				Appointment.patientId, Appointment.apptId, propertyData.getProperty("guest.demographic.first.name"),
+				propertyData.getProperty("guest.demographic.last.name"));
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPUTDemographicsGuestBlankPhoneType() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		String responseGuestToken = postAPIRequest.aptGuestSessionsSession(
+				propertyData.getProperty("apt.precheck.test.practice.id"), payload.getGuestSessionPayload(),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+		log("Response guest token- " + responseGuestToken);
+
+		Response response = postAPIRequest.aptPutDemographicsGuest(
+				propertyData.getProperty("apt.precheck.test.practice.id"), payload.getDemographicsPayloadGuest(""),
+				responseGuestToken, Appointment.patientId, Appointment.apptId, headerConfig.defaultHeader());
+
+		log("Verify Put Demographics");
+		assertEquals(response.getStatusCode(), 200);
+		apiVerification.verifyGuestDemographics(response, propertyData.getProperty("apt.precheck.test.practice.id"),
+				Appointment.patientId, Appointment.apptId, propertyData.getProperty("guest.demographic.first.name"),
+				propertyData.getProperty("guest.demographic.last.name"));
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPUTDemographicsGuestInvalidPhoneType() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		String responseGuestToken = postAPIRequest.aptGuestSessionsSession(
+				propertyData.getProperty("apt.precheck.test.practice.id"), payload.getGuestSessionPayload(),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+		log("Response guest token- " + responseGuestToken);
+
+		Response response = postAPIRequest.aptPutDemographicsGuest(
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getDemographicsPayloadGuest(propertyData.getProperty("invalid.phone.type")), responseGuestToken,
+				Appointment.patientId, Appointment.apptId, headerConfig.defaultHeader());
+
+		log("Verify Put Demographics");
+		assertEquals(response.getStatusCode(), 200);
+		apiVerification.verifyGuestDemographics(response, propertyData.getProperty("apt.precheck.test.practice.id"),
+				Appointment.patientId, Appointment.apptId, propertyData.getProperty("guest.demographic.first.name"),
+				propertyData.getProperty("guest.demographic.last.name"));
+		apiVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTConfirmCancelAppt() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+		
+		log("Delete Appoinment");
+		Response response = postAPIRequestApptSche.getDELETETAppointment(
+				propertyData.getProperty("mf.apt.scheduler.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
+				 Appointment.patientId,  Appointment.apptId);
+
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		Response ConfirmResponse = postAPIRequest.getDeleteAppointmentActions(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
+				Appointment.patientId, Appointment.apptId);
+		log("Verifying the response");
+		assertEquals(ConfirmResponse.getStatusCode(), 404);
+	}
+
 	@BeforeMethod(enabled = true, groups = { "APItest" })
 	public void getMethodName(ITestResult result) throws IOException {
 		log("Method Name-- " + result.getMethod().getMethodName());
