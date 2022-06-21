@@ -568,4 +568,39 @@ public class AptPrecheckPayload {
 					+ "]";
 			return deleteAppt;	
 	}
+		
+		public String getDemographicsPayloadGuest(String phoneType) {
+			String demographics=" {\r\n"
+					+ "	\"address\": null,\r\n"
+					+ "	\"address2\": null,\r\n"
+					+ "	\"birthDate\": \"1991-01-01\",\r\n"
+					+ "	\"city\": null,\r\n"
+					+ "	\"email\": \"testpatient.crossasyst@gmail.com\",\r\n"
+					+ "	\"firstName\": \"ArrivalActionsThree\",\r\n"
+					+ "	\"language\": \"en\",\r\n"
+					+ "	\"lastName\": \"Test\",\r\n"
+					+ "	\"middleName\": null,\r\n"
+					+ "	\"pharmacies\": [{\r\n"
+					+ "		\"address\": {\r\n"
+					+ "			\"city\": \"string\",\r\n"
+					+ "			\"line1\": \"string\",\r\n"
+					+ "			\"line2\": \"string\",\r\n"
+					+ "			\"state\": \"string\",\r\n"
+					+ "			\"zipCode\": \"string\"\r\n"
+					+ "		},\r\n"
+					+ "		\"deleted\": true,\r\n"
+					+ "		\"id\": \"string\",\r\n"
+					+ "		\"name\": \"string\",\r\n"
+					+ "		\"number\": 0\r\n"
+					+ "	}],\r\n"
+					+ "	\"phone\": 5087437423,\r\n"
+					+ "\r\n"
+					+ "	\"phoneType\": \""+phoneType+"\",\r\n"
+					+ "	\"state\": null,\r\n"
+					+ "	\"status\": \"COMPLETE\",\r\n"
+					+ "	\"verified\": true,\r\n"
+					+ "	\"zip\": \"12345\"\r\n"
+					+ "}";
+			return demographics;
+	}
 }
