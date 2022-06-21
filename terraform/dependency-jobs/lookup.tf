@@ -37,6 +37,6 @@ data "aws_security_group" "codebuild_sg" {
 }
 
 data "aws_codecommit_repository" "qa_automation" {
-  
+
   repository_name = var.repository_name
 }
