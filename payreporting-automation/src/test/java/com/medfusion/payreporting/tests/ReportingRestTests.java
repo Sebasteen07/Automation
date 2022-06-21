@@ -1,14 +1,10 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package com.medfusion.payreporting.tests;
 
 import static org.testng.Assert.assertEquals;
-
 import java.io.IOException;
-
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.YopMail;
 import com.medfusion.utils.TransactionResourceDetails;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
