@@ -52,9 +52,9 @@ module "qa_automation_utils_codebuild" {
     security_group_ids = [data.aws_security_group.codebuild_sg.id]
   }]
 
-    common_tags = {
-      "pxp.application" = "Platform"
-    }
+  common_tags = {
+    "pxp.application" = "Platform"
+  }
 }
 
 ###################################################################################
@@ -201,10 +201,10 @@ data "aws_iam_policy_document" "qa_automation_utils_codebuild" {
 }
 
 data "aws_iam_policy_document" "qa_automation_utils_codeartifact_token" {
-# CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
+  # CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
 
   statement {
-    sid     = "StsPermissions"
+    sid = "StsPermissions"
     actions = [
       "sts:GetServiceBearerToken"
     ]
@@ -219,7 +219,7 @@ data "aws_iam_policy_document" "qa_automation_utils_codeartifact_token" {
   }
 
   statement {
-    sid     = "CodeArtifactDomainPermissions"
+    sid = "CodeArtifactDomainPermissions"
     actions = [
       "codeartifact:GetAuthorizationToken"
     ]
@@ -227,7 +227,7 @@ data "aws_iam_policy_document" "qa_automation_utils_codeartifact_token" {
   }
 
   statement {
-    sid     = "CodeArtifactRepositoryPermissions"
+    sid = "CodeArtifactRepositoryPermissions"
     actions = [
       "codeartifact:DescribeRepository",
       "codeartifact:ReadFromRepository",
@@ -238,7 +238,7 @@ data "aws_iam_policy_document" "qa_automation_utils_codeartifact_token" {
   }
 
   statement {
-    sid     = "CodeArtifactPackagePermissions"
+    sid = "CodeArtifactPackagePermissions"
     actions = [
       "codeartifact:UpdatePackageVersionsStatus",
       "codeartifact:PublishPackageVersion",
@@ -273,7 +273,7 @@ resource "aws_iam_role_policy" "qa_automation_utils_codeartifact_token_inline_po
 ###################################################################################
 resource "aws_codestarnotifications_notification_rule" "qa_automation_utils" {
 
-  detail_type = var.notification_detail_type
+  detail_type    = var.notification_detail_type
   event_type_ids = var.event_type_ids
 
   name     = "${local.qa_automation_utils.name}-notification"

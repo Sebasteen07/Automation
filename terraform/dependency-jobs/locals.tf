@@ -89,4 +89,51 @@ locals {
     maven_parameter      = "mvn clean install"
   }
 
+  payreporting_automation = {
+    name                 = "${local.jobname-prefix}payreporting-automation"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Pay"
+    execution_folder     = "payreporting-automation"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  payreporting_automationE2E = {
+    name                 = "${local.jobname-prefix}payreporting-automationE2E"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Pay"
+    execution_folder     = "payreporting-automationE2E"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  payreporting_object_maps = {
+    name                 = "${local.jobname-prefix}payreporting-object-maps"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Pay"
+    execution_folder     = "payreporting-object-maps"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  payreporting_service = {
+    name                 = "${local.jobname-prefix}payreporting-service"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Pay"
+    execution_folder     = "payreporting-service"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
 }

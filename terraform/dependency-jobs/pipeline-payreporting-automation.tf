@@ -3,11 +3,11 @@
 ###################################################################################
 # CodeBuild project                                                               #
 ###################################################################################
-module "integration_support_team_automation_codebuild" {
+module "payreporting_automation_codebuild" {
   source = "git::ssh://git@bitbucket.nextgen.com:7999/dope/codebuild?ref=4.3.0"
 
   artifact_bucket_arns = [local.pipeline_artifact_bucket_arn]
-  name                 = local.integration_support_team_automation.name
+  name                 = local.payreporting_automation.name
   kms_key_id           = local.kms_key_id
   artifact_kms_key_ids = []
   artifacts_type       = var.codebuild_artifacts_type
@@ -15,12 +15,12 @@ module "integration_support_team_automation_codebuild" {
   environment_variables = [
     {
       name  = "maven_command"
-      value = "${local.integration_support_team_automation.maven_parameter} -Dmaven.test.skip=${local.integration_support_team_automation.maven_test_skip}"
+      value = "${local.payreporting_automation.maven_parameter} -Dmaven.test.skip=${local.payreporting_automation.maven_test_skip}"
       type  = "PLAINTEXT"
     },
     {
       name  = "execution_folder"
-      value = local.integration_support_team_automation.execution_folder
+      value = local.payreporting_automation.execution_folder
       type  = "PLAINTEXT"
     },
     {
@@ -37,8 +37,8 @@ module "integration_support_team_automation_codebuild" {
 
   source_buildspec = var.source_buildspec
   source_type      = var.codebuild_source_type
-  build_timeout    = local.integration_support_team_automation.build_timeout
-  queued_timeout   = local.integration_support_team_automation.queued_timeout
+  build_timeout    = local.payreporting_automation.build_timeout
+  queued_timeout   = local.payreporting_automation.queued_timeout
 
   environment_privileged_mode             = var.codebuild_privileged_override
   environment_compute_type                = var.codebuild_compute_type
@@ -53,17 +53,17 @@ module "integration_support_team_automation_codebuild" {
   }]
 
   common_tags = {
-    "pxp.application" = local.integration_support_team_automation.pxp_application
+    "pxp.application" = "Pay"
   }
 }
 
 ###################################################################################
 # CodePipeline job                                                                #
 ###################################################################################
-resource "aws_codepipeline" "integration_support_team_automation_codepipeline" {
+resource "aws_codepipeline" "payreporting_automation_codepipeline" {
 
-  name     = local.integration_support_team_automation.name
-  role_arn = aws_iam_role.integration_support_team_automation.arn
+  name     = local.payreporting_automation.name
+  role_arn = aws_iam_role.payreporting_automation.arn
 
   artifact_store {
     location = local.pipeline_artifact_bucket_name
@@ -82,9 +82,9 @@ resource "aws_codepipeline" "integration_support_team_automation_codepipeline" {
       output_artifacts = ["SourceZip"]
 
       configuration = {
-        BranchName           = local.integration_support_team_automation.codecommit_branch
+        BranchName           = local.payreporting_automation.codecommit_branch
         RepositoryName       = var.repository_name
-        PollForSourceChanges = local.integration_support_team_automation.PollForSourceChanges
+        PollForSourceChanges = local.payreporting_automation.PollForSourceChanges
       }
     }
   }
@@ -102,22 +102,22 @@ resource "aws_codepipeline" "integration_support_team_automation_codepipeline" {
       version          = "1"
 
       configuration = {
-        ProjectName = module.integration_support_team_automation_codebuild.codebuild_project.name
+        ProjectName = module.payreporting_automation_codebuild.codebuild_project.name
       }
     }
   }
 
   tags = {
-    "pxp.application" = local.integration_support_team_automation.pxp_application
+    "pxp.application" = "Pay"
   }
 }
 
 ###################################################################################
 # Pipeline trigger                                                                #
 ###################################################################################
-resource "aws_cloudwatch_event_rule" "trigger_integration_support_team_automation_codepipeline" {
-  name        = "${local.integration_support_team_automation.name}-trigger"
-  description = "Trigger pipeline execution for ${local.integration_support_team_automation.name} when changes are pushed to ${local.integration_support_team_automation.codecommit_branch} branch in CodeCommit repo ${var.repository_name}."
+resource "aws_cloudwatch_event_rule" "trigger_payreporting_automation_codepipeline" {
+  name        = "${local.payreporting_automation.name}-trigger"
+  description = "Trigger pipeline execution for ${local.payreporting_automation.name} when changes are pushed to ${local.payreporting_automation.codecommit_branch} branch in CodeCommit repo ${var.repository_name}."
 
   event_pattern = <<EOF
 {
@@ -126,22 +126,22 @@ resource "aws_cloudwatch_event_rule" "trigger_integration_support_team_automatio
   "resources": ["arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.repository_name}"],
   "detail": {
     "referenceType": ["branch"],
-    "referenceName": ["${local.integration_support_team_automation.codecommit_branch}"],
+    "referenceName": ["${local.payreporting_automation.codecommit_branch}"],
     "event": ["referenceDeleted", "referenceCreated"]
   }
 }
 EOF
 
   tags = {
-    "pxp.application" = local.integration_support_team_automation.pxp_application
+    "pxp.application" = "Pay"
   }
 }
 
-resource "aws_cloudwatch_event_target" "trigger_integration_support_team_automation_codepipeline" {
-  rule      = aws_cloudwatch_event_rule.trigger_integration_support_team_automation_codepipeline.name
-  target_id = "${local.integration_support_team_automation.name}-event-target"
-  role_arn  = aws_iam_role.integration_support_team_automation_cwevent.arn
-  arn       = aws_codepipeline.integration_support_team_automation_codepipeline.arn
+resource "aws_cloudwatch_event_target" "trigger_payreporting_automation_codepipeline" {
+  rule      = aws_cloudwatch_event_rule.trigger_payreporting_automation_codepipeline.name
+  target_id = "${local.payreporting_automation.name}-event-target"
+  role_arn  = aws_iam_role.payreporting_automation_cwevent.arn
+  arn       = aws_codepipeline.payreporting_automation_codepipeline.arn
 }
 
 ###################################################################################
@@ -149,41 +149,41 @@ resource "aws_cloudwatch_event_target" "trigger_integration_support_team_automat
 ###################################################################################
 
 # IAM policies and roles for setting up Codepipeline triggers
-resource "aws_iam_role" "integration_support_team_automation_cwevent" {
-  name               = "${local.integration_support_team_automation.name}-cwevent"
+resource "aws_iam_role" "payreporting_automation_cwevent" {
+  name               = "${local.payreporting_automation.name}-cwevent"
   assume_role_policy = data.aws_iam_policy_document.cwevent_assume_role_policy.json
 
   tags = {
-    "pxp.application" = local.integration_support_team_automation.pxp_application
+    "pxp.application" = "Pay"
   }
 }
 
-data "aws_iam_policy_document" "integration_support_team_automation_cwevent" {
+data "aws_iam_policy_document" "payreporting_automation_cwevent" {
   statement {
     actions = [
       "codepipeline:StartPipelineExecution",
     ]
 
     resources = [
-      aws_codepipeline.integration_support_team_automation_codepipeline.arn,
+      aws_codepipeline.payreporting_automation_codepipeline.arn,
     ]
   }
 }
 
-resource "aws_iam_role_policy" "integration_support_team_automation_cw_events_policy" {
-  name   = "${local.integration_support_team_automation.name}-cwevents-policy"
-  role   = aws_iam_role.integration_support_team_automation_cwevent.name
-  policy = data.aws_iam_policy_document.integration_support_team_automation_cwevent.json
+resource "aws_iam_role_policy" "payreporting_automation_cw_events_policy" {
+  name   = "${local.payreporting_automation.name}-cwevents-policy"
+  role   = aws_iam_role.payreporting_automation_cwevent.name
+  policy = data.aws_iam_policy_document.payreporting_automation_cwevent.json
 }
 
 # IAM policies and roles for CodePipeline
-resource "aws_iam_role" "integration_support_team_automation" {
+resource "aws_iam_role" "payreporting_automation" {
 
-  name               = "${local.integration_support_team_automation.name}-role"
+  name               = "${local.payreporting_automation.name}-role"
   assume_role_policy = data.aws_iam_policy_document.pipeline_assume_role_policy.json
 }
 
-data "aws_iam_policy_document" "integration_support_team_automation_codebuild" {
+data "aws_iam_policy_document" "payreporting_automation_codebuild" {
 
   statement {
     sid = "Builds"
@@ -195,12 +195,12 @@ data "aws_iam_policy_document" "integration_support_team_automation_codebuild" {
     ]
 
     resources = [
-      module.integration_support_team_automation_codebuild.codebuild_project.arn
+      module.payreporting_automation_codebuild.codebuild_project.arn
     ]
   }
 }
 
-data "aws_iam_policy_document" "integration_support_team_automation_codeartifact_token" {
+data "aws_iam_policy_document" "payreporting_automation_codeartifact_token" {
   # CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
 
   statement {
@@ -209,7 +209,7 @@ data "aws_iam_policy_document" "integration_support_team_automation_codeartifact
       "sts:GetServiceBearerToken"
     ]
     resources = [
-      "arn:aws:sts::${data.aws_caller_identity.current.id}:assumed-role/${module.integration_support_team_automation_codebuild.codebuild_role.name}/*"
+      "arn:aws:sts::${data.aws_caller_identity.current.id}:assumed-role/${module.payreporting_automation_codebuild.codebuild_role.name}/*"
     ]
     condition {
       test     = "StringEquals"
@@ -248,43 +248,22 @@ data "aws_iam_policy_document" "integration_support_team_automation_codeartifact
   }
 }
 
-resource "aws_iam_role_policy" "integration_support_team_automation_pipeline" {
+resource "aws_iam_role_policy" "payreporting_automation_pipeline" {
 
-  name   = "${local.integration_support_team_automation.name}-pipeline-policy"
-  role   = aws_iam_role.integration_support_team_automation.name
+  name   = "${local.payreporting_automation.name}-pipeline-policy"
+  role   = aws_iam_role.payreporting_automation.name
   policy = data.aws_iam_policy_document.common_codepipeline_permissions.json
 }
 
-resource "aws_iam_role_policy" "integration_support_team_automation_codebuild" {
+resource "aws_iam_role_policy" "payreporting_automation_codebuild" {
 
-  name   = "${local.integration_support_team_automation.name}-codebuild-policy"
-  role   = aws_iam_role.integration_support_team_automation.name
-  policy = data.aws_iam_policy_document.integration_support_team_automation_codebuild.json
+  name   = "${local.payreporting_automation.name}-codebuild-policy"
+  role   = aws_iam_role.payreporting_automation.name
+  policy = data.aws_iam_policy_document.payreporting_automation_codebuild.json
 }
 
-resource "aws_iam_role_policy" "integration_support_team_automation_codeartifact_token_inline_policy" {
-  name   = "${local.integration_support_team_automation.name}-codeartifact-token-inline-policy"
-  role   = module.integration_support_team_automation_codebuild.codebuild_role.name
-  policy = data.aws_iam_policy_document.integration_support_team_automation_codeartifact_token.json
-}
-
-###################################################################################
-# Notifications                                                                   #
-###################################################################################
-resource "aws_codestarnotifications_notification_rule" "integration_support_team_automation" {
-
-  detail_type    = var.notification_detail_type
-  event_type_ids = var.event_type_ids
-
-  name     = "${local.integration_support_team_automation.name}-notification"
-  resource = aws_codepipeline.integration_support_team_automation_codepipeline.arn
-
-  target {
-    address = var.aws_chatbot_channel_arn
-    type    = "AWSChatbotSlack"
-  }
-
-  tags = {
-    "pxp.application" = local.integration_support_team_automation.pxp_application
-  }
+resource "aws_iam_role_policy" "payreporting_automation_codeartifact_token_inline_policy" {
+  name   = "${local.payreporting_automation.name}-codeartifact-token-inline-policy"
+  role   = module.payreporting_automation_codebuild.codebuild_role.name
+  policy = data.aws_iam_policy_document.payreporting_automation_codeartifact_token.json
 }
