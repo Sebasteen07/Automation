@@ -2039,4 +2039,7 @@ public class PropertyFileLoader {
 		return property.getProperty("patient.externalid.attachment");
 	}
 
+	public String getDcfAdminToolUrl() {
+		return property.getProperty("dcf.admintool.url");
+	}
 }

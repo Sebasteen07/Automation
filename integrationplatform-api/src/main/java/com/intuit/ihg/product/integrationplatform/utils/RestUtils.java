@@ -1994,6 +1994,36 @@ public class RestUtils {
 		}
 	}
 
+	public static void setupHttpGetRequestOauthToken(String strUrl, String responseFilePath, String token) throws IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("GET call with Token.");
+		Log4jUtil.log("GET Request Url: " + strUrl);
+
+		HttpGet httpGetReq = new HttpGet(strUrl);
+		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		httpGetReq.setURI(new URI(strUrl));
+		httpGetReq.addHeader("Authorization", "Bearer " + token);
+		httpGetReq.addHeader("Content-Type", "application/xml");
+		HttpResponse resp = client.execute(httpGetReq);
+		HttpEntity entity = resp.getEntity();
+		String sResp = "";
+		if (entity != null) {
+			sResp = EntityUtils.toString(entity);
+			Log4jUtil.log("Check for http 200 response");
+		} else {
+			Log4jUtil.log("Check for http 204 response");
+		}
+
+		assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
+				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+		writeFile(responseFilePath, sResp);
+		if (resp.containsHeader("Next-URI")) {
+			Header[] h = resp.getHeaders("Next-URI");
+			headerUrl = h[0].getValue();
+		}
+	}
+
 	/**
 	 * 
 	 * @param xmlFileName

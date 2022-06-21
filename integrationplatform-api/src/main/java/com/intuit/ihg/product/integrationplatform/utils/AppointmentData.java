@@ -64,4 +64,5 @@ public class AppointmentData {
 	public String AppointmentRequestV4URL="";
 	public String PATIENT_INVITE_RESTV3URL="";
 	public String PATIENT_INVITE_RESTV4URL="";
+	public String DCF_ADMINTOOL_URL = "";
 }

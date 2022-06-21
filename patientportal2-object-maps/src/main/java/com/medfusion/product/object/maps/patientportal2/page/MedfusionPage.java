@@ -127,7 +127,6 @@ public abstract class MedfusionPage extends BasePageObject {
 			}
 
 		public void selectFeedbackNoThanksButton() {
-				IHGUtil.PrintMethodName();
 				if (new IHGUtil(driver).exists(feedbackNoThanksButton)) {
 				feedbackNoThanksButton.click();
 				log("FeedbackNoThanksButton is closed");

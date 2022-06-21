@@ -47,7 +47,7 @@ public class LoadPreTestData {
 		testData.State = propertyData.getStateCCD();
 		testData.Country = propertyData.getCountryCCD();
 		testData.ccdXMLPathLargeSize = propertyData.getCCDPATHLargeSize();
-
+		testData.DCF_ADMINTOOL_URL = propertyData.getDcfAdminToolUrl();
 		return testData;
 	}
 
@@ -84,6 +84,7 @@ public class LoadPreTestData {
 		testData.RestV3Url = propertyData.getRestUrlV3AMDC();
 		testData.ReadCommuniationURLV3 = propertyData.getReadCommunicationUrlV3AMDC();
 		testData.batchUsername1 = propertyData.getBatchUsername1();
+		testData.DCF_ADMINTOOL_URL = propertyData.getDcfAdminToolUrl();
 		return testData;
 	}
 
@@ -306,6 +307,7 @@ public class LoadPreTestData {
 		testData.AppointmentRequestV4URL = propertyData.getAppointmentRequestV4URL();
 		testData.PATIENT_INVITE_RESTV3URL = propertyData.getPATIENT_INVITE_RESTV3URL();
 		testData.PATIENT_INVITE_RESTV4URL = propertyData.getPATIENT_INVITE_RESTV4URL();
+		testData.DCF_ADMINTOOL_URL = propertyData.getDcfAdminToolUrl();
 		return testData;
 	}
 
@@ -396,7 +398,7 @@ public class LoadPreTestData {
 		testData.GmailPassword = propertyData.getGmailPasswordAMDC();
 		testData.Sender1 = propertyData.getSender1AMDC();
 		testData.Sender2 = propertyData.getSender2AMDC();
-		testData.Sender3 = propertyData.getSender2AMDC();
+		testData.Sender3 = propertyData.getSender3AMDC();
 
 		testData.AttachmentLocation = propertyData.getAttachmentLocation();
 		testData.NumberOfAttachments = propertyData.getNumberOfAttachments();
@@ -634,6 +636,7 @@ public class LoadPreTestData {
 		testData.ZipCode = propertyData.getZipCode_PH();
 		testData.PharmacyPhone = propertyData.getPharmacyPhone();
 		testData.PharmacyFaxNumber = propertyData.getPharmacyFaxNumber();
+		testData.DCF_ADMINTOOL_URL = propertyData.getDcfAdminToolUrl();
 		return testData;
 	}
 
