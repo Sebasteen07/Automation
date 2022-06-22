@@ -60,7 +60,6 @@
 					<execution>
 						<phase>integration-test</phase>
 						<configuration>
-							<failBuild>false</failBuild>
 							<!--<groups>${testGroups}</groups> -->
 							<systemPropertyVariables>
 								<testRoot>${basedir}</testRoot>
@@ -72,7 +71,6 @@
 								<usedefaultlisteners>false</usedefaultlisteners>
 								<workingDirectory>target/surefire-reports/</workingDirectory>
 							</properties>
-							<configfailurepolicy>continue</configfailurepolicy>
 						</configuration>
 						<goals>
 							<goal>integration-test</goal>
@@ -93,8 +91,6 @@
 					</execution>
 				</executions>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
 					<outputDirectory>target/autolab</outputDirectory>
 					<archive>
 						<manifest>
