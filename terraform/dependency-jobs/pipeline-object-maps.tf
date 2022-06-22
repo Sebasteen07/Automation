@@ -52,9 +52,9 @@ module "object_maps_codebuild" {
     security_group_ids = [data.aws_security_group.codebuild_sg.id]
   }]
 
-    common_tags = {
-      "pxp.application" = local.object_maps.pxp_application
-    }
+  common_tags = {
+    "pxp.application" = local.object_maps.pxp_application
+  }
 }
 
 ###################################################################################
@@ -201,10 +201,10 @@ data "aws_iam_policy_document" "object_maps_codebuild" {
 }
 
 data "aws_iam_policy_document" "object_maps_codeartifact_token" {
-# CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
+  # CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
 
   statement {
-    sid     = "StsPermissions"
+    sid = "StsPermissions"
     actions = [
       "sts:GetServiceBearerToken"
     ]
@@ -219,7 +219,7 @@ data "aws_iam_policy_document" "object_maps_codeartifact_token" {
   }
 
   statement {
-    sid     = "CodeArtifactDomainPermissions"
+    sid = "CodeArtifactDomainPermissions"
     actions = [
       "codeartifact:GetAuthorizationToken"
     ]
@@ -227,7 +227,7 @@ data "aws_iam_policy_document" "object_maps_codeartifact_token" {
   }
 
   statement {
-    sid     = "CodeArtifactRepositoryPermissions"
+    sid = "CodeArtifactRepositoryPermissions"
     actions = [
       "codeartifact:DescribeRepository",
       "codeartifact:ReadFromRepository",
@@ -238,7 +238,7 @@ data "aws_iam_policy_document" "object_maps_codeartifact_token" {
   }
 
   statement {
-    sid     = "CodeArtifactPackagePermissions"
+    sid = "CodeArtifactPackagePermissions"
     actions = [
       "codeartifact:UpdatePackageVersionsStatus",
       "codeartifact:PublishPackageVersion",
@@ -273,7 +273,7 @@ resource "aws_iam_role_policy" "object_maps_codeartifact_token_inline_policy" {
 ###################################################################################
 resource "aws_codestarnotifications_notification_rule" "object_maps" {
 
-  detail_type = var.notification_detail_type
+  detail_type    = var.notification_detail_type
   event_type_ids = var.event_type_ids
 
   name     = "${local.object_maps.name}-notification"

@@ -10,6 +10,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.decisionTree.ManageDecisionTree;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
+import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.DismissPage;
@@ -256,4 +257,42 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		adminUtils.resetPreventReschedOnCancelSettings(driver, adminUser, testData, testData.getAppointmenttype());
 	}
 	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifySlotSizeFunctionalityWithProviderOffNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS Admin portal and do setting related to merge Slot");
+		adminUtils.mergeSlotWithShowProviderOff(driver, adminUser, testData);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectAptType(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		testData.setFirstHour(aptDateTime.getFirstTimeWithHour());
+		testData.setFirstMinute(aptDateTime.getFirstTimeWithMinute());
+		String time = aptDateTime.getfirsttime();
+		log("First Time is  " + time);
+		String nextTime = aptDateTime.getNextTimeWithMinute();
+		log("Next Time is " + nextTime);
+		log("Time Add After  " + psspatientutils.addTimeinFixedTime(testData));
+		assertEquals(aptDateTime.getNextTimeWithMinute(), psspatientutils.addTimeinFixedTime(testData));
+	}
 }

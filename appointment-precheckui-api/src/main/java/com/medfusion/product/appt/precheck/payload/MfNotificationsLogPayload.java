@@ -70,5 +70,13 @@ public class MfNotificationsLogPayload {
 				+ "}";
 		return createNotification;
 	}
+	
+	public String createLogsPayload(String subjectId, String subjectUrn ) {
+		String returnLogs = "{\r\n"
+				+ "  \"subjectId\": \""+subjectId+"\",\r\n"
+				+ "  \"subjectUrn\": \""+subjectUrn+"\"\r\n"
+				+ "}";
+		return returnLogs;
+	}
 
 }

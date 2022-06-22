@@ -324,6 +324,83 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 		apiVerification.verifyCreateNotification(response);
 	}
 
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testReturnsLogWithInvalidSubUrn() throws IOException {
+		Response response = postAPIRequest.returnsLog(headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("invalid.subj.urn"),
+				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
+						+ Appointment.apptId);
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 204);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testReturnsLogWithInvalidPracticeId() throws IOException {
+		Response response = postAPIRequest.returnsLog(headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("notifiction.subj.urn"), propertyData.getProperty("invalid.practice.id") + "."
+						+ Appointment.patientId + "." + Appointment.apptId);
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 204);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testReturnsLogWithInvalidSubUrnAndPracticeId() throws IOException {
+		Response response = postAPIRequest.returnsLog(headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("invalid.subj.urn"), propertyData.getProperty("invalid.practice.id") + "."
+						+ Appointment.patientId + "." + Appointment.apptId);
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 204);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testReturnLogs() throws IOException {
+		Response creatResponse = postAPIRequest.createsLogs(payload.createLogsPayload(propertyData.getProperty("notifiction.subj.id"),
+				propertyData.getProperty("update.appt.metadata.practice.id") + "."
+				+ Appointment.patientId + "." + Appointment.apptId),headerConfig.HeaderwithToken(getaccessToken));
+		assertEquals(creatResponse.getStatusCode(), 200);
+	
+		Response response = postAPIRequest.returnsLog(headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("notifiction.subj.id"),
+				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
+							+ Appointment.apptId);
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyReturnLogs(response, propertyData.getProperty("notifiction.subj.urn"),
+				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
+							+ Appointment.apptId);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreateLogsCoupleOfTimes() throws IOException {
+		Response creatResponse = postAPIRequest.createsLogs(payload.createLogsPayload(propertyData.getProperty("notifiction.subj.id"),
+				propertyData.getProperty("update.appt.metadata.practice.id") + "."
+				+ Appointment.patientId + "." + Appointment.apptId),headerConfig.HeaderwithToken(getaccessToken));
+		log("Verifying the response");
+		assertEquals(creatResponse.getStatusCode(), 200);
+	
+		Response response = postAPIRequest.returnsLog(headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("notifiction.subj.id"),
+				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
+							+ Appointment.apptId);
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+			
+			
+		Response againCreatResponse = postAPIRequest.createsLogs(payload.createLogsPayload(propertyData.getProperty("notifiction.subj.id"),
+				propertyData.getProperty("update.appt.metadata.practice.id") + "."
+				+ Appointment.patientId + "." + Appointment.apptId),headerConfig.HeaderwithToken(getaccessToken));
+		log("Verifying the response");
+		assertEquals(againCreatResponse.getStatusCode(), 200);
+		apiVerification.responseTimeValidation(againCreatResponse);
+		apiVerification.verifyReturnLogs(againCreatResponse,
+				propertyData.getProperty("update.appt.metadata.practice.id") + "." + Appointment.patientId + "."
+							+ Appointment.apptId,propertyData.getProperty("notifiction.subj.urn"));
+	}
+
 	@BeforeMethod(enabled = true, groups = { "APItest" })
 	public void getMethodName(ITestResult result) throws IOException {
 		log("Method Name-- " + result.getMethod().getMethodName());
