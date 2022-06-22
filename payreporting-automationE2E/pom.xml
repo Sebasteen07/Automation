@@ -83,7 +83,6 @@
 					<execution>
 						<phase>integration-test</phase>
 						<configuration>
-							<failBuild>false</failBuild>
 							<!--<groups>${testGroups}</groups> -->
 							<suiteXmlFiles>
 								<suiteXmlFile>payreporting-acceptance.xml</suiteXmlFile>
