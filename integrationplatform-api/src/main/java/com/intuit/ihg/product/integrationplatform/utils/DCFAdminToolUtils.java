@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import static org.testng.Assert.assertTrue;
@@ -70,12 +70,12 @@ public class DCFAdminToolUtils extends MedfusionPage{
 		return driver.findElement(By.xpath("// body[@class='bodyinbox yscrollbar']//div[contains(text(),'" + text + "')]")).isDisplayed();
 	}
 
-	public void checkReprocessorButton(String dataJobId, String condition) {
+	public void checkReprocessorButton(String url, String dataJobId, String condition) {
 		try {
-			this.driver.get(ADMIN_TOOL_URL);
+			this.driver.get(url);
 
-			userIDField.sendKeys("");
-			passwordField.sendKeys("");
+			userIDField.sendKeys("SunilXavier");
+			passwordField.sendKeys("Apr@s2022");
 
 			submitButton.click();
 
