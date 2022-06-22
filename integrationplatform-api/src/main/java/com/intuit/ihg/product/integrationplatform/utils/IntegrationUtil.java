@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ifs.csscat.core.wait.WaitForWEIsDisplayedEnabled;
 import com.medfusion.common.utils.IHGUtil;
 
@@ -80,7 +81,7 @@ public class IntegrationUtil extends IHGUtil {
 	        try {
 	            found = wait.until(ExpectedConditions.elementToBeClickable(ele)) != null;
 	        } catch (Exception e) {
-	           log("exception found - "+ e);
+	        	Log4jUtil.log("exception found - "+ e);
 	        }
 	        return found;
 	    }
