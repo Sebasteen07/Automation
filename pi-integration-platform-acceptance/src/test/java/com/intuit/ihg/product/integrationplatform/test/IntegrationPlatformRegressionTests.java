@@ -3440,7 +3440,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = false, dataProvider = "channelVersion", groups = {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
 			"AcceptanceTests", "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ERxMedication20(String version) throws Exception {
 		if (version.contains("v2"))
@@ -4170,8 +4170,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.allowOnce = "true";
 		String messageID = null;
 		String dataJobID;
-		ArrayList<String> dataJobIDs = new ArrayList<String>();
-
+		
 		for (int i = 0; i < 10; i++) {
 		if (version.equals("v1")) {
 			logStep("Fill Message data");
@@ -4188,11 +4187,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			// wait 50 seconds so the message can be processed
 				Thread.sleep(50000);
 				dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
-				dataJobIDs.add(dataJobID);
 				DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
 				dcfTool.checkReprocessorButton(testData.DCF_ADMINTOOL_URL, dataJobID, "reprocess");
 				log("reprocessor button found");
-				dataJobIDs.add(dataJobID);
 				break;
 		} else {
 			logStep("Fill Message data");
@@ -4215,12 +4212,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
 				DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
 				dcfTool.checkReprocessorButton(testData.DCF_ADMINTOOL_URL, dataJobID, "reprocess");
-				dataJobIDs.add(dataJobID);
 				break;
 		}
 		}
-
-		log("datajobID list is: " + dataJobIDs);
 
 	}
 
@@ -4244,8 +4238,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.PharmacyName = "AddedNewPharmacy";
 
 		String dataJobID;
-		ArrayList<String> dataJobIDs = new ArrayList<String>();
-
+		
 		PharmacyPayload pharmacyObj = new PharmacyPayload();
 		String ExternalPharmacyId = "353548900986280";
 		testData.PharmacyPhone = PharmacyPayload.randomNumbers(10);
@@ -4266,7 +4259,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
 		DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
 		dcfTool.checkReprocessorButton(testData.DCF_ADMINTOOL_URL, dataJobID, "reprocess");
-		dataJobIDs.add(dataJobID);
+	
 	}
 
 
@@ -4513,8 +4506,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		aDUtils.csvFileReader(testData, workingDir);
 
 		String dataJobID;
-		ArrayList<String> dataJobIDs = new ArrayList<String>();
-
+	
 		logStep("Post NEW AppointMentData ");
 		testData.Status = "NEW";
 		testData.FirstName = testData.FirstName;
@@ -4539,7 +4531,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
 		DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
 		dcfTool.checkReprocessorButton(testData.DCF_ADMINTOOL_URL, dataJobID, "invalidzip");
-		dataJobIDs.add(dataJobID);
+	
 	}
 
 	@Test(enabled = true, groups = {""}, retryAnalyzer = RetryAnalyzer.class)
@@ -4557,8 +4549,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		aDUtils.csvFileReader(testData, workingDir);
 
 		String dataJobID;
-		ArrayList<String> dataJobIDs = new ArrayList<String>();
-
+		
 		testData.Status = "NEW";
 		testData.FirstName = testData.FirstName;
 		testData.LastName = testData.LastName;
@@ -4581,7 +4572,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		dataJobID = RestUtils.getDataJobID(testData.ResponsePath);
 		DCFAdminToolUtils dcfTool = new DCFAdminToolUtils(driver);
 		dcfTool.checkReprocessorButton(testData.DCF_ADMINTOOL_URL, dataJobID, "invalidzip");
-		dataJobIDs.add(dataJobID);
+		
 	}
 
 
