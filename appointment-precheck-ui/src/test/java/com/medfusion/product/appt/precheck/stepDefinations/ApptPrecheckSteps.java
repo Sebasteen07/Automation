@@ -9390,7 +9390,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("precheck.appt.type"), Appointment.patientId,
 				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
 				propertyData.getProperty("precheck.last.name"), propertyData.getProperty("precheck.dob"),
-				propertyData.getProperty("precheck.phone"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.number"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("precheck.address.line1"),
 				propertyData.getProperty("precheck.patient.city"),
 				propertyData.getProperty("precheck.patient.zip"), propertyData.getProperty("precheck.provider.name"),
