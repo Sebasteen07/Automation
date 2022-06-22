@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Appointment_Precheck" verbose="2">
+<suite name="Appointment_Precheck_API" verbose="2">
     
-    <test name="Appointment_Precheck">
+    <test name="Appointment_Precheck_API">
        
         <classes>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckAptPortalIntegrationsTest"/>
@@ -9,20 +9,17 @@
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckAptReminderProcessorTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckAptReminderSchedulerTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckDataTest"/>
-            
-             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckIMHProxyServiceTest"/>
+            <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckIMHProxyServiceTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckMfEmailNotifierTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckMfisAppointmentServiceTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckMfisFilterServiceTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckMfLogoServiceTest"/>
-            
-             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckMfNotificationModulatorTest"/>
+            <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckMfNotificationModulatorTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckMfNotificationsLogTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckMfNotificationSubscriptionManagerTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckMfPracticeSettingsManagerTest"/>
             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrecheckNotificationDisplayServiceTest"/>
-            
-             <class name="com.medfusion.product.apptprecheckapi.test.ApptPrechekMfReminderServiceTests"/>
+            <class name="com.medfusion.product.apptprecheckapi.test.ApptPrechekMfReminderServiceTests"/>
             <class name="com.medfusion.product.apptprecheckapi.test.AptEventCollectorTests"/>
             <class name="com.medfusion.product.apptprecheckapi.test.AptPrecheckMfAppointmentSchedulerTests"/>
             <class name="com.medfusion.product.apptprecheckapi.test.AptPrecheckMfAppointmentTypesTests"/>
