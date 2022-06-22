@@ -3902,6 +3902,14 @@ public class AppointmentsPage extends BasePageObject {
 				return visibility;
 			}
 		}
+		
+		public void sendBroadcastMessageInEnglish(String messageEn) throws Exception {
+			IHGUtil.waitForElement(driver, 10, broadcastMessageInEn);
+			broadcastMessageInEn.sendKeys(messageEn);
+			jse.executeScript("arguments[0].click();", confirmThisMsgCheckbox);
+			IHGUtil.waitForElement(driver, 10, sendMessageButton);
+			jse.executeScript("arguments[0].click();", sendMessageButton);
+		}
 
 
 }

@@ -9390,7 +9390,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("precheck.appt.type"), Appointment.patientId,
 				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
 				propertyData.getProperty("precheck.last.name"), propertyData.getProperty("precheck.dob"),
-				propertyData.getProperty("precheck.phone"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.number"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("precheck.address.line1"),
 				propertyData.getProperty("precheck.patient.city"),
 				propertyData.getProperty("precheck.patient.zip"), propertyData.getProperty("precheck.provider.name"),
@@ -9443,7 +9443,6 @@ public class ApptPrecheckSteps extends BaseTest {
 		mainPage.clickOnAppointmentsTab();
 		apptPage.selectPatientIdAppt(Appointment.patientId);
 		apptPage.selectFirstPatient();
-		scrollAndWait(-1000, 0, 20000);
 		apptPage.clickOnActions();
 		apptPage.clickOnSendReminder();
 	}
@@ -9490,6 +9489,192 @@ public class ApptPrecheckSteps extends BaseTest {
 		
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 	}
+	
+	@When("I select practice language preference as English from notification in setting")
+	public void i_select_practice_language_preference_as_english_from_notification_in_setting() throws InterruptedException {
+	   mainPage.clickOnSettingTab();
+	   notifPage.clickOnNotificationTab();
+	   notifPage.clickOnEnglishPracticePrefLang();
+	   notifPage.saveNotification();
+	}
+	@Then("I verify from email appointment reminder email should be recieved in english language")
+	public void i_verify_from_email_appointment_reminder_email_should_be_recieved_in_english_language() throws NullPointerException, Exception {
+		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.in.en"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.title"),
+				10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.start.precheck.title"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("unsubscribe.in.en"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),
+				propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),
+				propertyData.getProperty("message.in.mail.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),propertyData.getProperty("confidentiality.notice.in.en"), 10));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		log("user select english and spanish practice preference language");
+		notifPage.saveNotification();
+	}
+	
+	@When("I select patient and send broadcast message in english")
+	public void i_select_patient_and_send_broadcast_message_in_english() throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.selectFirstPatient();
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessageInEnglish(propertyData.getProperty("broadcast.message.en"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+	}
+	@Then("I verify from email broadcast message email should be recieved in english language")
+	public void i_verify_from_email_broadcast_message_email_should_be_recieved_in_english_language() throws NullPointerException, Exception {
+		String practiceName = apptPage.getPracticeName();
+		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
+		YopMail yopMail = new YopMail(driver);
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("broadcast.email.subject"), 
+				propertyData.getProperty("broadcast.email.title"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("broadcast.email.subject"), 
+				propertyData.getProperty("broadcast.message.en"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("broadcast.email.subject"), 
+				propertyData.getProperty("unsubscribe.in.en"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("broadcast.email.subject"), 
+				propertyData.getProperty("message.in.mail.in.en"), 10));
+		
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("broadcast.email.subject"),
+				propertyData.getProperty("confidentiality.notice.in.en"), 10));
+
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		log("user select english and spanish practice preference language");
+		notifPage.saveNotification();
+	}
+	
+	@Then("I verify from email curbside reminder email should be recieved in english language")
+	public void i_verify_from_email_curbside_reminder_email_should_be_recieved_in_english_language() throws NullPointerException, Exception {
+		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"), 
+				propertyData.getProperty("curbside.msg.title.en"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"), 
+				propertyData.getProperty("curbside.checkin.msg.title.en"),10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"), 
+				propertyData.getProperty("curbside.checkin.mail.title"),10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"), 
+				propertyData.getProperty("unsubscribe.in.en"),10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("message.in.mail.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("confidentiality.notice.in.en"), 10));
+
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		log("user select english and spanish practice preference language");
+		notifPage.saveNotification();
+	}
+	
+	@Then("I verify from email manual reminder email should be recieved in english language")
+	public void i_verify_from_email_manual_reminder_email_should_be_recieved_in_english_language() throws NullPointerException, Exception {
+		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), 
+				propertyData.getProperty("appt.reminder.in.en"), 10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), 
+				propertyData.getProperty("appt.reminder.title"),
+				10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), 
+				propertyData.getProperty("appt.start.precheck.title"),
+				10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), 
+				propertyData.getProperty("unsubscribe.in.en"),
+				10));
+		
+      log(propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en.es"));
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),
+				propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),
+				propertyData.getProperty("message.in.mail.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),
+				propertyData.getProperty("confidentiality.notice.in.en"), 10));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		log("user select english and spanish practice preference language");
+		notifPage.saveNotification();
+	}
+	
 	
 
 }
