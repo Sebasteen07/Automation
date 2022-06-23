@@ -1,13 +1,13 @@
-# Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+# Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 
 ###################################################################################
 # CodeBuild project                                                               #
 ###################################################################################
-module "qa_automation_utils_codebuild" {
+module "integration_platform_acceptance_codebuild" {
   source = "git::ssh://git@bitbucket.nextgen.com:7999/dope/codebuild?ref=4.3.0"
 
   artifact_bucket_arns = [local.pipeline_artifact_bucket_arn]
-  name                 = local.qa_automation_utils.name
+  name                 = local.integration_platform_acceptance.name
   kms_key_id           = local.kms_key_id
   artifact_kms_key_ids = []
   artifacts_type       = var.codebuild_artifacts_type
@@ -15,12 +15,12 @@ module "qa_automation_utils_codebuild" {
   environment_variables = [
     {
       name  = "maven_command"
-      value = "${local.qa_automation_utils.maven_parameter} -Dmaven.test.skip=${local.qa_automation_utils.maven_test_skip}"
+      value = "${local.integration_platform_acceptance.maven_parameter} -Dmaven.test.skip=${local.integration_platform_acceptance.maven_test_skip}"
       type  = "PLAINTEXT"
     },
     {
       name  = "execution_folder"
-      value = local.qa_automation_utils.execution_folder
+      value = local.integration_platform_acceptance.execution_folder
       type  = "PLAINTEXT"
     },
     {
@@ -37,8 +37,8 @@ module "qa_automation_utils_codebuild" {
 
   source_buildspec = var.source_buildspec
   source_type      = var.codebuild_source_type
-  build_timeout    = local.qa_automation_utils.build_timeout
-  queued_timeout   = local.qa_automation_utils.queued_timeout
+  build_timeout    = local.integration_platform_acceptance.build_timeout
+  queued_timeout   = local.integration_platform_acceptance.queued_timeout
 
   environment_privileged_mode             = var.codebuild_privileged_override
   environment_compute_type                = var.codebuild_compute_type
@@ -53,17 +53,17 @@ module "qa_automation_utils_codebuild" {
   }]
 
   common_tags = {
-    "pxp.application" = "Platform"
+    "pxp.application" = "Portal"
   }
 }
 
 ###################################################################################
 # CodePipeline job                                                                #
 ###################################################################################
-resource "aws_codepipeline" "qa_automation_utils_codepipeline" {
+resource "aws_codepipeline" "integration_platform_acceptance_codepipeline" {
 
-  name     = local.qa_automation_utils.name
-  role_arn = aws_iam_role.qa_automation_utils.arn
+  name     = local.integration_platform_acceptance.name
+  role_arn = aws_iam_role.integration_platform_acceptance.arn
 
   artifact_store {
     location = local.pipeline_artifact_bucket_name
@@ -82,9 +82,9 @@ resource "aws_codepipeline" "qa_automation_utils_codepipeline" {
       output_artifacts = ["SourceZip"]
 
       configuration = {
-        BranchName           = local.qa_automation_utils.codecommit_branch
+        BranchName           = local.integration_platform_acceptance.codecommit_branch
         RepositoryName       = var.repository_name
-        PollForSourceChanges = local.qa_automation_utils.PollForSourceChanges
+        PollForSourceChanges = local.integration_platform_acceptance.PollForSourceChanges
       }
     }
   }
@@ -102,22 +102,22 @@ resource "aws_codepipeline" "qa_automation_utils_codepipeline" {
       version          = "1"
 
       configuration = {
-        ProjectName = module.qa_automation_utils_codebuild.codebuild_project.name
+        ProjectName = module.integration_platform_acceptance_codebuild.codebuild_project.name
       }
     }
   }
 
   tags = {
-    "pxp.application" = "Platform"
+    "pxp.application" = "Portal"
   }
 }
 
 ###################################################################################
 # Pipeline trigger                                                                #
 ###################################################################################
-resource "aws_cloudwatch_event_rule" "trigger_qa_automation_utils_codepipeline" {
-  name        = "${local.qa_automation_utils.name}-trigger"
-  description = "Trigger pipeline execution for ${local.qa_automation_utils.name} when changes are pushed to ${local.qa_automation_utils.codecommit_branch} branch in CodeCommit repo ${var.repository_name}."
+resource "aws_cloudwatch_event_rule" "trigger_integration_platform_acceptance_codepipeline" {
+  name        = "${local.integration_platform_acceptance.name}-trigger"
+  description = "Trigger pipeline execution for ${local.integration_platform_acceptance.name} when changes are pushed to ${local.integration_platform_acceptance.codecommit_branch} branch in CodeCommit repo ${var.repository_name}."
 
   event_pattern = <<EOF
 {
@@ -126,22 +126,22 @@ resource "aws_cloudwatch_event_rule" "trigger_qa_automation_utils_codepipeline" 
   "resources": ["arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.repository_name}"],
   "detail": {
     "referenceType": ["branch"],
-    "referenceName": ["${local.qa_automation_utils.codecommit_branch}"],
+    "referenceName": ["${local.integration_platform_acceptance.codecommit_branch}"],
     "event": ["referenceDeleted", "referenceCreated"]
   }
 }
 EOF
 
   tags = {
-    "pxp.application" = "Platform"
+    "pxp.application" = "Portal"
   }
 }
 
-resource "aws_cloudwatch_event_target" "trigger_qa_automation_utils_codepipeline" {
-  rule      = aws_cloudwatch_event_rule.trigger_qa_automation_utils_codepipeline.name
-  target_id = "${local.qa_automation_utils.name}-event-target"
-  role_arn  = aws_iam_role.qa_automation_utils_cwevent.arn
-  arn       = aws_codepipeline.qa_automation_utils_codepipeline.arn
+resource "aws_cloudwatch_event_target" "trigger_integration_platform_acceptance_codepipeline" {
+  rule      = aws_cloudwatch_event_rule.trigger_integration_platform_acceptance_codepipeline.name
+  target_id = "${local.integration_platform_acceptance.name}-event-target"
+  role_arn  = aws_iam_role.integration_platform_acceptance_cwevent.arn
+  arn       = aws_codepipeline.integration_platform_acceptance_codepipeline.arn
 }
 
 ###################################################################################
@@ -149,41 +149,41 @@ resource "aws_cloudwatch_event_target" "trigger_qa_automation_utils_codepipeline
 ###################################################################################
 
 # IAM policies and roles for setting up Codepipeline triggers
-resource "aws_iam_role" "qa_automation_utils_cwevent" {
-  name               = "${local.qa_automation_utils.name}-cwevent"
+resource "aws_iam_role" "integration_platform_acceptance_cwevent" {
+  name               = "${local.integration_platform_acceptance.name}-cwevent"
   assume_role_policy = data.aws_iam_policy_document.cwevent_assume_role_policy.json
 
   tags = {
-    "pxp.application" = "Platform"
+    "pxp.application" = "Portal"
   }
 }
 
-data "aws_iam_policy_document" "qa_automation_utils_cwevent" {
+data "aws_iam_policy_document" "integration_platform_acceptance_cwevent" {
   statement {
     actions = [
       "codepipeline:StartPipelineExecution",
     ]
 
     resources = [
-      aws_codepipeline.qa_automation_utils_codepipeline.arn,
+      aws_codepipeline.integration_platform_acceptance_codepipeline.arn,
     ]
   }
 }
 
-resource "aws_iam_role_policy" "qa_automation_utils_cw_events_policy" {
-  name   = "${local.qa_automation_utils.name}-cwevents-policy"
-  role   = aws_iam_role.qa_automation_utils_cwevent.name
-  policy = data.aws_iam_policy_document.qa_automation_utils_cwevent.json
+resource "aws_iam_role_policy" "integration_platform_acceptance_cw_events_policy" {
+  name   = "${local.integration_platform_acceptance.name}-cwevents-policy"
+  role   = aws_iam_role.integration_platform_acceptance_cwevent.name
+  policy = data.aws_iam_policy_document.integration_platform_acceptance_cwevent.json
 }
 
 # IAM policies and roles for CodePipeline
-resource "aws_iam_role" "qa_automation_utils" {
+resource "aws_iam_role" "integration_platform_acceptance" {
 
-  name               = "${local.qa_automation_utils.name}-role"
+  name               = "${local.integration_platform_acceptance.name}-role"
   assume_role_policy = data.aws_iam_policy_document.pipeline_assume_role_policy.json
 }
 
-data "aws_iam_policy_document" "qa_automation_utils_codebuild" {
+data "aws_iam_policy_document" "integration_platform_acceptance_codebuild" {
 
   statement {
     sid = "Builds"
@@ -195,12 +195,12 @@ data "aws_iam_policy_document" "qa_automation_utils_codebuild" {
     ]
 
     resources = [
-      module.qa_automation_utils_codebuild.codebuild_project.arn
+      module.integration_platform_acceptance_codebuild.codebuild_project.arn
     ]
   }
 }
 
-data "aws_iam_policy_document" "qa_automation_utils_codeartifact_token" {
+data "aws_iam_policy_document" "integration_platform_acceptance_codeartifact_token" {
   # CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
 
   statement {
@@ -209,7 +209,7 @@ data "aws_iam_policy_document" "qa_automation_utils_codeartifact_token" {
       "sts:GetServiceBearerToken"
     ]
     resources = [
-      "arn:aws:sts::${data.aws_caller_identity.current.id}:assumed-role/${module.qa_automation_utils_codebuild.codebuild_role.name}/*"
+      "arn:aws:sts::${data.aws_caller_identity.current.id}:assumed-role/${module.integration_platform_acceptance_codebuild.codebuild_role.name}/*"
     ]
     condition {
       test     = "StringEquals"
@@ -248,43 +248,22 @@ data "aws_iam_policy_document" "qa_automation_utils_codeartifact_token" {
   }
 }
 
-resource "aws_iam_role_policy" "qa_automation_utils_pipeline" {
+resource "aws_iam_role_policy" "integration_platform_acceptance_pipeline" {
 
-  name   = "${local.qa_automation_utils.name}-pipeline-policy"
-  role   = aws_iam_role.qa_automation_utils.name
+  name   = "${local.integration_platform_acceptance.name}-pipeline-policy"
+  role   = aws_iam_role.integration_platform_acceptance.name
   policy = data.aws_iam_policy_document.common_codepipeline_permissions.json
 }
 
-resource "aws_iam_role_policy" "qa_automation_utils_codebuild" {
+resource "aws_iam_role_policy" "integration_platform_acceptance_codebuild" {
 
-  name   = "${local.qa_automation_utils.name}-codebuild-policy"
-  role   = aws_iam_role.qa_automation_utils.name
-  policy = data.aws_iam_policy_document.qa_automation_utils_codebuild.json
+  name   = "${local.integration_platform_acceptance.name}-codebuild-policy"
+  role   = aws_iam_role.integration_platform_acceptance.name
+  policy = data.aws_iam_policy_document.integration_platform_acceptance_codebuild.json
 }
 
-resource "aws_iam_role_policy" "qa_automation_utils_codeartifact_token_inline_policy" {
-  name   = "${local.qa_automation_utils.name}-codeartifact-token-inline-policy"
-  role   = module.qa_automation_utils_codebuild.codebuild_role.name
-  policy = data.aws_iam_policy_document.qa_automation_utils_codeartifact_token.json
-}
-
-###################################################################################
-# Notifications                                                                   #
-###################################################################################
-resource "aws_codestarnotifications_notification_rule" "qa_automation_utils" {
-
-  detail_type    = var.notification_detail_type
-  event_type_ids = var.event_type_ids
-
-  name     = "${local.qa_automation_utils.name}-notification"
-  resource = aws_codepipeline.qa_automation_utils_codepipeline.arn
-
-  target {
-    address = var.aws_chatbot_channel_arn
-    type    = "AWSChatbotSlack"
-  }
-
-  tags = {
-    "pxp.application" = "Platform"
-  }
+resource "aws_iam_role_policy" "integration_platform_acceptance_codeartifact_token_inline_policy" {
+  name   = "${local.integration_platform_acceptance.name}-codeartifact-token-inline-policy"
+  role   = module.integration_platform_acceptance_codebuild.codebuild_role.name
+  policy = data.aws_iam_policy_document.integration_platform_acceptance_codeartifact_token.json
 }

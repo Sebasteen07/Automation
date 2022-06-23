@@ -136,4 +136,52 @@ locals {
     queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
     maven_parameter      = "mvn clean install"
   }
+
+  integration_platform_acceptance = {
+    name                 = "${local.jobname-prefix}integration-platform-acceptance"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "integration-platform-acceptance"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  integrationplatform_api = {
+    name                 = "${local.jobname-prefix}integrationplatform-api"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "integrationplatform-api"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  integrationplatform_service = {
+    name                 = "${local.jobname-prefix}integrationplatform-service"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "integrationplatform-service"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  ehcore_api_automation = {
+    name                 = "${local.jobname-prefix}ehcore-api-automation"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "ehcore-api-automation"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
 }
