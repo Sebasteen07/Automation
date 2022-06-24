@@ -50,6 +50,12 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	
 	@FindBy(how = How.XPATH, using = "//input[@id='appointmentType.preventScheduling']")
 	private WebElement prevSchedSettingAdmin;
+
+	@FindBy(how = How.XPATH, using = "//label[normalize-space()='Prevent Reschedule On Cancel (Days)']")
+	private WebElement prevReschedOnCancelDaysLabel;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='appointmentType.preventRescheduleOnCancel']")
+	private WebElement fillPrevReschedOnCancelDays;
 	
 	@FindBy(how = How.XPATH, using = "//form[@role='form']//fieldset//div//div//button[@type='submit'][normalize-space()='Save']")
 	private WebElement aptTypeSettingSaveBtn;
@@ -69,7 +75,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
 	private WebElement timeMarkOption;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[2]/div/div/button[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='tabX13']/form/fieldset[2]/div/div/button[1]")
 	private WebElement saveConfig;
 
 	@FindBy(how = How.XPATH, using = "//label[@for='allowSameDayAppts']//input")
@@ -146,6 +152,12 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	
 	@FindBy(how = How.XPATH, using = "//input[@id='appointmentstacking']/following-sibling::i")
 	private WebElement overBookingToggleClick;
+	
+	@FindBy(how = How.XPATH, using = "//*[@name='slotCount']")
+	private WebElement slotCount;
+	
+	@FindBy(how = How.NAME, using = "slotSize")
+	private WebElement slotSizeValue;
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
@@ -205,8 +217,28 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		log("PrevSched Setting Label- "+prevSchedSettingLabel.getText());
 		
 		commonMethods.highlightElement(prevSchedSettingAdmin);
-		prevSchedSettingAdmin.click();
 		prevSchedSettingAdmin.clear();
+		prevSchedSettingAdmin.sendKeys("0");
+		commonMethods.highlightElement(aptTypeSettingSaveBtn);
+		aptTypeSettingSaveBtn.click();
+	}
+	
+	public void prevReschedOnCancelSettings(String aptType, String i) {
+		commonMethods.highlightElement(prevReschedOnCancelDaysLabel);
+		log("PrevSched Setting Label- "+prevReschedOnCancelDaysLabel.getText());
+		commonMethods.highlightElement(fillPrevReschedOnCancelDays);
+		fillPrevReschedOnCancelDays.clear();
+		fillPrevReschedOnCancelDays.sendKeys(i);
+		commonMethods.highlightElement(aptTypeSettingSaveBtn);
+		aptTypeSettingSaveBtn.click();
+	}
+	
+	public void resetPrevReschedOnCancelSettings(String aptType) {
+		commonMethods.highlightElement(prevReschedOnCancelDaysLabel);
+		log("PrevSched Setting Label- "+prevReschedOnCancelDaysLabel.getText());
+		commonMethods.highlightElement(fillPrevReschedOnCancelDays);
+		fillPrevReschedOnCancelDays.clear();
+		fillPrevReschedOnCancelDays.sendKeys("0");
 		commonMethods.highlightElement(aptTypeSettingSaveBtn);
 		aptTypeSettingSaveBtn.click();
 	}
@@ -358,5 +390,21 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	public void overBookingClick() {
 		overBookingToggleClick.click();
 		appointmenttypeSave.click();
+	}
+	
+	public void slotCount(String slotValue) {
+		Select selectOptions = new Select(slotCount);
+		selectOptions.selectByVisibleText(slotValue);
+		slotCount.click();
+		commonMethods.highlightElement(appointmenttypeSave);
+		appointmenttypeSave.click();
+	}
+	
+	public String getslotSize() {
+		commonMethods.highlightElement(slotSizeValue);
+		Select selectOptions = new Select(slotSizeValue);
+		WebElement slotSizeValue1=selectOptions.getFirstSelectedOption();
+		String selectedValue=slotSizeValue1.getText();
+		return selectedValue;
 	}
 }

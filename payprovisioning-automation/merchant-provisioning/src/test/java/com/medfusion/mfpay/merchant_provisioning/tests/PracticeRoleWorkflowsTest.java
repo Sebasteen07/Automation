@@ -1,6 +1,7 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.tests;
 
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.UsersDetails;
@@ -26,7 +27,7 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 		setupFinanceRequestSpecBuilder();
 	}
 
-	@Test(enabled = true)
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSetPracticeRoleToMerchantUser() throws Throwable {
 		
 		String practiceStaffId = IHGUtil.createRandomNumericString(5);
@@ -38,13 +39,13 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 		Response response = usersdetails.createPracticeUser(getusers, testData.getProperty("staff.username"),
 				testData.getProperty("practice.role"));
 
-		Validations validations = new Validations();
 		JsonPath jsonpath = new JsonPath(response.asString());
-		validations.validatePracticeRoles(jsonpath, practiceStaffId, testData.getProperty("practice.id"),
+		Validations.validatePracticeRoles(jsonpath, practiceStaffId, testData.getProperty("practice.id"),
 				Arrays.asList(testData.getProperty("practice.role")));
 	}
 
-	@Test(dataProvider = "practice_role_test", dataProviderClass = MPTestData.class, enabled = true)
+	@Test(dataProvider = "practice_role_test", dataProviderClass = MPTestData.class,
+			enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSetPracticeRoleToMerchantUserInvalidData(String practiceStaffId, String practiceId, String username,
 			String practiceRole) throws IOException {
 		String getusers = ProvisioningUtils.PRACTICE_ROLE + practiceStaffId + "/practice/" + practiceId;
@@ -52,16 +53,15 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 		UsersDetails usersdetails = new UsersDetails();
 		Response response = usersdetails.createPracticeUser(getusers, username, practiceRole);
 
-		Validations validations = new Validations();
 		JsonPath jsonpath = new JsonPath(response.asString());
 		if (response.getStatusCode() == 200) {
-			validations.validatePracticeRoles(jsonpath, practiceStaffId, practiceId, Arrays.asList(practiceRole));
+			Validations.validatePracticeRoles(jsonpath, practiceStaffId, practiceId, Arrays.asList(practiceRole));
 		} else {
 			Assert.assertNotNull(jsonpath.get("error"));
 		}
 	}
 
-	@Test(enabled = true)
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetUsers() throws Throwable {
 		String getusers = ProvisioningUtils.MERCHANT_USER + "/practice/" + testData.getProperty("practice.id")
 				+ "/user/" + testData.getProperty("user.id") + "/metadata";
@@ -70,7 +70,6 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 
 		Response response = usersdetails.getMerchantUserRoles(getusers);
 
-		Validations validations = new Validations();
 		JsonPath jsonpath = new JsonPath(response.asString());
 		Assert.assertEquals(jsonpath.get("practiceLevelRoles[0]").toString(), "PRACTICE_POS_ADMIN");
 		Assert.assertEquals(jsonpath.get("practiceStaffId").toString(), testData.getProperty("user.id"));
@@ -79,7 +78,7 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 	
 
 	
-	@Test(enabled = true)
+	@Test(enabled = true, groups = { "MerchantProvisioningBEAcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testVerifyDbForPracticeRolesToMerchantUser() throws Throwable {
 
 		String practiceStaffId = IHGUtil.createRandomNumericString(5);
@@ -99,9 +98,8 @@ public class PracticeRoleWorkflowsTest extends BaseRest {
 		Response response = usersdetails.createPracticeUserWithMultipleRoles(getusers,
 				testData.getProperty("staff.username"), roleList);
 
-		Validations validations = new Validations();
 		JsonPath jsonPath = new JsonPath(response.asString());
-		validations.validatePracticeRoles(jsonPath, practiceStaffId, testData.getProperty("practice.id"), roleList);
+		Validations.validatePracticeRoles(jsonPath, practiceStaffId, testData.getProperty("practice.id"), roleList);
 
 		Object roleCheckAfterCreation = DBUtils.executeQueryOnDBGetResult("rcm",
 				"SELECT * FROM public.practice_user_role where p_org_staff_id=" + practiceStaffId, "role_name");

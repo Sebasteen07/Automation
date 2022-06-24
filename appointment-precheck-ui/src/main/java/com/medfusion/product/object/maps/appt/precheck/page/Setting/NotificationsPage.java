@@ -1,9 +1,7 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.By;
@@ -13,14 +11,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 
 public class NotificationsPage extends BasePageObject {
@@ -828,6 +824,60 @@ public class NotificationsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "(//div[@class='table-data'])[21]")
 	private WebElement timingUnitForSMS;
+	
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[1]")
+	private WebElement defaultTiming1ForDay;
+	
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[2]")
+	private WebElement defaultTiming2ForDay;
+
+	@FindBy(how = How.XPATH, using = "(//div[text()='Days'])[3]")
+	private WebElement defaultTiming3ForDay;
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='1']")
+	private WebElement defaultTimingUnit1ForDay;
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='3']")
+	private WebElement defaultTimingUnit2ForDay;
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='5']")
+	private WebElement defaultTimingUnit3ForDay;
+	
+	@FindBy(how = How.XPATH, using = "//div[text()='Hours']")
+	private WebElement selectHourforTiming;
+	
+	@FindBy(how = How.XPATH, using = "//div[text() = 'Minutes']")
+	private WebElement selectMinutesforTiming;
+
+	@FindBy(how = How.XPATH, using = "(//input[@value='12345678904567889990432225566771117656884323456777'])[1]")
+	private WebElement timingUnitTextUnderDesignTab;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='cadence-period-value'])[1]")
+	private WebElement enterTimingUnit;
+
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-icon mf-icon__cadence-setting-remove mf-icon-pointer'])[3]")
+	private WebElement removeButtonInEditFor3rdTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-icon mf-icon__cadence-setting-remove mf-icon-pointer'])[2]")
+	private WebElement removeButtonInEditFor2ndTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-icon mf-icon__cadence-setting-remove mf-icon-pointer'])[1]")
+	private WebElement removeButtonInEditFor1stTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text() ,'Timing Units')]")
+	private WebElement timingUnitsInNotifpage;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-1y2qbuw'])[1]")
+	private WebElement firstTimingAndTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-1y2qbuw'])[2]")
+	private WebElement secondTimingAndTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-1y2qbuw'])[3]")
+	private WebElement thirdTimingAndTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//div[@class=' css-1y2qbuw'])[4]")
+	private WebElement fourthTimingAndTimingUnit;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -1631,7 +1681,7 @@ public class NotificationsPage extends BasePageObject {
 	public void clickOnCurbsideCheckInTabInNotif() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, curbsideCheckInTabInNotif);
-		curbsideCheckInTabInNotif.click();
+		jse.executeScript("arguments[0].click();", curbsideCheckInTabInNotif);
 	}
 
 	public void clickOnEnglishButton() {
@@ -1649,7 +1699,7 @@ public class NotificationsPage extends BasePageObject {
 	public void clickOnSpanishButton() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, spanishButton);
-		spanishButton.click();
+		jse.executeScript("arguments[0].click();", spanishButton);
 	}
 
 	public String getAdditionalArrivalInstructionMsgTextInSpanish() {
@@ -2085,7 +2135,11 @@ public class NotificationsPage extends BasePageObject {
 	public void selectEnglishSpanishPracticePrefLang() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, englishSpanishPracticePrefenceLang);
-		englishSpanishPracticePrefenceLang.click();
+		boolean displayed = englishSpanishPracticePrefenceLang.isDisplayed();
+		if(!displayed) {
+			englishSpanishPracticePrefenceLang.click();
+			log("english and spanish language is selected");
+		}
 	}
 
 	public boolean visiblityOfBroadcastMessageTextBoxInEnEs() {
@@ -3313,6 +3367,335 @@ public class NotificationsPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		log("Timing Unit Text for Email: "+timingUnitForSMS.getText());
 		return timingUnitForSMS.getText();
+	}
+	
+	public boolean visibilityOfDefaultTiming1ForDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, defaultTiming1ForDay);
+		if (defaultTiming1ForDay.isDisplayed()) {
+			log("Default time Days is displayed");
+			return true;
+		} else {
+			log("Default time Days is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfDefaultTiming2ForDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, defaultTiming2ForDay);
+		if (defaultTiming2ForDay.isDisplayed()) {
+			log("Default time Days is displayed");
+			return true;
+		} else {
+			log("Default time Days is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfDefaultTiming3ForDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, defaultTiming3ForDay);
+		if (defaultTiming3ForDay.isDisplayed()) {
+			log("Default time Days is displayed");
+			return true;
+		} else {
+			log("Default time Days is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfDefaultTimingUnit1ForDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, defaultTimingUnit1ForDay);
+		if (defaultTimingUnit1ForDay.isDisplayed()) {
+			log("Default time unit 1 is displayed");
+			return true;
+		} else {
+			log("Default time unit 1 is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfDefaultTimingUnit2ForDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTimingUnit2ForDay);
+		if (defaultTimingUnit2ForDay.isDisplayed()) {
+			log("Default time unit 3 is displayed");
+			return true;
+		} else {
+			log("Default time unit 3 is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfDefaultTimingUnit3ForDay() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTimingUnit3ForDay);
+		if (defaultTimingUnit3ForDay.isDisplayed()) {
+			log("Default time unit 5 is displayed");
+			return true;
+		} else {
+			log("Default time unit 5 is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfselectDayForTiming() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTiming1ForDay);
+		if (defaultTiming1ForDay.isDisplayed()) {
+			log("Default time day is displayed");
+			return true;
+		} else {
+			log("Default time day is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfselectHourforTiming() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectHourforTiming);
+		if (selectHourforTiming.isDisplayed()) {
+			log("Default time Hour is displayed");
+			return true;
+		} else {
+			log("Default time Hour is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfselectMinutesforTiming() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectMinutesforTiming);
+		if (selectMinutesforTiming.isDisplayed()) {
+			log("Default time Minutes is displayed");
+			return true;
+		} else {
+			log("Default time Minutes is not displayed");
+			return false;
+		}
+	}
+	
+	public void enterTimingUnitUnderDesignTab(String timingunit) {
+		IHGUtil.waitForElement(driver, 10, timingUnitstextUnderdesignTab);
+		timingUnitstextUnderdesignTab.clear();
+		timingUnitstextUnderdesignTab.sendKeys(timingunit);
+		
+	}
+	
+	public boolean visibilityTimingUnitTextUnderDesignTab() {
+		IHGUtil.waitForElement(driver, 10, timingUnitTextUnderDesignTab);
+		if(timingUnitTextUnderDesignTab.isDisplayed()) {
+		log("timing units is displayed");
+		return true;
+		}
+		else {
+			log("timing units is not displayed displayed");
+			return false;
+		}
+	}
+	
+	public void enterTimingUnit(String timing) {
+		IHGUtil.waitForElement(driver, 10, enterTimingUnit);
+		enterTimingUnit.clear();
+		enterTimingUnit.sendKeys(timing);
+		
+	}
+	
+	public boolean visibilityofenterTimingUnit() {
+		IHGUtil.waitForElement(driver, 10, enterTimingUnit);
+		if(enterTimingUnit.isDisplayed()) {
+			log("timing unit is displayed ");
+			return true;
+		}
+		else {
+			log("timing unit is not displayed ");
+			return false;
+		}
+	}
+	
+	public void selectHourforTiming() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, selectHourforTiming);
+		selectHourforTiming.click();
+		
+	}
+	
+	public void selectMinutesforTiming() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, selectMinutesforTiming);
+		selectMinutesforTiming.click();
+		
+	}
+	
+	public void enterTimingUnitforMinutes(String minutes) {
+		IHGUtil.waitForElement(driver, 10, enterTimingUnit);
+		enterTimingUnit.clear();
+		enterTimingUnit.sendKeys(minutes);
+	}
+	
+	public boolean visibilityOfRemoveTimingUnit() {
+		IHGUtil.PrintMethodName();
+		if(removeButtonInEditFor3rdTimingUnit.isDisplayed()) {
+			log("remove button of 3rd timing unit is displayed");
+			return true;
+		}
+		else {
+			log("remove button of 3rd timing unit is not displayed");
+			return false;
+		}
+		
+	}
+	
+	public void removeButtonInEditFor3rdTimingUnit() {
+		IHGUtil.waitForElement(driver, 5, removeButtonInEditFor3rdTimingUnit);
+		removeButtonInEditFor3rdTimingUnit.click();
+		
+	}
+	
+	public void removeButtonInEditFor2ndTimingUnit() {
+		IHGUtil.waitForElement(driver, 5, removeButtonInEditFor2ndTimingUnit);
+		removeButtonInEditFor2ndTimingUnit.click();
+		
+	}
+	
+	public void removeButtonInEditFor1stTimingUnit() {
+		IHGUtil.waitForElement(driver, 5, removeButtonInEditFor1stTimingUnit);
+		removeButtonInEditFor1stTimingUnit.click();
+		
+	}
+	
+	public boolean visibilityOfTimingUnitsInNotifpage() {
+		IHGUtil.PrintMethodName();
+		if(timingUnitsInNotifpage.isDisplayed()) {
+			log("timing units are blank");
+			return true;
+		}
+		else {
+			log("timing units are not blank");
+			return false;
+		}
+	}
+	
+	public void defaultTiming2ForDay() {
+		IHGUtil.waitForElement(driver, 5, defaultTiming2ForDay);
+		defaultTiming2ForDay.click();
+		
+	}
+	
+	public void defaultTiming3ForDay() {
+		IHGUtil.waitForElement(driver, 5, defaultTiming3ForDay);
+		defaultTiming3ForDay.click();
+		
+	}
+	
+	public void addThreeTimingAndTimingUnit() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		try {
+			firstTimingAndTimingUnit.isDisplayed();
+			log("First timing and timing unit is display");
+		} catch (NoSuchElementException e) {
+			addButtonInEdit.click();
+			log("First timing and timing unit is added");
+		}
+
+		try {
+			secondTimingAndTimingUnit.isDisplayed();
+			log("Second timing and timing unit is display");
+		} catch (NoSuchElementException e) {
+			addButtonInEdit.click();
+			log("Second timing and timing unit is added");
+		}
+
+		try {
+			thirdTimingAndTimingUnit.isDisplayed();
+			log("Third timing and timing unit is display");
+		} catch (NoSuchElementException e) {
+			addButtonInEdit.click();
+			log("Third timing and timing unit is added");
+		}
+
+		try {
+			fourthTimingAndTimingUnit.isDisplayed();
+			removeButtonInEdit.click();
+			log("Fourth timing and timing unit is deleted");
+		} catch (NoSuchElementException e) {
+			log("Fourth timing and timing unit is not display");
+		}
+	}
+
+	public boolean isAddButtonEnable() {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+			visibility = addButtonInEdit.isEnabled();
+			log("Add button is Enabled");
+			return visibility;
+		} catch (NoSuchElementException e) {
+			log("Add button is not Enabled");
+			return visibility;
+		}
+	}
+
+	public void removeTimingAndTimingUnit(int pathIndex) {
+		IHGUtil.PrintMethodName();
+		WebElement timeUnitMinus = driver
+				.findElement(By.xpath("(//div[@class='cadence-remove-icon'])[" + pathIndex + "]"));
+		timeUnitMinus.click();
+	}
+
+	public void clickOnSaveChangesButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, saveChangesButton);
+		jse.executeScript("arguments[0].click();",saveChangesButton);
+	}
+	
+	public void addTimingUnit() {
+		for(int i=1;i<=4;i++) {
+		try {
+			driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + i + "]")).isDisplayed();
+				log(i+ " Timing and timing unit textbox is present");
+			} catch (NoSuchElementException e) {
+				log("Add"+ i+" timing and timing unit textbox");
+				addButtonInEdit.click();
+			}
+		}
+	}
+	
+	public void enterCharInAddArrivalInstTextBox(String instructionMessage) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, additionalArrivalInstructionsTextBoxText);
+		additionalArrivalInstructionsTextBoxText.clear();
+		additionalArrivalInstructionsTextBoxText.sendKeys(instructionMessage);
+	}
+	
+	public void addTimingAndTimingUnitDemo() {
+		for(int i=1;i<=3;i++) {
+		try {
+			driver.findElement(By.xpath("(//div[@class=' css-yk16xz-control'])[" + i + "]")).isDisplayed();
+				log(i+ " Timing and timing unit textbox is present");
+			} catch (NoSuchElementException e) {
+				log("Add "+ i+" timing and timing unit textbox");
+				addButtonInEdit.click();
+			}
+		}
+	}
+	
+	public void enterInvalidTimingAndTimingUnit(int pathIndex, String timing, String timingUnit) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		log("Select timing and timing unit for: " + timing);
+		jse.executeScript("arguments[0].click();", driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]")));
+		Actions action = new Actions(driver);
+		action.sendKeys(driver.findElement(By.xpath("(//div[@class=' css-1s2u09g-control'])[" + pathIndex + "]")),
+				timing).sendKeys(Keys.ENTER).build().perform();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]")).clear();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]"))
+				.sendKeys(timingUnit);
+		Thread.sleep(3000);
+	}
+	
+	public String getInvalidUnitText(int pathIndex) {
+		WebElement invalidText=driver.findElement(By.xpath("(//*[text()='Invalid Units'])["+pathIndex+"]"));
+		return invalidText.getText();
 	}
 
 }

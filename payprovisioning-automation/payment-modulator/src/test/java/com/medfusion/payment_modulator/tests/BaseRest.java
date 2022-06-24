@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.tests;
 
 import io.restassured.RestAssured;
@@ -11,10 +11,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
 import java.io.IOException;
-import java.util.List;
-
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.payment_modulator.helpers.TransactionResourceDetails;
 
 public class BaseRest {
 	
@@ -41,8 +38,16 @@ public class BaseRest {
 	   .build();
 
 	}
-	
-	
-	
+
+	public static void setupRequestSpecBuilderV5() throws IOException
+	{
+		testData = new PropertyFileLoader();
+		RestAssured.baseURI = testData.getProperty("base.url.v5");
+		requestSpec	 = new RequestSpecBuilder()
+				.setContentType(ContentType.JSON).and()
+				.addFilter(new ResponseLoggingFilter())
+				.addFilter(new RequestLoggingFilter())
+				.build();
+	}
 
 }

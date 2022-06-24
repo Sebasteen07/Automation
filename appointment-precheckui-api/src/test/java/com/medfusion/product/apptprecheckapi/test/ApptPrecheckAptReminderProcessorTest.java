@@ -1,10 +1,9 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.apptprecheckapi.test;
 
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.testng.ITestResult;

@@ -1,20 +1,14 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package com.medfusion.payreporting.tests;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import java.io.IOException;
 import com.medfusion.common.utils.IHGUtil;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 import com.medfusion.payreporting.services.GWRServices;
 import com.medfusion.product.object.maps.isoreporting.page.ReportingDailyReportPage;
 import com.medfusion.product.object.maps.isoreporting.page.ReportingNavigationMenu;
-import com.medfusion.product.object.maps.isoreporting.page.ReportingPOSPage;
 import com.medfusion.product.object.maps.isoreporting.page.ReportingVCSReceiptPage;
 
 public class ReportingPaymentTests extends ReportingAcceptanceTests {

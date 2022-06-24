@@ -1181,7 +1181,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 
 		String b = payloadPatientMod.identifyPatientForReschedulePayload(
 				propertyData.getProperty("identifypatient.firstname.pm.ng"),
-				propertyData.getProperty("identifypatient.firstname.pm.ng"),
+				propertyData.getProperty("identifypatient.lastname.pm.ng"),
 				propertyData.getProperty("identifypatient.guid.pm.ng"));
         log("Verifying the patient Id");
 		Response response = postAPIRequest.identifyPatientForReschedule(baseurl, b,

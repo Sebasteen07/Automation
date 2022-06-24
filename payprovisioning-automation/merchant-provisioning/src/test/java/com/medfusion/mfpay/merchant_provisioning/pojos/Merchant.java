@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.pojos;
 
 import java.util.Arrays;
@@ -8,9 +8,7 @@ import com.medfusion.mfpay.merchant_provisioning.utils.PracticeConstants;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,7 +43,7 @@ public class Merchant {
 		String merchantstate, String merchantzip,String accountnumber, String routingnumber,String federaltaxid,
 		String businessestablisheddate, String businesstype, String mcccode, String ownershiptype, String websiteurl,
 		String amexpercent, String midqfeepercent,String midqupperfeepercent,String nqfeepercent, String nqupperfeepercent,
-		String pertransactionauthfee,String pertransactionrefundfee,String qfeepercent,String qupperpercent){
+		String pertransactionauthfee,String pertransactionrefundfee,String qfeepercent,String qupperpercent,String feeSettlementType){
 		
 		Map<String, Object> merchantdetails = new HashMap<String, Object>(); 
 		merchantdetails.put("merchantName", merchantname+ProvisioningUtils.randomizeMerchantIdentifiers());
@@ -66,7 +64,7 @@ public class Merchant {
 				merchantstate, merchantzip));
 		merchantdetails.put("accountDetails", AccountDetails.getMerchantAccountDetailsMap(accountnumber,routingnumber,federaltaxid,
 				doingbusinessas,businessestablisheddate,businesstype,mcccode,ownershiptype,websiteurl));
-		merchantdetails.put("contractedRates", ContractedRates.getContractedRatesMap(amexpercent, midqfeepercent, midqupperfeepercent,
+		merchantdetails.put("contractedRates", ContractedRates.getContractedRatesMap(feeSettlementType, amexpercent, midqfeepercent, midqupperfeepercent,
 			    nqfeepercent,nqupperfeepercent,pertransactionauthfee, pertransactionrefundfee, qfeepercent, qupperpercent));
 		merchantdetails.put("acceptedCreditCards", Arrays.asList(PracticeConstants.CARD_ARRAY_LIST));
 		merchantdetails.put("payAPICustomer", PayAPICustomer.getPayCustomerMap(0, PracticeConstants.PAY_CUSTOMER_DEFAULT));
@@ -78,7 +76,7 @@ public class Merchant {
 			String customeraccountnumber, String merchantphonenumber,String transactionlimit,String primaryfirstname,
 			String primarylastname,String primaryphonenumber,String primaryemail,String merchantaddress1,String merchantcity,
 			String merchantstate, String merchantzip,String accountnumber, String routingnumber, String separatefundingacc, String federaltaxid,
-			String businessestablisheddate, String businesstype, String mcccode, String ownershiptype, String websiteurl,
+			String businessestablisheddate, String businesstype, String mcccode, String ownershiptype, String websiteurl, String feeSettlementType,
 			String amexpercent, String midqfeepercent,String midqupperfeepercent,String nqfeepercent, String nqupperfeepercent,
 			String pertransactionauthfee,String pertransactionrefundfee,String qfeepercent,String qupperpercent){
 			
@@ -103,7 +101,7 @@ public class Merchant {
 					doingbusinessas,businessestablisheddate,businesstype,mcccode,ownershiptype,websiteurl));
 			merchantdetails.put("feeAccDetails", AccountDetails.getFeeAccountDetailsMap(accountnumber, routingnumber));
 			merchantdetails.put("separateFundingAccounts",separatefundingacc);
-			merchantdetails.put("contractedRates", ContractedRates.getContractedRatesMap(amexpercent, midqfeepercent, midqupperfeepercent,
+			merchantdetails.put("contractedRates", ContractedRates.getContractedRatesMap(feeSettlementType, amexpercent, midqfeepercent, midqupperfeepercent,
 				    nqfeepercent,nqupperfeepercent,pertransactionauthfee, pertransactionrefundfee, qfeepercent, qupperpercent));
 			merchantdetails.put("acceptedCreditCards", Arrays.asList(PracticeConstants.CARD_ARRAY_LIST));
 			merchantdetails.put("payAPICustomer", PayAPICustomer.getPayCustomerMap(0, PracticeConstants.PAY_CUSTOMER_DEFAULT));
@@ -188,7 +186,7 @@ public class Merchant {
 	public void setPrimaryContactPhoneNumber(String primaryContactPhoneNumber) {
 	this.primaryContactPhoneNumber = primaryContactPhoneNumber;
 	}
-	
+
 	public Long getid() {
 	return id;
 	}

@@ -44,6 +44,9 @@ public class MedicationsConfirmationPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "(//*[@id='result-medications']/div/p)[1]")
 	private WebElement medicationdetails;
+	
+	@FindBy(how = How.XPATH, using = "(//*[@id='result-pharmacy']/div/p)[1]")
+	private WebElement txtPharamcyName;
 
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
 		scrollAndWait(0, 1500, 10);
@@ -81,4 +84,10 @@ public class MedicationsConfirmationPage extends BasePageObject {
 		String confirmPharamcyDetails = pharamcyDetails.getText();
 		return confirmPharamcyDetails;
 	}
+	
+	public String getPharamcyName(WebDriver driver) throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, txtPharamcyName);
+		String pharamcyName = txtPharamcyName.getText();
+		return pharamcyName;
+		}
 }

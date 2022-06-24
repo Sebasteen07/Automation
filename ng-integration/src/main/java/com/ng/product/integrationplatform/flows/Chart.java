@@ -1,4 +1,4 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.flows;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -32,7 +32,7 @@ public class Chart {
 			chart.setDefaultLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation));
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(chart);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(chart);
 	        Log4jUtil.log("Chart request body \n"+requestbody);
 	        
 			String baseURL = apiRoutes.valueOf("BaseURL").getRouteURL();

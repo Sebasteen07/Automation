@@ -1,9 +1,9 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.apptrequest;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import org.openqa.selenium.WebElement;
 
 public class ApptRequestEntity {
 

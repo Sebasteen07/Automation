@@ -51,7 +51,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
 
-	@FindBy(how = How.XPATH, using = "(//li/a[.='My Account'])[1]")
+	@FindBy(how = How.XPATH, using = "(//li/a[.='My Account'])[1] | (//li/a[contains(.,'Account')])[1]")
 	private WebElement loginProof;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='same']")

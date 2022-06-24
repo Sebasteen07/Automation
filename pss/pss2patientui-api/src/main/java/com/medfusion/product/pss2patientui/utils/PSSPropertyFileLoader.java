@@ -400,6 +400,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ng"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ng"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.ng"));
+		appointValues.setSlotSize(property.getProperty("slotsize.ng04"));
 		appointValues.setFirstNameCarePatient(property.getProperty("first.name.care.patient.ng"));
 		appointValues.setLastNameCarePatient(property.getProperty("last.name.care.patient.ng"));
 		appointValues.setDobCarePatient(property.getProperty("dob.care.patient.ng"));

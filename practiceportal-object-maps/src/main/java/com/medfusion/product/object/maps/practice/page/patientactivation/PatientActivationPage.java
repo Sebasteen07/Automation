@@ -37,6 +37,9 @@ public class PatientActivationPage extends BasePageObject {
 
 	@FindBy(css = "input[name='member_gender'][value='F']")
 	private WebElement female;
+	
+	@FindBy(css="input[name='member_gender'][value='UN']")
+	private WebElement undifferentiated;
 
 	@FindBy(css = "input[name='member_emrid']")
 	private WebElement patientId;
@@ -109,6 +112,24 @@ public class PatientActivationPage extends BasePageObject {
 
 	@FindBy(xpath = ".//*[@id='content']/form/table/tbody/tr[8]/td[2]")
 	private WebElement unlockCode;
+	
+	@FindBy(xpath = "//*[@id=\"submenu\"]/ul/li[2]/a")
+	private WebElement failuresLink;
+	
+	@FindBy(xpath = "//*[@value='Re-send Invitation(s)']")
+	private WebElement btnResendInvite;
+	
+	@FindBy(xpath = "//input[@type='checkbox']")
+	private WebElement checkboxSelectAll;
+	
+	@FindBy(xpath = "//input[@type='submit']")
+	private WebElement btnFilterPatients;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='feedbackPanelINFO']")
+	private WebElement resendSuccessMsg;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='feedbackPanelWARNING']")
+	private WebElement resendFailureMsg;
 	
 	static  String firstNameString = "Beta" + IHGUtil.createRandomNumericString();
 	
@@ -198,8 +219,10 @@ public class PatientActivationPage extends BasePageObject {
 		this.lastName.sendKeys(lastName);
 		if (gender.equals("M"))
 			this.male.click();
-		else
+		else if (gender.equals("F"))
 			this.female.click();
+		else
+			this.undifferentiated.click();
 
 		log("PatientID " + patientID);
 		this.patientId.sendKeys(patientID);
@@ -441,4 +464,42 @@ public class PatientActivationPage extends BasePageObject {
 		clickRegPatient();
 	}
 
+	public void clickonFailuresLink() {
+		failuresLink.click();
+		
+	}
+
+	public boolean resendFailures() throws Exception {
+		log("Set date range to resend failures");
+		driver.switchTo().frame("iframebody");
+		Select fromMonth = new Select(driver.findElement(By.id("id19")));
+		fromMonth.selectByVisibleText(JalapenoConstants.FROM_MONTH);
+		Select fromDay = new Select(driver.findElement(By.id("id1a")));
+		fromDay.selectByVisibleText(JalapenoConstants.FROM_DAY);
+		Select fromYear = new Select(driver.findElement(By.id("id1b")));
+		fromYear.selectByVisibleText(JalapenoConstants.FROM_YEAR);
+		
+		Select toMonth = new Select(driver.findElement(By.id("id20")));
+		toMonth.selectByVisibleText(JalapenoConstants.TO_MONTH);
+		Select toDay = new Select(driver.findElement(By.id("id21")));
+		toDay.selectByVisibleText(JalapenoConstants.TO_DAY );
+		Select toYear = new Select(driver.findElement(By.id("id22")));
+		toYear.selectByVisibleText(JalapenoConstants.TO_YEAR);
+		
+		btnFilterPatients.click();
+		IHGUtil.waitForElement(driver, 10, checkboxSelectAll);
+		checkboxSelectAll.click();
+		btnResendInvite.click();
+		
+		try {
+			resendSuccessMsg.isDisplayed();
+			log("Invitation failures resent");
+			
+		} catch (Exception e) {
+			// Helpful message about possible issues
+			throw new Exception(resendFailureMsg.getText());
+		}
+		return true;
+
+}
 }

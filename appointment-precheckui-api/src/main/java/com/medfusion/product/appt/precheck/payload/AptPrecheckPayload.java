@@ -1,7 +1,7 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.appt.precheck.payload;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -57,8 +57,7 @@ public class AptPrecheckPayload {
 		return historymessage;
 	}
 	
-	public String getBroadcastMessagePayload(String appDateRangeStart, String appDateRangeEnd, String PatientId, String ApptId) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+	public String getBroadcastMessagePayload(String appDateRangeStart, String appDateRangeEnd, String PatientId, String ApptId) { 
 		   LocalDateTime endDate = LocalDateTime.now();  
 		String broadcastmsg=" {\r\n"
 				+ "	\"broadcastMessage\": {\r\n"
@@ -220,7 +219,7 @@ public class AptPrecheckPayload {
 		String balancePay=" {\r\n"
 				+ "  \"pmPatientId\": \""+PatientId+"\",\r\n"
 				+ "  \"patientName\": \"AppScheduler One\",\r\n"
-				+ "  \"patientDob\": \"1991-01-01\",\r\n"
+				+ "  \"patientDob\": \"2001-01-01\",\r\n"
 				+ "  \"patientEmail\": \"sujit.kolhe@yahoo.com\",\r\n"
 				+ "  \"creditCardName\": \"Health\",\r\n"
 				+ "  \"creditCardNumber\": \"4111111111111111\",\r\n"
@@ -330,11 +329,11 @@ public class AptPrecheckPayload {
 			return demographics;
 	}
 		
-		public String getBalancePayloadGuest(String PatientId) {
+		public String getBalancePayloadGuest(String PatientId,String dob) {
 			String balancePay=" {\r\n"
 					+ "  \"pmPatientId\": \""+PatientId+"\",\r\n"
 					+ "  \"patientName\": \"AppScheduler One\",\r\n"
-					+ "  \"patientDob\": \"2001-01-01\",\r\n"
+					+ "  \"patientDob\": \""+dob+"\",\r\n"
 					+ "  \"patientEmail\": \"sujit.kolhe@yahoo.com\",\r\n"
 					+ "  \"creditCardName\": \"Health\",\r\n"
 					+ "  \"creditCardNumber\": \"4111111111111111\",\r\n"
@@ -348,20 +347,20 @@ public class AptPrecheckPayload {
 	}
 		
 		public String getCopayPayPayloadGuest(String PatientId) {
-			String copayPay="{\r\n"
-					+ "    \"pmPatientId\": \""+PatientId+"\",\r\n"
-					+ "    \"creditCardName\": \"Health\",\r\n"
-					+ "    \"creditCardNumber\": \"4111111111111111\",\r\n"
-					+ "    \"creditCardCvvCode\": \"333\",\r\n"
-					+ "    \"creditCardType\": \"VISA\",\r\n"
-					+ "    \"creditCardZip\": \"12345\",\r\n"
-					+ "    \"amount\": 40,\r\n"
-					+ "    \"creditCardExpirationDate\": \"2023-01-01\",\r\n"
-					+ "    \"patientEmail\": \"sujit.kolhe@yahoo.com\",\r\n"
-					+ "    \"patientDob\": \"1999-01-01\",\r\n"
-					+ "    \"patientName\": \"Rijesh R3ichard\"\r\n"
-					+ "}";
+			String copayPay="{\"pmPatientId\":\""+PatientId+"\",\r\n"
+					+ "	 \"creditCardName\":\"Health\",\r\n"
+					+ "	 \"creditCardNumber\":\"4111111111111111\",\r\n"
+					+ "	 \"creditCardCvvCode\":\"333\",\r\n"
+					+ "	 \"creditCardType\":\"VISA\",\r\n"
+					+ "	 \"creditCardZip\":\"12345\",\r\n"
+					+ "	 \"amount\":15,\r\n"
+					+ "	 \"creditCardExpirationDate\":\"2023-01-01\",\r\n"
+					+ "	 \"patientEmail\":\"sujit.kolhe@yahoo.com\",\r\n"
+					+ "	 \"patientDob\":\"1991-01-01\",\r\n"
+					+ "	 \"patientName\":\"AppScheduler One\"\r\n"
+					+ "	}";
 			return copayPay;
+			
 	}
 		
 		public String getPracticeIdWithInvalidDateRange(String appDateRangeStart, String appDateRangeEnd) {
@@ -471,7 +470,6 @@ public class AptPrecheckPayload {
 	}
 		
 		public String getDELETEApptsFromDbWithSelectAllFalsePayload() {
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
 			   LocalDateTime endDate = LocalDateTime.now();
 			String deleteAppt="{\r\n"
 					+ "\"selectedAll\":false,\r\n"
@@ -519,9 +517,7 @@ public class AptPrecheckPayload {
 			int dd = cal.get(Calendar.DATE) + 1;
 			int yyyy = cal.get(Calendar.YEAR);
 			int mm = cal.get(Calendar.MONTH)+1;
-
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-			   LocalDateTime endDate = LocalDateTime.now();
+			
 			String deleteAppt="{\r\n"
 					+ "    \"selectedAll\": true,\r\n"
 					+ "    \"pagingParameters\": {\r\n"
@@ -541,25 +537,24 @@ public class AptPrecheckPayload {
 		
 		public String getGuestSessionPayloadForCopay() {
 			String copayPay="{\r\n"
-					+ "  \"dob\": \"1999-01-01\",\r\n"
+					+ "  \"dob\": \"1991-01-01\",\r\n"
 					+ "  \"zip\": \"12345\"\r\n"
 					+ "}";
 			return copayPay;
 	}
 		
 		public String getCopayPayloadForPrecheck(String PatientId) {
-			String balancePay=" {\r\n"
-					+ "  \"pmPatientId\": \""+PatientId+"\",\r\n"
-					+ "  \"patientName\": \"AppointmentNew Test\",\r\n"
-					+ "  \"patientDob\": \"1991-01-01\",\r\n"
-					+ "  \"patientEmail\": \"testpatient.crossasyst@gmail.com\",\r\n"
-					+ "  \"creditCardName\": \"Health\",\r\n"
-					+ "  \"creditCardNumber\": \"4111111111111111\",\r\n"
-					+ "  \"creditCardType\": \"VISA\",\r\n"
-					+ "  \"creditCardExpirationDate\": \"2023-01-01\",\r\n"
-					+ "  \"creditCardCvvCode\": \"333\",\r\n"
-					+ "  \"creditCardZip\": \"12345\",\r\n"
-					+ "  \"amount\": 40\r\n"
+			String balancePay="{\"pmPatientId\":\""+PatientId+"\",\r\n"
+					+ "		\"creditCardName\":\"Health\",\r\n"
+					+ "		\"creditCardNumber\":\"4111111111111111\",\r\n"
+					+ "		\"creditCardCvvCode\":\"333\",\r\n"
+					+ "		\"creditCardType\":\"VISA\",\r\n"
+					+ "		\"creditCardZip\":\"12345\",\r\n"
+					+ "		\"amount\":15,\r\n"
+					+ "		\"creditCardExpirationDate\":\"2023-01-01\",\r\n"
+					+ "		\"patientEmail\":\"sujit.kolhe@yahoo.com\",\r\n"
+					+ "		\"patientDob\":\"1991-01-01\",\r\n"
+					+ "		\"patientName\":\"AppScheduler One\""
 					+ "}";
 			return balancePay;
 		}
@@ -572,5 +567,40 @@ public class AptPrecheckPayload {
 					+ "  }\r\n"
 					+ "]";
 			return deleteAppt;	
+	}
+		
+		public String getDemographicsPayloadGuest(String phoneType) {
+			String demographics=" {\r\n"
+					+ "	\"address\": null,\r\n"
+					+ "	\"address2\": null,\r\n"
+					+ "	\"birthDate\": \"1991-01-01\",\r\n"
+					+ "	\"city\": null,\r\n"
+					+ "	\"email\": \"testpatient.crossasyst@gmail.com\",\r\n"
+					+ "	\"firstName\": \"ArrivalActionsThree\",\r\n"
+					+ "	\"language\": \"en\",\r\n"
+					+ "	\"lastName\": \"Test\",\r\n"
+					+ "	\"middleName\": null,\r\n"
+					+ "	\"pharmacies\": [{\r\n"
+					+ "		\"address\": {\r\n"
+					+ "			\"city\": \"string\",\r\n"
+					+ "			\"line1\": \"string\",\r\n"
+					+ "			\"line2\": \"string\",\r\n"
+					+ "			\"state\": \"string\",\r\n"
+					+ "			\"zipCode\": \"string\"\r\n"
+					+ "		},\r\n"
+					+ "		\"deleted\": true,\r\n"
+					+ "		\"id\": \"string\",\r\n"
+					+ "		\"name\": \"string\",\r\n"
+					+ "		\"number\": 0\r\n"
+					+ "	}],\r\n"
+					+ "	\"phone\": 5087437423,\r\n"
+					+ "\r\n"
+					+ "	\"phoneType\": \""+phoneType+"\",\r\n"
+					+ "	\"state\": null,\r\n"
+					+ "	\"status\": \"COMPLETE\",\r\n"
+					+ "	\"verified\": true,\r\n"
+					+ "	\"zip\": \"12345\"\r\n"
+					+ "}";
+			return demographics;
 	}
 }

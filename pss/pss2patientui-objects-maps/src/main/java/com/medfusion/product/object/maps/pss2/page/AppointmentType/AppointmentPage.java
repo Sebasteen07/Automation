@@ -37,6 +37,12 @@ public class AppointmentPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'The practice does not allow this appointment to be scheduled within')]")
 	private WebElement preventApptSchedPopUpMsg;
 	
+	@FindBy(how = How.XPATH, using = "//div[4]/div/div[2]/div/div/div[2]/pre")
+	private WebElement preventReschedOnCancelPopup;
+	
+	@FindBy(how = How.XPATH, using = "//div[4]/div/div[2]/div/div/div[2]/pre/div")
+	private WebElement preventReschedOnCancelMsg;
+	
 	@FindBy(how = How.XPATH, using = "(//a[@class='custombuttonexist'])[1]")
 	private WebElement preventApptSchedOkBtn;
 	
@@ -100,6 +106,22 @@ public class AppointmentPage extends PSS2MainPage {
 			}
 		}
 		return preventSchMsg;
+	}
+	
+	public String preventReschedOnCancelMsg(String appointmentType) {
+		log("appointmentTypeList " + appointmentTypeList.size());
+		String preventReschedOnCancelMsg = null;
+		for (int i = 0; i < appointmentTypeList.size(); i++) {
+
+			if (appointmentTypeList.get(i).getText().contains(appointmentType)) {
+				appointmentTypeList.get(i).click();
+				commonMethods.highlightElement(preventReschedOnCancelPopup);
+				IHGUtil.waitForElement(driver, 60, preventReschedOnCancelPopup);
+				preventReschedOnCancelMsg =preventReschedOnCancelPopup.getText();
+				log("Actual Prevent Scheduling Error Message- "+preventReschedOnCancelMsg);
+			}
+		}
+		return preventReschedOnCancelMsg;
 	}
 
 	public Provider selectTypeOfProvider(String providerConfig, Boolean isPopUpSelected) {
@@ -206,6 +228,17 @@ public class AppointmentPage extends PSS2MainPage {
 		}
 		else {
 			log("Appointment type not present");
+			return false;
+		}
+	}
+	
+	public boolean verifyDecisionTreeApptTypePresent(String decisionTreeName) {		
+		if (appointmentTypeList.contains(decisionTreeName)) {
+			log("Decision tree present");
+			return true;			
+		}
+		else {
+			log("Decision tree not present");
 			return false;
 		}
 	}

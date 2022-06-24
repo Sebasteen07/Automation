@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.util;
 
 import static io.restassured.RestAssured.given;
@@ -9,8 +10,6 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
-import io.restassured.http.Header;
-import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -319,9 +318,10 @@ public class PostAPIRequestAptPrecheck extends BaseTestNGWebDriver {
 		return appointmentActions;
 	}
 
-	public Response aptAppointmentActionsArrival(String practiceId, Map<String, String> Header, String PatientId,
-			String Appointmentid) {
+	public Response aptAppointmentActionsArrival(String baseurl, String practiceId, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
 		log("Execute POST request for Appointmnet actions as Arrival");
+		RestAssured.baseURI = baseurl;
 		Response response = given().when().headers(Header).log().all().when()
 				.get("practices/" + practiceId + "/patients/" + PatientId + "/appointments/" + Appointmentid).then()
 				.log().all().extract().response();
@@ -337,9 +337,10 @@ public class PostAPIRequestAptPrecheck extends BaseTestNGWebDriver {
 		return appointmentActions;
 	}
 
-	public Response aptAppointmentActionsCurbscheckin(String practiceId, Map<String, String> Header, String PatientId,
-			String Appointmentid) {
+	public Response aptAppointmentActionsCurbscheckin(String baseurl, String practiceId, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
 		log("Execute POST request for Appointmnet actions as CurbsideCheckin");
+		RestAssured.baseURI = baseurl;
 		Response response = given().when().headers(Header).log().all().when()
 				.get("practices/" + practiceId + "/patients/" + PatientId + "/appointments/" + Appointmentid).then()
 				.log().all().extract().response();
@@ -563,7 +564,7 @@ public class PostAPIRequestAptPrecheck extends BaseTestNGWebDriver {
 				.then().log().all().extract().response();
 		return response;
 	}
-	
+
 	public Response getFormInfoWithInvalidPatientToken(String practiceId, Map<String, String> Header, String PatientId,
 			String Appointmentid) {
 		log("Execute GET  request for form information");
@@ -579,6 +580,35 @@ public class PostAPIRequestAptPrecheck extends BaseTestNGWebDriver {
 				.get("patients/form-information").then().log().all().extract().response();
 
 		return responseforminfo;
+	}
+
+	public Response aptAppointmentActions(String baseurl, String practiceId, Map<String, String> Header,
+			String PatientId, String Appointmentid, String action) {
+		log("Execute POST request for Appointmnet actions as Confirm");
+		RestAssured.baseURI = baseurl;
+		Response response = given().when().headers(Header).log().all().when()
+				.get("practices/" + practiceId + "/patients/" + PatientId + "/appointments/" + Appointmentid).then()
+				.log().all().extract().response();
+		JsonPath js = new JsonPath(response.asString());
+
+		String encryptedIdentifier = js.getString("encryptedIdentifier");
+
+		Response appointmentActions = given().when().queryParam("action", action)
+				.queryParam("token", encryptedIdentifier).headers(Header).log().all().when().post("appointment_actions")
+				.then().log().all().extract().response();
+
+		log("Appointment actions:" + appointmentActions);
+		return appointmentActions;
+	}
+	
+	public Response getDeleteAppointmentActions(String baseurl, String practiceId, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		log("Execute POST request for Appointmnet actions as Confirm");
+		RestAssured.baseURI = baseurl;
+		Response response = given().when().headers(Header).log().all().when()
+				.get("practices/" + practiceId + "/patients/" + PatientId + "/appointments/" + Appointmentid).then()
+				.log().all().extract().response();
+		return response;
 	}
 
 

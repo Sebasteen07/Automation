@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.util;
 
 import static io.restassured.RestAssured.given;
@@ -34,8 +35,7 @@ public class PostAPIRequestMfPracticeSettingsManager extends BaseTestNGWebDriver
 	public Response defaultConfirmationSetting(Map<String, String> Header, String practiceId) {
 		log("Execute Get request for Get the default confirmation setting for a practice");
 		Response response = given().spec(requestSpec).log().all().headers(Header).when()
-				.get(practiceId + "/defaultConfirmationSetting/Email").then().log()
-				.all().extract().response();
+				.get(practiceId + "/defaultConfirmationSetting/Email").then().log().all().extract().response();
 		return response;
 	}
 
@@ -112,8 +112,7 @@ public class PostAPIRequestMfPracticeSettingsManager extends BaseTestNGWebDriver
 	public Response retrivesSettingsGetForAPractice(Map<String, String> Header, String practiceId) {
 		log("Execute Get request for Get the settings for a practice. Patient user only.");
 		Response response = given().spec(requestSpec).log().all().headers(Header).when().get("practice/" + practiceId)
-				.then().log().all()
-				.extract().response();
+				.then().log().all().extract().response();
 		return response;
 	}
 
@@ -239,7 +238,7 @@ public class PostAPIRequestMfPracticeSettingsManager extends BaseTestNGWebDriver
 	}
 
 	public Response getSettingsForAPractice(String baseurl, Map<String, String> Header, String practiceId,
-			String patientId, String apptId,String payload) {
+			String patientId, String apptId, String payload) {
 		log("Execute Get request for Return Encrypted Identifier");
 		RestAssured.baseURI = baseurl;
 		Response getEncryptedIdentifier = given().log().all().headers(Header).when()
@@ -250,15 +249,57 @@ public class PostAPIRequestMfPracticeSettingsManager extends BaseTestNGWebDriver
 		log("Encrypted Identifier-- " + getEncryptedId);
 		log("Execute Get request for Return Guest Token");
 		Response getGuestToken = given().log().all().headers(Header).queryParam("token", getEncryptedId).body(payload)
-				.when()
-				.post("guestSessions/session").then().log().all().extract().response();
+				.when().post("guestSessions/session").then().log().all().extract().response();
 		String GuestToken = getGuestToken.header("Guest");
 		log("Guest Token : " + GuestToken);
 		log("Execute get request for Get the settings for a practice. Patient user only.");
 		Response response = given().spec(requestSpec).log().all().queryParam("pmPatientId", patientId)
 				.headers("Authorization", "Guest " + GuestToken).when().get("practice/" + practiceId + "/patient/guest")
-				.then().log().all()
-				.extract().response();
+				.then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getImhFormByConceptName(Map<String, String> Header, String practiceId, String conceptName) {
+		log("Execute get request for get IMH Form By Concept Name");
+		Response response = given().spec(requestSpec).log().all().headers(Header).when()
+				.get("practiceId/" + practiceId + "/form/conceptName/" + conceptName).then().log().all().extract()
+				.response();
+		return response;
+	}
+
+	public Response saveCustomImhFormPost(Map<String, String> Header, String payload, String practiceId) {
+		log("Execute Post request for save IMH Form");
+		Response response = given().spec(requestSpec).log().all().body(payload).headers(Header).when()
+				.post("practice/" + practiceId + "/imh/form").then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getImhFormWithoutConceptName(Map<String, String> Header, String practiceId) {
+		log("Execute get request for get IMH Form By Concept Name");
+		Response response = given().spec(requestSpec).log().all().headers(Header).when()
+				.get("practiceId/" + practiceId + "/form/conceptName/").then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getImhFormWithoutAccessToken(String practiceId, String conceptName) {
+		log("Execute get request for get IMH Form By Concept Name");
+		Response response = given().spec(requestSpec).log().all().when()
+				.get("practiceId/" + practiceId + "/form/conceptName/" + conceptName).then().log().all().extract()
+				.response();
+		return response;
+	}
+
+	public Response getListOfForms(Map<String, String> Header, String practiceId) {
+		log("Execute get request for Get the list of forms for a practice");
+		Response response = given().spec(requestSpec).log().all().headers(Header).when()
+				.get("practice/" + practiceId + "/all/forms").then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getUpdateForm(String payload, Map<String, String> Header, String practiceId) {
+		log("Execute get request for Update the forms list for an existing practice");
+		Response response = given().spec(requestSpec).log().all().body(payload).headers(Header).when()
+				.put("practice/" + practiceId + "/forms").then().log().all().extract().response();
 		return response;
 	}
 }

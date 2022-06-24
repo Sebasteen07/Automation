@@ -1,13 +1,18 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.util;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 
 import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -385,16 +390,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		if(js.getString("status").equals("PUBLISH_TEMPLATE_METADATA_FINISHED")) {
-			assertEquals(js.getString("status"), "PUBLISH_TEMPLATE_METADATA_FINISHED", "Status was incorrect");
-			assertEquals(js.getString("message"), "Finished publishing template metadata to queue",
-					"Message was incorrect");
-		}else {
-			assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-			assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences",
-					"Message was incorrect");
-			
-		}
 	}
 
 	public void verifyProcessReminderDataWithInvalidData(Response response, String practiceId, String patientId,
@@ -404,16 +399,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		if(js.getString("status").equals("PUBLISH_TEMPLATE_METADATA_FINISHED")) {
-			assertEquals(js.getString("status"), "PUBLISH_TEMPLATE_METADATA_FINISHED", "Status was incorrect");
-			assertEquals(js.getString("message"), "Finished publishing template metadata to queue",
-					"Message was incorrect");
-		}else {
-			assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-			assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences",
-					"Message was incorrect");
-			
-		}
 	}
 
 	public void verifyProcessReminderDataCurbsSide(Response response, String practiceId, String patientId,
@@ -423,15 +408,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		if(js.getString("status").equals("PUBLISH_TEMPLATE_METADATA_FINISHED")) {
-			assertEquals(js.getString("status"), "PUBLISH_TEMPLATE_METADATA_FINISHED", "Status was incorrect");
-			assertEquals(js.getString("message"), "Finished publishing template metadata to queue",
-					"Message was incorrect");
-		}else {
-			assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-			assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences",
-					"Message was incorrect");
-		}
 	}
 
 	public void verifySendsPatientProvidedDataWithoutCadence(Response response) throws IOException {
@@ -457,8 +433,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-		assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences", "Message was incorrect");
 	}
 
 	public void verifySendsPatientProvidedDataWithInvalidApptId(Response response, String practiceId, String patientId,
@@ -468,8 +442,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
-		assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences", "Message was incorrect");
 	}
 
 	public void verifyEventResponse(Response response, String eventId, String eventSource, String eventTime,
@@ -551,7 +523,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	public void verifyProviderDetailsWithoutPracticeId(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Request method 'GET' not supported");
+		assertEquals(jsonPath.get("error"), "Method Not Allowed");
 	}
 
 	public void verifyUpdateAnExistingProvider(Response response, String practiceId, String providerId,
@@ -573,7 +545,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	public void verifyDeleteExistingProviderWithoutProviderId(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Request method 'DELETE' not supported");
+		assertEquals(jsonPath.get("error"), "Method Not Allowed");
 	}
 
 	public void verifyGetsTheImageDataWithoutProviderId(Response response) throws IOException {
@@ -1067,7 +1039,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(jsonPath.get("message"), "No logo was found with practiceId=info");
 	}
 
-	public void verifyUpdateLogo(Response response, String Id, String practiceId,String name) throws IOException {
+	public void verifyUpdateLogo(Response response, String Id, String practiceId, String name) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("id"), Id, "Id  was incorrect");
 		assertEquals(jsonPath.get("practiceId"), practiceId, "Practice Id  was incorrect");
@@ -1083,11 +1055,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("apptMethod"), apptMethod, "Appointment Method was incorrect");
 		assertEquals(js.getString("status"), status, "Status was incorrect");
 		assertEquals(js.getString("timing"), "Upon Scheduling", "timing was incorrect");
-	}
-
-	public void verifyWithoutDeliveryMethod(Response response) throws IOException {
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "No message available");
 	}
 
 	public void verifyDefaultReminderSetting(Response response, String deliveryMtd, String apptMethod, String status)
@@ -1210,11 +1177,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
 		assertEquals(js.getString("active"), activeSetting, "System id was incorrect");
 		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
-	}
-
-	public void verifyUpdateSettingsWithoutActiveValue(Response response) throws IOException {
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "No message available");
 	}
 
 	public void verifyLocationSettings(Response response, String practiceId, String systemId, String locationId,
@@ -1419,16 +1381,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 	public void verifyAppointmentsBasedOnPaging(Response response, String practiceId) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.getString("pageNumber"), "1", "practiceId  was incorrect");
-		JSONObject jsonObject = new JSONObject(response.asString());
-		JSONArray jsonArray = (JSONArray) jsonObject.get("appointments");
-		for (int i = 0; i < jsonArray.length(); i++) {
-			assertEquals(jsonArray.getJSONObject(i).getString("practiceId"), practiceId, "practiceId  was incorrect");
-		}
 	}
 
 	public void verifyAppointmentsWithInvalidDateRange(Response response, String dateRange) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "400 Could not parse start date " + dateRange);
+		assertEquals(jsonPath.get("message"), "400 Could not parse end date " + dateRange);
 	}
 
 	public void verifyMessageHistoryForAppt(Response response, String practiceId, String pmPatientId,
@@ -1540,8 +1497,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	public void verifyGuestAuthorization(Response response, String practiceId, String pmPatientId,
 			String pmAppointmentId) throws IOException {
-		JSONObject jsonObject = new JSONObject(response.asString());
-		JSONArray jsonArray = (JSONArray) jsonObject.getJSONArray("roles");
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.getString("practiceId"), practiceId, "practiceId  was incorrect");
 		assertEquals(js.getString("pmPatientId"), pmPatientId, "pmPatientId  was incorrect");
@@ -1594,17 +1549,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 				"Patient lastName was incorrect");
 	}
 
-	public void verifyDeleteApptWithSelectAllFalse(Response response) throws IOException {
-		JsonPath js = new JsonPath(response.asString());
-		assertEquals(js.getString("success"), "5", "Success  was incorrect");
-		assertEquals(js.getString("fail"), "0", "Fail  was incorrect");
-	}
-	
-	public void verifyIfLogoAlreadyExists(Response response, String practiceId)  {
+	public void verifyIfLogoAlreadyExists(Response response, String practiceId) {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Logo with practiceId="+practiceId+" already exists.");
+		assertEquals(jsonPath.get("message"), "Logo with practiceId=" + practiceId + " already exists.");
 	}
-	
+
 	public void verifyGetAppt(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
 			throws IOException {
 		JsonPath js = new JsonPath(response.asString());
@@ -1613,47 +1562,48 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
 	}
-	
-	public void verifyCreateNewApptType(Response response, String appointmentTypeId, String appointmentTypeName, String categoryId)
-			throws IOException {
+
+	public void verifyCreateNewApptType(Response response, String appointmentTypeId, String appointmentTypeName,
+			String categoryId) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate appointment to be deleted");
 		assertEquals(js.getString("appointmentTypeId"), appointmentTypeId, "Appointment type id was incorrect");
 		assertEquals(js.getString("appointmentTypeName"), appointmentTypeName, "appointmentTypeName id was incorrect");
 		assertEquals(js.getString("categoryId"), categoryId, "categoryId id was incorrect");
 	}
-	
+
 	public void verifyApptTypeKeyValidation(Response response, String key) {
 		JSONObject jsonObject = new JSONObject(response.asString());
 		JSONArray jsonArray = (JSONArray) jsonObject.get("appointmentTypes");
 		for (int i = 0; i < jsonArray.length(); i++) {
-			log("Validated key-> " + key + " value is-  " +jsonArray.getJSONObject(i).getString("id"));
-			
+			log("Validated key-> " + key + " value is-  " + jsonArray.getJSONObject(i).getString("id"));
+
 		}
 	}
-	
-	public void verifyCreatePrecheckNotif(Response response,  String practiceId, String practiceName) {
+
+	public void verifyCreatePrecheckNotif(Response response, String practiceId, String practiceName) {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Create Precheck Notifications");
 		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
 		assertEquals(js.getString("practiceName"), practiceName, "Practice Name was incorrect");
 	}
-	
-	public void verifyCreateScheduleNotif(Response response,  String practiceId, String practiceName) {
+
+	public void verifyCreateScheduleNotif(Response response, String practiceId, String practiceName) {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Create Schedule Notifications");
 		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
 		assertEquals(js.getString("practiceName"), practiceName, "Practice Name was incorrect");
 	}
-	
-	public void verifyGetNotificationById(Response response,  String practiceId, String practiceName) {
+
+	public void verifyGetNotificationById(Response response, String practiceId, String practiceName) {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Get Notification By Id");
 		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
 		assertEquals(js.getString("practiceName"), practiceName, "Practice Name was incorrect");
 	}
-	
-	public void verifyApptserviceGet(Response response,  String practiceId, String patientId,String apptId,String integrationId) {
+
+	public void verifyApptserviceGet(Response response, String practiceId, String patientId, String apptId,
+			String integrationId) {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Appt service");
 		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
@@ -1661,13 +1611,13 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("pmAppointmentId"), apptId, "Appointment Id Name was incorrect");
 		assertEquals(js.getString("integrationId"), integrationId, "Integration id Name was incorrect");
 	}
-	
+
 	public void verifyBroadcastAppointment(Response response) {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Appt service for broadcast appointment");
 		assertEquals(js.getString("resourceType"), "Bundle", "Resouurce type was incorrect");
 	}
-	
+
 	public void verifyfilters(Response response) {
 		JSONObject jsonObject = new JSONObject(response.asString());
 		log("Validate filter services");
@@ -1676,10 +1626,300 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(jsonObject.getJSONArray("filters").getJSONObject(0).getString("filterValue"), "booked",
 				"Filter value was incorrect");
 	}
-	
-	public void verifyMappingPractice(Response response,String practiceId) {
+
+	public void verifyMappingPractice(Response response, String practiceId) {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate mapping practice id");
 		assertEquals(js.getString("practiceId"), practiceId, "Resouurce type was incorrect");
 	}
+
+	public void verifyGetImhFormConceptName(Response response, String practiceId, String conceptName) {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("conceptName"), conceptName, "conceptName  was incorrect");
+		assertEquals(js.getString("practiceId"), practiceId, "practiceId id was incorrect");
+	}
+
+	public void verifyAllAssociatedApptType(Response response, String apptType1, String apptType2, String apptType3,
+			String apptType4) {
+		JSONArray jsnArray = (JSONArray) new JSONTokener(response.asString()).nextValue();
+		assertEquals(jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").getString(0), apptType1);
+		assertEquals(jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").getString(1), apptType2);
+		assertEquals(jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").getString(2), apptType3);
+		assertEquals(jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").getString(3), apptType4);
+	}
+
+	public void verifyGetImhFormByConceptNameAndPracticeId(Response response, String conceptName, String conceptId,
+			String formId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("conceptName"), conceptName, "conceptName  was incorrect");
+		assertEquals(js.getString("conceptId"), conceptId, "conceptId was incorrect");
+		assertEquals(js.getString("formId"), formId, "formId  was incorrect");
+	}
+
+	public void verifyEndOfQuestionerValueFalse(Response response) {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertFalse(jsonPath.getBoolean("endOfQuestionnaire"), "End of questioner value was True");
+	}
+
+	public boolean isConceptNamePresent(Response response, String conceptName) throws IOException {
+		boolean conceptNameExist = false;
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			if (obj.getString("conceptName").equals(conceptName)) {
+				log("conceptName exist in master file is :--  " + obj.getString("conceptName"));
+				return true;
+			}
+		}
+		return conceptNameExist;
+	}
+
+	public void verifySameQuestion(String firstQuestion, String secondQuestion) {
+		assertEquals(firstQuestion, secondQuestion, "First and second question are equal");
+	}
+
+	public void verifyImhMasterFormResponse(Response response, String key) {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			assertNotNull(obj.getString(key));
+			log("Validated key-> " + key + " value is-  " + obj.getString(key));
+		}
+	}
+
+	public void verifyImhMasterListIfAlreadyExist(Response response, String expectedMessage) {
+		JsonPath js = new JsonPath(response.asString());
+		String message = js.getString("message");
+		assertEquals(message, expectedMessage, "Message was not same");
+	}
+
+	public boolean isFormPresent(Response response, String conceptName) throws IOException {
+		boolean conceptNameExist = false;
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			if (obj.getString("conceptName").equals(conceptName)) {
+				assertEquals(obj.getString("practiceId"), "0", "Practice id was not 0");
+				log("conceptName exist in master file is :--  " + obj.getString("conceptName"));
+				return true;
+			}
+		}
+		return conceptNameExist;
+	}
+
+	public void verifyFormsList(Response response) throws IOException {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			assertNotNull(obj.getString("title"));
+			try {
+				assertEquals(obj.getBoolean("enabledByAppointmentType"), true);
+				log("Get Appointment type value true:- " + obj.getBoolean("enabledByAppointmentType"));
+			} catch (AssertionError e) {
+				assertEquals(obj.getBoolean("enabledByAppointmentType"), false);
+				log("Get Appointment type value false:- " + obj.getBoolean("enabledByAppointmentType"));
+			}
+		}
+	}
+
+	public void verifyImhFormPracticeId(Response response, String conceptName, String conceptId, String practiceId,
+			String formId) {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("conceptName"), conceptName, "conceptName  was incorrect");
+		assertEquals(js.getString("conceptId"), conceptId, "conceptId was incorrect");
+		assertEquals(js.getString("practiceId"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("formId"), formId, "formId  was incorrect");
+	}
+
+	public void verifySatuesOfApptTypeApptType(Response response, String apptType) {
+		JSONArray jsnArray = (JSONArray) new JSONTokener(response.asString()).nextValue();
+		assertEquals(jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").getString(0), apptType);
+	}
+
+	public void verifyUpdatedForm(Response response, String key, String value, boolean apptTypeValue)
+			throws IOException {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			if (obj.getString(key).equals(value)) {
+				assertEquals(obj.getString("title"), value, "Updated title was not as per accepted");
+				assertEquals(obj.getBoolean("enabledByAppointmentType"), apptTypeValue,
+						"Updated title was not as per accepted");
+				log("conceptName exist in master file is :--  " + obj.getString(key));
+			}
+		}
+	}
+
+	public void verifyUpdatedFormWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Setting do not exist for the practice. Cannot update forms.");
+	}
+
+	public void verifyQuestionNotSame(String firstQuestion, String secondQuestion) {
+		assertNotEquals(firstQuestion, secondQuestion, "First and second question are equal");
+	}
+
+	public void verifyPrevAnswerValue(Response response) {
+		JSONObject jsnObject = new JSONObject(response.asString());
+		boolean answerValue = jsnObject.getJSONObject("normalizedForm").getJSONArray("inputItems").getJSONObject(0)
+				.getJSONObject("radioButtonControl").getJSONArray("items").getJSONObject(0).getBoolean("isChecked");
+		assertTrue(answerValue);
+	}
+
+	public void verifyEndOfQuestionerValueTrue(Response response) {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertTrue(jsonPath.getBoolean("endOfQuestionnaire"), "End of questioner value was false");
+	}
+
+	public void verifyPrevAnswerValue(Response response, int inputItemIndex, int itemIndex) {
+		JSONObject jsnObject = new JSONObject(response.asString());
+		boolean answerValue = jsnObject.getJSONObject("normalizedForm").getJSONArray("inputItems")
+				.getJSONObject(inputItemIndex).getJSONObject("radioButtonControl").getJSONArray("items")
+				.getJSONObject(itemIndex).getBoolean("isChecked");
+		assertTrue(answerValue);
+	}
+
+	public void verifyQuestion(Response response, String question) {
+		JSONObject jsonObj = new JSONObject(response.asString());
+		assertNotNull(jsonObj.getString("encounterId"));
+		assertEquals(jsonObj.getJSONObject("normalizedForm").getString("questionText"), question,
+				"Question was not same");
+	}
+
+	public void verifyAssociatedApptType(Response response, String apptType1, String apptType2) {
+		JSONArray jsnArray = (JSONArray) new JSONTokener(response.asString()).nextValue();
+		assertEquals(jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").getString(0), apptType1);
+		assertEquals(jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").getString(1), apptType2);
+	}
+
+	public void verifyNoAssociatedApptType(Response response) {
+		JSONArray jsnArray = (JSONArray) new JSONTokener(response.asString()).nextValue();
+		assertTrue(jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").isEmpty());
+	}
+
+	public void verifyIntakeIdAndUrl(Response response) {
+		JSONObject jsonObj = new JSONObject(response.asString());
+		assertNotNull(jsonObj.getString("encounterId"));
+		assertNotNull(jsonObj.getString("patientAnswerUrl"));
+	}
+
+	public void verifyFalseStatusOfEnabledByApptType(Response response) {
+		JSONArray jsnArray = new JSONArray(response.asString());
+		assertFalse(jsnArray.getJSONObject(0).getBoolean("enabledByAppointmentType"),
+				"enabledByAppointmentType value was true");
+	}
+
+	public void verifyGetFalseStatusOfEnabledByApptType(Response response) {
+		JSONObject jsonObj = new JSONObject(response.asString());
+		assertFalse(jsonObj.getJSONObject("precheckSettings").getJSONArray("forms").getJSONObject(0)
+				.optBoolean("enabledByAppointmentType"), "enabledByAppointmentType value was true");
+	}
+
+	public void verifyTrueStatusOfEnabledByApptType(Response response) {
+		JSONArray jsnArray = new JSONArray(response.asString());
+		assertTrue(jsnArray.getJSONObject(0).getBoolean("enabledByAppointmentType"),
+				"enabledByAppointmentType value was true");
+	}
+
+	public void verifyGetTrueStatusOfEnabledByApptType(Response response) {
+		JSONObject jsonObj = new JSONObject(response.asString());
+		assertTrue(jsonObj.getJSONObject("precheckSettings").getJSONArray("forms").getJSONObject(0)
+				.optBoolean("enabledByAppointmentType"), "enabledByAppointmentType value was true");
+	}
+
+	public void verifyAllAssociatedApptType(Response response) {
+		JSONArray jsnArray = (JSONArray) new JSONTokener(response.asString()).nextValue();
+		for (int i = 0; i < jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").length(); i++) {
+			assertNotNull(jsnArray.getJSONObject(0).getJSONArray("appointmentTypes").getString(i));
+		}
+	}
+
+	public void verifyUpdatedNameOfImhForm(Response response, String title) {
+		JSONArray jsnArray = new JSONArray(response.asString());
+		assertEquals(jsnArray.getJSONObject(0).getString("title"), title, "Title was not same");
+	}
+
+	public void verifyImhAddedImhAndMedfusionForm(Response response, String imhTitle, String imhSource,
+			String medfusionTitle, String medfusionSource) {
+		JSONArray jsnArray = new JSONArray(response.asString());
+		assertEquals(jsnArray.getJSONObject(0).getString("title"), imhTitle, "IMH title was not same");
+		assertEquals(jsnArray.getJSONObject(0).getString("formSource"), imhSource, "IMH Source was not same");
+		assertEquals(jsnArray.getJSONObject(1).getString("title"), medfusionTitle, " Medfusion title was not same");
+		assertEquals(jsnArray.getJSONObject(1).getString("formSource"), medfusionSource,
+				"Medfusion Source was not same");
+	}
+
+	public void verifyMultipleImhAndMedfusionForm(Response response, String imhTitle1, String imhTitle2,
+			String imhSource, String medfusionTitle1, String medfusionTitle2, String medfusionSource) {
+		JSONArray jsnArray = new JSONArray(response.asString());
+		assertEquals(jsnArray.getJSONObject(0).getString("title"), imhTitle1, "IMH title was not same");
+		assertEquals(jsnArray.getJSONObject(0).getString("formSource"), imhSource, "IMH Source was not same");
+		assertEquals(jsnArray.getJSONObject(1).getString("title"), imhTitle2, " Medfusion title was not same");
+		assertEquals(jsnArray.getJSONObject(1).getString("formSource"), medfusionSource,
+				"Medfusion Source was not same");
+		assertEquals(jsnArray.getJSONObject(2).getString("title"), medfusionTitle1, "IMH title was not same");
+		assertEquals(jsnArray.getJSONObject(2).getString("formSource"), imhSource, "IMH Source was not same");
+		assertEquals(jsnArray.getJSONObject(3).getString("title"), medfusionTitle2, " Medfusion title was not same");
+		assertEquals(jsnArray.getJSONObject(3).getString("formSource"), medfusionSource,
+				"Medfusion Source was not same");
+	}
+
+	public void verifyImhUrlField(Response response, String url) {
+		JSONArray jsnArray = new JSONArray(response.asString());
+		assertEquals(jsnArray.getJSONObject(0).getString("url"), url, "IMH url was not same");
+	}
+
+	public void verifyPracticeIds(Response response, String practiceId) {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			String practiceIds = obj.getString("practiceId");
+			if (practiceIds.equals("0")) {
+				assertEquals(practiceIds, "0");
+				log("Get Practice id is-  '0'");
+			} else {
+				assertEquals(practiceIds, practiceId);
+				log("Get Practice id is- " + practiceId);
+			}
+		}
+	}
+
+	public void verifyCustomForm(Response response, String conceptName) {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			String getConceptName = obj.getString("conceptName");
+			if (getConceptName.equals(conceptName)) {
+				assertEquals(getConceptName, conceptName);
+				break;
+			}
+		}
+	}
+
+	public void verifyAddedFormDetails(Response response, String key, String value, boolean apptTypeValue,
+			String formSource) throws IOException {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			if (obj.getString(key).equals(value)) {
+				assertEquals(obj.getString("title"), value, "Updated title was not as per accepted");
+				assertEquals(obj.getBoolean("enabledByAppointmentType"), apptTypeValue,
+						"Updated title was not as per accepted");
+				assertEquals(obj.getString("formSource"), formSource, "Updated title was not as per accepted");
+				log("conceptName exist in master file is :--  " + obj.getString(key));
+			}
+		}
+	}
+
+	public void verifyPracticeIdsForNewPractice(Response response) {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			String practiceIds = obj.getString("practiceId");
+			assertEquals(practiceIds, "0");
+			log("Get Practice id is-  '0'");
+
+		}
+	}
+
 }

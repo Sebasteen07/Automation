@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.test;
 
 import static org.testng.Assert.assertFalse;
@@ -695,7 +695,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
-	public void testPortalURL() throws Exception {
+	public void testPortalURLSU() throws Exception {
 
 		SiteGenLoginPage loginpage;
 		SiteGenHomePage pSiteGenHomePage;
@@ -722,18 +722,16 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		pInfoPage.urlTextBox("ihgqaautomation");
 		String urlName = pInfoPage.getURLName();
-		String portalUrlLink = pInfoPage.getPortalURL();
 		
 		logStep("update the Url name and link");
 		pInfoPage.urlTextBox("japanese");
-		String portalUrlLink2 = pInfoPage.getPortalURL();
 		
 		logStep("Save the update Url name and link");
 		pInfoPage.saveEdit();
 
 		logStep("Login patient with the updated URl");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("updatedUrl"));
-		JalapenoHomePage homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
+		loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
 
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
 
@@ -759,4 +757,34 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		pInfoPage.saveEdit();
 
 	}
+	
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
+	private void testUpdateEnterpriseForAPracticeSU() throws Exception {
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage;
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
+		
+		pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
+		pSiteGenHomePage = loginpage.clickOnLoginAsInternalEmployee();
+		logStep("navigate to SiteGen PracticeHomePage");
+		assertTrue(pSiteGenHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen HomePage  to be loaded, but it was not.");
+		pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("practice.name"));
+
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+		
+		logStep("Click on Practice Information and navigate to practice information page");
+		pSiteGenPracticeHomePage.clickPracticeInformation();
+		
+		logStep("Click on edit practice Information Page");
+		PracticeInfoPage pInfoPage = new PracticeInfoPage(driver);
+		
+		pInfoPage.edit();
+		
+		logStep("Update the Enteprise Association of the Practice");
+		pInfoPage.updateEnterprise();
+		
+	}
+
 }

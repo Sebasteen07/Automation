@@ -1,4 +1,4 @@
-//Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MessagesPage;
 
 import java.util.Set;
@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 
 public class IMHPage extends JalapenoMessagesPage{

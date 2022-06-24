@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.helpers;
 
 import static io.restassured.RestAssured.given;
@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import com.medfusion.mfpay.merchant_provisioning.pojos.Roles;
@@ -34,7 +33,7 @@ public class UsersDetails extends BaseRest {
 		Map<String, Object> user = Roles.getRolesMap(staffusername,practicestaffid );
 		Response response = given().spec(requestSpec).
 		body(user).when().post(getusers).then().assertThat()
-	   .body("roles" ,containsInAnyOrder("USER","FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "POS_ADMIN", "VOIDREFUND"))
+	   .body("roles" ,containsInAnyOrder("USER", "FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "MERCHANT_POS_ADMIN", "VOIDREFUND"))
 	   .extract().response();
 		Validations.validateStaffUser(staffusername, practicestaffid,response.asString())	;
 					 		
@@ -42,7 +41,7 @@ public class UsersDetails extends BaseRest {
 
 	public void getRolesForUser(String getusers, String staffname, String practicestaffid) {
 		given().spec(requestSpec).when().get(getusers+"/"+practicestaffid).then().spec(responseSpec)
-		.assertThat().body("roles" ,containsInAnyOrder("USER","FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "POS_ADMIN", "VOIDREFUND"));
+		.assertThat().body("roles" ,containsInAnyOrder("USER","FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "MERCHANT_POS_ADMIN", "VOIDREFUND"));
 	}
 
 	public Response createPracticeUser(String getusers, String staffusername, String practiceRoles) throws IOException {

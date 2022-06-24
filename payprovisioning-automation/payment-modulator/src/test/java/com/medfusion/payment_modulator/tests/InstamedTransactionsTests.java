@@ -1,9 +1,8 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.tests;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.payment_modulator.helpers.TransactionResourceDetails;
-import com.medfusion.payment_modulator.utils.CommonUtils;
 import com.medfusion.payment_modulator.utils.ModulatorTestData;
 import com.medfusion.payment_modulator.utils.Validations;
 import io.restassured.path.json.JsonPath;
@@ -100,4 +99,41 @@ public class InstamedTransactionsTests extends BaseRest {
             }
         }
     }
+
+    @Test(priority = 4, enabled = true)
+    public void testInstaMedViewReceiptForCardSale() throws Exception {
+
+        TransactionResourceDetails transaction = new TransactionResourceDetails();
+        Validations validate = new Validations();
+        Response response = transaction.makeASale(
+                    testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+                    testData.getProperty("account.number"), testData.getProperty("consumer.name"),
+                    testData.getProperty("payment.source.patient.portal"), testData.getProperty("cvv"),
+                    testData.getProperty("type"), testData.getProperty("card.number"),
+                    testData.getProperty("expiration.number1"), testData.getProperty("bin"),
+                    testData.getProperty("zipcode"), testData.getProperty("last.name"),
+                    testData.getProperty("address.line1"), testData.getProperty("city"),
+                    testData.getProperty("state"), testData.getProperty("first.name"));
+
+        JsonPath jsonPathSale = new JsonPath(response.asString());
+
+        Response responseOfViewReceipt =
+                transaction.viewReceipt(testData.getProperty("base.url.v2"), testData.getProperty("instamed.mmid"),
+                        jsonPathSale.get("externalTransactionId").toString(), jsonPathSale.get("orderId").toString());
+
+        JsonPath jsonpath = new JsonPath(responseOfViewReceipt.asString());
+        validate.verifyInstamedReceiptCommonDetails(jsonpath);
+
+        Assert.assertTrue(jsonpath.get("cardType").equals(testData.getProperty("type4")));
+        Assert.assertTrue(jsonpath.get("cardSuffix")
+                    .equals(testData.getProperty("card.number").substring(testData.getProperty("card.number").length()-4)));
+        Assert.assertTrue(jsonpath.get("patientAccount").equals(testData.getProperty("account.number")));
+        Assert.assertTrue(jsonpath.get("consumerName").equals(testData.getProperty("consumer.name")));
+        Assert.assertTrue(jsonpath.get("cardHolderName").equals(testData.getProperty("first.name")+" "+testData.getProperty("last.name")));
+        Assert.assertNull(jsonpath.get("instamedDetail.accountType"), "Account Type is not null for card cale");
+        Assert.assertNull(jsonpath.get("instamedDetail.routingNumber"), "Routing Number is not null for card sale");
+        Assert.assertNull(jsonpath.get("instamedDetail.accountHolderName"), "Account Holder Name is not null for card sale");
+
+    }
+
 }

@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.utils;
 
 import java.io.IOException;
@@ -7,8 +8,6 @@ import org.testng.annotations.DataProvider;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
-import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
-import com.medfusion.gateway_proxy.utils.MPUsersUtility;
 
 public class GatewayProxyTestData extends GatewayProxyBaseTest {
 	String env = GatewayProxyUtils.getEnvironmentType().toString();
@@ -226,7 +225,6 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 	@DataProvider(name = "update_card")
 	public static Object[][] dataProvider_update_card() throws IOException {
 		testData = new PropertyFileLoader();
-		String zipcode = IHGUtil.createRandomZip();
 
 		return new Object[][] {
 

@@ -36,7 +36,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'No slots available')]")
 	private WebElement noslotsAvaliable;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='calendarslot']/div/div/div/div/div[2]/div[2]/div[2]/div[1]/div[2]/a")
+    @FindBy(how = How.XPATH, using = "//div[@class='rbc-date-cell rbc-now rbc-current']/a")
     private WebElement currentDaydisabled;
     
     @FindBy(how = How.XPATH, using = "//button[@class=' dropdown-toggle dropdownbutton']")
@@ -270,17 +270,8 @@ public class AppointmentDateTime extends PSS2MainPage {
 			driver.findElement(By.className("rbc-next-month")).click();
 			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
 		}
-		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
-		for (int i = 0; i < appointmentList.size(); i++) {
-			if (appointmentList.get(i).isDisplayed()) {
-				log("Appointment Date selected=" + appointmentList.get(i).getText());
-				appointmentList.get(i).click();
-				dt = appointmentList.get(i).getText();
-				log("Current date is disabled  " + disabledate());
-				assertTrue(disabledate());
-				return appointmentList.get(i).getText();
-			}
-		}
+		log("Current date is "+currentDaydisabled.getText());
+		dt = currentDaydisabled.getText();
 		return dt;
 	}
 	

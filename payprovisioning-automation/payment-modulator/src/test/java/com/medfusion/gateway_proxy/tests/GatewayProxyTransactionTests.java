@@ -2,7 +2,6 @@
 package com.medfusion.gateway_proxy.tests;
 
 import com.medfusion.payment_modulator.pojos.Transactions;
-import io.restassured.http.Headers;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;

@@ -82,5 +82,14 @@ public class PostAPIRequestMfAppointmentTypes extends BaseTestNGWebDriver {
 				.then().log().all().extract().response();
 		return response;
 	}
+	public Response aptPostAppointmentTypes(String baseUrl,String payload, Map<String, String> Header,
+			 String PracticeId) {
+		RestAssured.baseURI=baseUrl;
+		log("Execute POST request for appointmentTypes");
+		Response response = given()
+				.when().headers(Header).body(payload).log().all().when().post("appointmentTypes")
+				.then().log().all().extract().response();
+		return response;
+	}
 }
 

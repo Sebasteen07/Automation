@@ -1,9 +1,7 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved
 package com.medfusion.funding.service;
 
-import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.io.BufferedReader;
@@ -12,7 +10,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.URL;
 
 import com.medfusion.funding.pojo.Reports;

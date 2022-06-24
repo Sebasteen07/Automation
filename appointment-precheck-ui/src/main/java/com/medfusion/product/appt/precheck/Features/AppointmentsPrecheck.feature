@@ -1914,3 +1914,755 @@ Feature: Test fuctionality of Appointment precheck
     And on appointment dashboard default icon should be display
     Then I verify after getting cadance reminder default icon is replace with paper plane and on that paper plane icon count 1 will display
     And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then appointment scheduled confirmation mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the appointment scheduled confirmation mail
+    Then I verify appointment scheduled confirmation mail recieved should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then appointment reminder in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the appointment reminder in mail
+    Then I verify appointment reminder recieved in mail should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then broadcast message in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the broadcast message in mail
+    And I send broadcast message to patient
+    Then I verify broadcast message recieved in mail should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then curbside reminder in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the curbside reminder in mail
+    Then I verify curbside reminder recieved in mail should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then manual reminder in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the manual reminder in mail
+    And I send manual reminder for that appointment
+    Then I verify manual reminder recieved in mail should not show first name
+    And logout from practice provisioning portal
+
+  Scenario: verify by default in timing textbox user is able to see days configured and timing units 1,3,5 days configured
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    Then I verify system should show by default days configured in days section and in timing units 1,3,5 configured
+    And logout from practice provisioning portal
+
+  Scenario: verify if user click on dropdown in timing section then there is 3 fields display in dropdown that is Day,hours,minutes
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on dropdown of timing
+    Then I verify system should show only 3 fields in dropdown of timing that is Day,hours,minutes
+    And logout from practice provisioning portal
+
+  Scenario: verify if user select Days from timing section then in timing units user is able to enter 1 to unlimited numbers
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I enter 1 to unlimited numbers in timing units
+    Then I verify system should allow user to enter values from 1 to no limit
+    And logout from practice provisioning portal
+
+  Scenario: verify if user select Hours from timing section then in timing units user is able to enter only 1 to 23 number.
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I select Hours and enter 1 to 23 number in timing units
+    Then I verify system should allow only 1 to 23 number in the timing units section
+    And logout from practice provisioning portal
+
+  Scenario: verify if user select minutes from timing section then in timing units user is able to enter only 10 integer
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I select minutes and enter 10 number in timing units
+    Then I verify system should allow only 10 integer in the timing units section
+    And logout from practice provisioning portal
+
+  Scenario: verify if user select minutes from timing section then in timing units user is able to enter only 59 number
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I select minutes and enter 59 number in timing unit
+    Then I verify system should allow only 59 integer in the timing unit section
+    And logout from practice provisioning portal
+
+  Scenario: Verify for both manual and cadence reminder single history pop up will display
+    When I schedule an appointment in "en"
+    And I select patient and send manual reminder
+    Then I verify for email and text reminder system should show all manual and cadence reminder log on mails history  pop up
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see latest reminder status in mail and text section either for cadence reminder.
+    When I click on setting tab
+    And I click on notification tab
+    And I am on the reminder section of the appointment reminder
+    And I click on appointments tabs
+    And I schedule an appointment for English language
+    And I go to appointment dashboard and select one user from appointment dashboard
+    And I click on '>' icon of the selected patient from dashboard
+    Then I verify system should show latest cadence reminder status on page
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see manual reminder status in mail and text section either for manual reminder.
+    When I click on setting tab
+    And I click on notification tab
+    And I am on the reminder section of the appointment reminder
+    And I click on appointments tab
+    And I schedule an appointment for English language
+    And I select one user from appointment dashboard and send manual reminder
+    And I click on '>' icon of the selected patient from dashboard
+    Then I verify system should show manual reminder status on page
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then appointment scheduled confirmation mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the appointment scheduled confirmation in mail
+    Then I verify appointment scheduled confirmation mail recieved should show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then appointment reminder in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the appointment reminder in mail
+    Then I verify appointment reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then broadcast message in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I receive the broadcast message reminder in mail
+    And I send broadcast message to patient
+    Then I verify broadcast message recieved in mail should show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then curbside reminder in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the curbside reminder in mail
+    Then I verify curbside reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then manual reminder in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable the display patient first name and save the notifications
+    And I schedule an appointment and I get the manual reminder in mail
+    And I send manual reminder for that appointment
+    Then I verify manual reminder recieved in mail should show first name
+    And logout from practice provisioning portal
+
+  Scenario: verify if user delete 4th timing unit by click on (-) button from page
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on 4th timing unit
+    And I click on delete button of 4th timing unit
+    Then I verify that system should allow user to delete timing units from page
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see (+) add in enable format after deleting 4th timing unit
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on 4th timing unit
+    And I click on delete button of 4th timing unit
+    Then I verify add button should display in enable format
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see add button in enable format when I delete 2 more timing units
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on 4th timing unit
+    And I click on delete button of 4th and 3rd timing unit
+    Then I verify add button should display in enable format if I delete 2 timing units
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to delete all timing units fields on cadence editor template page by clicking on (-) button
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on delete button of all timing unit fields
+    Then I verify system should allow user to delete all timing units fields and in notification tab the timing and timing unit section blank space should display
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to add again timing units field by clicking on (+) add button on cadence editor template page
+    When I click on setting tab
+    And I click on notification tab
+    And I click on edit of hamburger button for email in appointment reminders
+    And I click on add button on cadence editor template page
+    Then I verify system should allow user to add timing fields on cadence editor template page
+    And logout from practice provisioning portal
+
+  Scenario: Verify add button functionality for email in appointment reminder template editor page
+    When I click on email edit section of appointment reminders from setting in notifications tab
+    Then I verify add button functionality for "Email"
+    And I save cadence for email
+    And logout from practice provisioning portal
+
+  Scenario: Verify add button functionality for email in appointment reminder template editor page
+    When I click on text edit section of appointment reminders from setting in notifications tab
+    Then I verify add button functionality for "SMS"
+    And I save cadence for text
+    And logout from practice provisioning portal
+
+  Scenario: verify If patient has Spanish as preferred language in appointment data then send message in Spanish
+    When I enabled curbside remainder checkbox from notifications tab in Setting tab
+    And I schedule an appointment in spanish "es" and have confirmed there arrival
+    And click on Curbside check-in tab
+    And I select patient and click on dropdown from curbside checkin page
+    And I send "Come in the office now." message to selected patient
+    And I received message "ven a la oficina ahora." in email in spanish language
+    And I send "Wait in the parking lot until we send you a message to come in." message to selected patient
+    And I received message "espere en el estacionamiento hasta que le enviemos un mensaje para que ingrese." in email in spanish language
+    And I send "We will call you shortly to collect your insurance information." message to selected patient
+    Then I verify message "lo llamaremos en breve para recopilar la información de su seguro." receive in spanish language
+    And logout from practice provisioning portal
+
+  Scenario: verify if the total count of number of patients waiting in the parking lot are displayed in the top left corner in Curbside check-in grid
+    When I enabled curbside remainder checkbox from notifications tab in Setting tab
+    And I clear all appointments from on curbside checkin tab
+    And click on Curbside check-in tab
+    And on nitification icon "0" count should be displayed on the top left corner
+    And I schedule 3 appointments and finish curbside checkin process from mail by click on I have arrived
+    And I logged into practice provisioning and view the notification icon count "3" on the top left corner
+    And I schedule 2 appointments and finish curbside checkin process from mail by click on I have arrived
+    And I logged into practice provisioning and view the notification icon count "5" on the top left corner
+    And I switch on curbside checkin tab and select patient and click on check in button
+    Then I verify on nitification icon "4" count should be displayed on the top left corner
+    And logout from practice provisioning portal
+
+  Scenario: verify notification setting for arrival instruction for spanish and english section and default msg is not editable and hardcoded
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    Then I verify default arrival instruction message for spanish and english section is not editable
+    And logout from practice provisioning portal
+
+  Scenario: verify if arrival confirmation additional instruction text is displayed and textbox is displayed below for English and Spanish language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    Then I verify arrival confirmation additional instruction text is displayed and textbox is displayed below for English and spanish language
+    And logout from practice provisioning portal
+
+  Scenario: verify if arrival confirmation additional instruction text is displayed and blank textbox is displayed below for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instruction for English section
+    Then I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for English language
+    And logout from practice provisioning portal
+
+  Scenario: verify if arrival confirmation additional instruction text is displayed and blank textbox is displayed below for Spanish language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instruction for Spanish section
+    Then I verify arrival confirmation additional instruction text is displayed and blank textbox is displayed below for Spanish language
+    And logout from practice provisioning portal
+
+  Scenario: verify if arrival confirmation additional instruction text msg length does not exceeds above 500 character for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instruction for English section and add arrival instruction
+    Then I verify arrival confirmation additional instruction text msg length should not exceeds above 500 character
+
+  Scenario: verify if arrival confirmation additional instruction text msg length does not exceeds above 500 character for Spanish language
+    When I click on setting tab
+    And I click on notification tab
+    And I click on curbside check-in of notifications tab
+    And I click on additional arrival instruction for Spanish section and add arrival instruction
+    Then I verify arrival confirmation additional instruction text msg length should not exceeds above 500 character for Spanish language
+
+  Scenario: verify arrival instruction msg received to patient is default msg when custom instruction is blank for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I select English as preferred language
+    And I click on appointments tab
+    And I schedule an appointment and confirm arrival message
+    Then I verify arrival confirmation default msg should be received to patient in English language for email and text
+
+  Scenario: verify if user is able to add up-to 500 characters in default additional arrival instruction text box for english language
+    When from setting in notifications user click on curbside checkin tab and click on english button
+    Then I verify after user able to add above five hundred character in default arrival instruction message for english and it should shows filled character count in left
+    And I click on save for english and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enter 100 characters in the english additional arrival instructions text box then count should show correct
+    When from setting in notifications user click on curbside checkin tab and click on english button
+    Then I verify user able to enter hundred characters in arrival instructions text box for english then count should show correct
+    And I click on save for english and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to add up-to 500 characters in default additional arrival instruction text box for spanish language
+    When from setting in notifications user click on curbside checkin tab and click on spanish button
+    Then I verify after user able to add above five hundred character in default arrival instruction message for spanish and it should shows filled character count in left
+    And I click on save for spanish and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enter 100 characters in the english additional arrival instructions text box then count should show correct
+    When from setting in notifications user click on curbside checkin tab and click on spanish button
+    Then I verify user able to enter hundred characters in arrival instructions text box for spanish then count should show correct
+    And I click on save for spanish and redirect to notification dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify arrival instruction msg received to patient is default msg + Customized msg when custom instruction is entered for English language
+    When I click on setting tab
+    And I click on notification tab
+    And I select English as preferred language
+    And I click on curbside checkin tab of notification tab and add additional arrival instruction for English section
+    And I click on appointments tab
+    And I schedule an appointment with English language and confirm arrival message
+    Then I verify arrival confirmation default msg + custom msg should be received to patient in English language for email and text
+
+  Scenario: verify if system shows arrival instruction on email and text as per default msg set and system shows phone number as appointment location phone number
+    When I click on setting tab
+    And I click on notification tab
+    And I select English and Spanish as preferred language
+    And I click on appointments tab
+    And I schedule an appointment with English and Spanish language and confirm the arrival
+    Then I verify arrival notification msg should show mobile number of appointment location in the arrival text msg and msg should come in English language
+
+  Scenario: verify if system shows arrival instruction on email and text as per default msg set and system shows phone number as appointment location phone number in English
+    When I click on setting tab
+    And I click on notification tab
+    And I select English as preferred language
+    And I click on appointments tab
+    And I schedule an appointment with English language and confirm the arrival
+    Then I verify arrival notification message should show mobile number of appointment location in the arrival text msg and Msg should come in English language
+
+  Scenario: verify if system shows arrival instruction on email and text as per default msg set and phone number as appointment location phone number is blank
+    When I click on setting tab
+    And I click on notification tab
+    And I select English as preferred language
+    And I click on appointments tab
+    And I schedule an appointment with English language and set appointment location and phone number as blank
+    Then I verify arrival notification msg should not show "mobile number" text  in the arrival text msg
+
+  Scenario: Verify if user is able to see timing units days, hours, mins in proper sequence on notification tab for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    And I select first Hours, min and then Day in timing units and save changes for 'Email'
+    Then I verify user is able to see timing units in proper sequence on notification tab for email
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to see timing units in proper sequence on notification tab for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    And I select first minutes, hours and then Day in timing units and save changes for 'Email'
+    Then I verify user is able to see timing units in proper sequence on notification tab for email
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to see timing in proper sequence on notification tab for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    And I select first hour, min, hour and then Day in timing units and save changes for 'Email'
+    Then I verify if user is able to see timing units in proper sequence on notification tab for email
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to see timing units days, hours, mins in proper sequence on notification tab for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And I hit edit button of text for appointment reminder
+    And I select first Hours, min and then Day in timing units in text and save changes for 'SMS'
+    Then I verify user is able to see timing units in proper sequence on notification tab for text
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to see timing units in proper sequence on notification tab for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And I hit edit button of text for appointment reminder
+    And I select first minutes, hours and then Day in timing units in text and save changes for 'SMS'
+    Then I verify user is able to see timing units in proper sequence on notification tab for text
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to see timing in proper sequence on notification tab for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And I hit edit button of text for appointment reminder
+    And I select first hour, min, hour and then Day in timing units in text and save changes for 'SMS'
+    Then I verify if user is able to see timing units in proper sequence on notification tab for text
+    And logout from practice provisioning portal
+
+  Scenario: verify check-in change status decreases number of notification
+    When I enabled curbside remainder checkbox from notifications tab in Setting tab
+    And I clear all appointments from on curbside checkin tab
+    And I schedule multiple appointments and perform arrival actions confirm
+    And I schedule a new appointment and not having confirm
+    And I click on the curbside link and finish curbside checkin process from mail
+    And I logged into practice provisioning and view the notification icon count "6" on the top left corner
+    And I switch on curbside checkin tab and select patient and click on check in button
+    Then I verify notification icon count decreases and patient should be disappeared
+    And logout from practice provisioning portal
+
+  Scenario: verify broadcast count functionality is coming correct when select all patient on page one
+    When I applied filter for start date
+    And I select all record from page "1"
+    And I deselect few records from page "1" and switch to page 2 and select all records
+    And I again switch on page 1 click on banner message
+    Then I verify broadcast message count from action button after clicking on banner message on page one
+    And logout from practice provisioning portal
+
+  Scenario: verify broadcast count functionality is coming correct when selects all patient on page two
+    When I applied filter for start date
+    And I select all record from page "1"
+    And I switch on page "2" and select all records
+    And I switch on page "1" and deselect few records
+    And I switch on page "3" and select all records
+    And I again switch on page 2 click on banner message
+    Then I verify broadcast message count from action button after clicking on banner message on page two
+    And logout from practice provisioning portal
+
+  Scenario: verify broadcast count functionality is coming correct when selects all patient
+    When I applied filter for start date, provider and location
+    And I select all record from page "1"
+    And I deselect few records from page "1" and switch to page 2 and select all records
+    And I again switch on page 1 click on banner message
+    Then I verify broadcast message count from action button after clicking on banner message on page one
+    And logout from practice provisioning portal
+
+  Scenario: verify patient personal information page
+    When I schedule an appointment and update personal information
+    And I click on patient name
+    And I click on launch patient mode and change some of the fields
+    Then I verify updated personal information should be reflected for the appointment in the appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify patient contact info page
+    When I schedule an appointment and update contact info
+    And I click on patient name and do the precheck
+    Then I verify updated contact info page should be reflected in appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify by disabling the demographics on practice dashboard
+    When I click on settings tab
+    And I click on precheck tab and disable the demographics and save changes
+    And I schedule an appointment
+    And I click on patient name
+    And I click on patient mode to do the precheck
+    Then I verify precheck should not have personal info,contact info,pharmacy details
+    And logout from practice provisioning portal
+
+  Scenario: verify if user can add 3 tiers of insurances
+    When I schedule an appointment and add insurances
+    And I click on patient name and add 3 insurances during precheck
+    Then I verify in appointment dashboard for that appointment 3 insurances are reflected
+    And logout from practice provisioning portal
+
+  Scenario: verify if user can remove existing insurances
+    When I schedule an appointment and add insurances
+    And I click on patient name and add 3 insurances during precheck and edit the insurance cards and remove primary,secondary,tertiary insurances
+    Then I verify in appointment dashboard insurances should be removed for that appointment
+    And logout from practice provisioning portal
+
+  Scenario: verify if user disable insurance checkbox and while doing precheck insurance stepper should not ne seen
+    When I disable insurance checkbox
+    And I schedule an appointment and precheck
+    And I click on patient name and do precheck and verify while doing precheck insurance stepper should not be seen
+    And logout from practice provisioning portal
+
+  Scenario: verify if user pays copay amount by pay with credit card
+    When I schedule an appointment with copay
+    And I click on patient name and pay the copay amount by credit card while doing precheck
+    Then I verify in appointment dashboard for that appointment the copay amount is paid
+
+  Scenario: verify after sending curbside arrival instruction message to curbside checkin patient in reminder column section system should not show day prior entry in reminder section
+    When I click on setting tab and ON notification setting
+    And I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab and select patient
+    And I send "Come in the office now." message to selected patient
+    And I switch on appointment dashboard
+    Then I verify system should not show day prior entry in reminder section column
+    And logout from practice provisioning portal
+
+  Scenario: verify after sending curbside arrival instruction other message to curbside checkin patient in reminder column section system should not show day prior entry in reminder section
+    When I click on setting tab and ON notification setting
+    And I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab and select patient
+    And I send "Other" message to curbside checkin patient
+    And I switch on appointment dashboard
+    Then I verify system should not show day prior entry in reminder section column
+    And logout from practice provisioning portal
+
+  Scenario: verify system is not allowing user to enter invalid integers in timing unit section for email in appointment reminders
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    Then I verify system is not allowing to enter invalid integers in timing unit section for email in appointment reminders for 'Email'
+    And logout from practice provisioning portal
+
+  Scenario: verify if the patient skips 'PayInOffice'
+    When user schedule an appointment and skips
+    And I do the precheck and click on skip 'PayInOffice'
+    And I verify in appointment dashboard skips icon is seen for that appointment
+    And logout from practice provisioning portal
+
+  Scenario: verify if copay payments are already done
+    When I schedule an appointment with copay
+    And I do the precheck for copay
+    Then I verify again after doing precheck for that appointment to check if copay and balance payments are already done
+    And logout from practice provisioning portal
+
+  Scenario: verify if user pays copay amount by pay in office button
+    When I schedule an appointment with copay
+    And I click on patient name and pay the copay amount by pay in office while doing precheck
+    Then I verify in appointment dashboard for that appointment the copay should show pay in office
+    And logout from practice provisioning portal
+
+  Scenario: verify successful payment in copay
+    When I schedule an appointment with copay
+    And I pay copay with credit card and enter card details
+    Then I verify confirm payment and processing payment message should be displayed
+    And logout from practice provisioning portal
+
+  Scenario: verify if disable copay from precheck settings
+    When I disable copayment from precheck settings
+    And I schedule an appointment with copay
+    And I do the precheck after disabling copayment
+    Then I verify copay page should not be seen in precheck
+    And logout from practice provisioning portal
+
+  Scenario: verify display of title and other headlines of Pay Balance
+    When I schedule an appointment for paybalance
+    And I do the precheck for pay balance
+    Then I verify title and other details of pay balance should be seen proper
+    And logout from practice provisioning portal
+
+  Scenario: verify if user enable minimum balance amount in practice precheck settings
+    When I enable minimum balance amount in precheck settings and enter minimum balance amount
+    And I schedule an appointment for paybalance
+    Then I verify precheck UI does not allow less than the amount payment
+    And logout from practice provisioning portal
+
+  Scenario: verify if user disables balance from practice precheck settings
+    When I disable balance from practice precheck settings
+    And I schedule an appointment for paybalance
+    Then I verify balance page should not be seen during precheck
+    And logout from practice provisioning portal
+
+  Scenario: verify if patient has multiple appointments and does precheck for one of the appointments should update only that appointment
+    When I schedule multiple appointments
+    And I do the precheck for one appointment
+    Then I verify system will show the appointment details of precheck completed not for other appointment whose precheck is not done
+    And logout from practice provisioning portal
+
+  Scenario: verify if user removes existing insurance
+    When I schedule an appointment to remove the existing insurance
+    And I do the precheck and remove existing insurances and
+    Then I verify the message after removal of insurances
+    And logout from practice provisioning portal
+
+  Scenario: verify if user click On 'Im done button' after doing precheck
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the appointment scheduled
+    Then I verify the message after clicking on 'Im done button'
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see 'logout button' and 'cancel button' while doing precheck
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the scheduled appointment
+    Then I verify that user is able to see 'logout button' and 'cancel button'
+    And logout from practice provisioning portal
+
+  Scenario: verify if user after doing precheck clicks on cancel button it should bring back to Appointment details page
+    When I schedule an appointment for doing precheck
+    And I do the precheck and I click on cancel button
+    Then I verify after clicking on cancel button it should bring back to Appointment details page
+    And logout from practice provisioning portal
+
+  Scenario: verify if user after doing precheck clicks on logout button it should logout from patient mode
+    When I schedule an appointment for doing precheck
+    And I click on logout button
+    Then I verify it should logout from patient mode
+    And logout from practice provisioning portal
+
+  Scenario: verify appointment details page after precheck
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the scheduled appointment
+    Then I verify appointment details page is seen properly after doing precheck
+    And logout from practice provisioning portal
+
+  Scenario: verify check-in information in appointment details page for patient information
+    When I schedule an appointment for doing precheck
+    And I click on edit of patient information
+    Then I verify it takes to precheck demographics, patient can be able to do precheck details
+    And logout from practice provisioning portal
+
+  Scenario: verify check-in information in appointment details page for insurance cards
+    When I schedule an appointment for doing precheck
+    And I click on edit of insurance cards
+    Then I verify it takes to precheck insurance, patient can be able to do precheck for insurance details
+    And logout from practice provisioning portal
+
+  Scenario: verify menu options on all precheck pages
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the scheduled appointment
+    Then I verify all the menu options are seen properly on precheck page
+    And logout from practice provisioning portal
+
+  Scenario: verify signout options on precheck page
+    When I schedule an appointment for doing precheck
+    And I do the precheck for the scheduled appointment and click on signout link
+    Then I verify signout link should take to the logout model for confirmation
+    And logout from practice provisioning portal
+
+  Scenario: verify disclaimer message for copay
+    When I schedule an appointment with copay
+    And I do the precheck for the appointment
+    Then I verify that disclaimer message for copay is seen properly
+    And logout from practice provisioning portal
+
+  Scenario: verify appointment with dob before '1970'
+    When I schedule an appointment with dob before 1970
+    Then I verify that user complete precheck both from reminders as well as from patient mode
+    And logout from practice provisioning portal
+
+  Scenario: verify by adding insurance images to first/second/tertiary insurance from UI
+    When I schedule an appointment for adding images to insurances
+    And I do the precheck for adding images to insurances
+    Then I verify that images for 'first,second,tertiary insurance ' should be added
+    And logout from practice provisioning portal
+
+  Scenario: verify that it is not possible to upload an insurance card that is not jpeg, png or gif
+    When I schedule an appointment for adding images to insurances
+    Then I verify that error message should be seen
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then appointment reminder email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard
+    Then I verify from email appointment reminder email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then broadcast message email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send broadcast message is english and spanish
+    Then I verify from email broadcast message email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then curbside reminder email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard for curbside reminder
+    Then I verify from email curbside reminder email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then manual reminder email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send manual reminder from appointment dashboard
+    Then I verify from email manual reminder email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language as english then appointment reminder email should be recieved in english language
+    When I select practice language preference as English from notification in setting
+    And I schedule an appointment from appointment dashboard
+    Then I verify from email appointment reminder email should be recieved in english language
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language as english then broadcast message email should be recieved in english language
+    When I select practice language preference as English from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send broadcast message in english
+    Then I verify from email broadcast message email should be recieved in english language
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english then curbside reminder email should be recieved in english language
+    When I select practice language preference as English from notification in setting
+    And I schedule an appointment from appointment dashboard for curbside reminder
+    Then I verify from email curbside reminder email should be recieved in english language
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english then manual reminder email should be recieved in english language
+    When I select practice language preference as English from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send manual reminder from appointment dashboard
+    Then I verify from email manual reminder email should be recieved in english language
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment comfirmed then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment confirmed and precheck is done then it is deleted succesfully
+    When I schedule an appointment in "en" for precheck
+    And I do the precheck
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the broadcast is sent to appointment then it is deleted succesfully
+    When I schedule an appointment in "en"
+    And I select patient and send broadcast message from appointment dashboard
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the two month backdated appointment then it is deleted succesfully
+    When I select two month backdated patient
+    And I select patient and remove from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment comfirmed/Manual reminder/broadcast is sent then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I select patient and send manual reminder from appointment dashboard
+    And I select patient and send broadcast message from appointment dashboard
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment confirmed/broadcast message sent/curbside arrival is done is sent then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I select patient and send broadcast message from appointment dashboard
+    And I done curbside arrival
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the curbside arrival entry confirmed today is sent then it is deleted succesfully
+    When I schedule an appointment and make arrival entry done
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the Appointment entry with no confirmation , no precheck then it is deleted succesfully
+    When I schedule an appointment in "en"
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if precheck is done ,confirmed, broadcast sent, manual reminder is sent then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I do the precheck
+    And I select patient and send manual reminder from appointment dashboard
+    And I select patient and send broadcast message from appointment dashboard
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the Appointment backdated 1 month appointment then it is deleted succesfully
+    When I select one month backdated patient
+    And I select patient and remove from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the Appointment is visited and curbside check in is done then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I done curbside arrival
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal

@@ -11,7 +11,7 @@ module "build" {
   environment_variables = [
     {
       name  = "maven_command"
-      value = "${local.selected_maven_parameter} -Dtest.environment=${local.selected_test_environment} -Dselenium.browser=${local.selenium_browser} -Dsuite.xml=${local.selected_suite_xml} -Dexecution.mode=${local.test_execution_mode}"
+      value = "${local.selected_maven_parameter} -Dtest.environment=${local.selected_test_environment} -Dselenium.browser=${local.selenium_browser} -Dsuite.xml=${local.selected_suite_xml} -Dexecution.mode=${local.test_execution_mode} -DencryptionKey=${local.encrypted_key}"
       type  = "PLAINTEXT"
     },
     {

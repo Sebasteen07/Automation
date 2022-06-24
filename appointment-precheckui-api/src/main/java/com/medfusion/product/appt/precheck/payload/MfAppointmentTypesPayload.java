@@ -91,4 +91,17 @@ public class MfAppointmentTypesPayload {
 		return aptType;
 	}
 	
+	public String apptTypePayload(boolean apptTypeStatus,String apptType,String integrationId,String practiceId) {
+		String aptType=" {\r\n"
+				+ "  \"active\": "+apptTypeStatus+",\r\n"
+				+ "  \"appointmentTypeId\": \""+apptType+"\",\r\n"
+				+ "  \"appointmentTypeName\": \"RX Update Exam\",\r\n"
+				+ "  \"categoryId\": \"4576c5e2-453e-405f-a618-b253df9e36b0\",\r\n"
+				+ "  \"categoryName\": \"Office\",\r\n"
+				+ "  \"integrationId\": \""+integrationId+"\",\r\n"
+				+ "  \"practiceId\": \""+practiceId+"\"\r\n"
+				+ "}";
+		return aptType;
+	}
+	
 }

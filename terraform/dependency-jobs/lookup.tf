@@ -6,14 +6,18 @@ data "aws_vpc" "main" {
   }
 }
 
-data "aws_subnet_ids" "private" {
+data "aws_subnets" "private" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
 
-  vpc_id = data.aws_vpc.main.id
   tags = {
     type    = "private"
     subnets = "main"
   }
 }
+
 
 data "aws_region" "current" {
 }
@@ -37,6 +41,6 @@ data "aws_security_group" "codebuild_sg" {
 }
 
 data "aws_codecommit_repository" "qa_automation" {
-  
+
   repository_name = var.repository_name
 }

@@ -61,7 +61,7 @@ public class PostAPIRequestMfAppointmentScheduler extends BaseTestNGWebDriver {
 				.all().extract().response();
 		return response;
 	}
-	
+
 	public Response aptPutAppointmentPss(String baseurl, String practiceId, String payload, Map<String, String> Header,
 			String PatientId, String Appointmentid) {
 		RestAssured.baseURI = baseurl;
@@ -72,37 +72,49 @@ public class PostAPIRequestMfAppointmentScheduler extends BaseTestNGWebDriver {
 				.all().extract().response();
 		return response;
 	}
-		public Response aptPutAppointmentPM(String baseurl, String practiceId, String payload, Map<String, String> Header,
-				String PatientId, String Appointmentid) {
-			RestAssured.baseURI = baseurl;
-			log("Execute PUT request for Forms");
-			Response response = given().queryParam("oldPmAppointmentId", Appointmentid).queryParam("source", "PM")
-					.headers(Header).body(payload).log().all().when()
-					.put("practice/" + practiceId + "/patient/" + PatientId + "/appointment/" + Appointmentid).then().log()
-					.all().extract().response();
-			return response;
+
+	public Response aptPutAppointmentPM(String baseurl, String practiceId, String payload, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		RestAssured.baseURI = baseurl;
+		log("Execute PUT request for Forms");
+		Response response = given().queryParam("oldPmAppointmentId", Appointmentid).queryParam("source", "PM")
+				.headers(Header).body(payload).log().all().when()
+				.put("practice/" + practiceId + "/patient/" + PatientId + "/appointment/" + Appointmentid).then().log()
+				.all().extract().response();
+		return response;
 	}
-		
-		public Response aptPutAppointmentLegacy(String baseurl, String practiceId, String payload, Map<String, String> Header,
-				String PatientId, String Appointmentid) {
-			RestAssured.baseURI = baseurl;
-			log("Execute PUT request for Forms");
-			Response response = given().queryParam("oldPmAppointmentId", Appointmentid).queryParam("source", "LEGACY")
-					.headers(Header).body(payload).log().all().when()
-					.put("practice/" + practiceId + "/patient/" + PatientId + "/appointment/" + Appointmentid).then().log()
-					.all().extract().response();
-			return response;
+
+	public Response aptPutAppointmentLegacy(String baseurl, String practiceId, String payload,
+			Map<String, String> Header, String PatientId, String Appointmentid) {
+		RestAssured.baseURI = baseurl;
+		log("Execute PUT request for Forms");
+		Response response = given().queryParam("oldPmAppointmentId", Appointmentid).queryParam("source", "LEGACY")
+				.headers(Header).body(payload).log().all().when()
+				.put("practice/" + practiceId + "/patient/" + PatientId + "/appointment/" + Appointmentid).then().log()
+				.all().extract().response();
+		return response;
 	}
-		
-		public Response aptPutAppointmentInvalidSource(String baseurl, String practiceId, String payload, Map<String, String> Header,
-				String PatientId, String Appointmentid) {
-			RestAssured.baseURI = baseurl;
-			log("Execute PUT request for Forms");
-			Response response = given().queryParam("oldPmAppointmentId", Appointmentid).queryParam("source", "ABC")
-					.headers(Header).body(payload).log().all().when()
-					.put("practice/" + practiceId + "/patient/" + PatientId + "/appointment/" + Appointmentid).then().log()
-					.all().extract().response();
-			return response;
+
+	public Response aptPutAppointmentInvalidSource(String baseurl, String practiceId, String payload,
+			Map<String, String> Header, String PatientId, String Appointmentid) {
+		RestAssured.baseURI = baseurl;
+		log("Execute PUT request for Forms");
+		Response response = given().queryParam("oldPmAppointmentId", Appointmentid).queryParam("source", "ABC")
+				.headers(Header).body(payload).log().all().when()
+				.put("practice/" + practiceId + "/patient/" + PatientId + "/appointment/" + Appointmentid).then().log()
+				.all().extract().response();
+		return response;
+	}
+
+	public Response appointmentPayload(String baseurl, String practiceId, String payload, Map<String, String> Header,
+			String PatientId, String Appointmentid, String apptId) {
+		RestAssured.baseURI = baseurl;
+		log("Execute PUT request for Forms");
+		Response response = given().queryParam("oldPmAppointmentId", apptId).queryParam("source", "PSS").headers(Header)
+				.body(payload).log().all().when()
+				.put("practice/" + practiceId + "/patient/" + PatientId + "/appointment/" + Appointmentid).then().log()
+				.all().extract().response();
+		return response;
 	}
 
 }

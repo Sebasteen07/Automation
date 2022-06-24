@@ -14,9 +14,9 @@ public class PayloadGE {
 				+ "  \"apptTypeAllocated\": false,\r\n"
 				+ "  \"locationId\": \"3\",\r\n"
 				+ "  \"noOfDays\": 0,\r\n"
-				+ "  \"patientId\": \"26854\",\r\n"
+				+ "  \"patientId\": \"28447\",\r\n"
 				+ "  \"resourceCategoryId\":null,\r\n"
-				+ "  \"resourceId\": \"158\",\r\n"
+				+ "  \"resourceId\": \"581\",\r\n"
 				+ "  \"slotCount\": 0\r\n"
 				+ "}";
 		return getlastseenproviders;
@@ -123,19 +123,19 @@ public class PayloadGE {
 		return cancelledApptStatus;
 	}
 	
-	public static String pastappointmentsPayload() {
+	public static String pastappointmentsPayload(String startDate,String endDate,String patientId,String practiceDisplayName,String practiceName,String practiceId) {
 		String pastappointments="{\r\n"
 				+ "  \"additionalFields\": {},\r\n"
-				+ "  \"endDate\": \"05/20/2021\",\r\n"
-				+ "  \"patientId\": \"26854\",\r\n"
+				+ "  \"endDate\": \""+endDate+"\",\r\n"
+				+ "  \"patientId\": \""+patientId+"\",\r\n"
 				+ "  \"practiceProvision\": {\r\n"
 				+ "    \"active\": true,\r\n"
-				+ "    \"practiceDisplayName\": \"PSS - GE\",\r\n"
-				+ "    \"practiceId\": \"24333\",\r\n"
-				+ "    \"practiceName\": \"PSS - GE\",\r\n"
+				+ "    \"practiceDisplayName\": \""+practiceDisplayName+"\",\r\n"
+				+ "    \"practiceId\": \""+practiceId+"\",\r\n"
+				+ "    \"practiceName\": \""+practiceName+"\",\r\n"
 				+ "    \"practiceTimezone\": \"\"\r\n"
 				+ "  },\r\n"
-				+ "  \"startDate\": \"05/12/2021\"\r\n"
+				+ "  \"startDate\": \""+startDate+"\"\r\n"
 				+ "}";
 		return pastappointments;
 	}

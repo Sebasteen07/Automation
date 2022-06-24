@@ -1,20 +1,15 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.helpers;
 
 import static io.restassured.RestAssured.given;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
 import com.medfusion.payment_modulator.tests.BaseRest;
-import com.medfusion.payment_modulator.utils.CommonUtils;
-import com.medfusion.payment_modulator.utils.Validations;
 
 public class TransactionResourceDetails extends BaseRest {
 
@@ -125,5 +120,28 @@ public class TransactionResourceDetails extends BaseRest {
 		return response;
 	}
 
+	public Response makeAECheckSale(String mmid, String transactionAmount, String accountNumber, String consumerName,
+							  String paymentSource, String AccountType, String AccountNumber, String RoutingNumber,
+									String AccountHolderFirstName, String AccountHolderLastName) throws IOException {
+		testData = new PropertyFileLoader();
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForECheckSaleMap(
+				transactionAmount, accountNumber, consumerName, paymentSource,
+				AccountType, AccountNumber, RoutingNumber, AccountHolderFirstName, AccountHolderLastName);
+
+		Response response = given().spec(requestSpec).body(transactiondetails).when().post("sale/" + mmid).then()
+				.spec(responseSpec).and().extract().response();
+
+		return response;
+
+	}
+
+	public Response viewReceipt (String basev2url, String mmid, String transactionid, String orderid) {
+		Response response = given().when()
+				.get(basev2url + "merchant/" + mmid + "/receipt/" + transactionid + "/order/" + orderid)
+				.then().spec(responseSpec).and().log().all().extract()
+				.response();
+
+		return response;
+	}
 
 }

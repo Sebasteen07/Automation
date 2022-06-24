@@ -742,6 +742,16 @@ public class HomePage extends PSS2MainPage {
 
 		}
 	}
+	
+	public void cancelAppointmentWithoutReasonEnabled()throws InterruptedException {
+		log("cancelAppointmentList display =" + cancelAppointmentList.get(0).isDisplayed());
+		cancelAppointmentList.get(0).click();
+		IHGUtil.waitForElement(driver, 60, cancelAppointmentPopup);
+		cancelYesButton.click();
+		Thread.sleep(1000);
+		okCancelBtn.click();
+		log("appointment cancelled Successfully...");
+	}
 
 	public void verifyAppointmentScheduledInPMSystem(String dateTimeText) {
 		log("input text cancellationText " + dateTimeText);

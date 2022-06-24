@@ -86,9 +86,10 @@ public class ManageSpecialty extends PSS2MenuPage {
 		searchSpecility.sendKeys(specilityName);
 	}
 
-	public void selectSpecility(String resourceName) {
+	public void selectSpecility(String resourceName) throws InterruptedException {
+		Thread.sleep(2000);
 		searchSpecility(resourceName);
-		IHGUtil.waitForElement(driver, 60, searchSpecilityName);
+		IHGUtil.waitForElement(driver, 60, specilityList);
 		specilityList.click();
 		log("clicked on Specility  ");
 	}

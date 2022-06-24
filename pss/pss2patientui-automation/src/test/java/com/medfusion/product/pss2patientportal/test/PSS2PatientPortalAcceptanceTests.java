@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
 import static org.testng.Assert.assertEquals;
@@ -67,8 +67,6 @@ import com.medfusion.product.pss2patientui.utils.PSSNewPatient;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 import com.medfusion.product.pss2patientui.utils.YopMailUtility;
-import com.medfusion.product.pss2patientui.utils.YopMailUtility;
-
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -3792,11 +3790,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Switching tabs");
 		String currentUrl = psspatientutils.switchtabs(driver);
 		HomePage homepage = new HomePage(driver, currentUrl);
-		Thread.sleep(15000);
 		if (homepage.isPopUP()) {
 			homepage.popUPClick();
 		}
-		Thread.sleep(12000);
 
 		log("Successfully upto Home page");
 		homepage.btnStartSchedClick();
@@ -3809,15 +3805,14 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 			Log4jUtil.log("clicked on provider ");
-			Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+			Log4jUtil.log("Step 9: Verify Provider Page and provider =" + testData.getProvider());
 			AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
-			Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = "
+			Log4jUtil.log("Step 10: Verify Appointment Page and appointment to be selected = "
 					+ testData.getAppointmenttype());
 			Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
-			Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+			Log4jUtil.log("Step 11: Verify Location Page and location = " + testData.getAppointmenttype());
 			AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
-			Thread.sleep(6000);
 			psspatientutils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
 		}
 		Log4jUtil.log("Max per day appointment booked and now verifying the current date is disabled or Not");
@@ -3825,14 +3820,16 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 		Log4jUtil.log("clicked on provider ");
-		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+		Log4jUtil.log("Step 9: Verify Provider Page and provider =" + testData.getProvider());
 		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log(
 				"Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
-		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+		Log4jUtil.log("Step 11: Verify Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDateforMaxPDay(testData.getIsNextDayBooking());
+		log("Current date is disabled  " + aptDateTime.disabledate());
+		assertTrue(aptDateTime.disabledate());
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4059,10 +4056,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		startappointmentInOrder = homePage.skipInsurance(driver);
 
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Verfiy Location Page and location =" + testData.getLocation());
+		Log4jUtil.log("Verify Location Page and location =" + testData.getLocation());
 
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 
 		String expPrevSchMsg = "The practice does not allow this appointment to be scheduled within "
 				+ testData.getPreSchedDays()
@@ -4135,25 +4132,18 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homePage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verify Location Page and location =" + testData.getLocation());
 
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		
+		String expPrevSchMsg ="The practice does not allow this appointment to be scheduled within "
+				+ testData.getPreSchedDays()
+				+ " days from your last visit for the same appointment type. Please look for a later date or call the practice if the schedule does not allow selecting a later date.";
+		String actPreventSchMsg = appointment.preventAppointmentTypeMsg(testData.getAppointmenttype());
 
-		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-
-		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
-
-		AppointmentDateTime aptDateTime = provider.getProviderandClick(propertyData.getProperty("provider.pastappt.ng"));
-
-		String actualSlotDate = aptDateTime.selectDate(testData.getIsNextDayBooking());
-		logStep("Expected Available slot- " + strDateExp);
-
-		logStep("Actual Available slot- " + actualSlotDate);
-
-		assertEquals(actualSlotDate, strDateExp,
-				"Prevent Scheduling for Past Appointment Type is not working properly");
+		assertEquals(actPreventSchMsg, expPrevSchMsg, "Prevent Scheduling for Past Appointment Type is not working properly");
+		appointment.pressOkBtn();
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4433,27 +4423,13 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
 		HomePage homepage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(
-					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
-					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
-					PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
-					testData.getPrimaryNumber());
-		}
+		homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
+				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
+				testData.getPrimaryNumber());
 		logStep("Click on Start Scheduling Button");
 		homepage.btnStartSchedClick();
 		homepage.getLocationText();
 		homepage.getProviderText();
-		logStep("Click on Start Scheduling Button");
 		assertEquals(homepage.getLocationText(), testData.getLinkLocation());
 		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
@@ -6020,7 +5996,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		Thread.sleep(20000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -7997,7 +7972,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Provider provider = location.searchProvider(testData.getLocation());
+		location.searchProvider(testData.getLocation());
+		
 		log("address = " + location.getAddressValue());
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 
@@ -8208,7 +8184,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Provider provider = location.searchProvider(testData.getLocation());
+		location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -8280,7 +8256,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Provider provider = location.searchProvider(testData.getLocation());
+		location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -8352,7 +8328,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Provider provider = location.searchProvider(testData.getLocation());
+		location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());

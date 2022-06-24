@@ -23,6 +23,7 @@ import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
 import com.medfusion.product.object.maps.pss2.page.settings.AccessRules;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
+import com.medfusion.product.object.maps.pss2.page.settings.AdminReseller;
 import com.medfusion.product.object.maps.pss2.page.settings.AnnouncementsTab;
 import com.medfusion.product.object.maps.pss2.page.settings.InsuranceCarrier;
 import com.medfusion.product.object.maps.pss2.page.settings.LinkTab;
@@ -370,25 +371,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("--------------------------------WAIT FOR RULE LTB TO BE ADDED--------------------------------");
 	}
 	
-	public void setRulesNoProviderSet2(PatientFlow patientflow) throws InterruptedException {
-		patientflow.removeAllRules();
-		log("-----------------------------------------------------------------------------------------");
-		patientflow.addNewRulesButton();
-		patientflow.selectRuleName("Location");
-		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
-		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
-		patientflow.saveRule();
-		Thread.sleep(5000);
-		log("--------------------------------WAIT FOR RULE LT TO BE ADDED--------------------------------");
-		patientflow.addNewRulesButton();
-		patientflow.selectRuleName("AppointmentType");
-		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
-		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
-		patientflow.saveRule();
-		Thread.sleep(1000);
-		log("--------------------------------WAIT FOR RULE TL TO BE ADDED--------------------------------");
-	}
-	
 	public void addRuleWithoutBook(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
@@ -576,14 +558,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
-		adminuser.setRule(patientflow.getRule());
-		Log4jUtil.log("rule= " + patientflow.getRule());
-		setRulesNoSpecialitySet1(patientflow);
-		appointment.setResourcetoggleStatus(patientflow.resourcetoggleStatus());
-		Log4jUtil.log("Resource is Enabled= " + patientflow.resourcetoggleStatus());
-		if (patientflow.resourcetoggleStatus() == false) {
-			patientflow.clickonProviderToggle();
-		}
+		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
 		appointment.setInsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
@@ -665,6 +640,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		linkTab.getURL(testData.getLinkProvider());
 		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		setRulesNoSpecialitySet1(patientflow);
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
@@ -683,6 +659,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
 		linkTab.searchLinkandRemove(testData.getLinkProvider());
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		setRulesNoSpecialitySet1(patientflow);
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
@@ -835,7 +812,8 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		setRulesNoSpecialitySet3(patientflow);
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
-		ManageSpecialty manageSpecialty = pss2practiceconfig.gotoSpeciality();
+		ManageSpecialty manageSpecialty = pss2practiceconfig.gotoSpeciality();	
+		Log4jUtil.log("speciality name is" + appointment.getSpeciality());
 		manageSpecialty.selectSpecility(appointment.getSpeciality());
 		Log4jUtil.log("Status of Checkbox" + manageSpecialty.checkBoxStatus());
 		manageSpecialty.ageRule();
@@ -893,7 +871,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminPatientMatching.patientMatchingSelection();
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
-		manageResource.selectResource(testData.getProvider());
+		manageResource.selectResource(testData.getLinkProvider());
 		manageResource.clickLocation();
 		manageResource.offAllLocationToggle();
 		patientFlow.logout();
@@ -955,11 +933,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType, String reasonForAppointment) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.turnOnProvider();
 		setRulesNoProviderSet1(patientflow);
 		patientflow.turnOffProvider();
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -975,10 +953,10 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType, String reasonForAppointment) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -994,11 +972,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType, String reasonForAppointment, String specialtyName) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.removeAllRules();
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet3(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.importDecisionTree(decisionTreeName);
 		manageDecisionTree.selectSpecility(specialtyName);
@@ -1015,11 +993,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.removeAllRules();
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.addDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -1033,16 +1011,62 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageDecisionTree.logout();
 	}
 	
+	public void savedAsDraftDecisionTreeSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
+			String appointmentType, String reasonForAppointment) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.importDecisionTree(decisionTreeName);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.setApptTypeDecisionTree(appointmentType);
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.saveAsDraftGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
+	public void verifyAnnouncementsAndCategoryWhenSpanishIsDisabled(WebDriver driver, AdminUser adminUser, Appointment appointment, 
+			String decisionTreeName, String appointmentType, String reasonForAppointment, String questionForAppointment, 
+			String decisionTreeAnswer, String footerText, String announcementTypeText,String greetingsText) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		pssPracticeConfig.clickOnSpanishLanguage();
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
+		AnnouncementsTab announcementsTab = pssPracticeConfig.goToAnnouncementTab();
+		announcementsTab.addAnnouncementWhenSpanishISDisabled(driver, announcementTypeText, greetingsText);
+		AdminReseller adminReseller = pssPracticeConfig.gotoResellerTab();
+		adminReseller.setFooterTextWhenSpanishIsDisabled(footerText);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.addDecisionTreeWhenSpanishIsDisabled(decisionTreeName);
+		manageDecisionTree.selectDecisionTree(decisionTreeName);
+		ManageGeneralInformation manageGeneralInformation = manageDecisionTree.goToGeneralInformation();
+		manageGeneralInformation.addQuestionInDecisionTreeWhenSpanishIsDisabled(questionForAppointment);
+		manageGeneralInformation.addAnswerOneInDecisionTreeWhenSpanishIsDisabled(decisionTreeAnswer);
+		manageGeneralInformation.setApptTypeDecisionTreeSet2(appointmentType);
+		manageGeneralInformation.addReasonGeneralInfo(reasonForAppointment);
+		manageGeneralInformation.publishGeneralInfo();
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
 	public void addAndEditAnswerFieldsInCategoryWithProviderOn(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName, 
 			String appointmentType, String reasonForAppointment, String questionForAppointment, String decisionTreeAnswer,
 			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		Thread.sleep(2000);
-		patientflow.enableDecisionTree();
 		patientflow.removeAllRules();
 		patientflow.turnOnProvider();
 		setRulesNoSpecialitySet1(patientflow);
+		Thread.sleep(2000);
+		patientflow.enableDecisionTree();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.addDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -1071,9 +1095,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			String appointmentType1, String reasonForAppointment1, String decisionTreeAnswer1) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		setRulesNoSpecialitySet1(patientflow);
 		Thread.sleep(2000);
 		patientflow.enableDecisionTree();
-		setRulesNoSpecialitySet1(patientflow);
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.addDecisionTree(decisionTreeName);
 		manageDecisionTree.selectDecisionTree(decisionTreeName);
@@ -1100,6 +1124,16 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	public void decisionTreeDeletion(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName) 
 			throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
+		manageDecisionTree.removedDecisionTree(decisionTreeName);
+		pageRefresh(driver);
+		manageDecisionTree.logout();
+	}
+	
+	public void spanishLanguageAndCategorysettingsDeletion(WebDriver driver, AdminUser adminUser, Appointment appointment, String decisionTreeName) 
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		pssPracticeConfig.clickOnSpanishLanguage();
 		ManageDecisionTree manageDecisionTree = pssPracticeConfig.gotoDecisionTree();
 		manageDecisionTree.removedDecisionTree(decisionTreeName);
 		pageRefresh(driver);
@@ -1187,6 +1221,30 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientFlow.logout();
 	}
 	
+	public void preventReschedOnCancelSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, 
+			String appointmentType, String i) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointmentType);
+		manageAppointmentType.prevReschedOnCancelSettings(appointmentType, i);
+		pageRefresh(driver);
+		manageAppointmentType.logout();
+	}
+	
+	public void resetPreventReschedOnCancelSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, 
+			String appointmentType) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointmentType);
+		manageAppointmentType.resetPrevReschedOnCancelSettings(appointmentType);
+		manageAppointmentType.logout();
+	}
+	
 	public void providerOffSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
 			throws Exception {
 
@@ -1266,6 +1324,26 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.logout();
 	}
 	
+	public void mergeSlotWithShowProviderOff(WebDriver driver, AdminUser adminUser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOnProvider();
+		setRulesNoProviderSet1(patientFlow);
+		patientFlow.turnOffProvider();
+		adminUser.setRule(patientFlow.getRule());
+		Log4jUtil.log("rule= " + patientFlow.getRule());
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+		manageAppointmentType.slotCount(appointment.getSlotValue());
+		appointment.setSlotSize(manageAppointmentType.getslotSize());
+		log("Slot Size is  " + appointment.getSlotSize());
+		pageRefresh(driver);
+		manageAppointmentType.logout();
+	}
 	
 	public void acceptForSameDayWithShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
 			throws Exception {
@@ -1650,5 +1728,13 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			log("AppointmentDuration Already OFF");
 		}
 		patientFlow.logout();
+	}
+	
+	public void busineesHours(WebDriver driver, AdminUser adminuser, Appointment appointment,String startTime,String endTime) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		pssPracticeConfig.busineesHours(startTime, endTime);
+		pssPracticeConfig.logout();
 	}
 }

@@ -265,9 +265,13 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPastAppointmentsPOST() throws NullPointerException, Exception {
-
+		String practiceDisplayName=propertyData.getProperty("practice.displayname.gw");
+		String practiceName=propertyData.getProperty("practice.displayname.gw");
+		String practiceId=propertyData.getProperty("practice.id.gw");
+		String patientId=propertyData.getProperty("upcoming.past.patientid.gw");
+	    String startDate=propertyData.getProperty("start.date.time.gw");
 		Response response = postAPIRequestgw.pastAppt(propertyData.getProperty("practice.id.gw"),
-				payload.pastApptPayload(propertyData.getProperty("patient.id.gw")));
+				payload.pastAppointmentPayload(practiceDisplayName,practiceName,practiceId,patientId,startDate));
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyPastAppointmentResponse(response);
 

@@ -370,7 +370,7 @@ public class PatientRegistrationUtils {
 		Log4jUtil.log(testData.getToken());
 
 		Log4jUtil.log("Step 3: Do a POST call and get processing status URL");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getPrecheckSubscriberPatientRestURL(), patient, testData.getResponsePath());
+		RestUtils.setupHttpPostRequest(testData.getPrecheckSubscriberPatientRestURL(), patient, testData.getResponsePath());
 
 		Log4jUtil.log("Step 4: Do a GET on PIDC Url to get registered patient");
 		Log4jUtil.log("Getting patients since timestamp: " + since);

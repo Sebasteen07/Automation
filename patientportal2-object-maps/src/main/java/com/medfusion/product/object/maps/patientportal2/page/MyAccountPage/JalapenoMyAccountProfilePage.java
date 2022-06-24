@@ -258,13 +258,16 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		return true;
 	}
 
-	public boolean checkGender(Patient.GenderExtended genderExpected) {
+	public boolean checkGender(Patient.GenderExtended genderExpected) throws InterruptedException {
 		log("Checking gender");
+		Thread.sleep(2000);
 		Patient.GenderExtended genderOnPage;
 		if (maleRadioButton.isSelected())
 			genderOnPage = Patient.GenderExtended.MALE;
 		else if (femaleRadioButton.isSelected())
 			genderOnPage = Patient.GenderExtended.FEMALE;
+		else if (undifferentiatedGenderRadioButton.isSelected())
+			genderOnPage = Patient.GenderExtended.UNDIFFERENTIATED;
 		else if (declineToAnswerRadioButton.isSelected()) // displayed only if extended gender question enabled
 			genderOnPage = Patient.GenderExtended.DECLINED;
 		else
@@ -307,12 +310,16 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	/**
 	 * @return proper gender or null if not specified
+	 * @throws InterruptedException 
 	 */
-	public Patient.GenderExtended getGender() {
+	public Patient.GenderExtended getGender() throws InterruptedException {
+		Thread.sleep(2000);
 		if (maleRadioButton.isSelected())
 			return Patient.GenderExtended.MALE;
 		if (femaleRadioButton.isSelected())
 			return Patient.GenderExtended.FEMALE;
+		if (undifferentiatedGenderRadioButton.isSelected())
+			return Patient.GenderExtended.UNDIFFERENTIATED;
 		if (declineToAnswerRadioButton.isSelected())
 			return Patient.GenderExtended.DECLINED;
 		return null;

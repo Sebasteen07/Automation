@@ -1,4 +1,4 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.apiUtils;
 
 /************************
@@ -11,13 +11,7 @@ import org.apache.commons.collections.map.MultiValueMap;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class FinalSignature {

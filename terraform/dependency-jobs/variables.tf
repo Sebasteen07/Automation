@@ -94,9 +94,9 @@ variable "notification_detail_type" {
 }
 
 variable "event_type_ids" {
-  type        = list
+  type        = list(any)
   description = "Pipeline event types that would trigger a notification to be sent to the Slack channel"
-  default     = [
+  default = [
     "codepipeline-pipeline-pipeline-execution-succeeded",
     "codepipeline-pipeline-pipeline-execution-failed",
     "codepipeline-pipeline-pipeline-execution-canceled"
@@ -107,13 +107,13 @@ variable "codeartifact_maven_domain" {
   type        = string
   description = "Domain name of the AWS CodeArtifact repository where the Maven build packages would be uploaded"
   default     = "nextgen-pxp-mf-build"
-} 
+}
 
 variable "codeartifact_maven_repo" {
   type        = string
   description = "AWS CodeArtifact repository where the Maven build packages would be uploaded"
   default     = "pxp-mf"
-} 
+}
 
 variable "aws_chatbot_channel_arn" {
   type        = string
