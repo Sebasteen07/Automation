@@ -739,6 +739,16 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//button[text()='Remove']")
 	private WebElement clickOnRemoveOption;
 	
+	@FindBy(how = How.XPATH, using ="//span[@class='mf-color__positive']")
+	private WebElement deletedPatientBanner;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class=\"react-datepicker__time-list-item \"]")
+	private WebElement selectTime;
+	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[2]")
+	private WebElement selectPatientCheckbox;
+	
+	
 	
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -3910,6 +3920,95 @@ public class AppointmentsPage extends BasePageObject {
 			IHGUtil.waitForElement(driver, 10, sendMessageButton);
 			jse.executeScript("arguments[0].click();", sendMessageButton);
 		}
+		
+		public String getDeletedPatientBanner() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, deletedPatientBanner);
+				return deletedPatientBanner.getText();
+		
+		}
+		
+		public void selectPatientsCheckbox() {
+			IHGUtil.waitForElement(driver, 5, selectPatientCheckbox);
+			selectPatientCheckbox.click();
+		}
+		
+		public void startDate(int backMonth) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, startTime);
+			startTime.click();
+			log("click on start date filter");
+
+			log("Select Month");
+			IHGUtil.waitForElement(driver, 10, months);
+			DateFormat monthFormat = new SimpleDateFormat("M");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			String currentMonth = monthFormat.format(cal.getTime());
+			Integer month = Integer.valueOf(currentMonth);
+			String monthValue = String.valueOf(month - backMonth);
+			Select selectMonth = new Select(months);
+			selectMonth.selectByValue(monthValue);
+
+			log("Select Year");
+			IHGUtil.waitForElement(driver, 10, years);
+			int yyyy = cal.get(Calendar.YEAR);
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			DateFormat dateFormat = new SimpleDateFormat("d");
+			cal.setTime(new Date());
+			String currentDate = dateFormat.format(cal.getTime());
+			WebElement date = driver.findElement(By.xpath(
+					"//*[@id=\"page-content-container\"]/div/header/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/div/div[text()="
+							+ "'" + currentDate + "'" + "]"));
+			date.click();
+			log("click on date");
+			Thread.sleep(10000);
+		}
+		
+		public void endDate(int backMonth, int backDate) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, endTime);
+			endTime.click();
+			log("click on start date filter");
+
+			log("Select Month");
+			IHGUtil.waitForElement(driver, 10, months);
+			DateFormat monthFormat = new SimpleDateFormat("M");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			String currentMonth = monthFormat.format(cal.getTime());
+			Integer month = Integer.valueOf(currentMonth);
+			String monthValue = String.valueOf(month - backMonth);
+			Select selectMonth = new Select(months);
+			selectMonth.selectByValue(monthValue);
+
+			log("Select Year");
+			IHGUtil.waitForElement(driver, 10, years);
+			int yyyy = cal.get(Calendar.YEAR);
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			DateFormat dateFormat = new SimpleDateFormat("d");
+			cal.setTime(new Date());
+			String currentDate = dateFormat.format(cal.getTime());
+			Integer curDate = Integer.valueOf(currentDate);
+			String dateValue = String.valueOf(curDate - backDate);
+			WebElement date = driver.findElement(By.xpath(
+					"//*[@class=\"react-datepicker__month-container\"]/div[2]//div[text()="+ "'" + dateValue + "'" + "]"));
+			date.click();
+			log("click on date");
+			jse.executeScript("arguments[0].click();", selectTime);
+			Thread.sleep(10000);
+	}
+
 
 
 }

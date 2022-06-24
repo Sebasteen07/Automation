@@ -3157,7 +3157,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		log("Enter message in English and Spanish");
 		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
 				propertyData.getProperty("broadcast.message.es"));
-		log("banner meassage :" + apptPage.broadcastBannerMessage());
+		log("banner message :" + apptPage.broadcastBannerMessage());
 	}
 
 	@Then("verify banner status should come as failure")
@@ -9270,7 +9270,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("precheck.appt.type"), Appointment.patientId,
 				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
 				propertyData.getProperty("precheck.last.name"), propertyData.getProperty("precheck.dob"),
-				propertyData.getProperty("precheck.phone"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.new"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("precheck.address.line1"),
 				propertyData.getProperty("precheck.patient.city"),
 				propertyData.getProperty("precheck.patient.zip"), propertyData.getProperty("precheck.provider.name"),
@@ -9390,7 +9390,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("precheck.appt.type"), Appointment.patientId,
 				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
 				propertyData.getProperty("precheck.last.name"), propertyData.getProperty("precheck.dob"),
-				propertyData.getProperty("precheck.phone.number"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.new"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("precheck.address.line1"),
 				propertyData.getProperty("precheck.patient.city"),
 				propertyData.getProperty("precheck.patient.zip"), propertyData.getProperty("precheck.provider.name"),
@@ -9632,7 +9632,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_verify_from_email_manual_reminder_email_should_be_recieved_in_english_language() throws NullPointerException, Exception {
 		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"), 
 				propertyData.getProperty("appt.reminder.in.en"), 10));
 
@@ -9651,7 +9651,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("unsubscribe.in.en"),
 				10));
 		
-      log(propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en.es"));
+      log(propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en"));
 		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),
 				propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en"), 10));
@@ -9673,6 +9673,161 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.selectEnglishSpanishPracticePrefLang();
 		log("user select english and spanish practice preference language");
 		notifPage.saveNotification();
+	}
+	
+	@When("I schedule an appointment and confirmed")
+	public void i_schedule_an_appointment_and_confirmed() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		aptPrecheckPost.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@When("I select patient and remove this patient from actions tab")
+	public void i_select_patient_and_remove_this_patient_from_actions_tab() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+	    apptPage.selectFirstPatient();
+	    apptPage.clickOnActions();
+	    apptPage.clickOnRemoveButton();
+	    apptPage.clickOnRemoveOptionFromRemoveButton();
+	}
+	@Then("I verify deleted banner and patient should be deleted succesfully")
+	public void i_verify_deleted_banner_and_patient_should_be_deleted_succesfully() throws InterruptedException {
+		assertEquals(apptPage.getDeletedPatientBanner(),"Selected appointment have successfully been removed.");
+		apptPage.clickOnRefreshTab();
+		assertFalse(apptPage.isPatientPresent(Appointment.patientId));
+	}
+	@When("I schedule an appointment in {string} for precheck")
+	public void i_schedule_an_appointment_in_for_precheck(String string) throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, 
+						propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	@When("I do the precheck")
+	public void i_do_the_precheck() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.selectFirstPatient();
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnLaunchPatientModeButton();
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnContinueButton();
+		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.first.name"), 
+				propertyData.getProperty("precheck.middle.name"),
+				propertyData.getProperty("precheck.last.name"), 
+				"jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.number"));
+		
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+		scrollAndWait(200, -300, 5000);
+	}
+
+	@When("I select two month backdated patient")
+	public void i_select_two_month_backdated_patient() throws InterruptedException {
+		apptPage.selectPatientsCheckbox();
+		log("Enter start date and End date");
+		apptPage.startDate(3);
+		apptPage.endDate(2,2);
+	}
+	@When("I select patient and remove from actions tab")
+	public void i_select_patient_and_remove_from_actions_tab() throws InterruptedException {
+		apptPage.selectFirstPatient();
+		apptPage.clickOnActions();
+	    apptPage.clickOnRemoveButton();
+	    apptPage.clickOnRemoveOptionFromRemoveButton();
+		assertEquals(apptPage.getDeletedPatientBanner(),"Selected appointment have successfully been removed.");
+		apptPage.clickOnRefreshTab();
+	}
+	
+	@When("I done curbside arrival")
+	public void i_done_curbside_arrival() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+
+		Response checkInResponse = aptPrecheckPost.getCheckinActions(propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				aptPrecheckPayload.getCheckinActionsPayload(Appointment.apptId, Appointment.patientId,
+						propertyData.getProperty("apt.precheck.practice.id")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()));
+		assertEquals(checkInResponse.getStatusCode(), 200);
+	}
+	
+	@When("I schedule an appointment and make arrival entry done")
+	public void i_schedule_an_appointment_and_make_arrival_entry_done() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+						propertyData.getProperty("baseurl.apt.precheck"),
+						propertyData.getProperty("apt.precheck.practice.id"),
+						headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+						Appointment.apptId);
+				assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+						propertyData.getProperty("baseurl.apt.precheck"),
+						propertyData.getProperty("apt.precheck.practice.id"),
+						headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+						Appointment.apptId);
+				assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
+	
+	@When("I select one month backdated patient")
+	public void i_select_one_month_backdated_patient() throws InterruptedException {
+		apptPage.selectPatientsCheckbox();
+		log("Enter start date and End date");
+		apptPage.startDate(2);
+		apptPage.endDate(1,2);
 	}
 	
 	
