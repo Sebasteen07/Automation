@@ -9270,7 +9270,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("precheck.appt.type"), Appointment.patientId,
 				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
 				propertyData.getProperty("precheck.last.name"), propertyData.getProperty("precheck.dob"),
-				propertyData.getProperty("precheck.phone"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.new"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("precheck.address.line1"),
 				propertyData.getProperty("precheck.patient.city"),
 				propertyData.getProperty("precheck.patient.zip"), propertyData.getProperty("precheck.provider.name"),
@@ -9390,7 +9390,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("precheck.appt.type"), Appointment.patientId,
 				propertyData.getProperty("precheck.first.name"), propertyData.getProperty("precheck.middle.name"),
 				propertyData.getProperty("precheck.last.name"), propertyData.getProperty("precheck.dob"),
-				propertyData.getProperty("precheck.phone.number"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.new"), "jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("precheck.address.line1"),
 				propertyData.getProperty("precheck.patient.city"),
 				propertyData.getProperty("precheck.patient.zip"), propertyData.getProperty("precheck.provider.name"),
@@ -9632,7 +9632,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_verify_from_email_manual_reminder_email_should_be_recieved_in_english_language() throws NullPointerException, Exception {
 		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"), 
 				propertyData.getProperty("appt.reminder.in.en"), 10));
 
