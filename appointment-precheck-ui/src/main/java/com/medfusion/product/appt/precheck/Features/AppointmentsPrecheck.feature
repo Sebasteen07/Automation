@@ -2590,3 +2590,79 @@ Feature: Test fuctionality of Appointment precheck
     And I select patient and send manual reminder from appointment dashboard
     Then I verify from email manual reminder email should be recieved in english language
     And logout from practice provisioning portal
+
+  Scenario: verify if the appointment comfirmed then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment confirmed and precheck is done then it is deleted succesfully
+    When I schedule an appointment in "en" for precheck
+    And I do the precheck
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the broadcast is sent to appointment then it is deleted succesfully
+    When I schedule an appointment in "en"
+    And I select patient and send broadcast message from appointment dashboard
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the two month backdated appointment then it is deleted succesfully
+    When I select two month backdated patient
+    And I select patient and remove from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment comfirmed/Manual reminder/broadcast is sent then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I select patient and send manual reminder from appointment dashboard
+    And I select patient and send broadcast message from appointment dashboard
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment confirmed/broadcast message sent/curbside arrival is done is sent then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I select patient and send broadcast message from appointment dashboard
+    And I done curbside arrival
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the curbside arrival entry confirmed today is sent then it is deleted succesfully
+    When I schedule an appointment and make arrival entry done
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the Appointment entry with no confirmation , no precheck then it is deleted succesfully
+    When I schedule an appointment in "en"
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if precheck is done ,confirmed, broadcast sent, manual reminder is sent then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I do the precheck
+    And I select patient and send manual reminder from appointment dashboard
+    And I select patient and send broadcast message from appointment dashboard
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the Appointment backdated 1 month appointment then it is deleted succesfully
+    When I select one month backdated patient
+    And I select patient and remove from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the Appointment is visited and curbside check in is done then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I done curbside arrival
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
