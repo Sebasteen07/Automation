@@ -9651,7 +9651,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("unsubscribe.in.en"),
 				10));
 		
-      log(propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en.es"));
+      log(propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en"));
 		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"),
 				propertyData.getProperty("patient.first.name")+", "+propertyData.getProperty("reminder.message.in.en"), 10));
