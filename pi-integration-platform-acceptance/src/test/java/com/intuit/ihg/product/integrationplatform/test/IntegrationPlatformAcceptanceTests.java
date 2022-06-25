@@ -939,12 +939,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("payload: " + payload);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
 				testData.getResponsePath());
-<<<<<<< HEAD
 		logStep(" Get processing status until it is completed");
 		boolean completed = false;
-=======
-		log("Step 4: Get processing status until it is completed");
->>>>>>> development
 		for (int j = 0; j < 3; j++) {
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
@@ -1017,12 +1013,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("payload: " + payload);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
 				testData.getResponsePath());
-<<<<<<< HEAD
 		logStep(" Get processing status until it is completed");
 		boolean completed = false;
-=======
-		log("Step 4: Get processing status until it is completed");
->>>>>>> development
 		for (int j = 0; j < 3; j++) {
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
@@ -1050,12 +1042,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("payload: " + deletepayload);
 		String processingUrlDelete = RestUtils.setupHttpPostRequest(testData.getRestUrl(), deletepayload,
 				testData.getResponsePath());
-<<<<<<< HEAD
 		logStep(" Get processing status until it is completed");
 		boolean completed2 = false;
-=======
-		log("Step 9: Get processing status until it is completed");
->>>>>>> development
 		for (int j = 0; j < 3; j++) {
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrlDelete, testData.getResponsePath());
@@ -1117,12 +1105,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			log("payload: " + payload);
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
 					testData.getResponsePath());
-<<<<<<< HEAD
 			logStep(" Get processing status until it is completed");
 			boolean completed = false;
-=======
-			log("Step 4: Get processing status until it is completed");
->>>>>>> development
 			for (int j = 0; j < 3; j++) {
 				Thread.sleep(60000);
 				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
@@ -1151,12 +1135,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("payload: " + payloadRemove);
 		String processingUrlDelete = RestUtils.setupHttpPostRequest(testData.getRemoveMedicationRestUrl(),
 				payloadRemove, testData.getResponsePath());
-<<<<<<< HEAD
 		logStep("Get processing status until it is completed");
 		boolean completed = false;
-=======
-		log("Step 9: Get processing status until it is completed");
->>>>>>> development
 		for (int j = 0; j < 3; j++) {
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrlDelete, testData.getResponsePath());
