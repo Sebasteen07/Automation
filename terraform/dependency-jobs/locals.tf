@@ -184,4 +184,52 @@ locals {
     queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
     maven_parameter      = "mvn clean install"
   }
+
+  pss2admin_objects_maps = {
+    name                 = "${local.jobname-prefix}pss2admin-objects-maps"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "PatientSelfScheduling"
+    execution_folder     = "pss/pss2admin-objects-maps"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  pss2patientui_objects_maps = {
+    name                 = "${local.jobname-prefix}pss2patientui-objects-maps"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "PatientSelfScheduling"
+    execution_folder     = "pss/pss2patientui-objects-maps"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  pss2patientui_api = {
+    name                 = "${local.jobname-prefix}pss2patientui-api"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "PatientSelfScheduling"
+    execution_folder     = "pss/pss2patientui-api"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  pss2patientui_automation = {
+    name                 = "${local.jobname-prefix}pss2patientui-automation"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "PatientSelfScheduling"
+    execution_folder     = "pss/pss2patientui-automation"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
 }
