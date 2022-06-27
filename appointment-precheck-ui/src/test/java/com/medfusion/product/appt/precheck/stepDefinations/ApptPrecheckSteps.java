@@ -8,7 +8,11 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.awt.AWTException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -9675,6 +9679,134 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.saveNotification();
 	}
 	
+	@When("I enable Broadcast messaging checkbox from setting in notifications")
+	public void i_enable_broadcast_messaging_checkbox_from_setting_in_notifications() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		log("verify user should be on General setting dashboard");
+		GeneralPage generalPage = GeneralPage.getGeneralPage();
+		assertTrue(generalPage.generalSettingTitle().contains(propertyData.getProperty("general.setting.title")));
+		assertTrue(generalPage.manageSolutionTab().contains(propertyData.getProperty("manage.solution.board")));
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.braodcastMessagingCheckbox();
+		log("Enable broadcast messaging checkbox");
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		notifPage.saveNotification();
+	}
+	
+	@When("I select patient and send broadcast message")
+	public void i_select_patient_and_send_broadcast_message() throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		Thread.sleep(5000);
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+		scrollAndWait(0, -1000, 10000);
+	}
+
+	@Then("I verify in mail content for broadcast is coming as per reuirement in en")
+	public void i_verify_in_mail_content_for_broadcast_is_coming_as_per_reuirement_in_en()
+			throws NullPointerException, Exception {
+		String practiceName = apptPage.getPracticeName();
+		YopMail yopMail = new YopMail(driver);
+		BufferedReader in = new BufferedReader(new FileReader(propertyData.getProperty("broadcast.msg.content.in.en")));
+		String str;
+		List<String> list = new ArrayList<String>();
+		while ((str = in.readLine()) != null) {
+			list.add(str);
+		}
+		assertEquals(list, yopMail.getBroadcastMsgContent("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				"Important Message from" + " " + practiceName, propertyData.getProperty("broadcast.msg.title.in.en")));
+		Thread.sleep(5000);
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
+	@Then("I verify in mail content for broadcast is coming as per reuirement in es")
+	public void i_verify_in_mail_content_for_broadcast_is_coming_as_per_reuirement_in_es() throws Exception {
+		String practiceName = apptPage.getPracticeName();
+		YopMail yopMail = new YopMail(driver);
+		BufferedReader in = new BufferedReader(new FileReader(propertyData.getProperty("broadcast.msg.content.in.es")));
+		String str;
+		List<String> list = new ArrayList<String>();
+		while ((str = in.readLine()) != null) {
+			list.add(str);
+		}
+		assertEquals(list,
+				yopMail.getBroadcastMsgContent("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						"Un mensaje importantede" + " " + practiceName,
+						propertyData.getProperty("broadcast.mail.title.in.es")));
+		Thread.sleep(5000);
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
+	@When("I enable firstname checkbox from setting in notifications dashboard")
+	public void i_enable_firstname_checkbox_from_setting_in_notifications_dashboard() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		log("verify user should be on General setting dashboard");
+		GeneralPage generalPage = GeneralPage.getGeneralPage();
+		assertTrue(generalPage.generalSettingTitle().contains(propertyData.getProperty("general.setting.title")));
+		assertTrue(generalPage.manageSolutionTab().contains(propertyData.getProperty("manage.solution.board")));
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.enableFirstNameCheckbox();
+		log("Enable broadcast messaging checkbox");
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		notifPage.saveNotification();
+	}
+
+	@Then("I verify first name appears in template in email")
+	public void i_verify_first_name_appears_in_template_in_email() throws Exception {
+		String practiceName = apptPage.getPracticeName();
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				"Important Message from" + " " + practiceName, propertyData.getProperty("broadcast.msg.with.name"), 10),
+				propertyData.getProperty("broadcast.msg.with.name"));
+		Thread.sleep(5000);
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
+	@When("I disable firstname checkbox from setting in notifications dashboard")
+	public void i_disable_firstname_checkbox_from_setting_in_notifications_dashboard() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		log("verify user should be on General setting dashboard");
+		GeneralPage generalPage = GeneralPage.getGeneralPage();
+		assertTrue(generalPage.generalSettingTitle().contains(propertyData.getProperty("general.setting.title")));
+		assertTrue(generalPage.manageSolutionTab().contains(propertyData.getProperty("manage.solution.board")));
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.disableFirstNameCheckbox();
+		notifPage.saveNotification();
+	}
+
+	@Then("I verify first name not appears in template in email")
+	public void i_verify_first_name_not_appears_in_template_in_email() throws NullPointerException, Exception {
+		String practiceName = apptPage.getPracticeName();
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(
+				yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						"Important Message from" + " " + practiceName,
+						propertyData.getProperty("broadcast.msg.without.name"), 5),
+				propertyData.getProperty("broadcast.msg.without.name"));
+		Thread.sleep(5000);
+
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		log("User on setting tab");
+		notifPage.clickOnNotificationTab();
+		notifPage.enableFirstNameCheckbox();
+		log("Enable broadcast messaging checkbox");
+		notifPage.saveNotification();
+	}
 	
 
 }
