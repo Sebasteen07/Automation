@@ -600,5 +600,16 @@ public class PostAPIRequestAptPrecheck extends BaseTestNGWebDriver {
 		log("Appointment actions:" + appointmentActions);
 		return appointmentActions;
 	}
+	
+	public Response getDeleteAppointmentActions(String baseurl, String practiceId, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		log("Execute POST request for Appointmnet actions as Confirm");
+		RestAssured.baseURI = baseurl;
+		Response response = given().when().headers(Header).log().all().when()
+				.get("practices/" + practiceId + "/patients/" + PatientId + "/appointments/" + Appointmentid).then()
+				.log().all().extract().response();
+		return response;
+	}
+
 
 }

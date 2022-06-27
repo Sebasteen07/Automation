@@ -878,6 +878,9 @@ public class NotificationsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "(//div[@class=' css-1y2qbuw'])[4]")
 	private WebElement fourthTimingAndTimingUnit;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[3]")
+	private WebElement firstNameCheckbox;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -2135,7 +2138,11 @@ public class NotificationsPage extends BasePageObject {
 	public void selectEnglishSpanishPracticePrefLang() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, englishSpanishPracticePrefenceLang);
-		englishSpanishPracticePrefenceLang.click();
+		boolean displayed = englishSpanishPracticePrefenceLang.isDisplayed();
+		if(!displayed) {
+			englishSpanishPracticePrefenceLang.click();
+			log("english and spanish language is selected");
+		}
 	}
 
 	public boolean visiblityOfBroadcastMessageTextBoxInEnEs() {
@@ -3693,5 +3700,32 @@ public class NotificationsPage extends BasePageObject {
 		WebElement invalidText=driver.findElement(By.xpath("(//*[text()='Invalid Units'])["+pathIndex+"]"));
 		return invalidText.getText();
 	}
+	
+	public void enableFirstNameCheckbox() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, firstNameCheckbox);
+		boolean selected = firstNameCheckbox.isSelected();
+		if (selected) {
+			log("Broadcast Messaging checkbox already Enabled");
+		} else {
+			firstNameCheckbox.click();
+			log("Broadcast Messaging checkbox is Enabled");
+		}
+		Thread.sleep(10000);
+	}
+	
+	public void disableFirstNameCheckbox() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, firstNameCheckbox);
+		boolean selected = firstNameCheckbox.isSelected();
+		if (selected) {
+			firstNameCheckbox.click();
+			log("Broadcast Messaging checkbox disabled");
+		} else if (!selected) {
+			log("Broadcast Messaging checkbox already disabled");
+		}
+		Thread.sleep(10000);
+	}
+	
 
 }

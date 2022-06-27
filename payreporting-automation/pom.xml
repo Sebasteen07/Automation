@@ -67,10 +67,10 @@
 					<execution>
 						<phase>integration-test</phase>
 						<configuration>
-							<failBuild>false</failBuild>
-							<!--<groups>${testGroups}</groups> -->
+<!--							<groups>${testGroups}</groups> -->
 							<suiteXmlFiles>
-								<suiteXmlFile>${suite.xml}</suiteXmlFile>
+								<!--suppress UnresolvedMavenProperty -->
+								<suiteXmlFile>${payreporting-testng.xml}</suiteXmlFile>
 							</suiteXmlFiles>
 							<systemPropertyVariables>
 								<testRoot>${basedir}</testRoot>
@@ -81,7 +81,6 @@
 								<usedefaultlisteners>false</usedefaultlisteners>
 								<workingDirectory>target/surefire-reports/</workingDirectory>
 							</properties>
-							<configfailurepolicy>continue</configfailurepolicy>
 						</configuration>
 						<goals>
 							<goal>integration-test</goal>

@@ -371,25 +371,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("--------------------------------WAIT FOR RULE LTB TO BE ADDED--------------------------------");
 	}
 	
-	public void setRulesNoProviderSet2(PatientFlow patientflow) throws InterruptedException {
-		patientflow.removeAllRules();
-		log("-----------------------------------------------------------------------------------------");
-		patientflow.addNewRulesButton();
-		patientflow.selectRuleName("Location");
-		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
-		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
-		patientflow.saveRule();
-		Thread.sleep(5000);
-		log("--------------------------------WAIT FOR RULE LT TO BE ADDED--------------------------------");
-		patientflow.addNewRulesButton();
-		patientflow.selectRuleName("AppointmentType");
-		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
-		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
-		patientflow.saveRule();
-		Thread.sleep(1000);
-		log("--------------------------------WAIT FOR RULE TL TO BE ADDED--------------------------------");
-	}
-	
 	public void addRuleWithoutBook(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
@@ -1343,6 +1324,26 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.logout();
 	}
 	
+	public void mergeSlotWithShowProviderOff(WebDriver driver, AdminUser adminUser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOnProvider();
+		setRulesNoProviderSet1(patientFlow);
+		patientFlow.turnOffProvider();
+		adminUser.setRule(patientFlow.getRule());
+		Log4jUtil.log("rule= " + patientFlow.getRule());
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+		manageAppointmentType.slotCount(appointment.getSlotValue());
+		appointment.setSlotSize(manageAppointmentType.getslotSize());
+		log("Slot Size is  " + appointment.getSlotSize());
+		pageRefresh(driver);
+		manageAppointmentType.logout();
+	}
 	
 	public void acceptForSameDayWithShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
 			throws Exception {

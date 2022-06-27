@@ -283,37 +283,37 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@name=\"address2\"]")
 	private WebElement addressline2;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"city\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='city']")
 	private WebElement patientCity;
 
-	@FindBy(how = How.XPATH, using = "//*[@class=\"mf-select-dropdown\"]")
+	@FindBy(how = How.XPATH, using = "//*[@class= 'mf-select-dropdown']")
 	private WebElement patientStateDropdown;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"zip\"]")
+	@FindBy(how = How.XPATH, using = "//input[@name='zip']")
 	private WebElement patientZip;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"providerName\"]")
+	@FindBy(how = How.XPATH, using = "//input[@name='providerName']")
 	private WebElement providerName;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"copay\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='copay']")
 	private WebElement copay;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"balance\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='balance']")
 	private WebElement balance;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"primaryInsuranceName\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='primaryInsuranceName']")
 	private WebElement primaryInsuranceName;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"primaryInsuranceGroupNumber\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='primaryInsuranceGroupNumber']")
 	private WebElement primaryInsuranceGroupNumber;
 
-	@FindBy(how = How.XPATH, using = "//*[@name=\"primaryInsuranceMemberId\"]")
+	@FindBy(how = How.XPATH, using = "//*[@name='primaryInsuranceMemberId']")
 	private WebElement primaryInsuranceMemberId;
 
-	@FindBy(how = How.XPATH, using = "//*[text()=\"Create appointment\"]")
+	@FindBy(how = How.XPATH, using = "//*[text()='Create appointment']")
 	private WebElement createAppointmentButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@class=\"rt-td\"][1]")
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-td'][1]")
 	private WebElement selectCreatedPatient;
 
 	@FindBy(how = How.XPATH, using = "//*[@class=\"rt-td\"]//following-sibling::div[3][@class='rt-td patient-name-cell'][1]")
@@ -735,6 +735,19 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//div[@class='image-container']")
 	private WebElement visibilityOfInsuranceImages;
+	
+	@FindBy(how = How.XPATH, using = "//button[text()='Remove']")
+	private WebElement clickOnRemoveOption;
+	
+	@FindBy(how = How.XPATH, using ="//span[@class='mf-color__positive']")
+	private WebElement deletedPatientBanner;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class=\"react-datepicker__time-list-item \"]")
+	private WebElement selectTime;
+	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[2]")
+	private WebElement selectPatientCheckbox;
+	
 	
 	
 	public AppointmentsPage(WebDriver driver) {
@@ -1349,7 +1362,7 @@ public class AppointmentsPage extends BasePageObject {
 	}
 
 	public void clickOnConfirm() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, cancelButtonFromRemove);
+		IHGUtil.waitForElement(driver, 10, confirmButtonFromRemove);
 		confirmButtonFromRemove.click();
 		Thread.sleep(10000);
 	}
@@ -1455,7 +1468,7 @@ public class AppointmentsPage extends BasePageObject {
 	}
 
 	public void createNewPatient(String lName, String apptType, String pId, String fName, String mName, String lstName,
-			String dob, String phoneNo, String emailId, String address1, String city, String state, String zip,
+			String dob, String phoneNo, String emailId, String address1, String city, String zip,
 			String pName, String copayAmount, String balanceAmount, String primaryInsName, String primaryInsGroupNo,
 			String primaryInsMemberId) throws InterruptedException {
 		log("Add patient details");
@@ -1473,7 +1486,7 @@ public class AppointmentsPage extends BasePageObject {
 		patientCity.sendKeys(city);
 		patientStateDropdown.click();
 		Select select = new Select(patientStateDropdown);
-		select.selectByVisibleText(state);
+		select.selectByIndex(2);
 		patientZip.sendKeys(zip);
 		providerName.sendKeys(pName);
 		copay.sendKeys(copayAmount);
@@ -3880,7 +3893,122 @@ public class AppointmentsPage extends BasePageObject {
 		public void addInsuranceCard() {
 		IHGUtil.waitForElement(driver, 10, addInsuranceCard);
 		addInsuranceCard.click();
+		
 		}
 		
+		public void clickOnRemoveOptionFromRemoveButton() throws InterruptedException {
+			IHGUtil.waitForElement(driver, 20, clickOnRemoveOption);
+			clickOnRemoveOption.click();
+			
+		}
+		
+		public boolean isPatientPresent(String patientId) {
+			IHGUtil.PrintMethodName();
+			boolean visibility = false;
+			try {
+				visibility= driver.findElement(By.xpath("//*[text()='" + patientId + "']")).isDisplayed();
+			return visibility;
+			}catch(NoSuchElementException e) {
+				return visibility;
+			}
+		}
+		
+		public void sendBroadcastMessageInEnglish(String messageEn) throws Exception {
+			IHGUtil.waitForElement(driver, 10, broadcastMessageInEn);
+			broadcastMessageInEn.sendKeys(messageEn);
+			jse.executeScript("arguments[0].click();", confirmThisMsgCheckbox);
+			IHGUtil.waitForElement(driver, 10, sendMessageButton);
+			jse.executeScript("arguments[0].click();", sendMessageButton);
+		}
+		
+		public String getDeletedPatientBanner() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, deletedPatientBanner);
+				return deletedPatientBanner.getText();
+		
+		}
+		
+		public void selectPatientsCheckbox() {
+			IHGUtil.waitForElement(driver, 5, selectPatientCheckbox);
+			selectPatientCheckbox.click();
+		}
+		
+		public void startDate(int backMonth) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, startTime);
+			startTime.click();
+			log("click on start date filter");
+
+			log("Select Month");
+			IHGUtil.waitForElement(driver, 10, months);
+			DateFormat monthFormat = new SimpleDateFormat("M");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			String currentMonth = monthFormat.format(cal.getTime());
+			Integer month = Integer.valueOf(currentMonth);
+			String monthValue = String.valueOf(month - backMonth);
+			Select selectMonth = new Select(months);
+			selectMonth.selectByValue(monthValue);
+
+			log("Select Year");
+			IHGUtil.waitForElement(driver, 10, years);
+			int yyyy = cal.get(Calendar.YEAR);
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			DateFormat dateFormat = new SimpleDateFormat("d");
+			cal.setTime(new Date());
+			String currentDate = dateFormat.format(cal.getTime());
+			WebElement date = driver.findElement(By.xpath(
+					"//*[@id=\"page-content-container\"]/div/header/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/div/div[text()="
+							+ "'" + currentDate + "'" + "]"));
+			date.click();
+			log("click on date");
+			Thread.sleep(10000);
+		}
+		
+		public void endDate(int backMonth, int backDate) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, endTime);
+			endTime.click();
+			log("click on start date filter");
+
+			log("Select Month");
+			IHGUtil.waitForElement(driver, 10, months);
+			DateFormat monthFormat = new SimpleDateFormat("M");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			String currentMonth = monthFormat.format(cal.getTime());
+			Integer month = Integer.valueOf(currentMonth);
+			String monthValue = String.valueOf(month - backMonth);
+			Select selectMonth = new Select(months);
+			selectMonth.selectByValue(monthValue);
+
+			log("Select Year");
+			IHGUtil.waitForElement(driver, 10, years);
+			int yyyy = cal.get(Calendar.YEAR);
+			String year = Integer.toString(yyyy);
+			Select selectYear = new Select(years);
+			selectYear.selectByVisibleText(year);
+			log("Year : " + (cal.get(Calendar.YEAR)));
+
+			log("Select Date");
+			DateFormat dateFormat = new SimpleDateFormat("d");
+			cal.setTime(new Date());
+			String currentDate = dateFormat.format(cal.getTime());
+			Integer curDate = Integer.valueOf(currentDate);
+			String dateValue = String.valueOf(curDate - backDate);
+			WebElement date = driver.findElement(By.xpath(
+					"//*[@class=\"react-datepicker__month-container\"]/div[2]//div[text()="+ "'" + dateValue + "'" + "]"));
+			date.click();
+			log("click on date");
+			jse.executeScript("arguments[0].click();", selectTime);
+			Thread.sleep(10000);
+	}
+
+
 
 }

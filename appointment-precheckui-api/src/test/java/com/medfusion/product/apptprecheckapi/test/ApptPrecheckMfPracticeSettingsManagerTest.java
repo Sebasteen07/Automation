@@ -720,6 +720,13 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetImhFormByConceptName() throws IOException {
+		Response saveImhResponse = postAPIRequest.saveCustomImhFormPost(headerConfig.HeaderwithToken(getaccessToken),
+				payload.getSaveImhFormPayload(propertyData.getProperty("new.concept.id"),
+						propertyData.getProperty("imh.form.concept.name"), propertyData.getProperty("new.imh.form.id"),
+						propertyData.getProperty("imh.form.practice.id")),
+				propertyData.getProperty("imh.form.practice.id"));
+		assertEquals(saveImhResponse.getStatusCode(), 200);
+
 		Response response = postAPIRequest.getImhFormByConceptName(headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("imh.form.practice.id"), propertyData.getProperty("imh.form.concept.name"));
 
@@ -732,6 +739,14 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetImhFormByConceptNameByCaseSensetive() throws IOException {
+		Response saveImhResponse = postAPIRequest.saveCustomImhFormPost(headerConfig.HeaderwithToken(getaccessToken),
+				payload.getSaveImhFormPayload(propertyData.getProperty("case.sense.concept.id"),
+						propertyData.getProperty("imh.acne.concept.name"),
+						propertyData.getProperty("case.sense.form.id"),
+						propertyData.getProperty("imh.form.practice.id")),
+				propertyData.getProperty("imh.form.practice.id"));
+		assertEquals(saveImhResponse.getStatusCode(), 200);
+
 		Response response = postAPIRequest.getImhFormByConceptName(headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("imh.form.practice.id"), propertyData.getProperty("imh.acne.concept.name"));
 		assertEquals(response.getStatusCode(), 200);
@@ -757,6 +772,14 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetImhFormByAddingConceptNameInUprAndLwrCase() throws IOException {
+		Response saveImhResponse = postAPIRequest.saveCustomImhFormPost(headerConfig.HeaderwithToken(getaccessToken),
+				payload.getSaveImhFormPayload(propertyData.getProperty("case.sense.concept.id"),
+						propertyData.getProperty("imh.acne.concept.name"),
+						propertyData.getProperty("case.sense.form.id"),
+						propertyData.getProperty("imh.form.practice.id")),
+				propertyData.getProperty("imh.form.practice.id"));
+		assertEquals(saveImhResponse.getStatusCode(), 200);
+
 		Response response = postAPIRequest.getImhFormByConceptName(headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("imh.form.practice.id"),
 				propertyData.getProperty("imh.concept.name.upr.lwr.case"));
@@ -784,6 +807,14 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetImhFormByAddingConceptNameInLowerCase() throws IOException {
+		Response saveImhResponse = postAPIRequest.saveCustomImhFormPost(headerConfig.HeaderwithToken(getaccessToken),
+				payload.getSaveImhFormPayload(propertyData.getProperty("case.sense.concept.id"),
+						propertyData.getProperty("imh.acne.concept.name"),
+						propertyData.getProperty("case.sense.form.id"),
+						propertyData.getProperty("imh.form.practice.id")),
+				propertyData.getProperty("imh.form.practice.id"));
+		assertEquals(saveImhResponse.getStatusCode(), 200);
+
 		Response response = postAPIRequest.getImhFormByConceptName(headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("imh.form.practice.id"),
 				propertyData.getProperty("imh.concept.name.lower.case"));
@@ -811,6 +842,14 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetImhFormByAddingConceptNameInUpperCase() throws IOException {
+		Response saveImhResponse = postAPIRequest.saveCustomImhFormPost(headerConfig.HeaderwithToken(getaccessToken),
+				payload.getSaveImhFormPayload(propertyData.getProperty("case.sense.concept.id"),
+						propertyData.getProperty("imh.acne.concept.name"),
+						propertyData.getProperty("case.sense.form.id"),
+						propertyData.getProperty("imh.form.practice.id")),
+				propertyData.getProperty("imh.form.practice.id"));
+		assertEquals(saveImhResponse.getStatusCode(), 200);
+
 		Response response = postAPIRequest.getImhFormByConceptName(headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("imh.form.practice.id"),
 				propertyData.getProperty("imh.concept.name.upper.case"));
@@ -1093,6 +1132,13 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetImhFormWithValidConceptName() throws NullPointerException, IOException {
+		Response saveImhResponse = postAPIRequest.saveCustomImhFormPost(headerConfig.HeaderwithToken(getaccessToken),
+				payload.getSaveImhFormPayload(propertyData.getProperty("valid.imh.concept.id"),
+						propertyData.getProperty("valid.concept.name"), propertyData.getProperty("valid.form.id"),
+						propertyData.getProperty("imh.form.practice.id")),
+				propertyData.getProperty("imh.form.practice.id"));
+		assertEquals(saveImhResponse.getStatusCode(), 200);
+
 		Response response = postAPIRequest.getImhFormByConceptName(headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("imh.form.practice.id"), propertyData.getProperty("valid.concept.name"));
 

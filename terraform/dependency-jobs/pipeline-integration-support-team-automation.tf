@@ -48,13 +48,13 @@ module "integration_support_team_automation_codebuild" {
 
   vpc_config = [{
     vpc_id             = data.aws_vpc.main.id
-    subnets            = data.aws_subnet_ids.private.ids
+    subnets            = data.aws_subnets.private.ids
     security_group_ids = [data.aws_security_group.codebuild_sg.id]
   }]
 
-    common_tags = {
-      "pxp.application" = local.integration_support_team_automation.pxp_application
-    }
+  common_tags = {
+    "pxp.application" = local.integration_support_team_automation.pxp_application
+  }
 }
 
 ###################################################################################
@@ -201,10 +201,10 @@ data "aws_iam_policy_document" "integration_support_team_automation_codebuild" {
 }
 
 data "aws_iam_policy_document" "integration_support_team_automation_codeartifact_token" {
-# CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
+  # CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
 
   statement {
-    sid     = "StsPermissions"
+    sid = "StsPermissions"
     actions = [
       "sts:GetServiceBearerToken"
     ]
@@ -219,7 +219,7 @@ data "aws_iam_policy_document" "integration_support_team_automation_codeartifact
   }
 
   statement {
-    sid     = "CodeArtifactDomainPermissions"
+    sid = "CodeArtifactDomainPermissions"
     actions = [
       "codeartifact:GetAuthorizationToken"
     ]
@@ -227,7 +227,7 @@ data "aws_iam_policy_document" "integration_support_team_automation_codeartifact
   }
 
   statement {
-    sid     = "CodeArtifactRepositoryPermissions"
+    sid = "CodeArtifactRepositoryPermissions"
     actions = [
       "codeartifact:DescribeRepository",
       "codeartifact:ReadFromRepository",
@@ -238,7 +238,7 @@ data "aws_iam_policy_document" "integration_support_team_automation_codeartifact
   }
 
   statement {
-    sid     = "CodeArtifactPackagePermissions"
+    sid = "CodeArtifactPackagePermissions"
     actions = [
       "codeartifact:UpdatePackageVersionsStatus",
       "codeartifact:PublishPackageVersion",
@@ -273,7 +273,7 @@ resource "aws_iam_role_policy" "integration_support_team_automation_codeartifact
 ###################################################################################
 resource "aws_codestarnotifications_notification_rule" "integration_support_team_automation" {
 
-  detail_type = var.notification_detail_type
+  detail_type    = var.notification_detail_type
   event_type_ids = var.event_type_ids
 
   name     = "${local.integration_support_team_automation.name}-notification"

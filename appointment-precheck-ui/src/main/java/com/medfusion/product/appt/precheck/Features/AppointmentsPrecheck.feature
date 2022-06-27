@@ -2538,3 +2538,158 @@ Feature: Test fuctionality of Appointment precheck
     When I schedule an appointment for adding images to insurances
     Then I verify that error message should be seen
     And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then appointment reminder email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard
+    Then I verify from email appointment reminder email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then broadcast message email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send broadcast message is english and spanish
+    Then I verify from email broadcast message email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then curbside reminder email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard for curbside reminder
+    Then I verify from email curbside reminder email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english and spanish then manual reminder email should be recieved in both languages
+    When I select practice language preference as English and Spanish from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send manual reminder from appointment dashboard
+    Then I verify from email manual reminder email should be recieved in both languages
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language as english then appointment reminder email should be recieved in english language
+    When I select practice language preference as English from notification in setting
+    And I schedule an appointment from appointment dashboard
+    Then I verify from email appointment reminder email should be recieved in english language
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language as english then broadcast message email should be recieved in english language
+    When I select practice language preference as English from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send broadcast message in english
+    Then I verify from email broadcast message email should be recieved in english language
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english then curbside reminder email should be recieved in english language
+    When I select practice language preference as English from notification in setting
+    And I schedule an appointment from appointment dashboard for curbside reminder
+    Then I verify from email curbside reminder email should be recieved in english language
+    And logout from practice provisioning portal
+
+  Scenario: Verify if appt is created from appointment dashboard and practice language is english then manual reminder email should be recieved in english language
+    When I select practice language preference as English from notification in setting
+    And I schedule an appointment from appointment dashboard
+    And I select patient and send manual reminder from appointment dashboard
+    Then I verify from email manual reminder email should be recieved in english language
+    And logout from practice provisioning portal
+
+  Scenario: Verify when appointment schedule in 'en' then email content for broadcast is coming as per requirement for english
+    When I enable Broadcast messaging checkbox from setting in notifications
+    And I schedule an appointment in "en"
+    And I select patient and send broadcast message
+    Then I verify in mail content for broadcast is coming as per reuirement in en
+    And logout from practice provisioning portal
+
+  Scenario: Verify when appointment schedule in 'es' then email content for broadcast is coming as per requirement for spanish
+    When I enable Broadcast messaging checkbox from setting in notifications
+    And I schedule an appointment in "es"
+    And I select patient and send broadcast message
+    Then verify in mail content for broadcast is coming as per reuirement in es
+    And logout from practice provisioning portal
+
+  Scenario: verify when first name checked then in broadcast message first name appears in template in email for english
+    When I enable firstname checkbox from setting in notifications dashboard
+    And I schedule an appointment in "en"
+    And I select patient and send broadcast message
+    Then I verify first name appears in template in email
+    And logout from practice provisioning portal
+
+  Scenario: verify when first name unchecked then in broadcast message first name not appears in template in email for english
+    When I disable firstname checkbox from setting in notifications dashboard
+    And I schedule an appointment in "en"
+    And I select patient and send broadcast message
+    Then I verify first name not appears in template in email
+    
+  Scenario: verify if the appointment comfirmed then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment confirmed and precheck is done then it is deleted succesfully
+    When I schedule an appointment in "en" for precheck
+    And I do the precheck
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the broadcast is sent to appointment then it is deleted succesfully
+    When I schedule an appointment in "en"
+    And I select patient and send broadcast message from appointment dashboard
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the two month backdated appointment then it is deleted succesfully
+    When I select two month backdated patient
+    And I select patient and remove from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment comfirmed/Manual reminder/broadcast is sent then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I select patient and send manual reminder from appointment dashboard
+    And I select patient and send broadcast message from appointment dashboard
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the appointment confirmed/broadcast message sent/curbside arrival is done is sent then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I select patient and send broadcast message from appointment dashboard
+    And I done curbside arrival
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the curbside arrival entry confirmed today is sent then it is deleted succesfully
+    When I schedule an appointment and make arrival entry done
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the Appointment entry with no confirmation , no precheck then it is deleted succesfully
+    When I schedule an appointment in "en"
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if precheck is done ,confirmed, broadcast sent, manual reminder is sent then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I do the precheck
+    And I select patient and send manual reminder from appointment dashboard
+    And I select patient and send broadcast message from appointment dashboard
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the Appointment backdated 1 month appointment then it is deleted succesfully
+    When I select one month backdated patient
+    And I select patient and remove from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
+
+  Scenario: verify if the Appointment is visited and curbside check in is done then it is deleted succesfully
+    When I schedule an appointment and confirmed
+    And I done curbside arrival
+    And I select patient and remove this patient from actions tab
+    Then I verify deleted banner and patient should be deleted succesfully
+    And logout from practice provisioning portal
