@@ -9808,5 +9808,4 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.saveNotification();
 	}
 	
-
 }
