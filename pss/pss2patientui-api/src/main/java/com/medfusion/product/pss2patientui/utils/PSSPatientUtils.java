@@ -2341,5 +2341,15 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			homePage.patientLogout(driver);
 			return time;
 		}
-
+		public String switchtabs1(WebDriver driver) {
+			ArrayList<String> browserTabs = new ArrayList<String>(driver.getWindowHandles());
+			driver.close();
+			driver.switchTo().window(browserTabs.get(1));
+			System.setProperty("current.window.handle", browserTabs.get(1));
+			String pssPatientUrl = driver.getCurrentUrl();
+			/* @ code only for dev3 */
+			pssPatientUrl = pssPatientUrl.replaceAll("https", "http");
+			log("Url = " + driver.getCurrentUrl());
+			return pssPatientUrl;
+		}
 	}
