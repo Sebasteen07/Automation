@@ -2591,6 +2591,33 @@ Feature: Test fuctionality of Appointment precheck
     Then I verify from email manual reminder email should be recieved in english language
     And logout from practice provisioning portal
 
+  Scenario: Verify when appointment schedule in 'en' then email content for broadcast is coming as per requirement for english
+    When I enable Broadcast messaging checkbox from setting in notifications
+    And I schedule an appointment in "en"
+    And I select patient and send broadcast message
+    Then I verify in mail content for broadcast is coming as per reuirement in en
+    And logout from practice provisioning portal
+
+  Scenario: Verify when appointment schedule in 'es' then email content for broadcast is coming as per requirement for spanish
+    When I enable Broadcast messaging checkbox from setting in notifications
+    And I schedule an appointment in "es"
+    And I select patient and send broadcast message
+    Then verify in mail content for broadcast is coming as per reuirement in es
+    And logout from practice provisioning portal
+
+  Scenario: verify when first name checked then in broadcast message first name appears in template in email for english
+    When I enable firstname checkbox from setting in notifications dashboard
+    And I schedule an appointment in "en"
+    And I select patient and send broadcast message
+    Then I verify first name appears in template in email
+    And logout from practice provisioning portal
+
+  Scenario: verify when first name unchecked then in broadcast message first name not appears in template in email for english
+    When I disable firstname checkbox from setting in notifications dashboard
+    And I schedule an appointment in "en"
+    And I select patient and send broadcast message
+    Then I verify first name not appears in template in email
+    
   Scenario: verify if the appointment comfirmed then it is deleted succesfully
     When I schedule an appointment and confirmed
     And I select patient and remove this patient from actions tab
