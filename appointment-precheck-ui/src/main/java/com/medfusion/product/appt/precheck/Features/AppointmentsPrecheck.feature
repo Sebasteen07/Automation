@@ -2591,14 +2591,14 @@ Feature: Test fuctionality of Appointment precheck
     Then I verify from email manual reminder email should be recieved in english language
     And logout from practice provisioning portal
 
-  Scenario: Verify when appointment schedule in 'en' then email content for broadcast is coming as per reuirement for english
+  Scenario: Verify when appointment schedule in 'en' then email content for broadcast is coming as per requirement for english
     When I enable Broadcast messaging checkbox from setting in notifications
     And I schedule an appointment in "en"
     And I select patient and send broadcast message
     Then I verify in mail content for broadcast is coming as per reuirement in en
     And logout from practice provisioning portal
 
-  Scenario: Verify when appointment schedule in 'es' then email content for broadcast is coming as per reuirement for spanish
+  Scenario: Verify when appointment schedule in 'es' then email content for broadcast is coming as per requirement for spanish
     When I enable Broadcast messaging checkbox from setting in notifications
     And I schedule an appointment in "es"
     And I select patient and send broadcast message
