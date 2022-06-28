@@ -98,8 +98,9 @@ public abstract class MedfusionPage extends BasePageObject {
 		}
 		//handles modal dialogs in Portal (accepting NPP, statement preference selection)
 		public void handleWeNeedToConfirmSomethingModal(){
-			 log("Trying to handle survey pop up by adding cookie");
-             String name = "QSI_SI_0CUNpSFNBlJ5QGN_intercept";               
+			 log("Trying to handle Qualtrics Survey pop up by adding cookie");
+             String name = "QSI_SI_7VTzDLMineEmg4e_intercept";               
+
              String value = "true";
              Cookie ck = new Cookie(name,value);           
              driver.manage().addCookie(ck);

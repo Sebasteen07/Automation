@@ -11,7 +11,10 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.eh.core.dto.Timestamp;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousDismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
@@ -1519,4 +1522,334 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 
 	}
 	
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetDirectionLinkLLGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSPatientUtils psspatientUtils = new PSSPatientUtils();
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		addRule("L,T,B", "T,L,B");
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGW());
+		apv.responseCodeValidation(response, 200);
+		String expectedText = propertyData.getProperty("location.direction.text");
+		String expectedTitle = propertyData.getProperty("title.name");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		String actualText = location.getDirectionLinktext();
+		logStep("Verfiy get Direction Location Text =" + expectedText);
+		assertEquals(expectedText, actualText);
+		location.selectGetDirectionLink();
+		psspatientUtils.switchtabs(driver);
+		logStep("Verfiy Title Of New Tab =" + expectedTitle);
+		String actualTitle = driver.getTitle();
+		assertEquals(expectedTitle, actualTitle);
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetDirectionLinkLLGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSPatientUtils psspatientUtils = new PSSPatientUtils();
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		addRule("L,T,B", "T,L,B");
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);	
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGE());
+		apv.responseCodeValidation(response, 200);
+		String expectedText = propertyData.getProperty("location.direction.text");
+		String expectedTitle = propertyData.getProperty("title.name");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		String actualText = location.getDirectionLinktext();
+		logStep("Verfiy get Direction Location Text =" + expectedText);
+		assertEquals(expectedText, actualText);
+		location.selectGetDirectionLink();
+		psspatientUtils.switchtabs(driver);
+		logStep("Verfiy Title Of New Tab =" + expectedTitle);
+		String actualTitle = driver.getTitle();
+		assertEquals(expectedTitle, actualTitle);
+
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetDirectionLinkLLNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils psspatientUtils = new PSSPatientUtils();
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		addRule("L,T,B", "T,L,B");
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+		apv.responseCodeValidation(response, 200);
+		String expectedText = propertyData.getProperty("location.direction.text");
+		String expectedTitle = propertyData.getProperty("title.name");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		String actualText = location.getDirectionLinktext();
+		logStep("Verfiy get Direction Location Text =" + expectedText);
+		assertEquals(expectedText, actualText);
+		location.selectGetDirectionLink();
+		psspatientUtils.switchtabs(driver);
+		logStep("Verfiy Title Of New Tab =" + expectedTitle);
+		String actualTitle = driver.getTitle();
+		assertEquals(expectedTitle, actualTitle);
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetDirectionLinkSSONG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils psspatientUtils = new PSSPatientUtils();
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		addRule("L,T,B", "T,L,B");
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+		apv.responseCodeValidation(response, 200);
+		String expectedText = propertyData.getProperty("location.direction.text");
+		String expectedTitle = propertyData.getProperty("title.name");
+		
+		logStep("Login to PSS Appointment");
+	
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage jalapenohomePage = loginPage.login(testData.getPatientPortalUserName(),
+				testData.getPatientPortalPassword());
+		logStep("Detecting if Home Page is opened");
+		jalapenohomePage.clickFeaturedAppointmentsReq();
+		logStep("Wait for PSS 2.0 Patient UI to be loaded.");
+		logStep("Switching tabs");
+		String currentUrl = psspatientUtils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		logStep("Successfully upto Home page");		
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homepage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		String actualText = location.getDirectionLinktext();
+		logStep("Verfiy get Direction Location Text =" + expectedText);
+		assertEquals(expectedText, actualText);
+		location.selectGetDirectionLink();
+		psspatientUtils.switchtabs(driver);
+		logStep("Verfiy Title Of New Tab =" + expectedTitle);
+		String actualTitle = driver.getTitle();
+		assertEquals(expectedTitle, actualTitle);
+
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetDirectionLinkSSOGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSPatientUtils psspatientUtils = new PSSPatientUtils();
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		addRule("L,T,B", "T,L,B");
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);	
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGE());
+		apv.responseCodeValidation(response, 200);
+		String expectedText = propertyData.getProperty("location.direction.text");
+		String expectedTitle = propertyData.getProperty("title.name");
+		
+		logStep("Login to PSS Appointment");
+	
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage jalapenohomePage = loginPage.login(testData.getPatientPortalUserName(),
+				testData.getPatientPortalPassword());
+		logStep("Detecting if Home Page is opened");
+		jalapenohomePage.clickFeaturedAppointmentsReq();
+		logStep("Wait for PSS 2.0 Patient UI to be loaded.");
+		logStep("Switching tabs");
+		String currentUrl = psspatientUtils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		logStep("Successfully upto Home page");		
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homepage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		String actualText = location.getDirectionLinktext();
+		logStep("Verfiy get Direction Location Text =" + expectedText);
+		assertEquals(expectedText, actualText);
+		location.selectGetDirectionLink();
+		psspatientUtils.switchtabs(driver);
+		logStep("Verfiy Title Of New Tab =" + expectedTitle);
+		String actualTitle = driver.getTitle();
+		assertEquals(expectedTitle, actualTitle);
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetDirectionLinkSSOGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSPatientUtils psspatientUtils = new PSSPatientUtils();
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		addRule("L,T,B", "T,L,B");
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGW());
+		apv.responseCodeValidation(response, 200);
+		String expectedText = propertyData.getProperty("location.direction.text");
+		String expectedTitle = propertyData.getProperty("title.name");
+		
+		logStep("Login to PSS Appointment");
+	
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage jalapenohomePage = loginPage.login(testData.getPatientPortalUserName(),
+				testData.getPatientPortalPassword());
+		logStep("Detecting if Home Page is opened");
+		jalapenohomePage.clickFeaturedAppointmentsReq();
+		logStep("Wait for PSS 2.0 Patient UI to be loaded.");
+		logStep("Switching tabs");
+		String currentUrl = psspatientUtils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		logStep("Successfully upto Home page");		
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homepage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		String actualText = location.getDirectionLinktext();
+		logStep("Verfiy get Direction Location Text =" + expectedText);
+		assertEquals(expectedText, actualText);
+		location.selectGetDirectionLink();
+		psspatientUtils.switchtabs(driver);
+		logStep("Verfiy Title Of New Tab =" + expectedTitle);
+		String actualTitle = driver.getTitle();
+		assertEquals(expectedTitle, actualTitle);
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetDirectionLinkAnonymousNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils psspatientUtils = new PSSPatientUtils();
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		addRule("L,T,B", "T,L,B");
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+		apv.responseCodeValidation(response, 200);
+		
+		String expectedText = propertyData.getProperty("location.direction.text");
+		String expectedTitle = propertyData.getProperty("title.name");
+		logStep("Login To Patient Portal To Verify Privacy Policy");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlAnonymous());
+		AnonymousDismissPage anonymousDismissPage = new AnonymousDismissPage(driver, testData.getUrlAnonymous());
+		HomePage homePage = anonymousDismissPage.clickDismiss();
+		Thread.sleep(1000);
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		String actualText = location.getDirectionLinktext();
+		logStep("Verfiy get Direction Location Text =" + expectedText);
+		assertEquals(expectedText, actualText);
+		location.selectGetDirectionLink();
+		psspatientUtils.switchtabs(driver);
+		logStep("Verfiy Title Of New Tab =" + expectedTitle);
+		String actualTitle = driver.getTitle();
+		assertEquals(expectedTitle, actualTitle);
+
+	}
 }

@@ -96,8 +96,8 @@ public static String appointmentSearch() {
 				+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
 				+ "  \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
 				+ "  \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
-				+ "  \"startDate\": \"06/18/2022 17:45:00\",\r\n"
-				+ "  \"endDate\": \"06/30/2022 18:45:00\",\r\n"
+				+ "  \"startDate\": \""+startdate+"\",\r\n"
+				+ "  \"endDate\": \""+enddate+"\",\r\n"
 				+ "  \"slotSize\": \"05\",\r\n"
 				+ "  \"reservedForSameDay\": false,\r\n"
 				+ "  \"apptTypeAllocated\": true,\r\n"
@@ -122,8 +122,8 @@ public static String nextAvailableMaxPerDay_Payload(String patientId, String sta
 				+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
 				+ "  \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
 				+ "  \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
-				+ "  \"startDate\": \"06/18/2022 17:45:00\",\r\n"
-				+ "  \"endDate\": \"06/30/2022 18:45:00\",\r\n"
+				+ "  \"startDate\": \""+startdate+"\",\r\n"
+				+ "  \"endDate\": \""+enddate+"\",\r\n"
 				+ "  \"slotSize\": \"05\",\r\n"
 				+ "  \"reservedForSameDay\": false,\r\n"
 				+ "  \"apptTypeAllocated\": true,\r\n"
@@ -148,8 +148,8 @@ public static String nextAvailableMaxPerDay_Payload(String patientId, String sta
 		String nextAvailable="{\r\n"
 				+ "    \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
 				+ "    \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
-				+ "    \"startDate\": \"06/18/2022 17:45:00\",\r\n"
-				+ "    \"endDate\": \"06/30/2022 18:45:00\",\r\n"
+				+ "    \"startDate\": \""+startdate+"\",\r\n"
+				+ "    \"endDate\": \""+enddate+"\",\r\n"
 				+ "    \"slotSize\": \"05\",\r\n"
 				+ "    \"reservedForSameDay\": false,\r\n"
 				+ "    \"apptTypeAllocated\": true,\r\n"
@@ -168,33 +168,32 @@ public static String nextAvailableMaxPerDay_Payload(String patientId, String sta
 		return nextAvailable;
 	}
 	
-public static String nextAvailable_New() {
+public static String nextAvailable_New(String patientId, String startdate,  String enddate,int maxPerDay) {
 		
-		String nextAvailable="{\r\n"
-				+ "\"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
-				+ "\"appointmentCategoryId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
-				+ "\"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
-				+ "\"resourceCategoryId\":null,\r\n"
-				+ "\"startDate\":\"10/08/2021 05:02:22\",\r\n"
-				+ "\"endDate\":null,\r\n"
-				+ "\"slotSize\": 5,\r\n"
-				+ "\"patientId\": null,\r\n"
-				+ "\"reservedForSameDay\": false,\r\n"
-				+ "\"apptTypeAllocated\": true,\r\n"
-				+ "\"nextAvailability\": true,\r\n"
-				+ "\"stackingFlag\": false,\r\n"
-				+ "\"preventScheduling\": 0,\r\n"
-				+ "\"sameDayAppointment\": false,\r\n"
-				+ "\"contiguous\": false,\r\n"
-				+ "\"maxPerDay\": 0,\r\n"
-				+ "\"leadTime\": 0,\r\n"
-				+ "\"slotCount\": 1,\r\n"
-				+ "\"allowSameDayAppts\": true\r\n"
-				+ "\r\n"
-				+ "}";
-		
-		return nextAvailable;
-	}
+	String nextAvailable="{\r\n"
+			+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
+			+ "  \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
+			+ "  \"resourceId\": \"e47ea31b-8436-40df-8152-c9ef9d8721fe\",\r\n"
+			+ "  \"startDate\": \""+startdate+"\",\r\n"
+			+ "  \"endDate\": \""+enddate+"\",\r\n"
+			+ "  \"slotSize\": \"05\",\r\n"
+			+ "  \"reservedForSameDay\": false,\r\n"
+			+ "  \"apptTypeAllocated\": true,\r\n"
+			+ "  \"patientId\": \""+patientId+"\",\r\n"
+			+ "  \"contiguous\": false,\r\n"
+			+ "  \"maxPerDay\": 0,\r\n"
+			+ "  \"nextAvailability\": true,\r\n"
+			+ "  \"stackingFlag\": false,\r\n"
+			+ "  \"preventScheduling\": 0,\r\n"
+			+ "  \"sameDayAppointment\": false,\r\n"
+			+ "  \"leadTime\": 0,\r\n"
+			+ "  \"slotCount\": 1,\r\n"
+			+ "  \"nextAvailable\": false\r\n"
+			+ "}";
+	
+	return nextAvailable;
+}
+	
 	
 public static String reschedule_Payload(String startDateTime, String endDateTime, String patientid, String apptid) {
 	
@@ -537,14 +536,14 @@ public static String schedule_PayloadShowOFF(String slotStartTime, String slotEn
 		return matchpatient;
 	}
 	
-public static String careProvider() {
+public static String careProvider(String startDate,String endDate) {
 		
 		String careProvider="{\r\n"
 				+ "  \"locationId\": \"2e77cb9c-c0af-4b08-a5c9-0ae33b8dfcc7\",\r\n"
 				+ "  \"appointmentTypeId\": \"40d88aae-d627-4d07-8558-337abedcd88d\",\r\n"
 				+ "  \"appointmentTypeCatId\": \"aa81a2da-5781-46e7-8b67-19b873eb3cdb\",\r\n"
-				+ "  \"startDateTime\": \"06/07/2022 04:00:28\",\r\n"
-				+ "  \"endDateTime\": \"06/09/2022 04:00:28\",\r\n"
+				+ "  \"startDateTime\": \""+startDate+"\",\r\n"
+				+ "  \"endDateTime\": \""+endDate+"\",\r\n"
 				+ "  \"careProvider\": [\r\n"
 				+ "    {\r\n"
 				+ "      \"resourceCatId\": \"58e61653-fe3d-448b-ba06-8bcdbfa1cf0f\",\r\n"

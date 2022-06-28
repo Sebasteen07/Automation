@@ -42,6 +42,9 @@ public class Location extends PSS2MainPage {
 
 	@FindAll({@FindBy(xpath = "//*[@id='locationwizardlist']//a[@class='locationlink locationlinkclick']/following-sibling::div[2]")})
 	private List<WebElement> adddress2;
+	
+	@FindAll({@FindBy(xpath = "//*[@id='locationwizardlist']/div[3]/div/div/button/span")})
+	private List<WebElement> directionLink;
 
 
 	public Location(WebDriver driver) {
@@ -158,4 +161,15 @@ public class Location extends PSS2MainPage {
 		}
 		return name;
 	}
+	
+	public  void selectGetDirectionLink() throws Exception {
+		WebElement button=directionLink.get(0);
+		button.click();
+	}
+	
+	public  String getDirectionLinktext() throws Exception {
+		String linkgetText=directionLink.get(0).getText();
+		return linkgetText;
+	}
+
 }
