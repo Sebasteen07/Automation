@@ -2341,5 +2341,4 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			homePage.patientLogout(driver);
 			return time;
 		}
-
 	}
