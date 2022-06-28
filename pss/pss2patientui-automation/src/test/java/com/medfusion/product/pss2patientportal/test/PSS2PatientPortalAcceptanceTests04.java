@@ -1714,15 +1714,15 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		propertyData.setAdminGE(adminuser);
 		propertyData.setAppointmentResponseGE(testData);
 		PSSPatientUtils psspatientUtils = new PSSPatientUtils();
-//		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
-//		Response response;
-//		addRule("L,T,B", "T,L,B");
-//		logStep("Show Provider On Using AM ");
-//		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,payloadAM01.turnONOFFShowProvider(true));
-//		apv.responseCodeValidation(responseShowOff, 200);	
-//		logStep("Patient Matching By Using Adapter Modulator");
-//		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGE());
-//		apv.responseCodeValidation(response, 200);
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		addRule("L,T,B", "T,L,B");
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);	
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGE());
+		apv.responseCodeValidation(response, 200);
 		String expectedText = propertyData.getProperty("location.direction.text");
 		String expectedTitle = propertyData.getProperty("title.name");
 		
