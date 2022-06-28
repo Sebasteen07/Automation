@@ -71,7 +71,7 @@ public class DCFAdminToolUtils extends MedfusionPage{
 			this.driver.get(url);
 
 			userIDField.sendKeys("SunilXavier");
-			passwordField.sendKeys("Apr@s2022");
+			passwordField.sendKeys("Jul@s2022");
 
 			submitButton.click();
 

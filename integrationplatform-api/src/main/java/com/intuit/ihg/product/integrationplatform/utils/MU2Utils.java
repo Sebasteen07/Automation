@@ -252,8 +252,8 @@ public class MU2Utils {
 	
 	public static List<String> eventList() {
 		eventList.add(MU2Constants.VIEW_ACTION);
-		eventList.add(MU2Constants.TRANSMIT_ACTION);
 		eventList.add(MU2Constants.DOWNLOAD_ACTION);
+		eventList.add(MU2Constants.TRANSMIT_ACTION);
 		return eventList;
 	}
 	

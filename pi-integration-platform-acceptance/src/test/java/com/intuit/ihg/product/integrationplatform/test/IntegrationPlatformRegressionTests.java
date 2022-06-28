@@ -597,7 +597,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		iPIDCSendPatientInvite sendPatientInviteObj = new SendPatientInvite();
 		ArrayList<String> patientDetail = sendPatientInviteObj.sendPatientInviteToPractice(
 				testData.PATIENT_INVITE_RESTURL, testData.PATIENT_PRACTICEID, testData.PATIENT_EXTERNAL_ID,
-				"01/01/1987", "27560", testData.token);
+				"01/01/1987", "27560", newToken);
 
 		log("Follwing are patient details");
 		for (String values : patientDetail) {
@@ -623,28 +623,28 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Send 1st CCD to Patient");
 		ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
 				testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath, testData.PATIENT_EXTERNAL_ID,
-				testData.token);
+				newToken);
 		log(ccdDetail1.get(0));
 		Thread.sleep(8000);
 
 		log("Send 2nd CCD to Patient");
 		ArrayList<String> ccdDetail2 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
-				testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH1, testData.PATIENT_EXTERNAL_ID,
-				testData.token);
+				testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath, testData.PATIENT_EXTERNAL_ID,
+				newToken);
 		log(ccdDetail2.get(0));
 		Thread.sleep(8000);
 
 		log("Send 3rd CCD to Patient");
 		ArrayList<String> ccdDetail3 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
-				testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH2, testData.PATIENT_EXTERNAL_ID,
-				testData.token);
+				testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath, testData.PATIENT_EXTERNAL_ID,
+				newToken);
 		log(ccdDetail3.get(0));
 		Thread.sleep(8000);
 
 		log("Send 4th CCD to Patient");
 		ArrayList<String> ccdDetail4 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
-				testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH3, testData.PATIENT_EXTERNAL_ID,
-				testData.token);
+				testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath, testData.PATIENT_EXTERNAL_ID,
+				newToken);
 		log(ccdDetail4.get(0));
 
 		log("Set username and password for MU2 : UserName " + patientDetail.get(4) + " password: "
