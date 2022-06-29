@@ -2720,3 +2720,10 @@ Feature: Test fuctionality of Appointment precheck
     Then I verify in email curbside arrival message are coming in spanish language and message also in appears in es
     And logout from practice provisioning portal
    
+  Scenario: After doing precheck system sends broadcast on latest email and verify if broadcast notification logs show updated fname and last name in patient details field
+    When I schedule an appointment
+    And I click on patient name and patient launch mode
+    And I do the precheck and update first name and last name
+    And I select patient and send broadcast message from appointment dashboard
+    Then I verify updated first name, middle name, last name should be reflect on broadcast email notification logs
+    And logout from practice provisioning portal

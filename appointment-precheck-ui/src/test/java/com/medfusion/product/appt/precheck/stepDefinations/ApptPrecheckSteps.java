@@ -3152,7 +3152,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("I select patient and send broadcast message from appointment dashboard")
 	public void I_select_patient_and_send_broadcast_message_from_appointment_dashboard() throws Exception {
 		mainPage.clickOnAppointmentsTab();
-		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectFirstPatient();
 		log("Click on Actions tab and select broadcast message");
 		apptPage.performAction();
 		log("Enter message in English and Spanish");
@@ -10672,6 +10673,56 @@ public class ApptPrecheckSteps extends BaseTest {
 		driver.switchTo().window(currentWindow);
 		Thread.sleep(5000);
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I click on patient name and patient launch mode")
+	public void i_click_on_patient_name_and_patient_launch_mode() throws InterruptedException {
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnLaunchPatientModeButton();
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnContinueButton();
+	}
+	
+	@When("I do the precheck and update first name and last name")
+	public void i_do_the_precheck_and_update_first_name_and_last_name() throws NullPointerException, InterruptedException {
+		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.first.name"),
+				propertyData.getProperty("precheck.middle.name"), propertyData.getProperty("precheck.last.name"),
+				"jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.number"));
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+		scrollAndWait(200, -300, 5000);
+	}
+	
+	@Then("I verify updated first name, middle name, last name should be reflect on broadcast email notification logs")
+	public void i_verify_updated_first_name_middle_name_last_name_should_be_reflect_on_broadcast_email_notification_logs()
+			throws NullPointerException, Exception {
+     	driver.navigate().refresh();
+        Thread.sleep(5000);
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+
+		apptPage.clickOnBroadcastEmailLogForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from Broadcast Email Log: "
+				+ apptPage.getPatientNameFromBroadcastEmailLogs(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromBroadcastEmailLogs(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+		apptPage.closeBroadcastEmailandTextBox();
+		Thread.sleep(3000);
+
+		apptPage.clickOnBroadcastPhoneLogForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from Broadcast Email Log: "
+				+ apptPage.getPatientNameFromBroadcastTextLogs(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromBroadcastTextLogs(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+		apptPage.closeBroadcastEmailandTextBox();
+		Thread.sleep(3000);
 	}
 
 }
