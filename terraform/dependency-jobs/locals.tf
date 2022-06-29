@@ -280,4 +280,40 @@ locals {
     queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
     maven_parameter      = "mvn clean install"
   }
+
+  patientportal2_api = {
+    name                 = "${local.jobname-prefix}patientportal2-api"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "patientportal2-api"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  patientportal2_object_maps = {
+    name                 = "${local.jobname-prefix}patientportal2-object-maps"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "patientportal2-object-maps"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  pi_integration_platform_acceptance = {
+    name                 = "${local.jobname-prefix}pi-integration-platform-acceptance"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "pi-integration-platform-acceptance"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
 }
