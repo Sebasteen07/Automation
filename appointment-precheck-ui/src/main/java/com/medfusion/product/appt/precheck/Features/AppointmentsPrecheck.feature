@@ -2617,7 +2617,7 @@ Feature: Test fuctionality of Appointment precheck
     And I schedule an appointment in "en"
     And I select patient and send broadcast message
     Then I verify first name not appears in template in email
-    
+
   Scenario: verify if the appointment comfirmed then it is deleted succesfully
     When I schedule an appointment and confirmed
     And I select patient and remove this patient from actions tab
@@ -2693,3 +2693,30 @@ Feature: Test fuctionality of Appointment precheck
     And I select patient and remove this patient from actions tab
     Then I verify deleted banner and patient should be deleted succesfully
     And logout from practice provisioning portal
+
+  Scenario: verify if user is not able to confirm appointment with previous reminder mail after reschedule within hour
+    When I schedule an appointment in "en"
+    And I get schedule and reminder mail in inbox
+    And I reschedule an appointment after thirty minutes
+    And I get new reminder mail
+    Then I verify system not allowing user to confirm appointment with previous reminder mail
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to confirm appointment with new reminder mail after reschedule within hour
+    When I schedule an appointment in "en"
+    And I get schedule and reminder mail in inbox
+    And I reschedule an appointment after thirty minutes
+    And I get new reminder mail
+    Then I verify system is allowing user to confirm appointment with new reminder mail
+    And logout from practice provisioning portal
+
+  Scenario: verify curbside arrival message are coming in english language for patient having prefered language en when patient click on i have arrived button and later when patient changes view in spanish it appears in es
+    When I schedule an appointment in "en"
+    Then I verify in email curbside arrival message are coming in english language when patient changes view in spanish it appears in es
+    And logout from practice provisioning portal
+
+  Scenario: verify curbside arrival message are coming in spanish language for patient having prefered language es when patient click on i have arrived button then patient view in spanish language
+    When I schedule an appointment in "es"
+    Then I verify in email curbside arrival message are coming in spanish language and message also in appears in es
+    And logout from practice provisioning portal
+   

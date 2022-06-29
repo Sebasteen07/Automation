@@ -10547,4 +10547,131 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.endDate(1, 2);
 	}
 
+	@When("I get schedule and reminder mail in inbox")
+	public void i_get_schedule_and_reminder_mail_in_inbox() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.schedule.subject"), propertyData.getProperty("appt.schedule.title"),
+				10));
+
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.title"), 10));
+	}
+
+	@When("I reschedule an appointment after thirty minutes")
+	public void i_reschedule_an_appointment_after_thirty_minutes() throws NullPointerException, IOException {
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com", "en",
+						propertyData.getProperty("patient.name")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+
+	@When("I get new reminder mail")
+	public void i_get_new_reminder_mail() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.title"), 10));
+	}
+
+	@Then("I verify system not allowing user to confirm appointment with previous reminder mail")
+	public void i_verify_system_not_allowing_user_to_confirm_appointment_with_previous_reminder_mail()
+			throws NullPointerException, Exception {
+
+		String[] s = { "Invalid link", "Your appointment was canceled." };
+		List<String> strings = new ArrayList<String>();
+		for (String e : s) {
+			strings.add(e);
+		}
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+
+		assertEquals(strings,
+				yopMail.getMessageAfterConfirmAppt("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.title"),
+						propertyData.getProperty("appt.reminder.title"), propertyData.getProperty("invalid.link.title"),
+						propertyData.getProperty("invalid.link.message")));
+
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		Thread.sleep(5000);
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
+	@Then("I verify system is allowing user to confirm appointment with new reminder mail")
+	public void i_verify_system_is_allowing_user_to_confirm_appointment_with_new_reminder_mail()
+			throws NullPointerException, Exception {
+		String[] s = { "Appointment confirmed", "Your appointment is on" };
+		List<String> strings = new ArrayList<String>();
+		for (String e : s) {
+			strings.add(e);
+		}
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+
+		assertEquals(strings,
+				yopMail.getMessageAfterConfirmAppt("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.title"),
+						propertyData.getProperty("appt.reminder.title"), propertyData.getProperty("confirm.appt.title"),
+						propertyData.getProperty("confirm.appt.message")));
+
+		driver.switchTo().window(currentWindow);
+		Thread.sleep(5000);
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
+	@Then("I verify in email curbside arrival message are coming in english language when patient changes view in spanish it appears in es")
+	public void i_verify_in_email_curbside_arrival_message_are_coming_in_english_language_when_patient_changes_view_in_spanish_it_appears_in_es()
+			throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		BufferedReader in = new BufferedReader(
+				new FileReader(propertyData.getProperty("curbside.checkin.message.in.es")));
+		String str;
+		List<String> list = new ArrayList<String>();
+		while ((str = in.readLine()) != null) {
+			list.add(str);
+		}
+		assertEquals(list,
+				yopMail.getCurbsideArrivalMsg("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						propertyData.getProperty("curbside.checkin.mail.subject"),
+						propertyData.getProperty("email.title.in.en"),
+						propertyData.getProperty("add.arrival.instruction.in.en"), "en"));
+
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		Thread.sleep(5000);
+
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
+	@Then("I verify in email curbside arrival message are coming in spanish language and message also in appears in es")
+	public void i_verify_in_email_curbside_arrival_message_are_coming_in_spanish_language_and_message_also_in_appears_in_es()
+			throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		BufferedReader in = new BufferedReader(
+				new FileReader(propertyData.getProperty("curbside.checkin.message.in.es")));
+		String str;
+		List<String> list = new ArrayList<String>();
+		while ((str = in.readLine()) != null) {
+			list.add(str);
+		}
+
+		assertEquals(list,
+				yopMail.getCurbsideArrivalMsg("jordan" + Appointment.randomNumber + "@YOPmail.com",
+						propertyData.getProperty("curbside.checkin.mail.subject.in.es"),
+						propertyData.getProperty("email.title.in.es"),
+						propertyData.getProperty("add.arrival.instruction.in.es"), "en"));
+
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		Thread.sleep(5000);
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
 }
