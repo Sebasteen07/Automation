@@ -34,6 +34,7 @@ public class IntegrationConstants {
 	public static final String STATE_ERRORED = "ERROR";
 	public static final String ATTACHMENT_URL ="AttachmentUrl";
 	public static final String FILE_NAME = "FileName";
+	public static final String DATA_JOB_ID = "DataJobId";
 
 
 	// Appointment Request constants

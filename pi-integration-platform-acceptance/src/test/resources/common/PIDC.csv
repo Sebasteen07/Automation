@@ -1,7 +1,7 @@
 Race,Ethnicity,Gender,PreferredLanguage,PreferredCommunication,GenderIdentity,SexualOrientation,State
 American Indian or Alaska Native,Hispanic or Latino,UNDIFFERENTIATED,Arabic,US Mail,MALE,STRAIGHT_OR_HETEROSEXUAL,NY
 Asian,Not Hispanic or Latino,UNKNOWN,Chinese,Secure Email,FEMALE,LESBIAN_GAY_OR_HOMOSEXUAL,NC
-Black or African American,Unreported,FEMALE,English,Home Phone,MALE_TO_FEMALE_TRANSGENDER_FEMALE_TRANS_WOMAN,BISEXUAL,WYO
+Black or African American,Hispanic or Latino,FEMALE,English,Home Phone,MALE_TO_FEMALE_TRANSGENDER_FEMALE_TRANS_WOMAN,BISEXUAL,WYO
 More than one race,Hispanic or Latino,MALE,French,US Mail,FEMALE_TO_MALE_TRANSGENDER_MALE_TRANS_MAN,OTH, 
 Native Hawaiian or Other Pacific Islander,Not Hispanic or Latino,FEMALE,German,Secure Email,GENDERQUEER_NEITHER_EXCLUSIVELY_MALE_NOR_FEMALE,UNK,NM
 Declined to Answer,Unreported,MALE,Hindi,US Mail,OTH,ASKU,PA

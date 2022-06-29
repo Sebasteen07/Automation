@@ -64,7 +64,6 @@ public class AppointmentDataUtils {
 		Log4jUtil.log("Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
-		// String[] timeArray = null;
 		Log4jUtil.log(" Fetch Dashboard Next Time slot");
 		if (!testData.Status.equalsIgnoreCase("CANCEL")) {
 			Log4jUtil.log("Next Time slot is from Dashboard: " + homePage.getNextScheduledApptDate());
@@ -153,8 +152,8 @@ public class AppointmentDataUtils {
 
 	public void csvFileReader(AppointmentData testData, String csvFilePath) throws IOException {
 
-		String[][] appointmentDataValue = new String[500][500];
-		int[] maxValue = new int[500];
+		String[][] appointmentDataValue = new String[10000][10000];
+		int[] maxValue = new int[10000];
 		BufferedReader bufRdr = new BufferedReader(new FileReader(csvFilePath));
 		String line1 = null;
 		int row = 0;
@@ -177,12 +176,10 @@ public class AppointmentDataUtils {
 		Arrays.sort(maxValue);
 		int maxLength = (maxValue[maxValue.length - 1] - 1);
 		int counter = 0;
-		String[][] setValues = new String[500][500];
+		String[][] setValues = new String[10000][10000];
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j <= maxLength; j++) {
 				setValues[i][j] = appointmentDataValue[i][counter];
-				// System.out.println("i: "+i+" j: "+j+" appointmentDataValue :
-				// "+appointmentDataValue[i][counter]);
 				counter++;
 			}
 			testData.appointmentDetailList.add(new AppointmentDetail(setValues[i][0], setValues[i][1], setValues[i][2],
@@ -305,6 +302,64 @@ public class AppointmentDataUtils {
 		Log4jUtil.log("Logout");
 		homePage.clickOnLogout();
 	}
+
+	public void checkAppointmentV3Batch(AppointmentData testData, WebDriver driver) throws Exception {
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		AppointmentDataPayload apObj = new AppointmentDataPayload();
+		String appointmentDataPayload = apObj.getAppointmentDataV3PayloadBatch(testData);
+		Log4jUtil.log("appointmentDataPayload " + appointmentDataPayload);
+
+		Thread.sleep(10000);
+		Log4jUtil.log("Do Post message call");
+		Log4jUtil.log("Get Processing URL status");
+		Log4jUtil.log("RestURL : " + testData.AppointmentRequestV3URL);
+		Log4jUtil.log("ResponsePath : " + testData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.AppointmentRequestV3URL, appointmentDataPayload, testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUrl);
+
+		Boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(10000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (testData.BatchSize.equalsIgnoreCase("1")) {
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			} else if (Integer.parseInt(testData.BatchSize) >= 2) {
+				if (RestUtils.isResponseContainsErrorNodeBatch(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+		}
+		assertTrue(completed, "Message processing was not completed in time");
+
+		Log4jUtil.log("Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		Log4jUtil.log("Fetch Dashboard Next Time slot");
+		if (!testData.Status.equalsIgnoreCase("CANCEL")) {
+			Log4jUtil.log("Next Time slot is from Dashboard: " + homePage.getNextScheduledApptDate());
+		}
+
+		Log4jUtil.log("Goto Appointments Page");
+		homePage.goToAppointmentsPage(testData.URL);
+		JalapenoAppointmentsPage JAPage = new JalapenoAppointmentsPage(driver);
+		Thread.sleep(8000);
+
+		Log4jUtil.log("Check Posted Future Appointment data");
+		Log4jUtil.log("appointmentType " + testData.appointmentType);
+		if (testData.appointmentType == "FUTURE") {
+			futureAppointment(JAPage, apObj, testData);
+			Thread.sleep(8000);
+		}
+
+		Log4jUtil.log("Logout");
+		homePage.clickOnLogout();
+	}
+
 	public void checkAppointmentV4(AppointmentData testData, WebDriver driver) throws Exception {
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
 		AppointmentDataPayload apObj = new AppointmentDataPayload();
@@ -331,7 +386,7 @@ public class AppointmentDataUtils {
 				break;
 				}
 			}
-			else if(testData.BatchSize.equalsIgnoreCase("2")) {
+			else if (testData.BatchSize.equalsIgnoreCase("2")) {
 				if (RestUtils.isResponseContainsErrorNode(testData.ResponsePath)) {
 					completed = true;
 					break;
@@ -364,4 +419,117 @@ public class AppointmentDataUtils {
 		homePage.clickOnLogout();
 	}
 
+	public void checkAppointmentV4Batch(AppointmentData testData, WebDriver driver) throws Exception {
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		AppointmentDataPayload apObj = new AppointmentDataPayload();
+		String appointmentDataPayload = apObj.getAppointmentDataV4PayloadBatch(testData);
+		Log4jUtil.log("appointmentDataPayload " + appointmentDataPayload);
+
+		Thread.sleep(10000);
+		Log4jUtil.log("Do Post message call");
+		Log4jUtil.log("Get Processing URL status");
+		Log4jUtil.log("RestURL : " + testData.AppointmentRequestV4URL);
+		Log4jUtil.log("ResponsePath : " + testData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.AppointmentRequestV4URL, appointmentDataPayload, testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUrl);
+
+		Boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(10000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (testData.BatchSize.equalsIgnoreCase("1")) {
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			} else if (Integer.parseInt(testData.BatchSize) >= 2) {
+				if (RestUtils.isResponseContainsErrorNodeBatch(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+		}
+		assertTrue(completed, "Message processing was not completed in time");
+
+		Log4jUtil.log("Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		Log4jUtil.log("Fetch Dashboard Next Time slot");
+		if (!testData.Status.equalsIgnoreCase("CANCEL")) {
+			Log4jUtil.log("Next Time slot is from Dashboard: " + homePage.getNextScheduledApptDate());
+		}
+
+		Log4jUtil.log("Goto Appointments Page");
+		homePage.goToAppointmentsPage(testData.URL);
+		JalapenoAppointmentsPage JAPage = new JalapenoAppointmentsPage(driver);
+		Thread.sleep(8000);
+
+		Log4jUtil.log("Check Posted Future Appointment data");
+		Log4jUtil.log("appointmentType " + testData.appointmentType);
+		if (testData.appointmentType == "FUTURE") {
+			futureAppointment(JAPage, apObj, testData);
+			Thread.sleep(8000);
+		}
+
+		Log4jUtil.log("Logout");
+		homePage.clickOnLogout();
+	}
+
+
+
+	public void checkAppointmentBatch(AppointmentData testData, WebDriver driver) throws Exception {
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		AppointmentDataPayload apObj = new AppointmentDataPayload();
+		String appointmentDataPayload = apObj.getAppointmentDataPayloadBatch(testData);
+		Log4jUtil.log("appointmentDataPayload " + appointmentDataPayload);
+
+		Thread.sleep(10000);
+
+		Log4jUtil.log("Get Processing URL status");
+		Log4jUtil.log("RestURL : " + testData.AppointmentPath);
+		Log4jUtil.log("ResponsePath : " + testData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.AppointmentPath, appointmentDataPayload, testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUrl);
+
+		Boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(10000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (testData.BatchSize.equalsIgnoreCase("1")) {
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			} else if (Integer.parseInt(testData.BatchSize) >= 2) {
+				if (RestUtils.isResponseContainsErrorNodeBatch(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+		}
+		assertTrue(completed, "Message processing was not completed in time");
+		Log4jUtil.log("Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		// String[] timeArray = null;
+		Log4jUtil.log(" Fetch Dashboard Next Time slot");
+		if (!testData.Status.equalsIgnoreCase("CANCEL")) {
+			Log4jUtil.log("Next Time slot is from Dashboard: " + homePage.getNextScheduledApptDate());
+
+		}
+		Log4jUtil.log(" Goto Appointments Page");
+		homePage.goToAppointmentsPage(testData.URL);
+		JalapenoAppointmentsPage JAPage = new JalapenoAppointmentsPage(driver);
+		Thread.sleep(8000);
+
+		Log4jUtil.log("appointmentType " + testData.appointmentType);
+		if (testData.appointmentType == "FUTURE") {
+			futureAppointment(JAPage, apObj, testData);
+			Thread.sleep(8000);
+		}
+
+		homePage.clickOnLogout();
+	}
 }

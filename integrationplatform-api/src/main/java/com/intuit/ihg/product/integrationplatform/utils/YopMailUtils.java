@@ -1,4 +1,4 @@
-//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.util.List;
@@ -60,7 +60,14 @@ public class YopMailUtils extends MedfusionPage{
 		this.driver.get(YOPMAIL_URL);
 		mailIdTextBox.clear();
 		mailIdTextBox.sendKeys(username);
-		this.clickOnElement(goToMailbox);
+		try {
+		if (goToMailbox.isDisplayed()) {
+			log("Mailbox search button is present in the Yopmail UI.");
+			goToMailbox.click();
+		}
+		}catch (Exception e) {
+			log(e.getMessage());
+		}		
 
 		try {
 			if (recaptchaPopup.isDisplayed()) {
@@ -75,7 +82,7 @@ public class YopMailUtils extends MedfusionPage{
 			try {
 				this.driver.switchTo().frame(iframeInbox);
 				if (this.isTextVisible(emailSubject)) {
-					this.clickOnElement(firstRowSubject);
+					firstRowSubject.click();
 					this.driver.switchTo().defaultContent();
 					this.driver.switchTo().frame(iframe);
 
@@ -114,7 +121,7 @@ public class YopMailUtils extends MedfusionPage{
 		for (int j = 1; j <= retries; j++) {
 			this.driver.get(YOPMAIL_URL);
 			mailIdTextBox.sendKeys(username);
-			this.clickOnElement(goToMailbox);
+			goToMailbox.click();
 
 			try {
 				if (recaptchaPopup.isDisplayed()) {
@@ -128,7 +135,7 @@ public class YopMailUtils extends MedfusionPage{
 			try {
 				this.driver.switchTo().frame(iframeInbox);
 				if (this.isTextVisible(emailSubject)) {
-					this.clickOnElement(firstRowSubject);
+					firstRowSubject.click();
 					this.driver.switchTo().defaultContent();
 					this.driver.switchTo().frame(iframe);
 
@@ -171,7 +178,7 @@ public class YopMailUtils extends MedfusionPage{
 		log("catchNewMessage()- with ", username);
 		this.driver.get(YOPMAIL_URL);
 		mailIdTextBox.sendKeys(username);
-		this.clickOnElement(goToMailbox);
+		goToMailbox.click();
 
 		try {
 			if (recaptchaPopup.isDisplayed()) {
@@ -184,9 +191,10 @@ public class YopMailUtils extends MedfusionPage{
 
 		try {
 			this.driver.switchTo().frame(iframeInbox);
+			int initialMailCount = inboxRows.size();
 
 			if (this.isTextVisible(emailSubject)) {
-				this.clickOnElement(firstRowSubject);
+				firstRowSubject.click();
 				this.driver.switchTo().defaultContent();
 				this.driver.switchTo().frame(iframe);
 

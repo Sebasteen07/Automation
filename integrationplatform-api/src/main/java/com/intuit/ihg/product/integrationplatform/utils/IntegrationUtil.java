@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.intuit.ifs.csscat.core.wait.WaitForWEIsDisplayedEnabled;
 import com.medfusion.common.utils.IHGUtil;
 
 public class IntegrationUtil extends IHGUtil {
@@ -70,6 +74,16 @@ public class IntegrationUtil extends IHGUtil {
 		}
 	}
 
-
+	 public static boolean waitForElement(WebDriver driver, int n, WebElement ele) {
+	        IHGUtil.PrintMethodName();
+	        WebDriverWait wait = new WebDriverWait(driver, n);
+	        boolean found = false;
+	        try {
+	            found = wait.until(ExpectedConditions.elementToBeClickable(ele)) != null;
+	        } catch (Exception e) {
+	        	Log4jUtil.log("exception found - "+ e);
+	        }
+	        return found;
+	    }
 
 }
