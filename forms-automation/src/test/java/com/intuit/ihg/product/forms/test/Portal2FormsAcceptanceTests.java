@@ -106,8 +106,6 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 	 * questions Save the form Publish it Test viewing the form on Patient Portal
 	 * Prerequisite for the test case to run Practice configured Practices
 	 * configured on: DEV3, DEMO, PROD
-	 *
-	 * @throws Exception
 	 */
 	@Test(groups = { "Forms" })
 	public void testDiscreteFormDeleteCreatePublishPI() throws Exception {

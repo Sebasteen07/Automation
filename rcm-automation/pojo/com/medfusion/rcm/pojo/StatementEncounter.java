@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.rcm.pojo;
 
 import java.io.IOException;
@@ -22,7 +23,6 @@ public class StatementEncounter {
     /**
      * This only reads a static  JSON file from test resources, see path.
      * It's completely sufficient for most operations as the pdf validation is not automated (and encounters are just in details)
-     * @throws IOException
      */
     public String retrieveGenericJSONEncounterFromFile() throws IOException{        
         Scanner scan = new Scanner( ClassLoader.getSystemResource("testfiles/sampleEncounterJSON.txt").openStream());

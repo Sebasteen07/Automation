@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.custom_pages;
 
 import org.openqa.selenium.WebDriver;
@@ -19,7 +20,7 @@ public class SpecialCharFormFirstPage extends PortalCustomFormPage {
 	}
 
 	/**
-	 * @throws InterruptedException
+	 * @throws InterruptedException if interrupted exception occurs
 	 * @brief Selects checkboxes in the form that contain quotations marks - "
 	 */
 	public void selectQuotatedAnswers() throws InterruptedException {

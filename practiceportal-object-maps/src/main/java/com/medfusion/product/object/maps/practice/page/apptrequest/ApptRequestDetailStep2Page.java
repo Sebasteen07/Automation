@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.apptrequest;
 
 import org.openqa.selenium.WebDriver;
@@ -44,7 +45,6 @@ public class ApptRequestDetailStep2Page extends BasePageObject {
 	 * Will process the appt request and redirect to the Appt Request search page
 	 * 
 	 * @return the appt request search page
-	 * @throws InterruptedException
 	 */
 	public ApptRequestSearchPage processApptRequest() throws InterruptedException {
 		Thread.sleep(10000);
