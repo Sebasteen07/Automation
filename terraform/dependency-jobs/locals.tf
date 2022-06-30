@@ -316,4 +316,64 @@ locals {
     queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
     maven_parameter      = "mvn clean install"
   }
+
+  practiceportal_api = {
+    name                 = "${local.jobname-prefix}practiceportal-api"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "practiceportal-api"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  practiceportal_automation = {
+    name                 = "${local.jobname-prefix}practiceportal-automation"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "practiceportal-automation"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  practiceportal_object_maps = {
+    name                 = "${local.jobname-prefix}practiceportal-object-maps"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "practiceportal-object-maps"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  practiceportal_service = {
+    name                 = "${local.jobname-prefix}practiceportal-service"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "practiceportal-service"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  sitegen_automation = {
+    name                 = "${local.jobname-prefix}sitegen-automation"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "sitegen-automation"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
 }
