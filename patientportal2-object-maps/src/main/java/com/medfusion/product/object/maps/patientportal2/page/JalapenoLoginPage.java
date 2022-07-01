@@ -51,7 +51,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='featureCard messaging']//a[contains(.,'Messages')]")
+	@FindBy(how = How.XPATH, using = "(//li/a[.='My Account'])[1] | (//li/a[contains(.,'Account')])[1]")
 	private WebElement loginProof;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='same']")
@@ -81,6 +81,8 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "credential")
 	private WebElement wrongPwdAccounLockout;
 	
+	@FindBy(how = How.XPATH, using = "	//button[.='No Thanks']")
+	private WebElement feedbackNoThanksButton;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -107,12 +109,20 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	public JalapenoHomePage login(String username, String password) {
 		makeLogin(username, password);
-		IHGUtil.waitForElement(driver, 120, loginProof);
+		if(waitForElement(driver, 60, loginProof)) {
 		log("User is logged in");
+		}
 		handleWeNeedToConfirmSomethingModal();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 	
+	public void selectFeedbackNoThanksButton() {
+		if (new IHGUtil(driver).exists(feedbackNoThanksButton)) {
+			log("FeedbackNoThanksButton is displayed");
+			feedbackNoThanksButton.click();
+		}
+	}
+
 	public JalapenoHomePage loginWithPreference(String username, String password) throws InterruptedException {
 		makeLogin(username, password);
 		log("User is logged in");
@@ -264,5 +274,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 		return wrongPwdAccounLockout.isDisplayed();
 
 	}
+	
+	
 
 }

@@ -48,7 +48,7 @@ module "payreporting_automation_codebuild" {
 
   vpc_config = [{
     vpc_id             = data.aws_vpc.main.id
-    subnets            = data.aws_subnet_ids.private.ids
+    subnets            = data.aws_subnets.private.ids
     security_group_ids = [data.aws_security_group.codebuild_sg.id]
   }]
 

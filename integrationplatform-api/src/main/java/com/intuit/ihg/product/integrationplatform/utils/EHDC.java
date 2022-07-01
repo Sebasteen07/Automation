@@ -37,6 +37,7 @@ public class EHDC {
 	public String PracticePatientId = "";
 	public String EPracticeName = "";
 	public String ccdXMLPathLargeSize="";
+	public String DCF_ADMINTOOL_URL = "";
 	public String RestUrlV3 = "";
 
 	

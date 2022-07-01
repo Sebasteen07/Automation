@@ -17,7 +17,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +62,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.ibm.icu.text.DateFormatSymbols;
 import com.intuit.api.security.client.IOAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
@@ -569,6 +569,18 @@ public class RestUtils {
 					"Processing Status is failed for No '" + i + "' message");
 		}
 		return true;
+	}
+
+	public static String getDataJobID(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(xmlFileName);
+
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.DATA_JOB_ID);
+		String s = "";
+		for (int i = 0; i < nodes.getLength(); i++) {
+			s = nodes.item(i).getTextContent().toString();
+		}
+		Log4jUtil.log("Datajob id is  " + s);
+		return s;
 	}
 
 	/**
@@ -1345,6 +1357,66 @@ public class RestUtils {
 
 	}
 
+	public static String setupHttpPostRequestWithOauthToken(String strUrl, String payload, String responseFilePath, String token) throws IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("Post Request Url: " + strUrl);
+
+		HttpPost request = new HttpPost();
+		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		request.setURI(new URI(strUrl));
+		request.setEntity(new StringEntity(payload));
+		request.setHeader("Connection", "keep-alive");
+		request.setHeader("Accept-Encoding", "gzip, deflate, br");
+		request.addHeader("Content-Type", "application/xml");
+		request.setHeader("Authorization", "Bearer " + token);
+		Log4jUtil.log("Post Request Url4: ");
+		HttpResponse response = client.execute(request);
+		String sResp = EntityUtils.toString(response.getEntity());
+		Log4jUtil.log("Check for http 200/202 response");
+		assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
+				"Get Request response is " + response.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
+		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
+		writeFile(responseFilePath, sResp);
+
+		if (response.containsHeader(IntegrationConstants.LOCATION_HEADER)) {
+			Header[] h = response.getHeaders(IntegrationConstants.LOCATION_HEADER);
+			return h[0].getValue();
+		}
+		return null;
+
+	}
+
+
+	public static void setupHttpPostRequestForOauth(String strUrl, String payload, String responseFilePath, String token)
+			throws IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("Post Request Url: " + strUrl);
+
+		HttpPost request = new HttpPost();
+		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		request.setURI(new URI(strUrl));
+		request.setEntity(new StringEntity(payload));		
+		request.addHeader("Authorization", "Basic " + token);
+		request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+		request.setHeader("Accept", "application/json");
+
+		Log4jUtil.log("Post Request Url4: ");
+		HttpResponse response = client.execute(request);
+		String sResp = EntityUtils.toString(response.getEntity());
+		Log4jUtil.log("Check for http 200/202 response");
+		assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
+				"Get Request response is " + response.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
+		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
+		Log4jUtil.log(sResp);
+		writeFile(responseFilePath, sResp);
+
+
+
+	}
 	/**
 	 * 
 	 * @param responsePath
@@ -1915,6 +1987,36 @@ public class RestUtils {
 		assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
 				"Get Request response is " + resp.getStatusLine().getStatusCode()
 						+ " instead of 200. Response message received:\n" + sResp);
+		writeFile(responseFilePath, sResp);
+		if (resp.containsHeader("Next-URI")) {
+			Header[] h = resp.getHeaders("Next-URI");
+			headerUrl = h[0].getValue();
+		}
+	}
+
+	public static void setupHttpGetRequestOauthToken(String strUrl, String responseFilePath, String token) throws IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("GET call with Token.");
+		Log4jUtil.log("GET Request Url: " + strUrl);
+
+		HttpGet httpGetReq = new HttpGet(strUrl);
+		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		httpGetReq.setURI(new URI(strUrl));
+		httpGetReq.addHeader("Authorization", "Bearer " + token);
+		httpGetReq.addHeader("Content-Type", "application/xml");
+		HttpResponse resp = client.execute(httpGetReq);
+		HttpEntity entity = resp.getEntity();
+		String sResp = "";
+		if (entity != null) {
+			sResp = EntityUtils.toString(entity);
+			Log4jUtil.log("Check for http 200 response");
+		} else {
+			Log4jUtil.log("Check for http 204 response");
+		}
+
+		assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
+				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
 		writeFile(responseFilePath, sResp);
 		if (resp.containsHeader("Next-URI")) {
 			Header[] h = resp.getHeaders("Next-URI");
@@ -3194,8 +3296,18 @@ public class RestUtils {
 
 		final CompareResult result = new PdfComparator(file1, file2).compare();
 		if (result.isNotEqual()) {
-			Log4jUtil.log("Differences found in PDFs!");
-			assertTrue(false);
+			Log4jUtil.log("Differences found in PDFs! Trying comparison with Encoding:");
+
+			String pdfFromPortal = ExternalFileReader.base64Encoder(file1, false);
+			String pdfFromGet = ExternalFileReader.base64Encoder(file2, false);
+			Log4jUtil.log("pdfFromPortal----------------");
+			Log4jUtil.log(pdfFromPortal);
+			Log4jUtil.log("pdfFromGet----------------");
+			Log4jUtil.log(pdfFromGet);
+			Log4jUtil.log("----------------------------");
+			Boolean pdfMatch = matchBase64String(pdfFromPortal, pdfFromGet);
+			Log4jUtil.log("Is Pdf Matched : " + pdfMatch);
+			assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
 		}
 		if (result.isEqual()) {
 			Log4jUtil.log("PDFs matched..!");
@@ -4187,6 +4299,29 @@ public class RestUtils {
 		
 		assertTrue(nodes.item(nodes.getLength()-1).getTextContent().equals(IntegrationConstants.STATE_ERRORED),"Response Contains Node with Error State for invalid data");
 		Log4jUtil.log("Error Node Contains : "+doc.getElementsByTagName("Description").item(0).getTextContent() +" with severity "+doc.getElementsByTagName("Severity").item(0).getTextContent());
+		return true;
+	}
+
+	public static boolean isResponseContainsErrorNodeBatch(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(xmlFileName);
+
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
+		NodeList errorNode = doc.getElementsByTagName("Error");
+
+		for (int i = 0; i < nodes.getLength() - 1; i++) {
+			if (!nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED)) {
+				Log4jUtil.log("Error while processing response: " + errorNode.item(0).getTextContent());
+				assertTrue(errorNode.item(0).getTextContent().contains("APPNT_CORE_SRV_014Bad RequestFATAL"),
+						" Processing Status is failed for No '" + i + "' message");
+				return true;
+			}
+			assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED), "Processing Status is failed for No '" + i + "' message");
+		}
+
+		assertTrue(nodes.item(nodes.getLength() - 1).getTextContent().equals(IntegrationConstants.STATE_ERRORED),
+				"Response Contains Node with Error State for invalid data");
+		Log4jUtil.log("Error Node Contains : " + doc.getElementsByTagName("Description").item(0).getTextContent() + " with severity "
+				+ doc.getElementsByTagName("Severity").item(0).getTextContent());
 		return true;
 	}
 

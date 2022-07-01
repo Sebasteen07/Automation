@@ -49,6 +49,10 @@ public abstract class MedfusionPage extends BasePageObject {
 		@FindBy(how = How.XPATH, using = "//input[@name='statementDelivery']")
 		private WebElement statementPreferenceRadioButton;
 
+		@FindBy(how = How.XPATH, using = "	//button[.='No Thanks']")
+		private WebElement feedbackNoThanksButton;
+
+
 		public MedfusionPage(WebDriver driver) {
 				this(driver, null);
 		}
@@ -94,9 +98,9 @@ public abstract class MedfusionPage extends BasePageObject {
 		}
 		//handles modal dialogs in Portal (accepting NPP, statement preference selection)
 		public void handleWeNeedToConfirmSomethingModal(){
-			
-			 log("Trying to handle survey pop up by adding cookie");
-             String name = "QSI_SI_0CUNpSFNBlJ5QGN_intercept";               
+			 log("Trying to handle Qualtrics Survey pop up by adding cookie");
+             String name = "QSI_SI_7VTzDLMineEmg4e_intercept";               
+
              String value = "true";
              Cookie ck = new Cookie(name,value);           
              driver.manage().addCookie(ck);
@@ -123,7 +127,13 @@ public abstract class MedfusionPage extends BasePageObject {
 				}
 			}
 
-
+		public void selectFeedbackNoThanksButton() {
+				if (new IHGUtil(driver).exists(feedbackNoThanksButton)) {
+				feedbackNoThanksButton.click();
+				log("FeedbackNoThanksButton is closed");
+				}
+			}
+		
 		public String elementToString(WebElement element) {
 				return "Element (id: " + element.getAttribute("id") + ", tag: " + element.getTagName() + ")";
 		}
@@ -183,9 +193,11 @@ public abstract class MedfusionPage extends BasePageObject {
 		 * @throws InterruptedException 
 		 */
 		public void clickOnElement(WebElement element) {
+			 IHGUtil.PrintMethodName();
+			 selectFeedbackNoThanksButton();
 				if (element != null) {
-						log("Click on: " + elementToString(element));
 						javascriptClick(element);
+						log("Clicked on: " + elementToString(element));
 				} else {
 						throw new UnsupportedOperationException("Error when clicking element - element is null. " + elementToString(element));
 				}
@@ -308,4 +320,16 @@ public abstract class MedfusionPage extends BasePageObject {
 				return new StringSelection("<!DOCTYPE html>" + ccdViewerHtmlTag.getAttribute("outerHTML"));
 		}
 
+		 public boolean waitForElement(WebDriver driver, int n, WebElement ele) {
+		        IHGUtil.PrintMethodName();
+		        selectFeedbackNoThanksButton();
+		        WebDriverWait wait = new WebDriverWait(driver, n);
+		        boolean found = false;
+		        try {
+		            found = wait.until(ExpectedConditions.visibilityOf(ele)) != null;
+		        } catch (Exception e) {
+		            log("Exception found: " + e);
+		        }
+		        return found;
+		    }
 }

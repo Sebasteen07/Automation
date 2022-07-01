@@ -37,6 +37,12 @@ public class SelectMedicationsPage  extends BasePageObject {
 	@FindBy(how=How.XPATH,using="//*[contains(text(),'Continue')]")
 	private WebElement btnContinue;
 	
+	@FindBy(how=How.XPATH,using="//div/div/div[.='Choose a medication']/../div[2]/input")
+	private WebElement chooseMedicationTextField;
+	
+	@FindBy(how=How.XPATH,using="//span[.='D-Biotin 2.5 mg Tab']")
+	private WebElement chooseFirstMedicationTextField;
+	
 	@FindBy(how=How.XPATH,using="//div[@class='form-buttons ng-scope']/button[@type='button']")
 	private WebElement btnBack;
 	
@@ -67,9 +73,22 @@ public class SelectMedicationsPage  extends BasePageObject {
 	}
 	
 	public void selectMedicationsFrmAvailable() throws IOException, InterruptedException {
-		IHGUtil.waitForElement(driver, 5, availablemedicationcheckbx);	
-		availablemedicationcheckbx.click();
-		btnContinue.click();
+		try{
+  			if(IHGUtil.waitForElement(driver, 5, availablemedicationcheckbx)) {	
+			availablemedicationcheckbx.click();
+			}
+			else {
+				log(chooseMedicationTextField+"   send");	
+				driver.switchTo().defaultContent();
+				chooseMedicationTextField.sendKeys("D-Biotin 2.5 mg Tab");
+				IHGUtil.waitForElement(driver, 5, chooseFirstMedicationTextField); 
+				chooseFirstMedicationTextField.click();
+			}
+			btnContinue.click();
+		}
+		catch (Exception e) {
+			log(e.toString());	
+		}	
 	}
 	
 	public void selectDependentMedications() throws IOException, InterruptedException {

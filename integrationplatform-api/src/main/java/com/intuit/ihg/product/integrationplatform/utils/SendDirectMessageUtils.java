@@ -5,7 +5,6 @@ import static org.testng.Assert.assertTrue;
 
 import org.openqa.selenium.WebDriver;
 
-
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 public class SendDirectMessageUtils {
@@ -16,14 +15,14 @@ public class SendDirectMessageUtils {
 	 	
 		postSecureMessage(driver, testData, typeOfAttachmentUsed);
 		
-		Log4jUtil.log("Step 7: Login to Secure Exchange Services");
+		Log4jUtil.log("Login to Secure Exchange Services");
 		SecureExchangeLoginPage SecureLoginPageObject = new SecureExchangeLoginPage(driver,testData.SecureDirectMessageURL);
 		SecureExchangeEmailPage SecureEmailPageObject = SecureLoginPageObject.SecureLogin(testData.SecureDirectMessageUsername, testData.SecureDirectMessagePassword);
 		
-		Log4jUtil.log("Step 8: Check if Secure Email is recieved");
+		Log4jUtil.log("Check if Secure Email is recieved");
 		SecureEmailPageObject.verifySecureEmail(testData.Subject,testData.AttachmentType,testData.FileName,testData.ToEmalID,testData.FromEmalID,testData.TOCName);	
 		
-		Log4jUtil.log("Step 9: Logout");	
+		Log4jUtil.log("Logout");
 		SecureEmailPageObject.SignOut();
 	 
 	}
