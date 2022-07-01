@@ -142,6 +142,9 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 		String pcpvalue = propertyData.getProperty("patient.id.careteam.pcpwith0Confg.pm05");
 		String fctvalue = propertyData.getProperty("patient.id.careteam.fct.pm.ng");
 		String careTeamId = propertyData.getProperty("patient.id.careteam.id.pm05");
+		
+		String locationName=propertyData.getProperty("ct.location.pm09.ng");
+		String apptTypeName=propertyData.getProperty("ct.appttype.pm09.ng");
 
 		int pcp = Integer.parseInt(pcpvalue);
 		int fct = Integer.parseInt(fctvalue);
@@ -208,13 +211,13 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 		logStep("Clicked on the Skip Insurance Button ");
 		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 
-		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("Verfiy Appointment Page and appointment =" + apptTypeName);
 		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
 
-		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+		Location location = appointment.selectTypeOfLocation(apptTypeName,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Provider provider = location.searchProvider(testData.getLocation());
+		log("Verfiy Location Page and location to be selected = " + locationName);
+		Provider provider = location.searchProvider(locationName);
 		log("address = " + location.getAddressValue());
 
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -227,7 +230,7 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 	
 		log("List of book from Patient UI- " + l2);
 		assertTrue(l2.containsAll(l1));
-	}
+	}	
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareTeam_BasicCareTeam_GW() throws Exception {
@@ -383,7 +386,7 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 		String fn = propertyData.getProperty("ct.fn.pm08.ge");
 		String ln = propertyData.getProperty("ct.ln.pm08.ge");
 		String dob = propertyData.getProperty("ct.dob.pm08.ge");
-		String gender = propertyData.getProperty("ct.gender.pm08.gw");
+		String gender = propertyData.getProperty("ct.gender.pm08.ge");
 		String careTeamMessage_Exp=propertyData.getProperty("careteam.ann.ng.pm08");
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
@@ -784,5 +787,223 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 		assertTrue(l2.contains(shareBookName));
 	}
 	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeam_SharePatient_NG() throws Exception {
+		
+		
+		log("PSS-19765: Verify if PCP+ Care Team Members are displayed when Force booking with the");
+		log("provider before showing the care team (days) is set to 0");
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+
+		String pcpvalue = propertyData.getProperty("patient.id.careteam.pcpwith0Confg.pm05");
+		String fctvalue = propertyData.getProperty("patient.id.careteam.fct.pm.ng");
+		String careTeamId = propertyData.getProperty("patient.id.careteam.id.pm05");
+		
+		String locationName=propertyData.getProperty("ct.location.pm09.ng");
+		String apptTypeName=propertyData.getProperty("ct.appttype.pm09.ng");
+		String bookid=propertyData.getProperty("ct.bookid.pm09.ng");
+
+		int pcp = Integer.parseInt(pcpvalue);
+		int fct = Integer.parseInt(fctvalue);
+
+		response = postAPIRequestAM.getBookById(practiceId, bookid);
+		apv.responseCodeValidation(response, 200);
+		assertEquals(apv.responseKeyValidationJson(response, "sharePatients"),"true");
+
+		adminPayload = payloadAM02.careTeamSettingPyaload(pcp, fct);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+		HashSet<String> l2 = new HashSet<String>();
+		response = postAPIRequestAM.getBookAssociatedToCareTeam(practiceId, careTeamId);
+		apv.responseCodeValidation(response, 200);
+
+		arr = new JSONArray(response.body().asString());
+		int len = arr.length();
+		log("Length is- " + len);
+
+		for (int i = 0; i < len; i++) {
+			String bookName = arr.getJSONObject(i).getString("displayName");
+			l2.add(bookName);
+			log("Book Added in list l2-" + bookName);
+		}
+		
+		log("List of book from admin- " + l2);
+		
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(response, 200);
+		
+		String fn = propertyData.getProperty("ct.fn.pm08.ng");
+		String ln = propertyData.getProperty("ct.ln.pm08.ng");
+		String dob = propertyData.getProperty("ct.dob.pm08.ng");
+		String gender = propertyData.getProperty("ct.gender.pm08.ng");
+		String careTeamMessage_Exp=propertyData.getProperty("careteam.ann.ng.pm08");
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn,ln,dob,"",gender,"","");
+
+		logStep("Click on the Start Button ");
+		homePage.btnStartSchedClick();
+		
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + apptTypeName);
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Location location = appointment.selectTypeOfLocation(apptTypeName,
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + locationName);
+		Provider provider = location.searchProvider(locationName);
+		log("address = " + location.getAddressValue());
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		
+		ArrayList<String>l1=provider.getBookList();
+		
+		String careTeamMessage_Actual=provider.getCareTeamAnn();
+		
+		assertEquals(careTeamMessage_Actual, careTeamMessage_Exp);
+	
+		log("List of book from Patient UI- " + l2);
+		assertTrue(l2.containsAll(l1));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeam_SharePatient_GW() throws Exception {
+		
+		
+		log("PSS-19765: Verify if PCP+ Care Team Members are displayed when Force booking with the");
+		log("provider before showing the care team (days) is set to 0");
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+
+		String pcpvalue = propertyData.getProperty("patient.id.careteam.pcp.pm.gw");
+		String fctvalue = propertyData.getProperty("patient.id.careteam.fct.pm.gw");
+		String careTeamId = propertyData.getProperty("patient.id.careteam.id.gw");
+		String bookid=propertyData.getProperty("ct.bookid.pm09.gw");
+
+		int pcp = Integer.parseInt(pcpvalue);
+		int fct = Integer.parseInt(fctvalue);
+		
+		response = postAPIRequestAM.getBookById(practiceId, bookid);
+		apv.responseCodeValidation(response, 200);
+		assertEquals(apv.responseKeyValidationJson(response, "sharePatients"),"true");
+
+		adminPayload = payloadAM02.careTeamSettingPyaloadGW(pcp, fct);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+		HashSet<String> l2 = new HashSet<String>();
+		response = postAPIRequestAM.getBookAssociatedToCareTeam(practiceId, careTeamId);
+		apv.responseCodeValidation(response, 200);
+
+		arr = new JSONArray(response.body().asString());
+		int len = arr.length();
+		log("Length is- " + len);
+
+		for (int i = 0; i < len; i++) {
+			String bookName = arr.getJSONObject(i).getString("displayName");
+			l2.add(bookName);
+			log("Book Added in list l2-" + bookName);
+		}
+		
+		log("List of book from admin- " + l2);
+		
+		logStep("Set up the desired rule in Admin UI using API");
+		addRule("T,L,B","L,T,B");
+		
+		String fn = propertyData.getProperty("ct.fn.pm08.gw");
+		String ln = propertyData.getProperty("ct.ln.pm08.gw");
+		String dob = propertyData.getProperty("ct.dob.pm08.gw");
+		String gender = propertyData.getProperty("ct.gender.pm08.gw");
+		String careTeamMessage_Exp=propertyData.getProperty("careteam.ann.ng.pm08");
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn,ln,dob,"",gender,"","");
+
+		logStep("Click on the Start Button ");
+		homePage.btnStartSchedClick();
+		
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("address = " + location.getAddressValue());
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		
+		ArrayList<String>l1=provider.getBookList();
+		
+		String careTeamMessage_Actual=provider.getCareTeamAnn();
+		
+		assertEquals(careTeamMessage_Actual, careTeamMessage_Exp);
+	
+		log("List of book from Patient UI- " + l1);
+		
+	}
 
 }
