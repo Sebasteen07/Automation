@@ -10725,4 +10725,58 @@ public class ApptPrecheckSteps extends BaseTest {
 		Thread.sleep(3000);
 	}
 
+	@When("I schedule appointment")
+	public void i_schedule_appointment() throws NullPointerException, IOException, InterruptedException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),	
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		Thread.sleep(50000);
+	}
+	@When("I delete the scheduled appointment from the appointment dashboard")
+	public void i_delete_the_scheduled_appointment_from_the_appointment_dashboard() throws InterruptedException {
+	   mainPage.clickOnAppointmentsTab();
+	   apptPage.selectPatientIdAppt(Appointment.patientId);
+	   apptPage.selectFirstPatient();
+	   apptPage.clickOnActions();
+	   apptPage.clickOnRemoveButton();
+	   apptPage.clickOnRemoveOptionFromRemoveButton();
+	   
+	}
+	@Then("I verify through mail,text that the appointment for curbside arrival grid should show arrival message")
+	public void i_verify_through_mail_text_that_the_appointment_for_curbside_arrival_grid_should_show_arrival_message() throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		yopMail.getMessageForCurbsideArrivalAfterApptDeleted(
+				"jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("curbside.checkin.mail.title"),
+				propertyData.getProperty("error.message"));
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	@Then("I verify through mail,text that the appointment should not get confirmed should show error message")
+	public void i_verify_through_mail_text_that_the_appointment_should_not_get_confirmed_should_show_error_message() throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		yopMail.getMessageForConfirmAppointmentAfterApptDeleted(
+				"jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),
+				propertyData.getProperty("appt.reminder.title"),
+				propertyData.getProperty("error.message"));
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+
 }
