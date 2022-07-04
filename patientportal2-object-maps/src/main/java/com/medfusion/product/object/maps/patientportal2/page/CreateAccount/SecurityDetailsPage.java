@@ -126,6 +126,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 				buttonFinishStep.click();
 				selectStatementIfRequired(statementPreference);
 				handleWeNeedToConfirmSomethingModal();
+				selectFeedbackNoThanksButton();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
 		

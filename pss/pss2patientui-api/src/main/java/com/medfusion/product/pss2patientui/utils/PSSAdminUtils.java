@@ -1738,6 +1738,22 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		pssPracticeConfig.logout();
 	}
 	
+	public void adminSettingsLocationSearchByZipcode(WebDriver driver, AdminUser adminUser, Appointment appointment, 
+			String location, String zipCode) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		adminAppointment.toggleSearchLocationClick();
+		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageLocation manageLocation = pssPracticeConfig.gotoLocation();
+		pageRefresh(driver);
+		manageLocation.selectlocation(location);
+		manageLocation.changeAddressZipCode(zipCode);
+		manageLocation.logout();
+	}
 	public void appointmentDuration(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName,String appointmentDurationValue) throws Exception {
 
 		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
@@ -1755,6 +1771,5 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			log("AppointmentDuration Already On");
 		}
 		patientFlow.logout();
-		
 	}
 }

@@ -228,6 +228,18 @@ public class PropertyFileLoader {
 		return property.getProperty("readcommunicationurlv3.amdc");
 	}
 
+	public String getTokenUrl() {
+		return property.getProperty("token.url");
+	}
+
+	public String getTokenClient() {
+		return property.getProperty("token.client");
+	}
+
+	public String getBatchUsername1() {
+		return property.getProperty("patient.externalid1");
+	}
+
 	// MU2 EVENTS
 	public String getPULLAPI_URL_MU2() {
 		return property.getProperty("pullapi.url.mu2");
@@ -1225,7 +1237,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getpatientFirstName_FE() {
-		return property.getProperty("precheckpatientfirstname.fe");
+		return property.getProperty("patientfirstname.fe");
 	}
 
 	public String getpatientLastName_FE() {
@@ -2027,4 +2039,7 @@ public class PropertyFileLoader {
 		return property.getProperty("patient.externalid.attachment");
 	}
 
+	public String getDcfAdminToolUrl() {
+		return property.getProperty("dcf.admintool.url");
+	}
 }

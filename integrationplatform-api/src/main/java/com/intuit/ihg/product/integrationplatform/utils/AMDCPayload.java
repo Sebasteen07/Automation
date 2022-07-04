@@ -18,6 +18,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+
 public class AMDCPayload {
 	static String output;
 	public static String messageID;
@@ -171,9 +173,9 @@ public class AMDCPayload {
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
 		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+			Log4jUtil.log(pce.toString());
 		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
+			Log4jUtil.log(tfe.toString());
 		}
 		return output;
 	}
@@ -256,10 +258,10 @@ public class AMDCPayload {
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		}  catch (ParserConfigurationException pce) {
+			Log4jUtil.log(pce.toString());
 		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
+			Log4jUtil.log(tfe.toString());
 		}
 		return output;
 	}
@@ -340,13 +342,208 @@ public class AMDCPayload {
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		}  catch (ParserConfigurationException pce) {
+			Log4jUtil.log(pce.toString());
 		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
+			Log4jUtil.log(tfe.toString());
 		}
 		return output;
 	}
 
 	
+	public static String getAMDCPayloadBatch(AMDC testData, int valid, int invalid) throws InterruptedException, IOException {
+		try {
+			DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder icBuilder;
+			icBuilder = icFactory.newDocumentBuilder();
+			Document doc = icBuilder.newDocument();
+			String schema = "http://schema.intuit.com/health/admin/v1";
+			Thread.sleep(500);
+
+			Element mainRootElement = doc.createElementNS(schema, "p:AdministrativeMessages");
+			mainRootElement.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation", schema + " AdministrativeMessages.xsd");
+			doc.appendChild(mainRootElement);
+
+			Element Sender = doc.createElement("Sender");
+			Sender.setAttribute("deviceLocalTime", "2001-12-31T12:00:00");
+			Sender.setAttribute("deviceName", "");
+			Sender.setAttribute("deviceUTCTime", "2001-12-31T12:00:00");
+			Sender.setAttribute("deviceVersion", "");
+			Sender.setAttribute("vendorName", "");
+
+			Node DeviceArguments = doc.createElement("DeviceArguments");
+			Sender.appendChild(DeviceArguments);
+			Node KeyValuePair = doc.createElement("KeyValuePair");
+			DeviceArguments.appendChild(KeyValuePair);
+
+			Node Key = doc.createElement("Key");
+			Key.appendChild(doc.createTextNode("Key"));
+			KeyValuePair.appendChild(Key);
+			Node Value = doc.createElement("Value");
+			Value.appendChild(doc.createTextNode("Value"));
+			KeyValuePair.appendChild(Value);
+
+			mainRootElement.appendChild(Sender);
+			// End Sender Node
+
+			// Start Creating Partner Node
+			Element Partner = doc.createElement("Partner");
+			Partner.setAttribute("deviceLocalTime", "2001-12-31T12:00:00");
+			Partner.setAttribute("deviceName", "");
+			Partner.setAttribute("deviceUTCTime", "2001-12-31T12:00:00");
+			Partner.setAttribute("deviceVersion", "");
+			Partner.setAttribute("vendorName", "");
+
+			DeviceArguments = doc.createElement("DeviceArguments");
+			Partner.appendChild(DeviceArguments);
+			KeyValuePair = doc.createElement("KeyValuePair");
+			DeviceArguments.appendChild(KeyValuePair);
+
+			Key = doc.createElement("Key");
+			Key.appendChild(doc.createTextNode("Key"));
+			KeyValuePair.appendChild(Key);
+			Value = doc.createElement("Value");
+			Value.appendChild(doc.createTextNode("Value"));
+			KeyValuePair.appendChild(Value);
+
+			mainRootElement.appendChild(Partner);
+
+			// Create Destination Node
+			Element Destination = doc.createElement("Destination");
+			Destination.setAttribute("deviceLocalTime", "2001-12-31T12:00:00");
+			Destination.setAttribute("deviceName", "");
+			Destination.setAttribute("deviceUTCTime", "2001-12-31T12:00:00");
+			Destination.setAttribute("deviceVersion", "");
+			Destination.setAttribute("vendorName", "");
+
+			DeviceArguments = doc.createElement("DeviceArguments");
+			Destination.appendChild(DeviceArguments);
+			KeyValuePair = doc.createElement("KeyValuePair");
+			DeviceArguments.appendChild(KeyValuePair);
+
+			Key = doc.createElement("Key");
+			Key.appendChild(doc.createTextNode("Key"));
+			KeyValuePair.appendChild(Key);
+			Value = doc.createElement("Value");
+			Value.appendChild(doc.createTextNode("Value"));
+			KeyValuePair.appendChild(Value);
+
+			mainRootElement.appendChild(Destination);
+			// End of Destinationn
+
+			for (int i = 0; i < valid / 2; i++) {
+
+				messageID = getUUID();
+			// SecureMessage
+			Element SecureMessage = doc.createElement("SecureMessage");
+			SecureMessage.setAttribute("messageId", messageID);
+			mainRootElement.appendChild(SecureMessage);
+
+			// From
+			Element From = doc.createElement("From");
+			From.appendChild(doc.createTextNode(testData.From));
+			SecureMessage.appendChild(From);
+			// To
+			Element To = doc.createElement("To");
+
+			To.appendChild(doc.createTextNode(testData.PatientExternalId));
+			SecureMessage.appendChild(To);
+			// Subject
+			long timestamp = System.currentTimeMillis();
+			messageIdentifier = "Test " + timestamp;
+			Element Subject = doc.createElement("Subject");
+			Subject.appendChild(doc.createTextNode(messageIdentifier));
+			SecureMessage.appendChild(Subject);
+
+			// AllowReply
+			Element AllowReply = doc.createElement("AllowReply");
+			AllowReply.appendChild(doc.createTextNode(testData.AllowReply));
+			SecureMessage.appendChild(AllowReply);
+			// Message
+			Element Message = doc.createElement("Message");
+			Message.appendChild(doc.createTextNode(testData.Message + "valid1+" + i));
+			SecureMessage.appendChild(Message);
+			}
+
+			for (int i = 0; i < valid / 2; i++) {
+				messageID = getUUID();
+				// SecureMessage
+				Element SecureMessage = doc.createElement("SecureMessage");
+				SecureMessage.setAttribute("messageId", messageID);
+				mainRootElement.appendChild(SecureMessage);
+
+				// From
+				Element From = doc.createElement("From");
+				From.appendChild(doc.createTextNode(testData.From));
+				SecureMessage.appendChild(From);
+				// To
+				Element To = doc.createElement("To");
+
+				To.appendChild(doc.createTextNode(testData.batchUsername1));
+				SecureMessage.appendChild(To);
+				// Subject
+				long timestamp = System.currentTimeMillis();
+				messageIdentifier = "Test " + timestamp;
+				Element Subject = doc.createElement("Subject");
+				Subject.appendChild(doc.createTextNode(messageIdentifier));
+				SecureMessage.appendChild(Subject);
+
+				// AllowReply
+				Element AllowReply = doc.createElement("AllowReply");
+				AllowReply.appendChild(doc.createTextNode(testData.AllowReply));
+				SecureMessage.appendChild(AllowReply);
+				// Message
+				Element Message = doc.createElement("Message");
+				Message.appendChild(doc.createTextNode(testData.Message + "valid2+" + i));
+				SecureMessage.appendChild(Message);
+			}
+
+			for (int i = 0; i < invalid; i++) {
+				messageID = getUUID();
+				// SecureMessage
+				Element SecureMessage = doc.createElement("SecureMessage");
+				SecureMessage.setAttribute("messageId", messageID);
+				mainRootElement.appendChild(SecureMessage);
+
+				// From
+				Element From = doc.createElement("From");
+				From.appendChild(doc.createTextNode(testData.From));
+				SecureMessage.appendChild(From);
+				// To
+				Element To = doc.createElement("To");
+
+				To.appendChild(doc.createTextNode("invalidPatientId"));
+				SecureMessage.appendChild(To);
+				// Subject
+				long timestamp = System.currentTimeMillis();
+				messageIdentifier = "Test " + timestamp;
+				Element Subject = doc.createElement("Subject");
+				Subject.appendChild(doc.createTextNode(messageIdentifier));
+				SecureMessage.appendChild(Subject);
+
+				// AllowReply
+				Element AllowReply = doc.createElement("AllowReply");
+				AllowReply.appendChild(doc.createTextNode(testData.AllowReply));
+				SecureMessage.appendChild(AllowReply);
+				// Message
+				Element Message = doc.createElement("Message");
+				Message.appendChild(doc.createTextNode(testData.Message + "invalid+" + i));
+				SecureMessage.appendChild(Message);
+			}
+
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			DOMSource source = new DOMSource(doc);
+
+			StringWriter writer = new StringWriter();
+			transformer.transform(source, new StreamResult(writer));
+			output = writer.toString();
+		}  catch (ParserConfigurationException pce) {
+			Log4jUtil.log(pce.toString());
+		} catch (TransformerException tfe) {
+			Log4jUtil.log(tfe.toString());
+		}
+		return output;
+	}
+
 }

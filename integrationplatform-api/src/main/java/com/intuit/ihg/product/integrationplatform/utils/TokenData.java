@@ -1,6 +1,6 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
-public class AMDC {
+public class TokenData {
 	
 	public String Url = "";
 	public String UserName = "";
@@ -42,6 +42,8 @@ public class AMDC {
 	public String allowOnce="";
 	public String downloadLocation="";
 	public String portalCategoryType = "";
-	public String batchUsername1 = "";
-	public String DCF_ADMINTOOL_URL = "";
+	public String tokenUrl = "";
+	public String tokenClient = "";
+
+
 }

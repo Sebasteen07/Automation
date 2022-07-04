@@ -24,5 +24,6 @@ public class Pharmacies {
 	public String ZipCode="";
 	public String PharmacyPhone="";
 	public String PharmacyFaxNumber="";
+	public String DCF_ADMINTOOL_URL = "";
 	
 }

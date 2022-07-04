@@ -232,4 +232,148 @@ locals {
     queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
     maven_parameter      = "mvn clean install"
   }
+
+  forms_automation = {
+    name                 = "${local.jobname-prefix}forms-automation"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "forms-automation"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  forms_object_maps = {
+    name                 = "${local.jobname-prefix}forms-object-maps"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "forms-object-maps"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  IHGWSDKTest = {
+    name                 = "${local.jobname-prefix}IHGWSDKTest"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "IHGWSDKTest"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  jalapeno_automation = {
+    name                 = "${local.jobname-prefix}jalapeno-automation"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "jalapeno-automation"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  patientportal2_api = {
+    name                 = "${local.jobname-prefix}patientportal2-api"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "patientportal2-api"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  patientportal2_object_maps = {
+    name                 = "${local.jobname-prefix}patientportal2-object-maps"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "patientportal2-object-maps"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  pi_integration_platform_acceptance = {
+    name                 = "${local.jobname-prefix}pi-integration-platform-acceptance"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "pi-integration-platform-acceptance"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  practiceportal_api = {
+    name                 = "${local.jobname-prefix}practiceportal-api"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "practiceportal-api"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  practiceportal_automation = {
+    name                 = "${local.jobname-prefix}practiceportal-automation"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "practiceportal-automation"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  practiceportal_object_maps = {
+    name                 = "${local.jobname-prefix}practiceportal-object-maps"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "practiceportal-object-maps"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  practiceportal_service = {
+    name                 = "${local.jobname-prefix}practiceportal-service"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "practiceportal-service"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  sitegen_automation = {
+    name                 = "${local.jobname-prefix}sitegen-automation"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Portal"
+    execution_folder     = "sitegen-automation"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
 }
