@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class ManageLocation extends PSS2MenuPage {
 
@@ -25,13 +26,28 @@ public class ManageLocation extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//tfoot/tr/td/mfbootstrappaginator/mfpaginator/ul[2]/li[3]/a")
 	private WebElement show50Location;
 
-
 	@FindBy(how = How.XPATH, using = "//select[@name='profile']")
 	private WebElement selectTimeZone;
 
 	@FindBy(how = How.XPATH, using = "//table/tbody/tr/td[1]/span/a")
 	private WebElement selectLocation;
-
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='ng-star-inserted']//*[name()='svg']")
+	private WebElement addressCheckbox;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='zipCode']")
+	private WebElement fillZipCodeValue;
+	
+	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
+	private WebElement saveBtn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/a")
+	private WebElement settingBtn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/ul")
+	private WebElement logoutBtn;
+	
+	CommonMethods commonMethods = new CommonMethods(driver);
 
 	public ManageLocation(WebDriver driver) {
 		super(driver);
@@ -68,5 +84,20 @@ public class ManageLocation extends PSS2MenuPage {
 		String gettimezonetrim = gettimezone.trim();
 		log("Current TimeZone on adminUI is " + gettimezonetrim);
 		return gettimezonetrim;
+	}
+	
+	public void changeAddressZipCode(String zipCode) {
+		addressCheckbox.click();
+		fillZipCodeValue.clear();
+		fillZipCodeValue.sendKeys(zipCode);
+		IHGUtil.waitForElement(driver, 60, saveBtn);
+		commonMethods.highlightElement(saveBtn);
+		javascriptClick(saveBtn);
+		log("ZipCode changed for selected location");
+	}
+	
+	public void logout() {
+		settingBtn.click();
+		logoutBtn.click();
 	}
 }

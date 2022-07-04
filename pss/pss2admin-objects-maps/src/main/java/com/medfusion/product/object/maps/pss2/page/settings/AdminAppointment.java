@@ -59,6 +59,12 @@ public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.ID, using = "searchlocation")
 	private WebElement searchLocation;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='searchlocation']")
+	private WebElement searchLocationStatus;
+	
+	@FindBy(how = How.XPATH, using = "//label[@for='searchlocation']/i")
+	private WebElement searchLocationToggle;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='appt']/form[1]/div[4]/div/div/label[1]/i")
 	private WebElement nextAvailable;
@@ -240,6 +246,22 @@ public class AdminAppointment extends SettingsTab {
 			searchLocation.click();
 		}
 		buttonSave.click();
+	}
+	
+	public boolean toggleLocationStatus() throws InterruptedException {
+		Thread.sleep(3000);
+		commonMethods.highlightElement(searchLocationStatus);
+		return searchLocationStatus.isSelected();
+	}
+	
+	public void toggleSearchLocationClick() throws InterruptedException {
+		log("is search location selected " + toggleLocationStatus());
+		if (toggleLocationStatus() == false) {
+			searchLocationToggle.click();
+			commonMethods.highlightElement(buttonSave);
+			buttonSave.click();
+			log("Clicked on search location");
+		}
 	}
 
 	public Boolean toggleNextAvailableStatus() {
