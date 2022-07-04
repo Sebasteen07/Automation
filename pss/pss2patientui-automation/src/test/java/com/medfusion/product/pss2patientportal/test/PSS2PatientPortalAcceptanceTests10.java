@@ -15,8 +15,12 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.DismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
+import com.medfusion.product.object.maps.pss2.page.Location.ManageLocation;
+import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
+import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -294,5 +298,151 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		log("Next Time is " + nextTime);
 		log("Time Add After  " + psspatientutils.addTimeinFixedTime(testData));
 		assertEquals(aptDateTime.getNextTimeWithMinute(), psspatientutils.addTimeinFixedTime(testData));
+	}
+	
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyZipcodeSearchFunctionalityOnPatientUI_NG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		String zipCode = propertyData.getProperty("location.zip.code.ng");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		logStep("Login to PSS Admin portal");
+		adminUtils.adminSettingsLocationSearchByZipcode(driver, adminUser, testData, testData.getLocation(), zipCode);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		location.searchLocationByZipCode(zipCode);
+		if(location.chooseLocationText().contains(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location searched by Zip Code is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyZipcodeSearchFunctionalityOnPatientUI_GE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		String zipCode = propertyData.getProperty("location.zip.code.ge");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		logStep("Login to PSS Admin portal");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		adminAppointment.toggleSearchLocationClick();
+		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageLocation manageLocation = pssPracticeConfig.gotoLocation();
+		adminUtils.pageRefresh(driver);
+		manageLocation.selectlocation(testData.getLocation());
+		manageLocation.changeAddressZipCode(zipCode);
+		manageLocation.logout();
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		location.searchLocationByZipCode(zipCode);
+		if(location.chooseLocationText().contains(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location searched by Zip Code is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyZipcodeSearchFunctionalityOnPatientUI_GW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		String zipCode = propertyData.getProperty("location.zip.code.gw");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		logStep("Login to PSS Admin portal");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		adminAppointment.toggleSearchLocationClick();
+		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageLocation manageLocation = pssPracticeConfig.gotoLocation();
+		adminUtils.pageRefresh(driver);
+		manageLocation.selectlocation(testData.getLocation());
+		manageLocation.changeAddressZipCode(zipCode);
+		manageLocation.logout();
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		location.searchLocationByZipCode(zipCode);
+		if(location.chooseLocationText().contains(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location searched by Zip Code is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
 	}
 }
