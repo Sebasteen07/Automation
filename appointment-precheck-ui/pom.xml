@@ -31,7 +31,7 @@
 			<version>${ihg.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.intuit.ihg</groupId>
+			<groupId>com.medfusion.appointment.precheck</groupId>
 			<artifactId>appointment-precheckui-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
