@@ -2739,3 +2739,20 @@ Feature: Test fuctionality of Appointment precheck
     And I delete the scheduled appointment from the appointment dashboard
     Then I verify through mail,text that the appointment should not get confirmed should show error message
     And logout from practice provisioning portal
+
+  Scenario: verify if on cadence template staff configured all 4 cadences
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user hit edit button of email for appointment reminder
+    Then I verify system should allow to configure all 4 cadences
+    And logout from practice provisioning portal
+
+  Scenario: verify if user receive all cadence reminder in mail then it will reflect on the modal pop up history
+    When I schedule an appointment for English language
+    Then I verify on modal popup history all cadence reminder logs should be displayed
+    And logout from practice provisioning portal
+
+  Scenario: verify if user receive manual reminder in mail then it will reflect on the modal pop up history
+    When I schedule an appointment for English language
+    And I send a manual reminder for the scheduled appointment
+    Then I verify on modal popup history all manual reminder logs should be displayed
+    And logout from practice provisioning portal
