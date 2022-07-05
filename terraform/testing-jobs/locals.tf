@@ -27,7 +27,7 @@ locals {
       pxp_application       = "Portal"
     }
 
-    "git-taf-prod-mu2-accessibility" = {
+    "prod-mu2-accessibility" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "mu2-api-automation"
@@ -42,7 +42,7 @@ locals {
       pxp_application       = "Portal"
     }
 
-    "git-taf-prod-mu2-regression" = {
+    "prod-mu2-regression" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "mu2-api-automation"
@@ -57,7 +57,7 @@ locals {
       pxp_application       = "Portal"
     }
 
-    "git-taf-prod-mu2-acceptance" = {
+    "prod-mu2-acceptance" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "mu2-api-automation"
@@ -132,7 +132,7 @@ locals {
       pxp_application       = "Portal"
     }
 
-    "git-taf-prod-precheck" = {
+    "prod-precheck" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "rcm-precheck"
@@ -237,7 +237,7 @@ locals {
       cron_shedule          = "cron(25 0 ? * 1 *)"
     }
 
-    "git-taf-prod-pss-acceptance" = {
+    "prod-pss-acceptance" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "pss/pss2patientui-automation"
@@ -402,7 +402,7 @@ locals {
       cron_shedule          = "cron(0 0 ? * 1 *)"
     }
 
-    "git-taf-prod-p2p-directmessage" = {
+    "prod-p2p-directmessage" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "pi-integration-platform-acceptance"
@@ -417,7 +417,7 @@ locals {
       cron_shedule          = "cron(15 1 ? * 1 *)"
     }
 
-    "git-taf-prod-rcm-acceptance" = {
+    "prod-rcm-acceptance" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "rcm-automation"
