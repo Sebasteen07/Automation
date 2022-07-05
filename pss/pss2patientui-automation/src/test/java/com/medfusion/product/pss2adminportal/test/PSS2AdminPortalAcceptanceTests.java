@@ -17,6 +17,7 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSAdminUtils;
 import com.medfusion.product.pss2patientui.utils.PSSConstants;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
+import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 public class PSS2AdminPortalAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -210,5 +211,20 @@ public class PSS2AdminPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminAppointment adminAppointment = new AdminAppointment(driver);		
 		pssPatientUtils.setTestData(staffPracitceName, testData, adminUser);		
 		pssAdminUtils.getRescheduleSettings(driver, adminUser,  testData, adminAppointment);
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentDuration() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		String appType = propertyData.getProperty("stacking.apptype.ng");
+		String providerName = propertyData.getProperty("stacking.provider.ng");
+		String appointmentDuration =propertyData.getProperty("app.duration.digit");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.appointmentDuration(driver, adminuser, testData, appType, providerName,appointmentDuration);		
 	}
 }

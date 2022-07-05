@@ -1754,4 +1754,22 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageLocation.changeAddressZipCode(zipCode);
 		manageLocation.logout();
 	}
+	public void appointmentDuration(WebDriver driver, AdminUser adminuser, Appointment appointment,String appointmentType,String providerName,String appointmentDurationValue) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig  = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig  = pssPracticeConfig .gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig .gotoPatientFlowTab();
+		ManageResource manageResource = pssPracticeConfig .gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.selectAppointmenttype(appointmentType);
+		log("Status for AppointmentDuration is " + manageResource.appointmentDurationStatus());
+		appointment.setAppointmentDuration(manageResource.appointmentDurationStatus());
+		if (appointment.isAppointmentDuration() == false) {
+			manageResource.enterAppointmentDuration(appointmentDurationValue);
+		} else {
+			log("AppointmentDuration Already On");
+		}
+		patientFlow.logout();
+	}
 }
