@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.tests;
 
 import com.medfusion.payment_modulator.utils.ModulatorTestData;
@@ -75,9 +75,9 @@ public class QBPayTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorMessage));
 		}
 	}
 
@@ -132,9 +132,9 @@ public class QBPayTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(responseVoidSale.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorMessage));
 		}
 	}
 
@@ -192,9 +192,9 @@ public class QBPayTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorMessage));
 		}
 	}
 
@@ -264,9 +264,9 @@ public class QBPayTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorMessage));
 		}
 	}
 
@@ -313,9 +313,9 @@ public class QBPayTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorMessage));
 		}
 	}
 
