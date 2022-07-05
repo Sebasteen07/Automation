@@ -603,4 +603,120 @@ public class AptPrecheckPayload {
 					+ "}";
 			return demographics;
 	}
+		
+		public String getInsuranceStatusBlankPayload() {
+			String insurance=" {\r\n"
+					+ "  \"insuranceList\": [\r\n"
+					+ "    {\r\n"
+					+ "      \"details\": {\r\n"
+					+ "        \"groupName\": \"ABCD22\",\r\n"
+					+ "        \"groupNumber\": \"ABCD23\",\r\n"
+					+ "        \"insuranceName\": \"HEALTH\",\r\n"
+					+ "        \"memberId\": \"12334\",\r\n"
+					+ "        \"memberName\": \"GEprod test1\"\r\n"
+					+ "      },\r\n"
+					+ "      \"editStatus\": \"CONFIRMED\",\r\n"
+					+ "      \"imageInfo\": {\r\n"
+					+ "        \"image\": {\r\n"
+					+ "          \"cardBack\": \"DATA\",\r\n"
+					+ "          \"cardFront\": \"FILE\"\r\n"
+					+ "        },\r\n"
+					+ "        \"imageFileName\": \"string\"\r\n"
+					+ "      },\r\n"
+					+ "      \"tier\": \"PRIMARY\"\r\n"
+					+ "    }\r\n"
+					+ "  ],\r\n"
+					+ "  \"status\": \"\"\r\n"
+					+ "}";
+			return insurance;	
+	}
+		
+		public String getInsuranceEditstatusIncorrectPayload() {
+			String insurance=" {\r\n"
+					+ "  \"insuranceList\": [\r\n"
+					+ "    {\r\n"
+					+ "      \"details\": {\r\n"
+					+ "        \"groupName\": \"ABCD22\",\r\n"
+					+ "        \"groupNumber\": \"ABCD23\",\r\n"
+					+ "        \"insuranceName\": \"HEALTH\",\r\n"
+					+ "        \"memberId\": \"12334\",\r\n"
+					+ "        \"memberName\": \"GEprod test1\"\r\n"
+					+ "      },\r\n"
+					+ "      \"editStatus\": \"CORMED\",\r\n"
+					+ "      \"imageInfo\": {\r\n"
+					+ "        \"image\": {\r\n"
+					+ "          \"cardBack\": \"DATA\",\r\n"
+					+ "          \"cardFront\": \"FILE\"\r\n"
+					+ "        },\r\n"
+					+ "        \"imageFileName\": \"string\"\r\n"
+					+ "      },\r\n"
+					+ "      \"tier\": \"PRIMARY\"\r\n"
+					+ "    }\r\n"
+					+ "  ],\r\n"
+					+ "  \"status\": \"COMPLETE\"\r\n"
+					+ "}";
+			return insurance;	
+	}
+		
+		public String getInsuranceIncorrectTierPayload() {
+			String insurance=" {\r\n"
+					+ "  \"insuranceList\": [\r\n"
+					+ "    {\r\n"
+					+ "      \"details\": {\r\n"
+					+ "        \"groupName\": \"ABCD22\",\r\n"
+					+ "        \"groupNumber\": \"ABCD23\",\r\n"
+					+ "        \"insuranceName\": \"HEALTH\",\r\n"
+					+ "        \"memberId\": \"12334\",\r\n"
+					+ "        \"memberName\": \"GEprod test1\"\r\n"
+					+ "      },\r\n"
+					+ "      \"editStatus\": \"CONFIRMED\",\r\n"
+					+ "      \"imageInfo\": {\r\n"
+					+ "        \"image\": {\r\n"
+					+ "          \"cardBack\": \"DATA\",\r\n"
+					+ "          \"cardFront\": \"FILE\"\r\n"
+					+ "        },\r\n"
+					+ "        \"imageFileName\": \"string\"\r\n"
+					+ "      },\r\n"
+					+ "      \"tier\": \"PRARY\"\r\n"
+					+ "    }\r\n"
+					+ "  ],\r\n"
+					+ "  \"status\": \"COMPLETE\"\r\n"
+					+ "}";
+			return insurance;	
+	}
+		
+		public String getPracticeIdIncorrectPayload(String appDateRangeStart, String appDateRangeEnd) {
+			String PracticeId=" {\r\n"
+					+ "    \"applyFilters\": true,\r\n"
+					+ "    \"applyStatusMappings\": true,\r\n"
+					+ "    \"pageSize\": 50,\r\n"
+					+ "    \"pageNumber\": 1,\r\n"
+					+ "  \"appointmentDateRangeStart\": \""+appDateRangeStart+"\",\r\n"
+					+ "  \"appointmentDateRangeEnd\": \""+appDateRangeEnd+"\"\r\n"
+					+ "}";
+			return PracticeId;
+		}
+		
+		public String getPracticeIdIncorrecDatatPayload(String appDateRangeStart, String appDateRangeEnd) {
+			String PracticeId=" {\r\n"
+					+ "    \"applyFilters\": true,\r\n"
+					+ "    \"applyStatusMappings\": true,\r\n"
+					+ "    \"pageSize\": 50,\r\n"
+					+ "    \"pageNumber\": --1,\r\n"
+					+ "  \"appointmentDateRangeStart\": \""+appDateRangeStart+"\",\r\n"
+					+ "  \"appointmentDateRangeEnd\": \""+appDateRangeEnd+"\"\r\n"
+					+ "}";
+			return PracticeId;
+		}
+		
+		public String getHistoryMessageIncorrect() {
+			String historymessage=" {\r\n"
+					+ "	\"latitude\": ,\r\n"
+					+ "	\"longitude\": 0,\r\n"
+					+ "	\"timezoneId\": \"America/New_York\",\r\n"
+					+ "	\"timezoneName\": null\r\n"
+					+ "}";
+			return historymessage;
+		}
+		
 }
