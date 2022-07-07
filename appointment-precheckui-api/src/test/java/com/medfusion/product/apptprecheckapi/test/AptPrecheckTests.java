@@ -1381,6 +1381,7 @@ public class AptPrecheckTests extends BaseTestNG {
 				propertyData.getProperty("apt.precheck.balance.practice.id"),
 				payload.getCopayPayPayloadGuest(Appointment.patientId), responseGuestToken, Appointment.patientId,
 				apptPrecheckApptId, headerConfig.defaultHeader());
+		assertEquals(response.getStatusCode(), 200);
 
 		apiVerification.verifyCopayfromApiPay(response, propertyData.getProperty("apt.precheck.balance.practice.id"),
 				Appointment.patientId, apptPrecheckApptId,
@@ -1493,7 +1494,7 @@ public class AptPrecheckTests extends BaseTestNG {
 				propertyData.getProperty("guest.demographic.last.name"));
 		apiVerification.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPOSTConfirmCancelAppt() throws IOException {
 		log("Schedule a new Appointment");
@@ -1501,11 +1502,11 @@ public class AptPrecheckTests extends BaseTestNG {
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
 				getaccessToken);
-		
+
 		log("Delete Appoinment");
 		Response response = postAPIRequestApptSche.getDELETETAppointment(
 				propertyData.getProperty("mf.apt.scheduler.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
-				 Appointment.patientId,  Appointment.apptId);
+				Appointment.patientId, Appointment.apptId);
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -1515,6 +1516,358 @@ public class AptPrecheckTests extends BaseTestNG {
 				Appointment.patientId, Appointment.apptId);
 		log("Verifying the response");
 		assertEquals(ConfirmResponse.getStatusCode(), 404);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPUTFormsWithoutPatientId() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptPutForms(propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getFormsPayload(), headerConfig.HeaderwithToken(getaccessToken), Appointment.apptId);
+
+		log("Payload- " + payload.getFormsPayload());
+		log("Verify response");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPUTFormsWithIncorrectPatientId() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptPutFormsIncorrectPatientId(
+				propertyData.getProperty("apt.precheck.test.practice.id"), payload.getFormsPayload(),
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("apt.precheck.copay.skip.Incorrectpatient.id"), Appointment.apptId);
+
+		log("Payload- " + payload.getFormsPayload());
+		log("Verify response");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGETRequiredFormsIncorrectPatientId() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.getRequiredFormsIncorrectPatientId(
+				propertyData.getProperty("apt.precheck.test.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("apt.precheck.copay.skip.Incorrectpatient.id"), Appointment.apptId);
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInsuranceWithBlankStatus() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptPutInsurance(propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getInsuranceStatusBlankPayload(), headerConfig.HeaderwithToken(getaccessToken),
+				Appointment.patientId, Appointment.apptId);
+
+		log("Payload- " + payload.getInsuranceStatusBlankPayload());
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyinsuranceWithStatusBlank(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInsuranceWithIncorectEditstatus() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptPutInsurance(propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getInsuranceEditstatusIncorrectPayload(), headerConfig.HeaderwithToken(getaccessToken),
+				Appointment.patientId, Appointment.apptId);
+
+		log("Payload- " + payload.getInsuranceEditstatusIncorrectPayload());
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyinsuranceWithEditstatusIncorrrect(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInsuranceWithIncorectTier() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptPutInsurance(propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getInsuranceIncorrectTierPayload(), headerConfig.HeaderwithToken(getaccessToken),
+				Appointment.patientId, Appointment.apptId);
+
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyinsuranceWithIncorrectTier(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPUTDemographicsIncorrectPatientId() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+		Response response = postAPIRequest.aptPutDemographicsIncorrectPatientId(
+				propertyData.getProperty("apt.precheck.test.practice.id"), payload.getDemographicsPayload(),
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("apt.precheck.copay.skip.Incorrectpatient.id"), Appointment.apptId);
+
+		log("Verify response");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTCopayPayNoAmount() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+		Response response = postAPIRequest.aptCopayPayNoAmount(
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getCopayPayPayload(Appointment.patientId), headerConfig.HeaderwithToken(getaccessToken),
+				Appointment.patientId, Appointment.apptId);
+
+		log("Verifying the response");
+
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTBalancePayNoAmount() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+		Response response = postAPIRequest.aptBalancePayNoAmount(
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getBalancePayPayload(Appointment.patientId), headerConfig.HeaderwithToken(getaccessToken),
+				Appointment.patientId, Appointment.apptId);
+
+		log("Verifying the response");
+
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGETPatientsIdentifnIncorrectPatientId() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.getPatientsIdentfnIncorrectData(
+				propertyData.getProperty("apt.precheck.test.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("apt.precheck.post.appt.incorrect.patient.id"), Appointment.apptId);
+		log("Verifying the response for Incorrect PatientId");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGETPatientsIdentifnIncorrectPracticeId() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.getPatientsIdentfnIncorrectData(
+				propertyData.getProperty("apt.precheck.post.appt.incorrect.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+		log("Verifying the response for IncorrectPracticeId");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGETPatientsIdentifnIncorrectApptId() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.getPatientsIdentfnIncorrectData(
+				propertyData.getProperty("apt.precheck.test.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
+				Appointment.patientId, propertyData.getProperty("apt.precheck.patient.identfn.incorrect.appt.id"));
+		log("Verifying the response for IncorrectApptId");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void Appointment() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.getFormInformationIncorrectData(
+				propertyData.getProperty("apt.precheck.test.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty(("apt.precheck.post.appt.incorrect.patient.id")), Appointment.apptId);
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGETFormInfoIncorrectIncorrectPracticeId() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.getFormInformationIncorrectData(
+				propertyData.getProperty("apt.precheck.post.appt.incorrect.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGETFormInfoIncorrectIncorrectApptId() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.getFormInformationIncorrectData(
+				propertyData.getProperty("apt.precheck.test.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
+				Appointment.patientId, propertyData.getProperty("apt.precheck.patient.identfn.incorrect.appt.id"));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTPracticeIdIncorrectDate() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptPostPracticeId(propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getPracticeIdIncorrectPayload(
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+						propertyData.getProperty("apt.precheck.practice.appt.incorrect.date.range.end")),
+				headerConfig.HeaderwithToken(getaccessToken));
+
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTPracticeIdIncorrectData() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptPostPracticeId(propertyData.getProperty("apt.precheck.test.practice.id"),
+				payload.getPracticeIdIncorrecDatatPayload(
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.end")),
+				headerConfig.HeaderwithToken(getaccessToken));
+
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTHistoryMessageIncorrect() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptPostHistoryMessageIncorrectData(
+				propertyData.getProperty("apt.precheck.test.practice.id"), payload.getHistoryMessageIncorrect(),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTMessageHistoryIncorrectMedium() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptMessageHistoryIncorectMedium(
+				propertyData.getProperty("apt.precheck.test.practice.id"), payload.getMessageHistoryPayload(),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+
+		log("Verifying the response");
+		log("Post message history");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTMessageHistoryIncorrectType() throws IOException {
+		log("Schedule a new Appointment");
+		commonMtd.scheduleNewAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.test.practice.id"),
+				propertyData.getProperty("mf.apt.scheduler.phone"), propertyData.getProperty("mf.apt.scheduler.email"),
+				getaccessToken);
+
+		Response response = postAPIRequest.aptMessageHistoryIncorectType(
+				propertyData.getProperty("apt.precheck.test.practice.id"), payload.getMessageHistoryPayload(),
+				headerConfig.HeaderwithToken(getaccessToken), Appointment.patientId, Appointment.apptId);
+
+		log("Payload- " + payload.getMessageHistoryPayload());
+		log("Verifying the response");
+		log("Post message history");
+		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
 	}
 
 	@BeforeMethod(enabled = true, groups = { "APItest" })

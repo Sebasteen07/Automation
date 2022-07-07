@@ -10098,7 +10098,7 @@ public class ApptPrecheckSteps extends BaseTest {
 			throws NullPointerException, Exception {
 		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.in.en"), 10));
 
 		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
@@ -10777,6 +10777,63 @@ public class ApptPrecheckSteps extends BaseTest {
 		driver.switchTo().window(currentWindow);
 		
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@Then("I verify system should allow to configure all {int} cadences")
+	public void i_verify_system_should_allow_to_configure_all_cadences(Integer int1) throws InterruptedException, IOException {
+		Appointment.day1 = notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(1,"Days", "1");
+		Appointment.hour1 = notifPage.enterHours();
+		notifPage.enterTimingAndTimingUnit(2, "Hours", "23");
+		Appointment.day2 = notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(3, "Days", "7789878");
+		notifPage.ClickonAddbutton();
+		Appointment.minute1 = notifPage.enterMinutes();
+		notifPage.enterTimingAndTimingUnit(4, "Minutes", "59");
+		notifPage.saveChangesButton();
+	 }
+	
+	@Then("I verify on modal popup history all cadence reminder logs should be displayed")
+	public void i_verify_on_modal_popup_history_all_cadence_reminder_logs_should_be_displayed() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.schedule.subject"), propertyData.getProperty("appt.schedule.title"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"), propertyData.getProperty("curbside.msg.title.en"), 10));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnViewAllForEmailReminder(Appointment.patientId, Appointment.apptId);
+		assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 1));
+		assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId,
+				propertyData.getProperty("minutes.prior.logs")),
+				propertyData.getProperty("minutes.prior.logs"), "59 minutes prior entry was not match");
+	}
+	
+	@When("I send a manual reminder for the scheduled appointment")
+	public void i_send_a_manual_reminder_for_the_scheduled_appointment() throws InterruptedException {
+	   apptPage.selectPatientIdAppt(Appointment.patientId);
+	   apptPage.selectFirstPatient();
+	   apptPage.clickOnActions();
+	   apptPage.clickOnSendReminder();
+	}
+	@Then("I verify on modal popup history all manual reminder logs should be displayed")
+	public void i_verify_on_modal_popup_history_all_manual_reminder_logs_should_be_displayed() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.in.en"), 10));
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnViewAllForEmailReminder(Appointment.patientId, Appointment.apptId);
+		assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId,
+				propertyData.getProperty("manual.log")),
+				propertyData.getProperty("manual.log"), "Manual was not match");
 	}
 
 }
