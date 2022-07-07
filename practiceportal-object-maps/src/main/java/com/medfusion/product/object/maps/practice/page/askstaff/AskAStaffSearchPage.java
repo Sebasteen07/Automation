@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.askstaff;
 
 import java.util.List;
@@ -91,9 +92,6 @@ public class AskAStaffSearchPage extends BasePageObject {
 	 * @param subjectSubString unique sub-string from the subject of the question to filter on
 	 * 
 	 * @return the Ask A Staff question detail page if found or null if not found
-	 * @see AskAStaffQuestionDetailStep1Page
-	 * 
-	 * @throws Exception
 	 */
 	public AskAStaffQuestionDetailStep1Page getQuestionDetails(String subjectSubString) throws Exception {
 		IHGUtil.PrintMethodName();

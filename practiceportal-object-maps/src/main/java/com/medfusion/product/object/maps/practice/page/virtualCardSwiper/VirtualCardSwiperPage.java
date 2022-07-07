@@ -1,4 +1,4 @@
-//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.virtualCardSwiper;
 
 import org.openqa.selenium.By;
@@ -93,7 +93,6 @@ public class VirtualCardSwiperPage extends BasePageObject {
 	 * @param PAccount
 	 * @param PName
 	 * @param comment
-	 * @throws Exception
 	 */
 	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip,
 			String PAccount, String PName, String comment) {
@@ -146,7 +145,6 @@ public class VirtualCardSwiperPage extends BasePageObject {
 	 * @param PName
 	 * @param comment
 	 * @param location
-	 * @throws Exception
 	 */
 	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip,
 			String PAccount, String PName, String comment, String location) {
@@ -185,10 +183,6 @@ public class VirtualCardSwiperPage extends BasePageObject {
 
 		paymentCommentField.sendKeys(comment);
 
-		/*
-		 * if((IHGUtil.getEnvironmentType().toString()== "DEV3") || (IHGUtil.getEnvironmentType().toString()== "QA1")) { paymentCommentField.sendKeys(comment); }
-		 */
-
 		clickHereToChargeCard.click();
 	}
 
@@ -225,5 +219,4 @@ public class VirtualCardSwiperPage extends BasePageObject {
 		return paymentSuccessMsg.getText();
 	}
 
-	// "Payment completed"
 }

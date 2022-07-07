@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.customform;
 
 import org.openqa.selenium.By;
@@ -24,7 +25,6 @@ public class SearchPatientFormsResultPage extends BasePageObject {
 	 * Click on View Link and go to Patient CustomForm Detail Page
 	 * 
 	 * @return ViewPatientFormPage
-	 * @throws Exception
 	 */
 	public ViewPatientFormPage clickViewLink() throws Exception {
 		IHGUtil.PrintMethodName();

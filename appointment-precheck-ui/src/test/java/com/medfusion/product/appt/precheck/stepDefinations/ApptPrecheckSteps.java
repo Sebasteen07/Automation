@@ -3152,7 +3152,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("I select patient and send broadcast message from appointment dashboard")
 	public void I_select_patient_and_send_broadcast_message_from_appointment_dashboard() throws Exception {
 		mainPage.clickOnAppointmentsTab();
-		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectFirstPatient();
 		log("Click on Actions tab and select broadcast message");
 		apptPage.performAction();
 		log("Enter message in English and Spanish");
@@ -10097,7 +10098,7 @@ public class ApptPrecheckSteps extends BaseTest {
 			throws NullPointerException, Exception {
 		assertTrue(apptPage.isPatientPresent(Appointment.patientId));
 		YopMail yopMail = new YopMail(driver);
-		assertTrue(yopMail.isMessageInInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
 				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.in.en"), 10));
 
 		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
@@ -10671,6 +10672,244 @@ public class ApptPrecheckSteps extends BaseTest {
 		driver.close();
 		driver.switchTo().window(currentWindow);
 		Thread.sleep(5000);
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I click on patient name and patient launch mode")
+	public void i_click_on_patient_name_and_patient_launch_mode() throws InterruptedException {
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnLaunchPatientModeButton();
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnContinueButton();
+	}
+	
+	@When("I do the precheck and update first name and last name")
+	public void i_do_the_precheck_and_update_first_name_and_last_name() throws NullPointerException, InterruptedException {
+		apptPage.addPatientDetailsFromPrecheck(propertyData.getProperty("precheck.first.name"),
+				propertyData.getProperty("precheck.middle.name"), propertyData.getProperty("precheck.last.name"),
+				"jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.number"));
+		loginPage.login(propertyData.getProperty("practice.provisining.username.ge"),
+				propertyData.getProperty("practice.provisining.password.ge"));
+		scrollAndWait(200, -300, 5000);
+	}
+	
+	@Then("I verify updated first name, middle name, last name should be reflect on broadcast email notification logs")
+	public void i_verify_updated_first_name_middle_name_last_name_should_be_reflect_on_broadcast_email_notification_logs()
+			throws NullPointerException, Exception {
+     	driver.navigate().refresh();
+        Thread.sleep(5000);
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.selectPatientCheckbox(Appointment.patientId, Appointment.apptId);
+
+		apptPage.clickOnBroadcastEmailLogForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from Broadcast Email Log: "
+				+ apptPage.getPatientNameFromBroadcastEmailLogs(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromBroadcastEmailLogs(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+		apptPage.closeBroadcastEmailandTextBox();
+		Thread.sleep(3000);
+
+		apptPage.clickOnBroadcastPhoneLogForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		log("Get patient name from Broadcast Email Log: "
+				+ apptPage.getPatientNameFromBroadcastTextLogs(Appointment.patientId, Appointment.apptId));
+		assertEquals(apptPage.getPatientNameFromBroadcastTextLogs(Appointment.patientId, Appointment.apptId),
+				propertyData.getProperty("precheck.first.name") + " " + propertyData.getProperty("precheck.middle.name")
+						+ " " + propertyData.getProperty("precheck.last.name"),
+				"Patient first name , middle name and  last name was not match");
+		apptPage.closeBroadcastEmailandTextBox();
+		Thread.sleep(3000);
+	}
+
+	@When("I schedule appointment")
+	public void i_schedule_appointment() throws NullPointerException, IOException, InterruptedException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),	
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		Thread.sleep(50000);
+	}
+	@When("I delete the scheduled appointment from the appointment dashboard")
+	public void i_delete_the_scheduled_appointment_from_the_appointment_dashboard() throws InterruptedException {
+	   mainPage.clickOnAppointmentsTab();
+	   apptPage.selectPatientIdAppt(Appointment.patientId);
+	   apptPage.selectFirstPatient();
+	   apptPage.clickOnActions();
+	   apptPage.clickOnRemoveButton();
+	   apptPage.clickOnRemoveOptionFromRemoveButton();
+	   
+	}
+	@Then("I verify through mail,text that the appointment for curbside arrival grid should show arrival message")
+	public void i_verify_through_mail_text_that_the_appointment_for_curbside_arrival_grid_should_show_arrival_message() throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		yopMail.getMessageForCurbsideArrivalAfterApptDeleted(
+				"jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("curbside.checkin.mail.title"),
+				propertyData.getProperty("error.message"));
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	@Then("I verify through mail,text that the appointment should not get confirmed should show error message")
+	public void i_verify_through_mail_text_that_the_appointment_should_not_get_confirmed_should_show_error_message() throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		yopMail.getMessageForConfirmAppointmentAfterApptDeleted(
+				"jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"),
+				propertyData.getProperty("appt.reminder.title"),
+				propertyData.getProperty("error.message"));
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@Then("I verify system should allow to configure all {int} cadences")
+	public void i_verify_system_should_allow_to_configure_all_cadences(Integer int1) throws InterruptedException, IOException {
+		Appointment.day1 = notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(1,"Days", "1");
+		Appointment.hour1 = notifPage.enterHours();
+		notifPage.enterTimingAndTimingUnit(2, "Hours", "23");
+		Appointment.day2 = notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(3, "Days", "7789878");
+		notifPage.ClickonAddbutton();
+		Appointment.minute1 = notifPage.enterMinutes();
+		notifPage.enterTimingAndTimingUnit(4, "Minutes", "59");
+		notifPage.saveChangesButton();
+	 }
+	
+	@Then("I verify on modal popup history all cadence reminder logs should be displayed")
+	public void i_verify_on_modal_popup_history_all_cadence_reminder_logs_should_be_displayed() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.schedule.subject"), propertyData.getProperty("appt.schedule.title"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.in.en"), 10));
+		
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"), propertyData.getProperty("curbside.msg.title.en"), 10));
+		
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnViewAllForEmailReminder(Appointment.patientId, Appointment.apptId);
+		assertTrue(apptPage.visibilityOfMailReminderLogs(Appointment.patientId, Appointment.apptId, 1));
+		assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId,
+				propertyData.getProperty("minutes.prior.logs")),
+				propertyData.getProperty("minutes.prior.logs"), "59 minutes prior entry was not match");
+	}
+	
+	@When("I send a manual reminder for the scheduled appointment")
+	public void i_send_a_manual_reminder_for_the_scheduled_appointment() throws InterruptedException {
+	   apptPage.selectPatientIdAppt(Appointment.patientId);
+	   apptPage.selectFirstPatient();
+	   apptPage.clickOnActions();
+	   apptPage.clickOnSendReminder();
+	}
+	@Then("I verify on modal popup history all manual reminder logs should be displayed")
+	public void i_verify_on_modal_popup_history_all_manual_reminder_logs_should_be_displayed() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("appt.email.subject"), propertyData.getProperty("appt.reminder.in.en"), 10));
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+		apptPage.clickOnExpandForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		apptPage.clickOnViewAllForEmailReminder(Appointment.patientId, Appointment.apptId);
+		assertEquals(apptPage.getTextFromEmailRemLogs(Appointment.patientId, Appointment.apptId,
+				propertyData.getProperty("manual.log")),
+				propertyData.getProperty("manual.log"), "Manual was not match");
+	}
+	
+	@When("I enable display patient first name and save the notifications")
+	public void i_enable_display_patient_first_name_and_save_the_notifications() throws InterruptedException {
+		notifPage.enableFirstNameCheckbox();
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		notifPage.saveNotification();
+	}
+	@When("I schedule an appointment and I send broadcast message to patient")
+	public void i_schedule_an_appointment_and_i_send_broadcast_message_to_patient() throws Exception {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com", "en",
+						propertyData.getProperty("patient.name")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		
+		mainPage.clickOnAppointmentsTab();
+		scrollAndWait(0, -3000 , 5000);
+		apptPage.filterPatientId(Appointment.patientId);
+	    apptPage.selectPatientCheckbox(Appointment.patientId,Appointment.apptId);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+		Thread.sleep(60000);
+	}
+	@Then("I verify broadcast message recieved in mail and show first name")
+	public void i_verify_broadcast_message_recieved_in_mail_and_show_first_name() throws NullPointerException, Exception {
+		String practiceName=apptPage.getPracticeName();
+		YopMail yopMail= new YopMail(driver);
+	    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    		"Important Message from"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "
+						+ propertyData.getProperty("broadcast.message.en"), 10));
+	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I disable display patient first name and save the notifications")
+	public void i_disable_display_patient_first_name_and_save_the_notifications() throws InterruptedException {
+		notifPage.disableFirstNameCheckbox();
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		notifPage.saveNotification();
+	}
+	@Then("I verify broadcast message recieved in mail and not show first name")
+	public void i_verify_broadcast_message_recieved_in_mail_and_not_show_first_name() throws NullPointerException, Exception {
+		String practiceName=apptPage.getPracticeName();
+		YopMail yopMail= new YopMail(driver);
+	    assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com",
+	    		"Important Message from"+" "+practiceName,propertyData.getProperty("patient.name")+ "," + " "
+						+ propertyData.getProperty("broadcast.message.en"), 10));
+	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	    mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+	    notifPage.enableFirstNameCheckbox();
+	}
+	@Then("I verify curbside confirmation links shows you have already arrived when patient again trying to confirm from mail")
+	public void i_verify_curbside_confirmation_links_shows_you_have_already_arrived_when_patient_again_trying_to_confirm_from_mail() throws NullPointerException, Exception {
+		String currentWindow = driver.getWindowHandle();
+		YopMail yopMail = new YopMail(driver);
+		assertEquals(yopMail.getMessageWhenApptAlreadyConfirmed("jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("email.title.in.en"), propertyData.getProperty("appt.already.confirmed")),
+				propertyData.getProperty("appt.already.confirmed"));
+		driver.close();
+		driver.switchTo().window(currentWindow);
+		Thread.sleep(10000);
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 	}
 

@@ -16,6 +16,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
@@ -46,6 +47,8 @@ public class Location extends PSS2MainPage {
 	@FindAll({@FindBy(xpath = "//*[@id='locationwizardlist']/div[3]/div/div/button/span")})
 	private List<WebElement> directionLink;
 
+	@FindAll({@FindBy(xpath = "//a[@class='locationlink locationlinkclick']")})
+	private List<WebElement> locationListByZipCode;
 
 	public Location(WebDriver driver) {
 		super(driver);
@@ -172,4 +175,21 @@ public class Location extends PSS2MainPage {
 		return linkgetText;
 	}
 
+	public void searchLocationByZipCode(String zipCode) throws InterruptedException {
+		nearByZipCodeInput.clear();
+		nearByZipCodeInput.sendKeys(zipCode);
+		WebElement searchRadius = driver.findElement(By.xpath("//*[@id='sel1']"));
+		Select selectOptions = new Select(searchRadius);
+		selectOptions.selectByIndex(0);
+		Thread.sleep(2000);
+		log("Nearby zip code and search radius are edited successfully");
+	}
+	
+	public String chooseLocationText() {
+		for( WebElement locationName : locationListByZipCode){
+			String chooseLocationAddressText= locationName.getText();
+			return chooseLocationAddressText;
+		}
+		return null;
+	}
 }

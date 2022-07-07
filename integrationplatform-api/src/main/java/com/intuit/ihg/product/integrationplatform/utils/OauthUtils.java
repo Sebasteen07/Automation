@@ -1,6 +1,7 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 import static org.testng.Assert.assertTrue;
 
 import java.io.BufferedReader;
@@ -62,7 +63,6 @@ public class OauthUtils {
 	 * 
 	 * @param strUrl server Get url
 	 * @param responseFilePath path to save the response
-	 * @throws IOException
 	 */
 	public static void setupHttpGetRequest(String strUrl, String responseFilePath) throws IOException {
 		IHGUtil.PrintMethodName();
@@ -181,13 +181,13 @@ public class OauthUtils {
 
 
 	/**
-	 * Performs OAuth Post Request and saves the resposse
+	 * Performs OAuth Post Request and saves the response
 	 * 
 	 * @param strUrl server Post url
 	 * @param payload Post payload
 	 * @param responseFilePath path to save the response
+	 * 
 	 * @return Processing Status header from Response
-	 * @throws IOException
 	 */
 	public static String setupHttpPostRequest(String strUrl, String payload, String responseFilePath) throws IOException {
 		IHGUtil.PrintMethodName();
@@ -246,9 +246,9 @@ public class OauthUtils {
 
 
 	/**
+	 * @param fileName
 	 * 
-	 * @param xmlFilePath
-	 * @return
+	 * @return String of XML
 	 */
 	public static String convertXMLFileToString(String fileName) {
 		IHGUtil.PrintMethodName();
@@ -267,11 +267,6 @@ public class OauthUtils {
 		return null;
 	}
 
-
-
-	/*
-	 * 
-	 */
 	public static void emptyFile(String file) throws IOException {
 		File outputFile = new File(file);
 		try {
@@ -284,7 +279,6 @@ public class OauthUtils {
 			e.printStackTrace();
 		}
 	}
-
 
 	public static boolean oauthSetup1O(String oAuthKeyStore, String oAuthProperty, String oAuthAppToken, String oAuthUsername, String oAuthPassword)
 			throws IOException {

@@ -1428,8 +1428,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	/**
 	 * Creates patient, modifies My Account setting and validates result
-	 * 
-	 * @throws Exception
 	 */
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMyAccount() throws Exception {

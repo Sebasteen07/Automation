@@ -2719,4 +2719,60 @@ Feature: Test fuctionality of Appointment precheck
     When I schedule an appointment in "es"
     Then I verify in email curbside arrival message are coming in spanish language and message also in appears in es
     And logout from practice provisioning portal
-   
+
+  Scenario: After doing precheck system sends broadcast on latest email and verify if broadcast notification logs show updated fname and last name in patient details field
+    When I schedule an appointment
+    And I click on patient name and patient launch mode
+    And I do the precheck and update first name and last name
+    And I select patient and send broadcast message from appointment dashboard
+    Then I verify updated first name, middle name, last name should be reflect on broadcast email notification logs
+    And logout from practice provisioning portal
+
+  Scenario: verify if appointment is not getting curbside arrival grid through mail after appointment is deleted from appointment dashboard
+    And I schedule appointment
+    And I delete the scheduled appointment from the appointment dashboard
+    Then I verify through mail,text that the appointment for curbside arrival grid should show arrival message
+    And logout from practice provisioning portal
+
+  Scenario: verify if appointment is not getting confirmed through mail after appointment is deleted from appointment dashboard
+    And I schedule appointment
+    And I delete the scheduled appointment from the appointment dashboard
+    Then I verify through mail,text that the appointment should not get confirmed should show error message
+    And logout from practice provisioning portal
+
+  Scenario: verify if on cadence template staff configured all 4 cadences
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user hit edit button of email for appointment reminder
+    Then I verify system should allow to configure all 4 cadences
+    And logout from practice provisioning portal
+
+  Scenario: verify if user receive all cadence reminder in mail then it will reflect on the modal pop up history
+    When I schedule an appointment for English language
+    Then I verify on modal popup history all cadence reminder logs should be displayed
+    And logout from practice provisioning portal
+
+  Scenario: verify if user receive manual reminder in mail then it will reflect on the modal pop up history
+    When I schedule an appointment for English language
+    And I send a manual reminder for the scheduled appointment
+    Then I verify on modal popup history all manual reminder logs should be displayed
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then broadcast message in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable display patient first name and save the notifications
+    And I schedule an appointment and I send broadcast message to patient
+    Then I verify broadcast message recieved in mail and show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then broadcast message in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable display patient first name and save the notifications
+    And I schedule an appointment and I send broadcast message to patient
+    Then I verify broadcast message recieved in mail and not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify curbside confirmation links shows you have already arrived when patient gets confirmation on email and patient confirms over email again
+    When I schedule an appointment in "en"
+    And I received curbside message on email and confirm arrival
+    And I verify curbside confirmation links shows you have already arrived when patient again trying to confirm from mail
+    And logout from practice provisioning portal

@@ -243,29 +243,29 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 
 				{ "2560791219", testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 404, "Not Found" },
+						testData.getProperty("expiration.number"), 404, "Not Found", "Merchant account for id 2560791219 not found" },
 				{ " ", testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 404, "Not Found" },
+						testData.getProperty("expiration.number"), 404, "Not Found", "" },
 				{ testData.getProperty("paypal.mmid"), "0", testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 400, "Bad Request" },
+						testData.getProperty("expiration.number"), 400, "Bad Request", "Transaction amount cannot be less than 1" },
 
 				{ testData.getProperty("paypal.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"), "",
-						testData.getProperty("expiration.number"), 200, "Invalid account number" },
+						testData.getProperty("expiration.number"), 200, "", "Invalid account number" },
 
 				{ testData.getProperty("paypal.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						"41111111111111112222", testData.getProperty("expiration.number"), 200, "Invalid account number" },
+						"41111111111111112222", testData.getProperty("expiration.number"), 200, "", "Invalid account number" },
 
 				{ testData.getProperty("paypal.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "", 200, "Invalid expiration date:" },
+						testData.getProperty("card.number"), "", 200, "", "Invalid expiration date:" },
 
 				{ testData.getProperty("paypal.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "2301", 200, "Invalid expiration date: 2301" },
+						testData.getProperty("card.number"), "2301", 200, "", "Invalid expiration date: 2301" },
 
 		};
 	}
@@ -276,11 +276,11 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 
 		return new Object[][] {
 
-				{ "2560809200", testData.getProperty("paypal.external.txn.id"),
+				{ "2560809010", testData.getProperty("paypal.external.txn.id"),
 						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 500, "Internal Server Error" }, //400 - Not Found in demo
+						testData.getProperty("expiration.number"), 404, "Not Found" },
 
 				{ " ", testData.getProperty("paypal.external.txn.id"),
 						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
@@ -288,25 +288,12 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
 						testData.getProperty("expiration.number"), 404, "Not Found" },
 
-				{ testData.getProperty("paypal.mmid"), " ",
-						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
-						testData.getProperty("account.number"),
-						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 200, "Approved" },
-
-				{ testData.getProperty("paypal.mmid"),
-						testData.getProperty("paypal.external.txn.id"),
-						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
-						testData.getProperty("account.number"),
-						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 500, "Internal Server Error" }, //200 Approved in demo
-
 				{ testData.getProperty("paypal.mmid"),
 						testData.getProperty("paypal.external.txn.id"),
 						testData.getProperty("paypal.order.id"), "0",
 						testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 200, "Approved" },
+						testData.getProperty("expiration.number"), 400, "Bad Request" },
 
 				// Comment its approving currently INVALID CARD INFO
 
@@ -315,7 +302,7 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), "",
-						testData.getProperty("expiration.number"), 500, "Internal Server Error" }, //200 Approved in demo
+						testData.getProperty("expiration.number"), 200, "Approved" },
 
 				// message from auth INVALID CARD INFO getting Invalid Transaction Status
 
@@ -324,7 +311,7 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), "41111111111111112222",
-						testData.getProperty("expiration.number"), 500, "Internal Server Error" }, //200 Approved
+						testData.getProperty("expiration.number"), 200, "Approved" },
 
 				// auth ExpirationMonth Required getting Invalid Transaction Status
 
@@ -333,7 +320,7 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						" ",500, "Internal Server Error" },   //200 Approved
+						" ", 200, "Approved" },   //200 Approved
 
 				// auth Invalid ExpirationMonth Format Invalid Transaction Status
 
@@ -342,7 +329,7 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						"2301", 500, "Internal Server Error" },    //200 Approved
+						"2301", 200, "Approved" },    //200 Approved
 
 
 				// Transaction with invalid legnth
@@ -351,34 +338,7 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 500, "Internal Server Error" },
-
-				// Transaction from diffrent env added as invalid
-				{
-						testData.getProperty("paypal.mmid"), "1635954508",
-						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
-						testData.getProperty("account.number"),
-						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 500, "Internal Server Error" },
-
-				// Transaction Id with invalid special chars
-
-				{ testData.getProperty("paypal.mmid"), "$$$$$$$$$$$$$$$$",
-						testData.getProperty("paypal.order.id"), testData.getProperty("transaction.amount"),
-						testData.getProperty("account.number"),
-						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 200, "Approved" },
-
-				// Order Id from diffrent env - got internal server error but error message
-				// should be diffrent
-				{ testData.getProperty("paypal.mmid"),
-						testData.getProperty("paypal.external.txn.id"),
-						"bf9fd5db-82b4-4be0-9d01-f30f118943b",
-						testData.getProperty("transaction.amount"),
-						testData.getProperty("account.number"),
-						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 500, "Internal Server Error" }, //200 Approved
-
+						testData.getProperty("expiration.number"), 200, "Approved" }
 		};
 	}
 
@@ -390,31 +350,31 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 
 				{ "2560791219", testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 404, "Not Found" },
+						testData.getProperty("expiration.number"), 404, "Not Found", "Merchant account for id 2560791219 not found" },
 
 				{ " ", testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 404, "Not Found" },
+						testData.getProperty("expiration.number"), 404, "Not Found", "" },
 
 				{ testData.getProperty("paypal.mmid"), "0", testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 400, "Bad Request" },
+						testData.getProperty("expiration.number"), 400, "Bad Request", "Transaction amount cannot be less than 1" },
 
 				{ testData.getProperty("paypal.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"), "",
-						testData.getProperty("expiration.number"), 200, "Invalid account number" },
+						testData.getProperty("expiration.number"), 200, "", "Invalid account number" },
 
 				{ testData.getProperty("paypal.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						"41111111111111112222", testData.getProperty("expiration.number"), 200, "Invalid account number" },
+						"41111111111111112222", testData.getProperty("expiration.number"), 200, "", "Invalid account number" },
 
 				{ testData.getProperty("paypal.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "", 200, "Invalid expiration date:" },
+						testData.getProperty("card.number"), "", 200, "", "Invalid expiration date:" },
 
 				{ testData.getProperty("paypal.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "2301", 200, "Invalid expiration date: 2301" },
+						testData.getProperty("card.number"), "2301", 200, "", "Invalid expiration date: 2301" },
 
 		};
 	}
@@ -428,46 +388,20 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 				{ "2560791219", testData.getProperty("paypal.external.txn.id"),
 						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 500, "Internal Server Error" },
+						testData.getProperty("expiration.number"), 404, "Not Found",
+						"Merchant account for id 2560791219 not found"},
 
 				{ " ", testData.getProperty("paypal.external.txn.id"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
 						testData.getProperty("card.number"), testData.getProperty("expiration.number"), 404,
-						"Not Found" },
+						"Not Found", "" },
 
 				// With account no blank is able to void
 
 				{ testData.getProperty("paypal.mmid"), testData.getProperty("paypal.external.txn.id"),
 						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), "", testData.getProperty("expiration.number"), 500,
-						"Internal Server Error" },
-
-				// Getting error message as Invalid Transaction Status instead of
-
-				{ testData.getProperty("paypal.mmid"), testData.getProperty("external.transaction.id"),
-						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-						testData.getProperty("payment.source"), "41111111111111112222",
-						testData.getProperty("expiration.number"), 200, "Invalid Transaction Status" },
-
-				{ testData.getProperty("paypal.mmid"), testData.getProperty("external.transaction.id"),
-						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-						testData.getProperty("payment.source"), testData.getProperty("card.number"), "", 200,
-						"Invalid Transaction Status" },
-
-				{ testData.getProperty("paypal.mmid"), testData.getProperty("external.transaction.id"),
-						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-						testData.getProperty("payment.source"), testData.getProperty("card.number"), "2301", 200,
-						"Invalid Transaction Status" },
-
-				// Diffrent env transaction Id
-
-				{ testData.getProperty("paypal.mmid"), "1635954508", testData.getProperty("transaction.amount"),
-						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "2301", 200, "TRANSACTION NOT FOUND" },
-
-				{ testData.getProperty("paypal.mmid"), "$$", testData.getProperty("transaction.amount"),
-						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "2301", 500, "Unexpected Server Error" },
+						"Internal Server Error", "" },
 
 		};
 	}
@@ -481,50 +415,23 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 				{ "2560791219", testData.getProperty("external.transaction.id"),
 						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 404, "Not Found" },
+						testData.getProperty("expiration.number"), 404, "Not Found",
+						"Merchant account for id 2560791219 not found"},
 
 				{ " ", testData.getProperty("external.transaction.id"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
 						testData.getProperty("card.number"), testData.getProperty("expiration.number"), 404,
-						"Not Found" },
-
-				// With account no blank is able to void
-
-//				{ testData.getProperty("paypal.mmid"), testData.getProperty("external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), "", testData.getProperty("expiration.number"), 200,
-//						"CardNumber Required" },
-//
-//				// Getting error message as Invalid Transaction Status instead of
-//
-//				{ testData.getProperty("paypal.mmid"), testData.getProperty("external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), "41111111111111112222",
-//						testData.getProperty("expiration.number"), 200, "INVALID CARD INFO" },
-//
-//				{ testData.getProperty("paypal.mmid"), testData.getProperty("external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), testData.getProperty("card.number"), "", 200,
-//						"ExpirationMonth Required" },
-//
-//				{ testData.getProperty("paypal.mmid"), testData.getProperty("external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), testData.getProperty("card.number"), "2301", 200,
-//						"Invalid ExpirationMonth Format" },
-
-				// Diffrent env transaction Id
+						"Not Found", "" },
 
 				{ testData.getProperty("paypal.mmid"), "1111111111", testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "0199", 500, "Unexpected Server Error" },
+						testData.getProperty("card.number"), "0199", 500, "Internal Server Error",
+						"Could not find transaction for paymentId = 1111111111"},
 
 				{ testData.getProperty("paypal.mmid"), "$$", testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "2301", 500, "Unexpected Server Error" },
-
-//				{ testData.getProperty("paypal.mmid"), testData.getProperty("external.transaction.id"),
-//						IHGUtil.createRandomNumericString(3), testData.getProperty("account.number"), "IV",
-//						testData.getProperty("card.number"), "0199", 200, "Approved"},
+						testData.getProperty("card.number"), "2301", 500, "Internal Server Error",
+						"Could not find transaction for paymentId = $$"},
 
 		};
 	}
@@ -570,49 +477,19 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 
 		return new Object[][] {
 
-//				{ "2560791219", testData.getProperty("qbpay.external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-//						testData.getProperty("expiration.number"), 500, "Internal Server Error" },
+				{ "2560791219", testData.getProperty("qbpay.external.transaction.id"),
+						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
+						testData.getProperty("payment.source"), testData.getProperty("card.number"),
+						testData.getProperty("expiration.number"), 404, "Not Found" },
 
 				{ " ", testData.getProperty("qbpay.external.transaction.id"), testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
 						testData.getProperty("card.number"), testData.getProperty("expiration.number"), 404,
 						"Not Found" },
 
-				// With account no blank is able to void
-
-//				{ testData.getProperty("qbpay.mmid"), testData.getProperty("qbpay.external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), "", testData.getProperty("expiration.number"), 500,
-//						"Internal Server Error" },
-
-				// Getting error message as Invalid Transaction Status instead of
-
-//				{ testData.getProperty("qbpay.mmid"), testData.getProperty("qbpay.external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), "41111111111111112222",
-//						testData.getProperty("expiration.number"), 200, "Approved" },
-
-//				{ testData.getProperty("qbpay.mmid"), testData.getProperty("qbpay.external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), testData.getProperty("card.number"), "", 200,
-//						"Invalid Transaction Status" },
-//
-//				{ testData.getProperty("qbpay.mmid"), testData.getProperty("qbpay.external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), testData.getProperty("card.number"), "2301", 200,
-//						"Invalid Transaction Status" },
-
-				// Diffrent env transaction Id
-
-				{ testData.getProperty("qbpay.mmid"), "1635954508", testData.getProperty("transaction.amount"),
-						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "2301", 200, "TRANSACTION NOT FOUND" },
-
 				{ testData.getProperty("qbpay.mmid"), "$$", testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "2301", 500, "Unexpected Server Error" },
+						testData.getProperty("card.number"), "2301", 500, "Internal Server Error" },
 
 		};
 	}
@@ -640,36 +517,13 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 						testData.getProperty("payment.source"), "", testData.getProperty("expiration.number"), 500,
 						"Internal Server Error" },
 
-				// Getting error message as Invalid Transaction Status instead of
-
-//				{ testData.getProperty("qbpay.mmid"), testData.getProperty("external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), "41111111111111112222",
-//						testData.getProperty("expiration.number"), 200, "amount is invalid." },
-
-//				{ testData.getProperty("qbpay.mmid"), testData.getProperty("external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), testData.getProperty("card.number"), "", 200,
-//						"amount is invalid." },
-
-//				{ testData.getProperty("qbpay.mmid"), testData.getProperty("external.transaction.id"),
-//						testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
-//						testData.getProperty("payment.source"), testData.getProperty("card.number"), "2301", 200,
-//						"amount is invalid." },
-
-				// Diffrent env transaction Id
-
 				{ testData.getProperty("qbpay.mmid"), "1111111111", testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "0199", 500, "Unexpected Server Error" },
+						testData.getProperty("card.number"), "0199", 500, "Internal Server Error" },
 
 				{ testData.getProperty("qbpay.mmid"), "$$", testData.getProperty("transaction.amount"),
 						testData.getProperty("account.number"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "2301", 500, "Unexpected Server Error" },
-
-//				{ testData.getProperty("qbpay.mmid"), testData.getProperty("external.transaction.id"),
-//						IHGUtil.createRandomNumericString(3), testData.getProperty("account.number"), "IV",
-//						testData.getProperty("card.number"), "0199", 200, "amount is invalid."},
+						testData.getProperty("card.number"), "2301", 500, "Internal Server Error" },
 
 		};
 	}

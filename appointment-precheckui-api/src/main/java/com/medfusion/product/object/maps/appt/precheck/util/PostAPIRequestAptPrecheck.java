@@ -600,7 +600,7 @@ public class PostAPIRequestAptPrecheck extends BaseTestNGWebDriver {
 		log("Appointment actions:" + appointmentActions);
 		return appointmentActions;
 	}
-	
+
 	public Response getDeleteAppointmentActions(String baseurl, String practiceId, Map<String, String> Header,
 			String PatientId, String Appointmentid) {
 		log("Execute POST request for Appointmnet actions as Confirm");
@@ -611,5 +611,131 @@ public class PostAPIRequestAptPrecheck extends BaseTestNGWebDriver {
 		return response;
 	}
 
+	public Response aptPutForms(String practiceId, String payload, Map<String, String> Header, String Appointmentid) {
+		log("Execute PUT request for Forms");
+		Response response = given().when().headers(Header).body(payload).log().all().when()
+				.put("practices/" + practiceId + "/patients/appointments/" + Appointmentid + "/forms").then().log()
+				.all().extract().response();
+		return response;
+	}
+
+	public Response aptPutFormsIncorrectPatientId(String practiceId, String payload, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		log("Execute PUT request for Forms");
+		Response response = given().when().headers(Header).body(payload).log().all().when()
+				.put("practices/" + practiceId + "/patients/" + PatientId + "/appointments/" + Appointmentid + "/forms")
+				.then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getRequiredFormsIncorrectPatientId(String practiceId, Map<String, String> Header, String PatientId,
+			String Appointmentid) {
+		log("Execute GET request for Required forms");
+		Response response = given().when().headers(Header).log().all().when().get("practices/" + practiceId
+				+ "/patients/" + PatientId + "/appointments/" + Appointmentid + "/requiredForms").then().log().all()
+				.extract().response();
+		return response;
+	}
+
+	public Response aptPutDemographicsIncorrectPatientId(String practiceId, String payload, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		log("Execute PUT request for demographics");
+		Response response = given()
+				.when().headers(Header).body(payload).log().all().when().put("practices/" + practiceId + "/patients/"
+						+ PatientId + "/appointments/" + Appointmentid + "/demographics")
+				.then().log().all().extract().response();
+		return response;
+	}
+
+	public Response aptCopayPayNoAmount(String practiceId, String payload, Map<String, String> Header, String PatientId,
+			String Appointmentid) {
+		log("Execute POST request for Copay pay");
+		Response response = given()
+				.when().headers(Header).body(payload).log().all().when().post("practices/" + practiceId + "/patients/"
+						+ PatientId + "/appointments/" + Appointmentid + "/copay/pay")
+				.then().log().all().extract().response();
+		return response;
+	}
+
+	public Response aptBalancePayNoAmount(String practiceId, String payload, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		log("Execute POST request for Copay pay");
+		Response response = given()
+				.when().headers(Header).body(payload).log().all().when().post("practices/" + practiceId + "/patients/"
+						+ PatientId + "/appointments/" + Appointmentid + "/balance/pay")
+				.then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getPatientsIdentfnIncorrectData(String practiceId, Map<String, String> Header, String PatientId,
+			String Appointmentid) {
+		log("Execute GET request for patient identification");
+
+		Response response = given().when().headers(Header).log().all().when()
+				.get("practices/" + practiceId + "/patients/" + PatientId + "/appointments/" + Appointmentid).then()
+				.log().all().extract().response();
+		JsonPath js = new JsonPath(response.asString());
+
+		String encryptedIdentifier = js.getString("encryptedIdentifier");
+
+		Response responsePatientIdentification = given().when().queryParam("patient_token", encryptedIdentifier)
+				.headers(Header).log().all().when().get("patients/identification").then().log().all().extract()
+				.response();
+
+		log("Patient Identification:" + responsePatientIdentification);
+		return responsePatientIdentification;
+	}
+
+	public Response getFormInformationIncorrectData(String practiceId, Map<String, String> Header, String PatientId,
+			String Appointmentid) {
+		log("Execute GET  request for form information");
+
+		Response response = given().when().headers(Header).log().all().when()
+				.get("practices/" + practiceId + "/patients/" + PatientId + "/appointments/" + Appointmentid).then()
+				.log().all().extract().response();
+		JsonPath js = new JsonPath(response.asString());
+
+		String encryptedIdentifier = js.getString("encryptedIdentifier");
+
+		Response responseforminfo = given().when().queryParam("patient_token", encryptedIdentifier).headers(Header)
+				.log().all().when().get("patients/form-information").then().log().all().extract().response();
+
+		log("form info:" + responseforminfo);
+		return responseforminfo;
+	}
+
+	public Response aptPostHistoryMessageIncorrectData(String practiceId, String payload, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		log("Execute Post  request for history message for patient");
+		Response response = given()
+				.when().headers(Header).body(payload).log().all().when().post("practices/" + practiceId + "/patients/"
+						+ PatientId + "/appointments/" + Appointmentid + "/historymessage")
+				.then().log().all().extract().response();
+		return response;
+	}
+
+	public Response aptMessageHistoryIncorectMedium(String practiceId, String payload, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		log("Execute Post  request for CHECKIN, BROADCAST message history for patient");
+		Response response = given().when().headers(Header).body(payload).log().all().when()
+				.queryParam("startDate", "2021-06-17T14:35:09.179Z").queryParam("medium", "fcghb")
+				.queryParam("type", "BROADCAST").post("practices/" + practiceId + "/patients/" + PatientId
+						+ "/appointments/" + Appointmentid + "/messagehistory")
+				.then().log().all().extract().response();
+
+		return response;
+	}
+
+	public Response aptMessageHistoryIncorectType(String practiceId, String payload, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		log("Execute Post  request for CHECKIN, BROADCAST message history for patient");
+		Response response = given().when().headers(Header).body(payload).log().all().when()
+				.queryParam("startDate", "2021-06-17T14:35:09.179Z").queryParam("medium", "EMAIL")
+				.queryParam("type", "cgg").post("practices/" + practiceId + "/patients/" + PatientId + "/appointments/"
+						+ Appointmentid + "/messagehistory")
+				.then().log().all().extract().response();
+
+		return response;
+	}
 
 }

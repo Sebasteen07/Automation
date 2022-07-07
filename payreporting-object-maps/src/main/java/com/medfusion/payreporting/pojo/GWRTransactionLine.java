@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved
 package com.medfusion.payreporting.pojo;
 
 public class GWRTransactionLine {
@@ -40,7 +40,8 @@ public class GWRTransactionLine {
 	 * Almost an equals, but if the method-originating object has empty fields, those are skipped (facts: this.x = "", other.x = "x", this.equalsSkipLeftEmpties(other) == true && other.equalsSkipLeftEmpties(this) != true)
 	 * CARD TYPE CHECKED WITH IGNORECASE 
 	 * @param other
-	 * @return
+	 * 
+	 * @return boolean
 	 */
 	public boolean equalsSkipLeftEmpties(GWRTransactionLine other){
 		boolean pass = true;

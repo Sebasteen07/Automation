@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.utils;
 
 import static org.testng.Assert.fail;
@@ -73,8 +73,6 @@ public class EhcoreMongoDBUtils {
 
 	/**
 	 * CDM Message Verification:Pass the valid MessageGUID to check the canonical message list in mongoDB
-	 * 
-	 * @throws Exception
 	 */
 	public static SortedMap<String, String> checkCDMRetrieve(String msg_guid, String nodePath, String nodeName) throws Exception {
 

@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import static org.testng.Assert.assertEquals;
@@ -90,13 +90,12 @@ public class RestUtils {
 	public static List<String> patientDatails = new ArrayList<String>();
 
 	/**
-	 * Performs OAuth Get Request and saves the resposse
+	 * Performs OAuth Get Request and saves the response
 	 * 
 	 * @param strUrl           server Get url
 	 * @param responseFilePath path to save the response
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
+	 * 
+	 * @return String of GET request
 	 */
 	public static String setupHttpGetRequest(String strUrl, String responseFilePath)
 			throws IOException, InterruptedException {
@@ -154,10 +153,7 @@ public class RestUtils {
 	 * Reads the XML and checks asked Question if it complies
 	 * 
 	 * @param xmlFileName XML to check
-	 * @param Long        timestamp of a sent Question to check
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
+	 * @param timestamp of a sent Question to check
 	 */
 	public static void isQuestionResponseXMLValid(String xmlFileName, Long timestamp)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -216,10 +212,6 @@ public class RestUtils {
 	 * Reads the XML and checks REASON
 	 * 
 	 * @param xmlFileName XML to check
-	 * @param Long        timestamp of a sent Reason to check
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
 	 */
 	
 	public static String GetAppointmentId(String xmlFileName)
@@ -300,13 +292,10 @@ public class RestUtils {
 	}
 
 	/**
-	 * Reads the XML and checks Medication Details_
+	 * Reads the XML and checks Medication Details
 	 * 
 	 * @param xmlFileName XML to check
-	 * @param Long        timestamp of a sent Medication Name to check
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
+	 * @param medicationName
 	 */
 	public static void isMedicationDetailsResponseXMLValid(String xmlFileName, String medicationName)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -354,11 +343,8 @@ public class RestUtils {
 	 * @param from        sender of a message - external System ID
 	 * @param to          recipient of a Message - external Patient ID
 	 * @param subject     message subject
+	 * 
 	 * @return XML message as a String
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws TransformerException
 	 */
 	public static String prepareSecureMessage(String xmlFileName, String from, String to, String subject,
 			String messageID) throws ParserConfigurationException, SAXException, IOException, TransformerException {
@@ -472,8 +458,8 @@ public class RestUtils {
 	 * @param strUrl           server Post url
 	 * @param payload          Post payload
 	 * @param responseFilePath path to save the response
+	 * 
 	 * @return Processing Status header from Response
-	 * @throws IOException
 	 */
 	public static String setupHttpPostRequest(String strUrl, String payload, String responseFilePath)
 			throws IOException {
@@ -523,8 +509,9 @@ public class RestUtils {
 	 * 
 	 * @param oAuthKeySStorePath
 	 * @param oAuthProperty
-	 * @param responsePath
-	 * @throws Exception
+	 * @param appToken
+	 * @param username
+	 * @param password
 	 */
 	public static void oauthSetup(String oAuthKeySStorePath, String oAuthProperty, String appToken, String username,
 			String password) throws Exception {
@@ -591,9 +578,6 @@ public class RestUtils {
 	 * @param patientId   id of a patient to check
 	 * @param firstLine   first address line
 	 * @param secondLine  second address line
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
-	 * @throws IOException
 	 */
 	public static void isPatientUpdated(String xmlFileName, String patientId, String firstLine, String secondLine)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -726,8 +710,6 @@ public class RestUtils {
 					assertEquals(nlastName.getTextContent(), lastName.get(j),
 							"Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
 
-					// Addition of Gender, Ethnicity, Race, PreferredCommunication,
-					// PreferredLanguage
 					Node ngender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
 					Log4jUtil.log("Searching: Patient Gender:" + gender.get(j) + ", and Actual Patient Gedner is:"
 							+ ngender.getTextContent().toString());
@@ -807,9 +789,7 @@ public class RestUtils {
 							+ nlastName.getTextContent().toString());
 					assertEquals(nlastName.getTextContent(), lastName.get(j),
 							"Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
-
-					// Addition of Gender, Ethnicity, Race, PreferredCommunication,
-					// PreferredLanguage
+					
 					Node ngender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
 					Log4jUtil.log("Searching: Patient Gender:" + testData.patientDetailList.get(j + 1).getGender()
 							+ ", and Actual Patient Gedner is:" + ngender.getTextContent().toString());
@@ -884,17 +864,14 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param xmlFileName
 	 * @param parentNode
-	 * @param childNode
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws TransformerException
-	 * @throws ParseException
-	 * @throws DOMException
+	 * @param reason
+	 * @param subject
+	 * @param reply
+	 * @param appointment
+	 * 
+	 * @return String of XML
 	 */
 	public static String findValueOfChildNode(String xmlFileName, String parentNode, String reason, String subject,
 			String reply, String appointment) throws ParserConfigurationException, SAXException, IOException,
@@ -944,21 +921,16 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param xmlFileName
-	 * @param parentNode
-	 * @param childNode
-	 * @param attribute
+	 * @param app_req_id
+	 * @param From
+	 * @param To
+	 * @param subject
+	 * @param reply
 	 * @param updatedDateTime
 	 * @param createdDateTime
-	 * @param to
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws TransformerException
-	 * @throws ParseException
-	 * @throws DOMException
+	 * 
+	 * @return String of DOM
 	 */
 	public static String postAppointmentRequest(String xmlFileName, String app_req_id, String From, String To,
 			String createdDateTime, String updatedDateTime, String subject, String reply)
@@ -1010,10 +982,9 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param createdDateTime
+	 * 
 	 * @return scheduleDate
-	 * @throws ParseException
 	 */
 	private static String ScheduledDate(String createdDateTime) throws ParseException {
 		String scheduleDate = null;
@@ -1027,10 +998,9 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param createdDateTime
+	 * 
 	 * @return sentDate
-	 * @throws ParseException
 	 */
 	private static String SentDate(String createdDateTime) throws ParseException {
 		String sentDate = null;
@@ -1044,9 +1014,9 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param xmlFilePath
-	 * @return
+	 * 
+	 * @return String of XML file
 	 */
 	public static String fileToString(String xmlFilePath) {
 		IHGUtil.PrintMethodName();
@@ -1055,9 +1025,9 @@ public class RestUtils {
 	}
 
 	/**
+	 * @param fileName
 	 * 
-	 * @param xmlFilePath
-	 * @return
+	 * @return String of XML file
 	 */
 	public static String convertXMLFileToString(String fileName) {
 		IHGUtil.PrintMethodName();
@@ -1077,19 +1047,14 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param xmlFileName
 	 * @param parentNode
 	 * @param medication
 	 * @param rxSMSubject
+	 * @param rxSMBody
 	 * @param prescriptionPath
+	 * 
 	 * @return updatedXML
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws TransformerException
-	 * @throws ParseException
-	 * @throws DOMException
 	 */
 	public static String findValueOfMedicationNode(String xmlFileName, String parentNode, String medication,
 			String rxSMSubject, String rxSMBody, String prescriptionPath) throws ParserConfigurationException,
@@ -1153,20 +1118,15 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param prescriptionPath
-	 * @param getApt_req_id
+	 * @param getPrescription_id
 	 * @param medication_details
 	 * @param getCreatedDateTime
 	 * @param getUpdatedDateTime
 	 * @param rxSMSubject
-	 * @return
-	 * @throws ParseException
-	 * @throws DOMException
-	 * @throws TransformerException
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
+	 * @param rxSMBody
+	 * 
+	 * @return String of DOM
 	 */
 	private static String postMedicationRequest(String prescriptionPath, String getPrescription_id,
 			ArrayList<String> medication_details, String getCreatedDateTime, String getUpdatedDateTime,
@@ -1245,8 +1205,8 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param epoch
+	 * 
 	 * @return readGMTtime
 	 */
 	public static String readTime(long epoch) {
@@ -1259,13 +1219,9 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param xmlFileName
 	 * @param messageID
 	 * @param readdatetimestamp
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
 	 */
 	public static void isReadCommunicationMessage(String xmlFileName, String messageID, String readdatetimestamp)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -1301,10 +1257,10 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param tag
 	 * @param element
-	 * @return
+	 * 
+	 * @return String of node
 	 */
 	private static String getValue(String tag, Element element) {
 		NodeList nodes = element.getElementsByTagName(tag).item(0).getChildNodes();
@@ -1313,14 +1269,12 @@ public class RestUtils {
 	}
 
 	/**
-	 * 
 	 * @param strUrl
 	 * @param payload
 	 * @param responseFilePath
-	 * @return
-	 * @return
-	 * @throws IOException
-	 * @throws URISyntaxException
+	 * @param externalSystemID
+	 * 
+	 * @return String
 	 */
 	public static String setupHttpPostRequestExceptOauth(String strUrl, String payload, String responseFilePath,
 			String externalSystemID) throws IOException, URISyntaxException {
@@ -1419,12 +1373,9 @@ public class RestUtils {
 
 	}
 	/**
-	 * 
 	 * @param responsePath
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
+	 * 
+	 * @return boolean of whether or not it is completed
 	 */
 	public static boolean isCCDProcessingCompleted(String responsePath)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -1444,9 +1395,6 @@ public class RestUtils {
 	 * @param externalPatientID
 	 * @param firstname
 	 * @param medfusionID
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
 	 */
 	public static void isPatientAppeared(String responsePath, String externalPatientID, String medfusionID,
 			String firstname) throws ParserConfigurationException, SAXException, IOException {
@@ -1479,7 +1427,7 @@ public class RestUtils {
 	/**
 	 * Generate random String for Sig Code
 	 * 
-	 * @return
+	 * @return random string
 	 */
 	public static String generateRandomString() {
 		String CHAR_LIST = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -1494,9 +1442,6 @@ public class RestUtils {
 		return randStr.toString();
 	}
 
-	/**
-	 * 
-	 */
 	public static List<String> genrateRandomData(String SSN, String Email, String Gender) {
 		List<String> updatelist = new ArrayList<String>();
 		updatelist.add("FName" + random.nextInt(100));// FirstName
@@ -1532,11 +1477,7 @@ public class RestUtils {
 	 * @param xmlFileName
 	 * @param practicePatientId
 	 * @param list
-	 * @param insuredlist
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws ParseException
+	 * @param insuranceName
 	 */
 	public static void verifyPatientDetails(String xmlFileName, String practicePatientId, List<String> list,
 			String insuranceName) throws ParserConfigurationException, SAXException, IOException, ParseException {
@@ -1554,12 +1495,6 @@ public class RestUtils {
 				Node LastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				assertEquals(LastName.getTextContent(), list.get(1),
 						"Patient has different LastName than expected. LastName is: " + LastName.getTextContent());
-				/*
-				 * Node SSN = patient.getElementsByTagName(IntegrationConstants.SSN).item(0);
-				 * assertEquals(SSN.getTextContent(), list.get(7),
-				 * "Patient has different SSN than expected. Gender is: " +
-				 * SSN.getTextContent());
-				 */
 				Node Gender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
 				assertEquals(Gender.getTextContent(), list.get(8),
 						"Patient has different Gender than expected. Gender is: " + Gender.getTextContent());
@@ -1627,13 +1562,6 @@ public class RestUtils {
 					assertEquals(ChooseCommunication.getTextContent(), list.get(24),
 							"Patient has different ChooseCommunication than expected. ChooseCommunication is: "
 									+ ChooseCommunication.getTextContent());
-					/*
-					 * Node state =
-					 * patient.getElementsByTagName(IntegrationConstants.PROCESSING_STATE).item(0);
-					 * assertEquals(state.getTextContent(), list.get(25),
-					 * "Patient has different state than expected. state is: " +
-					 * state.getTextContent());
-					 */
 					// PRIMARY INSURANCE DETAILS
 					Log4jUtil.log("Checking Insurance PolicyNumber, Insurance Name");
 					Node cNode = patient.getElementsByTagName(IntegrationConstants.PRIMARYINSURANCE).item(0);
@@ -1675,18 +1603,6 @@ public class RestUtils {
 					assertEquals(SubscriberDateOfBirth.getTextContent(), birthdate,
 							"Patient has different SubscriberDateOfBirth than expected. SubscriberDateOfBirth is: "
 									+ SubscriberDateOfBirth.getTextContent());
-					/*
-					 * Node ClaimsPhone =
-					 * ele.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
-					 * assertEquals(ClaimsPhone.getTextContent(), list.get(14),
-					 * "Patient has different ClaimsPhone than expected. ClaimsPhone is: " +
-					 * ClaimsPhone.getTextContent()); Node SubscriberSocialSecurityNumber =
-					 * ele.getElementsByTagName(IntegrationConstants.SUBSCRIBERSSN).item(0);
-					 * assertEquals(SubscriberSocialSecurityNumber.getTextContent
-					 * (), list.get(15),
-					 * "Patient has different SubscriberSocialSecurityNumber than expected. SubscriberSocialSecurityNumber is: "
-					 * + SubscriberSocialSecurityNumber.getTextContent());
-					 */
 					Node GroupNumber = ele.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
 					assertEquals(GroupNumber.getTextContent(), list.get(17),
 							"Patient has different GroupNumber than expected. GroupNumber is: "
@@ -1698,15 +1614,12 @@ public class RestUtils {
 
 		}
 
-		// assertTrue(found, "Patient was not found in the response XML");
-
 	}
 
 	/**
 	 * 
 	 * @param dateString
-	 * @return
-	 * @throws ParseException
+	 * @return Date
 	 */
 	private static String convertDate(String dateString) throws ParseException {
 		SimpleDateFormat givenFormat = new SimpleDateFormat("dd/mm/yyyy");
@@ -1721,11 +1634,7 @@ public class RestUtils {
 	 * @param xmlFileName
 	 * @param practicePatientId
 	 * @param medfusionPatientID
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws TransformerException
+	 * @return String of DOM
 	 */
 	public static String prepareCCD(String xmlFileName, String practicePatientId, String medfusionPatientID)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
@@ -1741,15 +1650,10 @@ public class RestUtils {
 	}
 
 	/**
-	 * Generate Batch PIDC xml with unique values of Patient ExternalID , First Name
-	 * & Last Name
+	 * Generate Batch PIDC xml with unique values of Patient ExternalID , First Name & Last Name
 	 * 
 	 * @param xmlFileName
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws TransformerException
+	 * @return String of DOM
 	 */
 	public static String generateBatchPIDC(String xmlFileName)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
@@ -1796,7 +1700,7 @@ public class RestUtils {
 	 * remove the special characters from string and return normal string
 	 * 
 	 * @param specialDataString - Given string with special character
-	 * @return
+	 * @return String without special characters
 	 */
 	public static String escapeXml(String specialDataString) {
 		return specialDataString.replaceAll("&amp;", "&").replaceAll("&gt;", ">").replaceAll("&lt;", "<")
@@ -1806,10 +1710,12 @@ public class RestUtils {
 	/**
 	 * 
 	 * @param responsePath
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
+	 * @param patientAccountNumber
+	 * @param amt
+	 * @param CClastdig
+	 * @param CCtype
+	 * @param status
+	 * @param confirmationNumber
 	 */
 	public static void isPaymentAppeared(String responsePath, String patientAccountNumber, String amt, String CClastdig,
 			String CCtype, String status, String confirmationNumber)
@@ -1873,13 +1779,11 @@ public class RestUtils {
 	 * 
 	 * @param xmlFile
 	 * @param paymentID
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws TransformerException
+	 * @param amount
+	 * @param type
+	 * @return String of DOM
 	 */
-	public static String preparePayment(String xmlFile, String paymentID, String amonunt, String type)
+	public static String preparePayment(String xmlFile, String paymentID, String amount, String type)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFile);
@@ -1888,20 +1792,14 @@ public class RestUtils {
 		element.setAttribute(IntegrationConstants.ID, paymentID);
 		Node nodeType = element.getElementsByTagName(IntegrationConstants.PAYMENTTYPE).item(0);
 		nodeType.setTextContent(type);
-		if (amonunt != null) {
+		if (amount != null) {
 			Node nodeAmount = element.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
-			nodeAmount.setTextContent(amonunt);
+			nodeAmount.setTextContent(amount);
 		}
 		return domToString(doc);
 
 	}
 
-	/**
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
-	 * 
-	 */
 	public static void validateNode(String xmlFileName, String value, char nodeName, String patientID)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -2028,14 +1926,12 @@ public class RestUtils {
 	/**
 	 * 
 	 * @param xmlFileName
-	 * @param from
-	 * @param to
-	 * @param subject
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws TransformerException
+	 * @param newdata
+	 * @return String of DOM
+	 * @throws ParserConfigurationException If a parser configuration exception occurred
+	 * @throws SAXException If a SAX exception occurred
+	 * @throws IOException If an input or output exception occurred
+	 * @throws TransformerException If a transformer exception occurred
 	 */
 	public static String generateBatchAMDC(String xmlFileName, List<?> newdata)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
@@ -2046,7 +1942,6 @@ public class RestUtils {
 		for (int i = 0; i < pnode.getLength(); i++) {
 			Node node = doc.getElementsByTagName(IntegrationConstants.SECURE_MESSAGE).item(i);
 			Element elem = (Element) node;
-			// set random message id
 			long msgid = System.currentTimeMillis() / 100;
 			elem.setAttribute(IntegrationConstants.MESSAGE_ID,
 					elem.getAttribute(IntegrationConstants.MESSAGE_ID) + msgid + i);
@@ -2100,16 +1995,6 @@ public class RestUtils {
 				Log4jUtil.log("Checking Payment Amount & Card Last digit Information");
 				Node cNode = payment.getElementsByTagName(IntegrationConstants.PAYMENTINFO).item(0);
 				Element ele = (Element) cNode;
-				/*
-				 * Node amount = ele.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
-				 * assertEquals(amount.getTextContent(), "100.00",
-				 * "Payment has different amount than expected. Amount is: " +
-				 * amount.getTextContent()); Node digits =
-				 * ele.getElementsByTagName(IntegrationConstants.LASTDIGITS).item(0);
-				 * assertEquals(digits.getTextContent(), "1111",
-				 * "Payment has different last digit than expected. Amount is: " +
-				 * digits.getTextContent());
-				 */
 				Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
 				Log4jUtil.log("Searching: CC Type:" + "Visa" + ", and Actual CC Type is:"
 						+ ccType.getTextContent().toString());
@@ -2141,8 +2026,8 @@ public class RestUtils {
 	 * 
 	 * @param strUrl
 	 * @param responseFilePath
-	 * @throws IOException
-	 * @throws URISyntaxException
+	 * @throws IOException If an input or output exception occurred
+	 * @throws URISyntaxException If URI syntax exception occurred
 	 */
 	public static String setupHttpGetRequestExceptoAuth(String strUrl, String responseFilePath)
 			throws IOException, URISyntaxException {
@@ -2178,19 +2063,14 @@ public class RestUtils {
 
 		}
 		return null;
-
 	}
 
 	/**
 	 * 
 	 * @param xmlFileName
-	 * @param practicePatientId
-	 * @param firstName
-	 * @param lastName
-	 * @param patientID
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
+	 * @throws ParserConfigurationException If an parser configuration exception occurred
+	 * @throws SAXException If an SAX exception occurred
+	 * @throws IOException If an input or output exception occurred
 	 */
 	public static void checkPatientRegistered(String xmlFileName, List<String> updateData)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -2292,9 +2172,9 @@ public class RestUtils {
 	 * @param patientID
 	 * @param insuranceData
 	 * @param insurance_Name
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
+	 * @throws ParserConfigurationException If an parser configuration exception occurred
+	 * @throws SAXException If an SAX exception occurred
+	 * @throws IOException If an input or output exception occurred
 	 */
 
 	public static void verifyHealthPatientInsuranceDetails(String xmlFileName, String patientID,
@@ -2390,11 +2270,11 @@ public class RestUtils {
 	 * @param address1
 	 * @param address2
 	 * @param email
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws TransformerException
+	 * @return dom to string
+	 * @throws ParserConfigurationException If a parser configuration exception occurred
+	 * @throws SAXException If a SAX exception occurred
+	 * @throws IOException If an input or output exception occurred
+	 * @throws TransformerException If a transformer exception occurred
 	 */
 	public static String generatePIDCSpecialCharacter(String xmlFileName, String practicePatientId, String fName,
 			String mName, String lName, String address1, String address2, String email)
@@ -2436,14 +2316,13 @@ public class RestUtils {
 	/**
 	 * Verify recent CCD message in patient portal.
 	 * 
-	 * @param ccdDate          //actual CCD date displayed in patient portal
-	 * @param ccdSendTimestamp //POST CCD send timestamp
-	 * @return
-	 * @throws ParseException
+	 * @param ccdDate          actual CCD date displayed in patient portal
+	 * @param ccdSendTimestamp POST CCD send timestamp
+	 * @return boolean whether not date is found
+	 * @throws ParseException If a parser exception occurred
 	 */
 	public static boolean verifyCCDMessageDate(String ccdDate, long ccdSendTimestamp) throws ParseException {
 		IHGUtil.PrintMethodName();
-
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
 		Date requiredDate = sdf.parse(ccdDate);
 		Log4jUtil.log("Before Set TimeZone " + requiredDate.getTime());
@@ -2456,7 +2335,6 @@ public class RestUtils {
 			Log4jUtil.log("Recent CCD is not availble in patient Portal . Last CCD sent date & time is: " + ccdDate);
 			return false;
 		}
-
 	}
 
 	public static String getmonthstr(String month) {
@@ -2465,73 +2343,15 @@ public class RestUtils {
 		return monthString;
 	}
 
-	/*
-	 * public static String prepareMassAdminMessage(MassAdmin massAdmin) throws
-	 * ParserConfigurationException, SAXException, IOException, TransformerException
-	 * { IHGUtil.PrintMethodName(); String xmlFileName =
-	 * massAdmin.getMassAdminPayload(); if(xmlFileName == null) {
-	 * System.out.println("XML File name not Found"); } URL url =
-	 * ClassLoader.getSystemResource(xmlFileName); String fileName = url.getFile();
-	 * System.out.println("File Name: "+fileName); Document doc =
-	 * buildDOMXML(fileName);
-	 * 
-	 * //get message root element Node node =
-	 * doc.getElementsByTagName(IntegrationConstants.MASS_MESSAGE).item(0); Element
-	 * elem = (Element) node;
-	 * 
-	 * Node nFrom = elem.getElementsByTagName(IntegrationConstants.FROM).item(0);
-	 * Node nSubject =
-	 * elem.getElementsByTagName(IntegrationConstants.SUBJECT).item(0); Node
-	 * nMessage = elem.getElementsByTagName(IntegrationConstants.MESSAGE).item(0);
-	 * 
-	 * nFrom.setTextContent(massAdmin.getFrom());
-	 * nSubject.setTextContent("Mass Admin Message");
-	 * nMessage.setTextContent(massAdmin.getMessage());
-	 * 
-	 * Node nPatients =
-	 * elem.getElementsByTagName(IntegrationConstants.PATIENTS).item(0);
-	 * List<PatientDetails> patientDetailsList = massAdmin.getPatientDetailsList();
-	 * for (PatientDetails patientDetails : patientDetailsList) { // server elements
-	 * Element newPatient = doc.createElement(IntegrationConstants.PATIENT);
-	 * 
-	 * String no1 = String.valueOf(fourDigitRandom()) +
-	 * String.valueOf(fourDigitRandom()); String no2 =
-	 * String.valueOf(fourDigitRandom()); String no3 =
-	 * String.valueOf(fourDigitRandom()); String no4 =
-	 * String.valueOf(fourDigitRandom()); String no5 =
-	 * String.valueOf(fourDigitRandom()) + String.valueOf(fourDigitRandom()) +
-	 * String.valueOf(fourDigitRandom());
-	 * 
-	 * String messageid = no1+"-"+no2+"-"+no3+"-"+no4+"-"+no5;
-	 * System.out.println("Messageid: "+messageid);
-	 * newPatient.setAttribute(IntegrationConstants.MESSAGE_ID, messageid);
-	 * 
-	 * Element practicePatientId =
-	 * doc.createElement(IntegrationConstants.PRACTICE_PATIENT_ID);
-	 * practicePatientId.appendChild(doc.createTextNode(patientDetails.getPatient())
-	 * ); newPatient.appendChild(practicePatientId);
-	 * 
-	 * Element params = doc.createElement("Params"); Element param =
-	 * doc.createElement("Param"); Element name = doc.createElement("Name"); Element
-	 * value = doc.createElement("Value");
-	 * name.appendChild(doc.createTextNode("PATIENT.FIRSTNAME"));
-	 * value.appendChild(doc.createTextNode(patientDetails.getPatientName()));
-	 * param.appendChild(name); param.appendChild(value);
-	 * 
-	 * params.appendChild(param); newPatient.appendChild(params);
-	 * 
-	 * nPatients.appendChild(newPatient); } return domToString(doc); }
-	 */
-
 	/**
 	 * Checks if the patient statement delivery preference is correct
 	 * 
 	 * @param xmlFileName response xml path
 	 * @param MFId        is id of a patient to check
 	 * @param Pref        is Statement Delivery Preference selected by patient
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
-	 * @throws IOException
+	 * @throws SAXException If a SAX exception occurred
+	 * @throws ParserConfigurationException If a parser configuration exception occurred
+	 * @throws IOException If an input or output exception occurred
 	 */
 	public static void isStatementPreferenceCorrect(String xmlFileName, String MFId, String Pref)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -2566,10 +2386,10 @@ public class RestUtils {
 	 * @param extId       - external Patient ID
 	 * @param Pref        - Statement Preference
 	 * @return XML message as a String
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws TransformerException
+	 * @throws ParserConfigurationException If a parser configuration exception occurred
+	 * @throws IOException If an input or output exception occurred
+	 * @throws SAXException If a SAX exception occurred
+	 * @throws TransformerException If a transformer exception occurred
 	 */
 	public static String preparePostStatementPreference(String xmlFileName, String MFId, String extId, String Pref)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
@@ -3219,10 +3039,8 @@ public class RestUtils {
 					ArrayList<String> names = new ArrayList<String>(Arrays.asList(external.getTextContent()));
 					for (int n = 0; n < names.size(); n++) {
 						if (names.get(n).contains(externalID)) {
-							// Log4jUtil.log("Elements are in the condition "+names.get(n));
 							Node Formname = ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
 							Element Forms = (Element) Formname;
-							Node FormURL = Forms.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR).item(2);
 							NodeList KeyValuePairList = doc.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR);
 							for (int m = 0; i < KeyValuePairList.getLength(); m++) {
 								Node FormTypeValue = Forms.getElementsByTagName(IntegrationConstants.VALUE).item(m);

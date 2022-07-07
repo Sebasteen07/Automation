@@ -310,7 +310,6 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	/**
 	 * @return proper gender or null if not specified
-	 * @throws InterruptedException 
 	 */
 	public Patient.GenderExtended getGender() throws InterruptedException {
 		Thread.sleep(2000);
