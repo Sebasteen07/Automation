@@ -1122,7 +1122,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		logStep("Set Test Data from Property file");
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
-		SendDirectMessageUtilsObj.sendSecureDirectMessage(driver, "xml");
+		SendDirectMessageUtilsObj.sendSecureDirectMessage(driver, "xml",newToken);
 	}
 
 	@Test(enabled = true, dataProvider = "attachmentType", groups = {
@@ -1133,7 +1133,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		logStep("Set Test Data from Property file ");
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
-		SendDirectMessageUtilsObj.sendSecureDirectMessage(driver, typeOfAttachmentUsed);
+		SendDirectMessageUtilsObj.sendSecureDirectMessage(driver, typeOfAttachmentUsed,newToken);
 	}
 
 	@DataProvider(name = "channelVersionPIDC")
@@ -1523,7 +1523,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		logStep("Post New Secure Message ");
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
-		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, "xml");
+		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, "xml",newToken);
 
 		P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
 
@@ -1567,7 +1567,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
 
-		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, attachment);
+		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, attachment,newToken);
 		P2PUnseenMessageListObject.verifyUnseenMessage(testData);
 
 	}
@@ -1683,7 +1683,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		logStep("Post New Secure Message ");
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
-		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, "none");
+		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, "none",newToken);
 
 		logStep("Check for new Unseen Message ");
 		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
@@ -1728,7 +1728,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		logStep("Post New Read Secure Message ");
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
-		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, "none");
+		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, "none",newToken);
 		String subject1 = testData.Subject;
 		log("subject1 " + subject1);
 
@@ -1742,7 +1742,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("msgUid is " + msgUid);
 
 		logStep("Post New Unread Secure Message ");
-		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, "none");
+		SendDirectMessageUtilsObj.postSecureMessage(driver, testData, "none",newToken);
 		String subject2 = testData.Subject;
 		log("subject2 " + subject2);
 		logStep("Check for new Unseen Message 2 ");
@@ -1762,7 +1762,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		logStep("unread messageURL 2 : " + messageUpdateURL2);
 
 		logStep("Post  message to Update message Status to READ");
-		RestUtils.setupHttpPostRequest(messageUpdateURL1, " ", testData.ResponsePath);
+		RestUtils.setupHttpPostRequestWithOauthToken(messageUpdateURL1, " ", testData.ResponsePath,newToken);
 
 		logStep("Post Read message to delete with message Status as DELETE");
 		messageUpdateURL1 = messageUpdateURL1.replaceAll("status/READ", "delete");
