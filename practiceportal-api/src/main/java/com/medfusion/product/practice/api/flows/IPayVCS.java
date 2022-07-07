@@ -14,10 +14,6 @@ import com.medfusion.product.practice.api.pojo.VCSPaymentInfo;
 public interface IPayVCS {
 	/**
 	 * Simple VCS payment using infos, requires driver and infos
-	 * 
-	 * @return
-	 * @throws Exception
-	 * @throws InterruptedException
 	 */
 	public boolean simplePay(WebDriver driver, Practice practiceInfo, VCSPaymentInfo paymentInfo) throws InterruptedException;
 }

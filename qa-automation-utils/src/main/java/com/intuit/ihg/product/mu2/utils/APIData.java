@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.mu2.utils;
 
 import java.net.URL;
@@ -10,11 +11,6 @@ public class APIData {
 	APITestData apiobj = null;
 	ExcelSheetReader excelReader = null;
 
-	/**
-	 * 
-	 * @param sitegen
-	 * @throws Exception
-	 */
 	public APIData(APITestData getData) throws Exception {
 
 		// which enviroment data need to picked

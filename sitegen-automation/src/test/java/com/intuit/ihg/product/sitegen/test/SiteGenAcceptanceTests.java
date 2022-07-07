@@ -1,4 +1,4 @@
-//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.test;
 
 import static org.testng.Assert.assertFalse;
@@ -57,7 +57,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author:-bkrishnankutty
 	 * @Date:-6/9/2013
 	 * @User Story ID in Rally : US6142
@@ -92,7 +91,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author:-bkrishnankutty
 	 * @Date:-6/12/2013
 	 * @User Story ID in Rally :US6144
@@ -143,7 +141,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author:-bkrishnankutty
 	 * @Date:-6/18/2013
 	 * @User Story ID in Rally : US6145
@@ -236,7 +233,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @author phajek Run testPhysician as non-SU and check if activating is
 	 *         disabled
 	 */
@@ -247,7 +243,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @author phajek Run testPhysician as SU and check if activating is enabled
 	 */
 
@@ -257,7 +252,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author:-bkrishnankutty
 	 * @Date:- 6-21-2013
 	 * @User Story ID in Rally : US6146
@@ -271,7 +265,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    <p>
 	 *                    === Test will only work in DEMO ,In DEV3 is having a bug
 	 *                    in application
-	 * @AreaImpacted :- Description
 	 */
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -318,7 +311,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author:-bkrishnankutty
 	 * @Date:- 6-21-2013
 	 * @User Story ID in Rally : US6153 && US6154
@@ -342,7 +334,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    === Prerequisite for the test case to run=========
 	 *                    EXTERNAL_SYSTEM = "Allscripts Practice Management System"
 	 *                    Should be there for the Integration Engine testcase to run
-	 * @AreaImpacted :- Description
 	 */
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -409,7 +400,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author:-bbinisha
 	 * @Date :- 07-03-2013
 	 * @UserStory ID in Rally : US6150
@@ -452,7 +442,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author:-bbinisha
 	 * @Date :- 07-03-2013
 	 * @UserStrory ID in Rally : US6407
@@ -508,25 +497,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author:-bkrishnankutty
 	 * @Date:-7/8/2013
-	 * @User Story ID in Rally : US6148 & US6147
-	 * @StepsToReproduce: ===######Export Staff#####===== Go to siteGen Enter the
-	 *                    credentials Search for the practice Click on
-	 *                    Physician/Providers Click on Export Personel Click on
-	 *                    Export Staff Click on Downloaded Export File Assert if
-	 *                    "csv file should be downloaded with the information"
-	 *                    <p>
-	 *                    ===######Import Staff#####===== Go to siteGen Enter the
-	 *                    credentials Search for the practice Click on
-	 *                    Physician/Providers Click on import personnel and
-	 *                    physicians Select the file that need to be imported Assert
-	 *                    the information in the file
-	 *                    <p>
-	 *                    <p>
-	 *                    =============================================================
-	 * @AreaImpacted :- Description
 	 */
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)

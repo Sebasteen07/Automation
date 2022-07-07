@@ -1,4 +1,4 @@
-//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.forms.test;
 
 import static org.testng.Assert.assertEquals;
@@ -39,7 +39,6 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	/**
 	 * Tect Case in TestLink: MF-1265
 	 *
-	 * @throws Exception
 	 * @author phajek
 	 * @Date: 13/02/2015 StepsToReproduce: logStep in to SG as SU Go to Forms Config
 	 *        Unpublish all forms Delete all forms Search and add a new Calculated

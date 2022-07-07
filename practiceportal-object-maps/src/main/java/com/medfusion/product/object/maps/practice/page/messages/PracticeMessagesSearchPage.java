@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.messages;
 
 import java.util.List;
@@ -80,8 +81,6 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 
 	/**
 	 * Searches for all messages related to Virtual Office Visit.
-	 * 
-	 * @throws InterruptedException
 	 */
 	public void searchForVirtualOfficeVisitMessages() throws InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -98,7 +97,6 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 	 * @param lastNameText the last name of the patient
 	 * @param subjectText the subject to search against
 	 * @param statusText the visible status in the select box of the message
-	 * @throws InterruptedException
 	 */
 	private void executeSearch(String serviceType, String firstNameText, String lastNameText, String subjectText, String statusText) throws InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -151,8 +149,8 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 	 * Finds the message from the message search list that contains in the subject the text supplied as an argument.
 	 * 
 	 * @param subjectText unique subject text to identify the message
+	 * 
 	 * @return PracticeMessage or null if nothing is found
-	 * @throws InterruptedException
 	 */
 	public PracticeMessagePage retrieveMessage(String subjectText) throws InterruptedException {
 		IHGUtil.PrintMethodName();

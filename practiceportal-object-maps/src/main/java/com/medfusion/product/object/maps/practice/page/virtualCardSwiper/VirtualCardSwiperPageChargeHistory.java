@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.virtualCardSwiper;
 
 import java.util.List;
@@ -111,11 +112,6 @@ public class VirtualCardSwiperPageChargeHistory extends BasePageObject {
 		return driver.getPageSource().contains("$" + amount + ".00");
 	}
 
-	/**
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	public String getBillDetails(String amont) throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(8000);
