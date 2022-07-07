@@ -4,6 +4,7 @@ package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 import static org.testng.Assert.assertFalse;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -21,7 +22,7 @@ public class MedicationsConfirmationPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "additional-comment")
 	private WebElement textComment;
 
-	@FindBy(how = How.XPATH, using = "//button[text()=' Confirm ']")
+	@FindBy(how = How.XPATH, using = "//button[.=' Confirm '] | //span[.='  Confirm ']")
 	private WebElement btnConfirm;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='form-buttons ng-scope']/button[@type='button']")
@@ -49,8 +50,9 @@ public class MedicationsConfirmationPage extends BasePageObject {
 	private WebElement txtPharamcyName;
 
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
-		scrollAndWait(0, 1500, 10);
-		Thread.sleep(5000);
+		Actions action=new Actions(driver);
+		action.moveToElement(btnConfirm).build().perform();
+		IHGUtil.waitForElement(driver, 20, btnConfirm);
 		javascriptClick(btnConfirm);
 		log("It Clicked on confirm button");
 		IHGUtil.waitForElement(driver, 20, confirmPopup);

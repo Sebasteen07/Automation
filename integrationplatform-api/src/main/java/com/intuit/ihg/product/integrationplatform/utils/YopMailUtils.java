@@ -7,6 +7,7 @@ import java.util.Set;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -43,6 +44,9 @@ public class YopMailUtils extends MedfusionPage{
 	@FindBy(how = How.XPATH, using = "//div[.='Complete the CAPTCHA to continue']")
 	private WebElement recaptchaPopup;
 
+	@FindBy(how = How.XPATH, using = "//p[contains(.,'YOPmail is in the first category')]")
+	private WebElement yopmailPageBottom;
+	
 	public YopMailUtils(WebDriver driver, String url) {
 	    super(driver, url);
 	}
@@ -54,19 +58,40 @@ public class YopMailUtils extends MedfusionPage{
 	public boolean isTextVisible(String text) {
 		return driver.findElement(By.xpath("// body[@class='bodyinbox yscrollbar']//div[contains(text(),'" + text + "')]")).isDisplayed();
 	}
-
+	
+	public void actionMoveTo(WebElement element) {
+	log("Move to elements with action:"+element);
+	Actions action= new Actions(driver);
+	action.moveToElement(element).build().perform();
+	}
+	
 	public String getLinkFromEmail(String username, String emailSubject, String findInEmail, int retries)
 		throws InterruptedException {
 		this.driver.get(YOPMAIL_URL);
+		try {
 		mailIdTextBox.clear();
+		}
+		catch (Exception e) {
+			log("exception is  : "+e);
+		}
+		actionMoveTo(yopmailPageBottom);
+		
+			
+		Thread.sleep(5000);
+		
+		actionMoveTo(goToMailbox);
+		
+		log("Mail Id is : "+username);
 		mailIdTextBox.sendKeys(username);
+	
 		try {
 		if (goToMailbox.isDisplayed()) {
 			log("Mailbox search button is present in the Yopmail UI.");
+			actionMoveTo(goToMailbox);
 			goToMailbox.click();
 		}
 		}catch (Exception e) {
-			log(e.getMessage());
+			log("search button not found.."+e.getMessage());
 		}		
 
 		try {
@@ -106,7 +131,7 @@ public class YopMailUtils extends MedfusionPage{
 					return this.driver.getCurrentUrl();
 				}
 			} catch (Exception e) {
-				log("Exception found: " + e.getMessage());
+				log("Exception found: " + e);
 			}
 			logAttemptAndSleep(j, retries);
 			driver.navigate().refresh();

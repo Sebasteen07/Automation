@@ -2315,7 +2315,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					RestUtils.setupHttpGetRequest(getURL + "?since=" + since + ",0", testData.responsePath_CCD1_FE);
 					log("Verify updated GI/SO values in Get CcdExchangeBatch API call response");
 					RestUtils.verifyEGQUpdatedValuesInCCDExchangeBatch(testData.responsePath_CCD1_FE, updatedValue,
-							dropValue);
+							dropValue,"v2");
 					log("Do a Get PIDC API call");
 					String responseCode = RestUtils.setupHttpGetRequestWithEmptyResponse(
 							testData.preCheckGetPIDC + "?since=" + since + ",0", testData.responsePDFBatch_FE);
@@ -2327,12 +2327,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					}
 					if (k == 0 && i == 1) {
 						log("Verify no-updates for GI/SO values in Get PIDC v1 API call response");
+						Thread.sleep(1000);
 						String getpidcUrlv1 = testData.preCheckGetPIDC;
 						getpidcUrlv1 = getpidcUrlv1.replaceAll("v2", "v1");
-						String responseCodeValue = RestUtils.setupHttpGetRequestWithEmptyResponse(
+						RestUtils.setupHttpGetRequestWithEmptyResponse(
 								getpidcUrlv1 + "?since=" + since + ",0", testData.responsePDFBatch_FE);
-						assertTrue(responseCodeValue.equalsIgnoreCase("204"), "get pidc v1 api call without 204");
-
+						RestUtils.verifyEGQUpdatedValuesInCCDExchangeBatch(testData.responsePath_CCD1_FE, updatedValue,
+								dropValue,"v1");
 					}
 					Thread.sleep(4000);
 				}
@@ -3540,7 +3541,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			// do the call and save xml, ",0" is there because of the since
 			// attribute format
 			Thread.sleep(4000);
-			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 			logStep("Checking validity of the response xml");
 
 			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails,
@@ -3558,15 +3559,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("SigCodeMeaning :" + SigCodeMeaning);
 
 			logStep("Do Message Post Request" + postXML);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML,
-					testData.getResponsePath());
+			String processingUrl = RestUtils.setupHttpPostRequestWithOauthToken(testData.getRestUrl(), postXML,
+					testData.getResponsePath(),newToken);
 
 			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
 				Thread.sleep(120000);
-				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				RestUtils.setupHttpGetRequestOauthToken(processingUrl, testData.getResponsePath(),newToken);
 				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 					completed = true;
 					break;
@@ -3586,8 +3587,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			// do the call and save xml, ",0" is there because of the since
 			// attribute format
 			Thread.sleep(4000);
-			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0",
-					testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 			logStep("Checking validity of the response xml");
 
 			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails,
@@ -3610,15 +3610,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Prescription ID: " + prescriptionId);
 
 			logStep("Do Message Post Request" + postXML);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestV3Url(), postXML,
-					testData.getResponsePath());
+			String processingUrl =RestUtils.setupHttpPostRequestWithOauthToken(testData.getRestUrl(), postXML,
+					testData.getResponsePath(),newToken);
 
 			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
 				Thread.sleep(120000);
-				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				RestUtils.setupHttpGetRequestOauthToken(processingUrl, testData.getResponsePath(),newToken);
 				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 					completed = true;
 					break;
@@ -3692,7 +3692,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			String getStatusV3Url = testData.getRestV3Url().replaceAll("prescriptions", "prescriptionsHeaders");
 			log("getStatusUrl  :" + getStatusV3Url);
 			Thread.sleep(4000);
-			RestUtils.setupHttpGetRequest(getStatusV3Url + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(getStatusV3Url + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 			logStep("Verify PrescriptionHeader ID");
 			String PrescriptionHeaderID = RestUtils.getPrescriptionHeaderID(testData.getResponsePath());
 			log("Prescription ID: " + prescriptionId + "Prescription Header ID: " + PrescriptionHeaderID);

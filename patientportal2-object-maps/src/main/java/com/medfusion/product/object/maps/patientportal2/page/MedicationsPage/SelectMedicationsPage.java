@@ -40,7 +40,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 	@FindBy(how=How.XPATH,using="//div/div/div[.='Choose a medication']/../div[2]/input")
 	private WebElement chooseMedicationTextField;
 	
-	@FindBy(how=How.XPATH,using="//span[.='D-Biotin 2.5 mg Tab']")
+	@FindBy(how=How.XPATH,using="//span[.='Acarbose 100 mg Tab']")
 	private WebElement chooseFirstMedicationTextField;
 	
 	@FindBy(how=How.XPATH,using="//div[@class='form-buttons ng-scope']/button[@type='button']")
@@ -80,7 +80,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 			else {
 				log(chooseMedicationTextField+"   send");	
 				driver.switchTo().defaultContent();
-				chooseMedicationTextField.sendKeys("D-Biotin 2.5 mg Tab");
+				chooseMedicationTextField.sendKeys("Acarbose 100 mg Tab");
 				IHGUtil.waitForElement(driver, 5, chooseFirstMedicationTextField); 
 				chooseFirstMedicationTextField.click();
 			}

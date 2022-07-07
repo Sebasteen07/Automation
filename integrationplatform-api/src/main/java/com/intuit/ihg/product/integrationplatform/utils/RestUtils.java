@@ -2,6 +2,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
@@ -3693,25 +3694,37 @@ public class RestUtils {
 		}
 	}
 
-	public static void verifyEGQUpdatedValuesInCCDExchangeBatch(String responsepath, String EGQValue, char EGQType)
+	public static void verifyEGQUpdatedValuesInCCDExchangeBatch(String responsepath, String EGQValue, char EGQType, String version)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsepath);
 		if (EGQType == 'I') {
+			if(version.equalsIgnoreCase("v2")) {
 			Node GenderIdentity = doc.getElementsByTagName(IntegrationConstants.GENDERIDENTITY).item(0);
 			Element GenderIdentityEle = (Element) GenderIdentity;
 			Node EGQGINode = GenderIdentityEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
 			Log4jUtil.log("GI node value= " + EGQGINode.getTextContent() + "   EGQValue = " + EGQValue);
 			assertTrue(EGQGINode.getTextContent().trim().equalsIgnoreCase(EGQValue),
 					"Value mismatched");
+			}
+			else if(version.equalsIgnoreCase("v1")) {
+					Node GenderIdentity= doc.getElementsByTagName(IntegrationConstants.GENDERIDENTITY).item(0);
+					assertNull(GenderIdentity.getNodeValue());
+			}
 		}
 		if (EGQType == 'S') {
+			if(version.equalsIgnoreCase("v2")) {
 			Node SexualOrientation = doc.getElementsByTagName(IntegrationConstants.SEXUALORIENTATION).item(0);
 			Element SexualOrientationEle = (Element) SexualOrientation;
 			Node EGQSONode = SexualOrientationEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
 			Log4jUtil.log("SO node value = " + EGQSONode.getTextContent() + "   EGQValue = " + EGQValue);
 			assertTrue(EGQSONode.getTextContent().trim().equalsIgnoreCase(EGQValue),
 					"Value mismatched");
+			}
+			else if(version.equalsIgnoreCase("v1")) {
+					Node SexualOrientation = doc.getElementsByTagName(IntegrationConstants.SEXUALORIENTATION).item(0);
+					assertNull(SexualOrientation.getNodeValue());
+			}
 		}
 	}
 
@@ -4119,7 +4132,7 @@ public class RestUtils {
 				Element ele = (Element) nodes.item(i).getParentNode();
 				Node nDosage = ele.getElementsByTagName(IntegrationConstants.DOSAGE_TAG).item(0);
 				Node additionalCommentNode =ele.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
-				assertEquals(nDosage.getTextContent(), JalapenoConstants.DOSAGE,
+				assertEquals(nDosage.getTextContent().toUpperCase(), JalapenoConstants.DOSAGE,
 						"The actual value of dosage doesnt equal the expected value");
 				assertEquals(additionalCommentNode.getTextContent(),additionalComment,"The actual value of Additional commnet doesnt equal the expected value");
 				found = true;

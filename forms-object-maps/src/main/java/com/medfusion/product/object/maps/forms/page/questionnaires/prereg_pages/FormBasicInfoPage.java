@@ -2,6 +2,7 @@
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -78,7 +79,10 @@ public class FormBasicInfoPage extends PortalFormPage {
 
 	@FindBy(className = "save")
 	private WebElement save;
-
+	
+	@FindBy(xpath = "//button[contains(.,'Keep me signed in')]")
+	private WebElement stayLoggedInButton;
+	
 	public void setStreetAddress() throws Exception {
 		PortalUtil2.PrintMethodName();
 
@@ -297,5 +301,13 @@ public class FormBasicInfoPage extends PortalFormPage {
 		WebElement w1 = driver.findElement(By.xpath("//iframe[@title='Forms']"));
 		driver.switchTo().frame(w1);
 	}
-
+	
+	public void javascriptClick(WebElement element){
+		if(IHGUtil.waitForElement(driver, 5, stayLoggedInButton)) {
+			log("Session timeout popup opened.");
+			stayLoggedInButton.click();
+		}
+	    JavascriptExecutor ex = (JavascriptExecutor)driver;
+	    ex.executeScript("arguments[0].click();", element);
+	}
 }

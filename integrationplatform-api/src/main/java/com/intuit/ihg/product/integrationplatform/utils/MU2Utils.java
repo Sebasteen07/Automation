@@ -237,7 +237,8 @@ public class MU2Utils {
 								break;
 
 						} else {
-							Log4jUtil.log("Resource type is not matching..");
+							Log4jUtil.log("Resource type is not matching.Values to be found in xml:" 
+						+"resourceType-->" +resourceType+"action-->"+action+"patientid-->"+patientExternalId+"fn-->"+firstName+"ln-->"+lastName);
 						}
 					} else {
 						Log4jUtil.log(recordedTimeStamp + " is less than " + timeStamp);
