@@ -1,4 +1,4 @@
-//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.forms.test;
 
 import static com.intuit.ihg.product.forms.test.Utils.loginPI;
@@ -15,7 +15,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.medfusion.common.utils.EncryptionUtils;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.CustomFormPageSection;
@@ -75,7 +74,7 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		driver.switchTo().defaultContent();
 		homePage.clickOnLogout();
 		logStep("Test if the DOB has not been changed");
-		homePage = loginPI(driver, PracticeType.SECONDARY, patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()), testData);
+		homePage = loginPI(driver, PracticeType.SECONDARY, patient.getUsername(), patient.getPassword(), testData);
 		assertTrue(homePage.areMenuElementsPresent());
 		JalapenoMyAccountProfilePage pMyAccountPage = homePage.clickOnAccount().clickOnEditMyAccount();
 		assertEquals(pMyAccountPage.getDOByear(), patient.getDOBYear());
@@ -88,7 +87,7 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		HealthFormListPage healthFormListPage = Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData);
 		testFormPracticePortal(healthFormListPage, testData.getProperty("practice.url"),
 				testData.getProperty("practice.username2"),
-				EncryptionUtils.decrypt(testData.getProperty("practice.password2")));
+				testData.getProperty("practice.password2"));
 	}
 
 	@Test(groups = { "Forms" })
@@ -96,7 +95,7 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		HealthFormListPage healthFormListPage = Utils.loginPIAndOpenFormsList(driver, PracticeType.SECONDARY, testData);
 		testPartiallyCompletedForm(healthFormListPage, testData.getProperty("practice.url"),
 				testData.getProperty("practice.username2"),
-				EncryptionUtils.decrypt(testData.getProperty("practice.password2")));
+				testData.getProperty("practice.password2"));
 	}
 
 	/**
@@ -111,7 +110,7 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 	public void testDiscreteFormDeleteCreatePublishPI() throws Exception {
 		String newFormName = SitegenConstants.DISCRETEFORMNAME;
 		String welcomeMessage = createFormSG(testData.getProperty("sitegen.username1"),
-				EncryptionUtils.decrypt(testData.getProperty("sitegen.password1")), newFormName);
+				testData.getProperty("sitegen.password1"), newFormName);
 
 		logStep("create patient and logStep in to PI");
 		JalapenoHomePage home = Utils.createAndLoginPatientPI(driver, testData, PracticeType.PRIMARY);
@@ -131,7 +130,7 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 
 		testFormPatientDashboard(homePage.clickOnHealthForms(), patient, testData.getProperty("practice.url"),
 				testData.getProperty("practice.username2"),
-				EncryptionUtils.decrypt(testData.getProperty("practice.password2")));
+				testData.getProperty("practice.password2"));
 	}
 
 	/**
@@ -170,7 +169,7 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenSteps().logInUserToSG(driver,
 				testData.getProperty("sitegen.username2"),
-				EncryptionUtils.decrypt(testData.getProperty("sitegen.password2")));
+				testData.getProperty("sitegen.password2"));
 
 		logStep("Click on Patient Forms");
 		DiscreteFormsList pManageDiscreteForms = pSiteGenPracticeHomePage.clickLnkDiscreteForms();
