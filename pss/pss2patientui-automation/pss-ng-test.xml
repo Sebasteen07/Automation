@@ -4,10 +4,10 @@
 	<test thread-count="5" name="Test">
 		<classes>
 			<class
-				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests09_CareTeam">
+				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 				<methods>
 
-					<include name="testCareTeam_BasicCareTeam_NG()" />
+					<include name="testCancelE2ETestingNG()" />
 
 				</methods>
 			</class>
