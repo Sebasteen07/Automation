@@ -2776,3 +2776,19 @@ Feature: Test fuctionality of Appointment precheck
     And I received curbside message on email and confirm arrival
     And I verify curbside confirmation links shows you have already arrived when patient again trying to confirm from mail
     And logout from practice provisioning portal
+
+  Scenario: To verify if system allows to do precheck after associating active/inactive appointment type for IMH & MEdfusion form
+    When logout from practice provisioning portal
+    And I login to practice
+    And I associate appointment type
+    And I schedule an appointment for associated appointment type
+    Then I verify while doing precheck associated appointment type should be display
+    And logout from practice provisioning portal
+
+  Scenario: To verify if system allows to do precheck after associating active/inactive appointment type for IMH & MEdfusion form
+    When logout from practice provisioning portal
+    And I login to new practice
+    And I associate appointment type for new practice
+    And I schedule an appointment for associated appointment type for new practice
+    Then I verify while doing precheck associated appointment type should be display for new practice
+    And logout from practice provisioning portal
