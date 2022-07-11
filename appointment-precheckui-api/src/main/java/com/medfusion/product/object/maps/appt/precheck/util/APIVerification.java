@@ -81,14 +81,14 @@ public class APIVerification extends BaseTestNGWebDriver {
 		long time = response.time();
 		log("Response time " + time);
 		ValidatableResponse valRes = response.then();
-		valRes.time(Matchers.lessThan(80000L));
+		valRes.time(Matchers.lessThan(100000L));
 	}
 
 	public void responseTimeValidationDailyAggregation(Response response) {
 		long time = response.time();
 		log("Response time " + time);
 		ValidatableResponse valRes = response.then();
-		valRes.time(Matchers.lessThan(80000L));
+		valRes.time(Matchers.lessThan(100000L));
 	}
 
 	public void verifyInvalidLanguage(Response response) throws IOException {
@@ -1307,7 +1307,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
 		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
-		assertEquals(js.get("pssSettings.enabled"), pssSetting, "PSS Setting was incorrect");
+		assertEquals(js.getString("pssSettings.enabled"), pssSetting, "PSS Setting was incorrect");
 	}
 
 	public void verifyCreateSetting(Response response, String practiceId) throws IOException {
