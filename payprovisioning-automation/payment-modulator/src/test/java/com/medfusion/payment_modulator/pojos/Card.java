@@ -199,4 +199,25 @@ public class Card {
 			cardmap.put("accountHolderLastName", AccountHolderLastName);
 			return cardmap;
 		}
+
+		public static Map<String, Object> getCardsListForInstaMedDigitalWallet(String mmid, String defaultPaymentMethod, String patientUrn,
+																		  String accountAlias, String accountHolderFirstName,
+																		  String accountHolderLastName, String accountType,
+																		  String accountNumber, String routingNumber){
+			Map<String, Object> wallet = new HashMap<String, Object>();
+			wallet.put("mmid", mmid);
+			wallet.put("defaultPaymentMethod", defaultPaymentMethod);
+			wallet.put("patientUrn", patientUrn);
+
+			Map<String, Object> account = new HashMap<String, Object>();
+			account.put("bankAccountAlias", accountAlias);
+			account.put("bankAccountHolderFirstName", accountHolderFirstName);
+			account.put("bankAccountHolderLastName", accountHolderLastName);
+			account.put("bankAccountType", accountType);
+			account.put("bankAccountNumber", accountNumber);
+			account.put("bankRoutingNumber", routingNumber);
+			wallet.put("account", account);
+
+			return wallet;
+		}
 }

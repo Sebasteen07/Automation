@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.apptrequest;
 
 import java.text.SimpleDateFormat;
@@ -101,8 +101,6 @@ public class ApptRequestSearchPage extends BasePageObject {
 
 	/**
 	 * Searches for requests using default options on the page. Call the getApptDetails method to access the search results.
-	 * 
-	 * @throws InterruptedException
 	 */
 	public void searchForApptRequests() throws InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -141,8 +139,6 @@ public class ApptRequestSearchPage extends BasePageObject {
 	/**
 	 * Searches for requests using default options on the page. Also sets the to and from month value same - Effectively searching only for the day's appointments
 	 * Call the getApptDetails method to access the search results.
-	 * 
-	 * @throws InterruptedException
 	 */
 	public void searchForApptRequestsForToday() throws InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -170,7 +166,6 @@ public class ApptRequestSearchPage extends BasePageObject {
 	 * @param requestStatus as defined in ApptRequestStatus public fields
 	 * @param providerText the visible text option in the select box
 	 * @param locationText the visible text option in the select box
-	 * @throws InterruptedException
 	 */
 	public void searchForApptRequests(int requestStatus, String providerText, String locationText) throws InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -259,10 +254,7 @@ public class ApptRequestSearchPage extends BasePageObject {
 	 * 
 	 * @param subjectSubString unique sub-string from the subject of the request to filter on
 	 * 
-	 * @return the Appt Request detail page if found or null if not found
-	 * @see ApptRequestDetailStep1Page
-	 * 
-	 * @throws Exception
+	 * @return the Appt Request detail page if found or null if not found 
 	 */
 	public ApptRequestDetailStep1Page getRequestDetails(String subjectSubString) throws Exception {
 		IHGUtil.PrintMethodName();

@@ -3,9 +3,11 @@ package com.medfusion.digital_wallet.helpers;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.digital_wallet.tests.DigitalWalletBaseTest;
+import com.medfusion.payment_modulator.pojos.PayloadDetails;
 import io.restassured.response.Response;
 
 import java.io.IOException;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
@@ -32,6 +34,21 @@ public class DigitalWalletResource extends DigitalWalletBaseTest {
 
 		return response;
 
+	}
+
+	public Response createInstaMedWallet(String token, String enterprise_id, String patient_id, String mmid,
+										 String defaultPaymentMethod, String patientUrn, String accountAlias,
+									String accountHolderFirstName, String accountHolderLasttName, String accountType,
+										 String accountNumber, String routingNumber) throws Exception {
+		testData = new PropertyFileLoader();
+		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForCreatingInstaMedDigitalWallet(mmid,
+				defaultPaymentMethod, patientUrn, accountAlias, accountHolderFirstName, accountHolderLasttName,
+				accountType, accountNumber, routingNumber);
+
+		Response response = given().spec(requestSpec).auth().oauth2(token).body(digitalWallet).when()
+				.post("/enterprise/"+ enterprise_id + "/patient/"+ patient_id +"/wallets").then().extract().response();
+
+		return response;
 	}
 
 }

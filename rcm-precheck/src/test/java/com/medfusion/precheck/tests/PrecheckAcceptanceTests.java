@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.precheck.tests;
 
 import static org.testng.Assert.assertTrue;
@@ -26,13 +26,6 @@ import com.medfusion.product.object.maps.precheck.page.patient.PatientLoginPage;
 import com.medfusion.product.precheck.PrecheckConstants;
 import com.medfusion.product.precheck.PrecheckPatient;
 
-
-
-/**
- * @Author:Jakub Calabek
- * @Date:05.06.2015
- */
-
 @Test
 public class PrecheckAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -51,10 +44,7 @@ public class PrecheckAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(dashboardLoginPage.assessLoginPageElements(), "Login page not loaded properly.");
 		return dashboardLoginPage.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 	}
-
-	/**
-	 * @throws Exception
-	 */
+	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testSendFillAppoitnmentE2E() throws Exception {
 

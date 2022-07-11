@@ -171,7 +171,6 @@ public abstract class MedfusionPage extends BasePageObject {
 
 		/**
 		 * Updates web elements values, submits form and validates submitted results
-		 * @throws InterruptedException 
 		 */
 		public boolean updateAndValidateWebElements(Map<WebElement, String> map, WebElement submitElement) throws InterruptedException {
 				updateWebElements(map);
@@ -190,7 +189,6 @@ public abstract class MedfusionPage extends BasePageObject {
 
 		/**
 		 * Clicks on web element
-		 * @throws InterruptedException 
 		 */
 		public void clickOnElement(WebElement element) {
 			 IHGUtil.PrintMethodName();

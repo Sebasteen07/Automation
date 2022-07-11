@@ -1,4 +1,4 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.customform;
 
 import org.openqa.selenium.WebDriver;
@@ -94,7 +94,6 @@ public class SearchPatientFormsPage extends BasePageObject {
 	 * @param dob_month
 	 * @param dob_day
 	 * @param dob_year
-	 * @return
 	 */
 	public SearchPatientFormsResultPage SearchPatientFormsWithOpenStatus(String firstName, String lastName, String dob_month, String dob_day, String dob_year) {
 
@@ -131,7 +130,6 @@ public class SearchPatientFormsPage extends BasePageObject {
 	 * Search for discrete form
 	 * 
 	 * @param discreteFormName
-	 * @return
 	 */
 
 	public SearchPatientFormsResultPage SearchDiscreteFormsWithOpenStatus(String discreteFormName) {

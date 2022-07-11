@@ -1,4 +1,4 @@
-//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.apptrequest;
 
 import static org.testng.Assert.assertEquals;
@@ -112,9 +112,8 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	 * and move to the next page.
 	 * 
 	 * @param entity
-	 *            use one of the other 'choose' helper methods or build your own
-	 *            ApptRequestEntity
-	 * @throws InterruptedException
+	 * @param MessageErrorfilePath
+	 * @param MessagefilePath
 	 */
 	public void processApptAndSubmitAttachment(ApptRequestEntity entity, String MessageErrorfilePath,
 			String MessagefilePath) throws InterruptedException {
@@ -215,7 +214,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	 * Will mark request as cancelled and continue to next step
 	 * 
 	 * @return appt request search page
-	 * @throws InterruptedException
 	 */
 
 	public ApptRequestDetailStep2Page chooseApproveAndSubmit() throws InterruptedException {
@@ -233,7 +231,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	 * Will mark request as Proccessed Externally to next step
 	 * 
 	 * @return appt request search page
-	 * @throws InterruptedException
 	 */
 
 	public ApptRequestDetailStep2Page chooseprocessedExternallyAndSubmit() throws InterruptedException {
@@ -251,7 +248,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	 * Will mark request as Proccessed Externally to next step
 	 * 
 	 * @return appt request search page
-	 * @throws InterruptedException
 	 */
 
 	public ApptRequestDetailStep2Page chooseSetToPendingAndSubmit() throws InterruptedException {
@@ -340,7 +336,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	 * Will mark request as cancelled and continue to next step
 	 * 
 	 * @return appt request search page
-	 * @throws InterruptedException
 	 */
 	public ApptRequestDetailStep2Page chooseCancelAndSubmit() throws InterruptedException {
 		Thread.sleep(5000);
@@ -370,7 +365,7 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 	/**
 	 * Will check Secure Message reply text & returns message text
 	 * 
-	 * @return
+	 * @return message body text
 	 */
 	public String getPracticeMessageBody() {
 		IHGUtil.PrintMethodName();

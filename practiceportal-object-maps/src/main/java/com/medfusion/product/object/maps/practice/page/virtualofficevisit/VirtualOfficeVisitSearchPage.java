@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.virtualofficevisit;
 
 import java.text.ParseException;
@@ -121,7 +122,6 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 	 * 
 	 * @param sentDate
 	 * @return the Virtual Office Visit take action page or null if no results matched
-	 * @throws ParseException
 	 */
 	public AskAStaffQuestionDetailStep1Page getDetails(Date sentDate) throws ParseException {
 		IHGUtil.PrintMethodName();
@@ -131,16 +131,7 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 			doBasicSearch();
 		}
 		submittedDate.click();
-		/*
-		 * // Date receivedDate = formatter.parse(item.getText()); for (WebElement submittedDate : submittedDates) { String[] parsedDate =
-		 * submittedDate.getText().split("\\n"); String formattedDate = parsedDate[0] + " " + parsedDate[1]; log("Date grabbed from table: [" + formattedDate +
-		 * "]");
-		 * 
-		 * Date receivedDate = formatter.parse(formattedDate); if (sentDate.compareTo(receivedDate) <= 0) { submittedDate.click(); return
-		 * PageFactory.initElements(driver, VirtualOfficeVisitTakeActionPage.class); } }
-		 * 
-		 * return null;
-		 */
+
 		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep1Page.class);
 	}
 
