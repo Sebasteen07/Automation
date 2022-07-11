@@ -1,6 +1,7 @@
 // Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.digital_wallet.utils;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.digital_wallet.tests.DigitalWalletBaseTest;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
@@ -190,21 +191,21 @@ public class DigitalWalletTestData extends DigitalWalletBaseTest {
                         testData.getProperty("account.alias"), testData.getProperty("bank.account.holder.first.name"),
                         testData.getProperty("bank.account.holder.last.name"), testData.getProperty("bank.account.type"),
                         testData.getProperty("bank.account.number"), "Test",
-                        400, "Bad Request", "Bank routing number should only contain numbers and should of 9 digits"},
+                        400, "Bad Request", "Bank routing number should only contain 9 digits number"},
 
                 {   testData.getProperty("instamed.mmid"), testData.getProperty("default.payment.method.echeck"),
                         testData.getProperty("patient.urn.portal.person"),
                         testData.getProperty("account.alias"), testData.getProperty("bank.account.holder.first.name"),
                         testData.getProperty("bank.account.holder.last.name"), testData.getProperty("bank.account.type"),
                         testData.getProperty("bank.account.number"), "1234",
-                        400, "Bad Request", "Bank routing number should only contain numbers and should of 9 digits"},
+                        400, "Bad Request", "Bank routing number should only contain 9 digits number"},
 
                 {   testData.getProperty("instamed.mmid"), testData.getProperty("default.payment.method.echeck"),
                         testData.getProperty("patient.urn.portal.person"),
                         testData.getProperty("account.alias"), testData.getProperty("bank.account.holder.first.name"),
                         testData.getProperty("bank.account.holder.last.name"), testData.getProperty("bank.account.type"),
                         testData.getProperty("bank.account.number"), "!@#*&",
-                        400, "Bad Request", "Bank routing number should only contain numbers and should of 9 digits"},
+                        400, "Bad Request", "Bank routing number should only contain 9 digits number"},
 
 
         };
@@ -226,12 +227,12 @@ public class DigitalWalletTestData extends DigitalWalletBaseTest {
 
                 //Merchant without Terminal ID for PRCC and precheck urn
                 { testData.getProperty("instamed.mmid.without.terminalid"),
-                        testData.getProperty("patient.urn.portal.person"), 400, "Bad Request",
+                        testData.getProperty("patient.urn.precheck.person"), 400, "Bad Request",
                         "Provided payment from is not valid"  },
 
                 //Merchant with incorrect Terminal ID for PRCC
                 { testData.getProperty("instamed.mmid.incorrect.terminalid"),
-                        testData.getProperty("patient.urn.portal.person"), 400, "Bad Request", null },
+                        testData.getProperty("patient.urn.precheck.person"), 400, "Bad Request", null },
 
                 //Merchant without correct store ID
                 { testData.getProperty("instamed.mmid.incorrect.storeid"),
@@ -250,6 +251,20 @@ public class DigitalWalletTestData extends DigitalWalletBaseTest {
                 { testData.getProperty("instamed.mmid.without.clientid.secret"),
                         testData.getProperty("patient.urn.portal.person"), 400, "Bad Request",
                         "Missing API key/secret pair" },
+
+        };
+    }
+
+    @DataProvider(name = "instamed_different_patients")
+    public static Object[][] dataProviderDifferentPatients() throws Exception {
+        testData = new PropertyFileLoader();
+
+        return new Object[][] {
+                //Duplicate Scenario
+                { testData.getProperty("patient.id"), 400, "Bad Request", "The account already exists in the wallet" },
+
+                //Wallet does not exists scenario
+                {IHGUtil.createRandomNumericString(36), 400, "Bad Request", "The patient does not have associated wallet" },
 
         };
     }
