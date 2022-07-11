@@ -284,9 +284,9 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		homePage.btnStartSchedClick();
 		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
 		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verify Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = appointment.selectAptType(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
