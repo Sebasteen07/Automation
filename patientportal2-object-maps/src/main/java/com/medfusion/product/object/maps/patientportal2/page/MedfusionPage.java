@@ -1,4 +1,4 @@
-// Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 
 package com.medfusion.product.object.maps.patientportal2.page;
 
@@ -29,9 +29,6 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.IHGUtil.SupportedWebElements;
 
-/**
- * Page with general functionality. TODO Should be moved somewhere to BasePageObject later
- */
 public abstract class MedfusionPage extends BasePageObject {
 
 		@FindBy(how = How.ID, using = "ng-app")
@@ -152,9 +149,6 @@ public abstract class MedfusionPage extends BasePageObject {
 				return this.getClass().getSimpleName() + ": " + logText;
 		}
 
-		/**
-		 * Returns supported web element or throws error if not supported
-		 */
 		public SupportedWebElements getSupportedWebElement(WebElement element) {
 				SupportedWebElements supportedWebElement;
 				if ("select".equals(element.getTagName())) {
@@ -169,27 +163,18 @@ public abstract class MedfusionPage extends BasePageObject {
 				return supportedWebElement;
 		}
 
-		/**
-		 * Updates web elements values, submits form and validates submitted results
-		 */
 		public boolean updateAndValidateWebElements(Map<WebElement, String> map, WebElement submitElement) throws InterruptedException {
 				updateWebElements(map);
 				clickOnElement(submitElement);
 ;				return validateWebElements(map);
 		}
 
-		/**
-		 * Updates web elements values
-		 */
 		public void updateWebElements(Map<WebElement, String> map) {
 				for (Entry<WebElement, String> entry : map.entrySet()) {
 						updateWebElement(entry.getKey(), entry.getValue());
 				}
 		}
 
-		/**
-		 * Clicks on web element
-		 */
 		public void clickOnElement(WebElement element) {
 			 IHGUtil.PrintMethodName();
 			 selectFeedbackNoThanksButton();
@@ -201,9 +186,6 @@ public abstract class MedfusionPage extends BasePageObject {
 				}
 		}
 
-		/**
-		 * Updates web element value Currently works with text and select elements only
-		 */
 		public void updateWebElement(WebElement element, String value) {
 				log(elementToString(element) + ": updating to value: " + value, Level.DEBUG);
 
@@ -224,9 +206,6 @@ public abstract class MedfusionPage extends BasePageObject {
 				}
 		}
 
-		/**
-		 * Validates that web elements has the same values as expected
-		 */
 		public boolean validateWebElements(Map<WebElement, String> map) {
 				for (Entry<WebElement, String> entry : map.entrySet()) {
 						if (!validateWebElement(entry.getKey(), entry.getValue())) {
@@ -244,9 +223,6 @@ public abstract class MedfusionPage extends BasePageObject {
 				return elementToString(element) + " has value : " + element.getAttribute("value") + " - OK";
 		}
 
-		/**
-		 * Validates that web element has the same value as expected Currently works with text and select elements only
-		 */
 		public boolean validateWebElement(WebElement element, String value) {
 				SupportedWebElements swe = getSupportedWebElement(element);
 				return validateWebElement(element, value, swe);

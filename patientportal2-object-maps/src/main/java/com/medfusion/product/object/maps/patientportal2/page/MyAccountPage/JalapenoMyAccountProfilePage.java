@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
 import java.util.Arrays;
@@ -308,9 +308,6 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		return updateAndValidateWebElements(itemsToChange, saveAccountChanges);
 	}
 
-	/**
-	 * @return proper gender or null if not specified
-	 */
 	public Patient.GenderExtended getGender() throws InterruptedException {
 		Thread.sleep(2000);
 		if (maleRadioButton.isSelected())
