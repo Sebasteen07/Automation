@@ -1248,7 +1248,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		System.out.println("This is the emailSubjectGuardian::" + emailSubjectGuardian);
 		YopMail mail = new YopMail(driver);
 		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail, emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT,
-				10);
+				20);
 		assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
 
 		// SendInBlue workaround, go through the redirect and save the actual URL if the
@@ -1525,7 +1525,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		YopMail mail = new YopMail(driver);
 		String patientUrl = mail.getLinkFromEmail(trustedPatient.getEmail(), INVITE_EMAIL_SUBJECT_REPRESENTATIVE,
-				INVITE_EMAIL_BUTTON_TEXT, 15);
+				INVITE_EMAIL_BUTTON_TEXT, 20);
 
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
@@ -1571,7 +1571,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Waiting for invitation email");
 		YopMail mail = new YopMail(driver);
 		String patientUrl = mail.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT,
-				15);
+				20);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -5768,7 +5768,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(myAccountPage.getZipCodeTextbox(), zipCode);
 	}
 
-	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testValidateDependentPharmacy() throws Exception {
 
 		String name = "Medication Patient CreditCard";

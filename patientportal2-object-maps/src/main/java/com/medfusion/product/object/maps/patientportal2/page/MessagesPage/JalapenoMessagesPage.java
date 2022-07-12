@@ -85,7 +85,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom']")
 	private WebElement senderName;
 
-	private static final int maxCount = 15;
+	private static final int maxCount = 20;
 	private static final String replyContent = "This is response to doctor's message";
 
 	@FindBy(how = How.CSS, using = "span[class='messageSubject']")
