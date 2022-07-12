@@ -19,10 +19,6 @@ public class SpecialCharFormFirstPage extends PortalCustomFormPage {
 		super(driver);
 	}
 
-	/**
-	 * @throws InterruptedException if interrupted exception occurs
-	 * @brief Selects checkboxes in the form that contain quotations marks - "
-	 */
 	public void selectQuotatedAnswers() throws InterruptedException {
 		scrollAndWait(0, 0, 500);
 		if (feverCheck.isSelected() == false)

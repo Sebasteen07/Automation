@@ -1,4 +1,4 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page;
 
 import java.util.List;
@@ -27,9 +27,6 @@ public class NewCustomFormPage extends PortalFormPage {
 		return driver.findElements(By.xpath(QuestionsService.QUESTIONS_BASE_XPATH + "[(count(./li)=1 or ./label)]"));
 	}
 
-	/**
-	 * returns nth visible question of current section
-	 */
 	public WebElement getVisibleQuestion(int questionOrdinal) {
 		return driver
 				.findElement(By.xpath(QuestionsService.QUESTIONS_BASE_XPATH + "[(count(./li)=1 or ./label)])[" + questionOrdinal + "]"));
@@ -82,9 +79,6 @@ public class NewCustomFormPage extends PortalFormPage {
 		}
 	}
 
-	/**
-	 * clears all inputs of specified section, in case of radio buttons it always selects the last option
-	 */
 	public void clearAllInputs() throws InterruptedException {
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 		for (WebElement fupsel : driver
