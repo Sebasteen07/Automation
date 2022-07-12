@@ -5,6 +5,12 @@
 		<classes>
 			<class
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests05">
+				<methods>
+					<include name="test01UI_LastSeenProvider_NG()" />
+					<include name="test01UI_ForceLastSeen_BookFirst_NG()" />
+					<include name="test01UI_ForceLastSeen_NG()" />
+					<include name="test01UI_ForceLastSeen_Specialty_NG()" />
+				</methods>
 
 			</class>
 		</classes>
