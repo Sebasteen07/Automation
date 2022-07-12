@@ -4,12 +4,8 @@
 	<test thread-count="5" name="Test">
 		<classes>
 			<class
-				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
-				<methods>
+				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests05">
 
-					<include name="testWelcomeMessageNG()" />
-
-				</methods>
 			</class>
 		</classes>
 	</test> <!-- Test -->
