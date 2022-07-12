@@ -373,4 +373,13 @@ public class PayloadDetails {
 						accountHolderFirstName, accountHolderLastName, accountType, accountNumber,
 						routingNumber);
 	}
+
+	public static Map<String, Object> getPayloadForAddingAccountToInstaMedDigitalWallet(String mmid, String defaultPaymentMethod,
+																						String accountAlias, String accountHolderFirstName,
+																						String accountHolderLastName, String accountType,
+																						String accountNumber, String routingNumber, boolean isPrimary) {
+		return Card.getCardsListForAddAccountToExistingWallet(mmid, defaultPaymentMethod, accountAlias,
+				accountHolderFirstName, accountHolderLastName, accountType, accountNumber,
+				routingNumber, isPrimary);
+	}
 }

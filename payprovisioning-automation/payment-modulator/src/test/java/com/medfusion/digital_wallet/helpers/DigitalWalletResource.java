@@ -46,7 +46,23 @@ public class DigitalWalletResource extends DigitalWalletBaseTest {
 				accountType, accountNumber, routingNumber);
 
 		Response response = given().spec(requestSpec).auth().oauth2(token).body(digitalWallet).when()
-				.post("/enterprise/"+ enterprise_id + "/patient/"+ patient_id +"/wallets").then().extract().response();
+				.post("/enterprises/"+ enterprise_id + "/patients/"+ patient_id +"/wallets").then().extract().response();
+
+		return response;
+	}
+
+	public Response addAccountToExistingInstaMedWallet(String token, String enterprise_id, String patient_id,
+													   String mmid,
+													   String defaultPaymentMethod, String accountAlias,
+													   String accountHolderFirstName, String accountHolderLasttName, String accountType,
+													   String accountNumber, String routingNumber, boolean isPrimary) throws Exception {
+		testData = new PropertyFileLoader();
+		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForAddingAccountToInstaMedDigitalWallet(mmid,
+				defaultPaymentMethod, accountAlias, accountHolderFirstName, accountHolderLasttName,
+				accountType, accountNumber, routingNumber, isPrimary);
+
+		Response response = given().spec(requestSpec).auth().oauth2(token).body(digitalWallet).when()
+				.put("/enterprises/"+ enterprise_id + "/patients/"+ patient_id +"/wallets").then().extract().response();
 
 		return response;
 	}
