@@ -3668,7 +3668,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	 */
 
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testSatementPreferenceUpdatingToElectronic() throws Exception {
+	public void testStatementPreferenceUpdatingToElectronic() throws Exception {
 		SiteGenLoginPage loginpage;
 		SiteGenHomePage pSiteGenHomePage;
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
@@ -3681,8 +3681,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to sitegen as Admin user");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
-				testData.getProperty("jalapeno.sitgen.password"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("statements.admin.username"),
+				testData.getProperty("statements.admn.password"));
 
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
@@ -3704,10 +3704,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
 		patient = PatientFactory.createJalapenoPatient(username, testData);
-		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 3);
+		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getProperty("statements.portal.url"), 3);
 
 		logStep("Load login page");
-		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage = new JalapenoLoginPage(driver,testData.getProperty("statements.portal.url"));
 		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
 		logStep("Go to Account tab on my account page");
@@ -3721,8 +3721,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Again login back to Sitegen for estamenet Setting ");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
-				testData.getProperty("jalapeno.sitgen.password"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("statements.admin.username"),
+				testData.getProperty("statements.admn.password"));
 
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
@@ -3743,7 +3743,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		estatement.submitButton();
 
 		logStep("Load login page");
-		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("statements.portal.url"));
 		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
 		logStep("Go to security tab on my account page");
@@ -3875,7 +3875,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	 */
 
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testSatementPreferenceUpdatingToPaperFromElectronicPaper() throws Exception {
+	public void testStatementPreferenceUpdatingToPaperFromElectronicPaper() throws Exception {
 		SiteGenLoginPage loginpage;
 		SiteGenHomePage pSiteGenHomePage;
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
@@ -3888,8 +3888,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to sitegen as Admin user");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
-				testData.getProperty("jalapeno.sitgen.password"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("statements.admin.username"),
+				testData.getProperty("statements.admn.password"));
 
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
@@ -3911,10 +3911,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
 		patient = PatientFactory.createJalapenoPatient(username, testData);
-		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 3);
+		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient,testData.getProperty("statements.portal.url"), 3);
 
 		logStep("Load login page");
-		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("statements.portal.url"));
 		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
 		logStep("Go to Account tab on my account page");
@@ -3928,8 +3928,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Again login back to Sitegen for estamenet Setting ");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
-				testData.getProperty("jalapeno.sitgen.password"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("statements.admin.username"),
+				testData.getProperty("statements.admn.password"));
 
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
@@ -3950,7 +3950,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		estatement.submitButton();
 
 		logStep("Load login page");
-		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage = new JalapenoLoginPage(driver,testData.getProperty("statements.portal.url"));
 		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
 		logStep("Go to security tab on my account page");
@@ -6169,7 +6169,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	 */
 
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testSatementPreferenceUpdatingToElectronicFromPaper() throws Exception {
+	public void testStatementPreferenceUpdatingToElectronicFromPaper() throws Exception {
 		SiteGenLoginPage loginpage;
 		SiteGenHomePage pSiteGenHomePage;
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
@@ -6182,8 +6182,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to sitegen as Admin user");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
-				testData.getProperty("jalapeno.sitgen.password"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("statements.admin.username"),
+				testData.getProperty("statements.admn.password"));
 
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
@@ -6205,10 +6205,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
 		patient = PatientFactory.createJalapenoPatient(username, testData);
-		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 1);
+		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient,testData.getProperty("statements.portal.url"), 1);
 
 		logStep("Load login page");
-		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage = new JalapenoLoginPage(driver,testData.getProperty("statements.portal.url"));
 		homePage = loginPage.loginWithPreference(patient.getUsername(), patient.getPassword());
 
 		logStep("Go to Account tab on my account page");
@@ -6222,8 +6222,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Again login back to Sitegen for estamenet Setting ");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("jalapeno.sitgen.admin"),
-				testData.getProperty("jalapeno.sitgen.password"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("statements.admin.username"),
+				testData.getProperty("statements.admn.password"));
 
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
@@ -6244,7 +6244,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		estatement.submitButton();
 
 		logStep("Load login page");
-		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage = new JalapenoLoginPage(driver,testData.getProperty("statements.portal.url"));
 		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
 		logStep("Go to security tab on my account page");
