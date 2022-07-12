@@ -57,6 +57,9 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		@FindBy(how = How.XPATH, using = "//*[contains(text(),' Trusted Representatives ')]/..//*[contains(text(),'Edit')]")
 		private WebElement editTrustedRep;
 
+		@FindBy(how=How.ID,using="sendInvitation")
+		private WebElement btnContinueAuthPopup;
+		
 		public JalapenoAccountPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
@@ -81,7 +84,10 @@ public class JalapenoAccountPage extends JalapenoMenu {
 				wait.until(ExpectedConditions.visibilityOf(inviteNewButton));
 
 				inviteNewButton.click();
-
+				log("Trying to click on Health authorization popup");
+			
+				handleHealthInfoAuthPopUp();
+				
 				waitUntilLightboxContentLoads(wait);
 				fillLightboxInputs(patient);
 
@@ -89,6 +95,11 @@ public class JalapenoAccountPage extends JalapenoMenu {
 
 				String fullName = patient.getFirstName() + " " + patient.getLastName();
 				waitUntilSuccessMessageLoads(wait, fullName);
+		}
+
+		private void handleHealthInfoAuthPopUp() {
+			wait.until(ExpectedConditions.visibilityOf(btnContinueAuthPopup));
+			btnContinueAuthPopup.click();
 		}
 
 		private void waitUntilLightboxContentLoads(WebDriverWait wait) {
@@ -123,6 +134,10 @@ public class JalapenoAccountPage extends JalapenoMenu {
 			wait.until(ExpectedConditions.visibilityOf(inviteNewButton));
 
 			inviteNewButton.click();
+			
+			log("Trying to click on Health authorization popup");
+			
+			handleHealthInfoAuthPopUp();
 
 			waitUntilLightboxContentLoads(wait);
 			fillLightboxInputs(fname,lname, email);
@@ -165,6 +180,7 @@ public class JalapenoAccountPage extends JalapenoMenu {
 			wait.until(ExpectedConditions.visibilityOf(inviteNewButton));
 			inviteNewButton.click();
 			log("Invite New Button got clicked");
+			handleHealthInfoAuthPopUp();
 			manageAccessPerCategory.click();
 			log("Manage Access Per Category Radio Button got clicked");
 
