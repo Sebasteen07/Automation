@@ -4,13 +4,8 @@
 	<test thread-count="5" name="Test">
 		<classes>
 			<class
-				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests05">
-				<methods>
-					<include name="test01UI_LastSeenProvider_NG()" />
-					<include name="test01UI_ForceLastSeen_BookFirst_NG()" />
-					<include name="test01UI_ForceLastSeen_NG()" />
-					<include name="test01UI_ForceLastSeen_Specialty_NG()" />
-				</methods>
+				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests07">
+
 
 			</class>
 		</classes>
