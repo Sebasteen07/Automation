@@ -7,7 +7,7 @@
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 				<methods>
 
-					<include name="testCancelE2ETestingNG()" />
+					<include name="testWelcomeMessageNG()" />
 
 				</methods>
 			</class>
