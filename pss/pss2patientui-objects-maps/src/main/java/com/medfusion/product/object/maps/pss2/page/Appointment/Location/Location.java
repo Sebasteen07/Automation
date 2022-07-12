@@ -28,6 +28,15 @@ public class Location extends PSS2MainPage {
 
 	@FindAll({ @FindBy(xpath = "//a[@class='locationlink locationlinkclick']") })
 	private List<WebElement> locationList;
+	
+	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']") })
+	private List<WebElement> locationListNew;
+	
+	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']/b") })
+	private List<WebElement> locationNameDetails;
+	
+	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']/div[2]/div/a") })
+	private List<WebElement> locationSelect;
 
 	@FindAll({ @FindBy(xpath = "//a[contains(text(),'River Oaks Main')]") })
 	private List<WebElement> locationRever;
@@ -80,6 +89,22 @@ public class Location extends PSS2MainPage {
 				log("Provider of user found at " + locationList.get(i).getText());
 				IHGUtil.waitForElement(driver, 5, locationList.get(i));
 				locationList.get(i).click();
+				return PageFactory.initElements(driver, Provider.class);
+			}
+		}
+		return PageFactory.initElements(driver, Provider.class);
+	}
+	
+	public Provider searchProviderAndClickNew(String locationName) throws InterruptedException {
+		log("In Location Search Method");
+		for (int i = 0; i < locationNameDetails.size(); i++) {
+			log("Size of Location List - "+locationNameDetails.size());
+			if (locationNameDetails.get(i).getText().contains(locationName)) {
+				log("Location is ---> " + locationNameDetails.get(i).getText());
+				log("Search Provider");
+				log("Provider of user found at " + locationNameDetails.get(i).getText());
+				IHGUtil.waitForElement(driver, 5, locationNameDetails.get(i));
+				locationSelect.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
