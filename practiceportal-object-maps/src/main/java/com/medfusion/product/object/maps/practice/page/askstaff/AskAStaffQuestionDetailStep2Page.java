@@ -86,11 +86,6 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		createdTs = System.currentTimeMillis();
 	}
 
-	/**
-	 * Gives indication if the Ask A Staff Question Detail page loaded.
-	 * 
-	 * @return true or false
-	 */
 	public boolean isQuestionDetailPageLoaded() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -105,11 +100,6 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Will click the 'Go Back To Search Page' link.
-	 * 
-	 * @return the Ask A Staff search page
-	 */
 	public AskAStaffSearchPage clickGoBackToSearchPage() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -118,30 +108,12 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		return PageFactory.initElements(driver, AskAStaffSearchPage.class);
 	}
 
-	/**
-	 * Returns unique value that was added to subject to help with filtering in
-	 * patient inbox
-	 * 
-	 * @return the created time stamp
-	 */
 	public long getCreatedTimeStamp() {
 		IHGUtil.PrintMethodName();
 
 		return createdTs;
 	}
 
-	/**
-	 * Process the question. Note: The diagnostic code is handled automatically and
-	 * will be set to "COUGH". The first item in the diagnostic code table that pops
-	 * up will be selected.
-	 * 
-	 * @param subjectContent content to be put in reply subject to patient (a unique
-	 *                       time stamp will be appended by this method and
-	 *                       accessible via getCreatedTimeStamp())
-	 * @param bodyContent    content to be put in reply body to patient
-	 * 
-	 * @return Ask A Staff Question Detail Step 3 page 
-	 */
 	public AskAStaffQuestionDetailStep3Page processAndCommunicate(String subjectContent, String bodyContent) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -159,11 +131,6 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep3Page.class);
 	}
 
-	/**
-	 * Fills out the Prescription, Pharmacy and the rest is handled by the
-	 * processAndCommunicate method Units stay default (capsule), Refills 0 and Do
-	 * not fill after = today 
-	 */
 	public AskAStaffQuestionDetailStep3Page prescribeAndCommunicate(String subjectContent, String bodyContent) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);

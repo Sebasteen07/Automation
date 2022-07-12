@@ -79,21 +79,6 @@ public class VirtualCardSwiperPage extends BasePageObject {
 		return pageTitleEle.getText().contains(title);
 	}
 
-	/**
-	 * Use this one for single location practices (there won't be a selector
-	 * 
-	 * @param ccName
-	 * @param ccNum
-	 * @param cardType
-	 * @param expMonth
-	 * @param expYear
-	 * @param amt
-	 * @param cvv
-	 * @param zip
-	 * @param PAccount
-	 * @param PName
-	 * @param comment
-	 */
 	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip,
 			String PAccount, String PName, String comment) {
 		IHGUtil.PrintMethodName();
@@ -130,22 +115,6 @@ public class VirtualCardSwiperPage extends BasePageObject {
 		clickHereToChargeCard.click();
 	}
 
-	/**
-	 * Use this one if there's a location selector
-	 * 
-	 * @param ccName
-	 * @param ccNum
-	 * @param cardType
-	 * @param expMonth
-	 * @param expYear
-	 * @param amt
-	 * @param cvv
-	 * @param zip
-	 * @param PAccount
-	 * @param PName
-	 * @param comment
-	 * @param location
-	 */
 	public void addCreditCardInfo(String ccName, String ccNum, String cardType, String expMonth, String expYear, String amt, String cvv, String zip,
 			String PAccount, String PName, String comment, String location) {
 		IHGUtil.PrintMethodName();

@@ -41,9 +41,6 @@ public class AskAStaffSearchPage extends BasePageObject {
 		super(driver);
 	}
 
-	/**
-	 * Searches for questions using default options on the page. Call the getQuestionDetails method to access the search results.
-	 */
 	public void searchForQuestions() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -51,13 +48,6 @@ public class AskAStaffSearchPage extends BasePageObject {
 		searchForQuestions(AskAStaffRequestStatus.NONE, null, null);
 	}
 
-	/**
-	 * Searches for questions with all available options. Call the getQuestionDetails method to access the search results from this page.
-	 * 
-	 * @param requestStatus as defined in AskAStaffRequestStatus public fields
-	 * @param locationText the visible text option in the select box
-	 * @param questionTypeText the visible text option in the select box
-	 */
 	public void searchForQuestions(int requestStatus, String locationText, String questionTypeText) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -86,13 +76,6 @@ public class AskAStaffSearchPage extends BasePageObject {
 		getRequests.click();
 	}
 
-	/**
-	 * Called after the searchForQuestions method to find a specific question to process.
-	 * 
-	 * @param subjectSubString unique sub-string from the subject of the question to filter on
-	 * 
-	 * @return the Ask A Staff question detail page if found or null if not found
-	 */
 	public AskAStaffQuestionDetailStep1Page getQuestionDetails(String subjectSubString) throws Exception {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);

@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.messages;
 
 import org.openqa.selenium.WebDriver;
@@ -25,11 +26,6 @@ public class PracticeMessagePage extends BasePageObject {
 		super(driver);
 	}
 
-	/**
-	 * Gives an indication if the page is loaded
-	 * 
-	 * @return true or false
-	 */
 	public boolean isPageLoaded() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
