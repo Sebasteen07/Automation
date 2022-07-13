@@ -8,7 +8,7 @@
 				
 					<methods>
 
-					<include name="testWelcomeMessageNG()" />
+					
 					<include name="test01UI_ForceLastSeen_BookFirst_NG()" />
 					<include name="test01UI_ForceLastSeen_NG()" />
 					<include name="test01UI_ForceLastSeen_Specialty_NG()" />
