@@ -10,7 +10,7 @@
 					
 					<include name="testAllowDuplicatePatientCustomMsgOFFNG()" />
 					<include name="testAllowDuplicatePatientOFFDefaultMsgNG()" />
-					<include name="testAllowDuplicatePatientONNG()" />
+					<exclude name="testAllowDuplicatePatientONNG()" />
 					<include name="testCustomMsgMultiplePatientNG()" />
 					<include name="testDefaultMsgMultiplePatientNG()" />
 					<include name="testPreRequisiteDefaultNG()" />
