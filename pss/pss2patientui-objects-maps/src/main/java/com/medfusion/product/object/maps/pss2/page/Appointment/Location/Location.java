@@ -96,15 +96,31 @@ public class Location extends PSS2MainPage {
         return PageFactory.initElements(driver, AppointmentPage.class);
     }
 
+//	public Provider searchProvider(String locationName) throws InterruptedException {
+//		log("In SearchProvider Method");
+//		for (int i = 0; i < locationList.size(); i++) {
+//			if (locationList.get(i).getText().contains(locationName)) {
+//				log("Location is ---> " + locationList.get(i).getText());
+//				log("Search Provider");
+//				log("Provider of user found at " + locationList.get(i).getText());
+//				IHGUtil.waitForElement(driver, 5, locationList.get(i));
+//				locationList.get(i).click();
+//				return PageFactory.initElements(driver, Provider.class);
+//			}
+//		}
+//		return PageFactory.initElements(driver, Provider.class);
+//	}
+	
 	public Provider searchProvider(String locationName) throws InterruptedException {
-		log("In SearchProvider Method");
-		for (int i = 0; i < locationList.size(); i++) {
-			if (locationList.get(i).getText().contains(locationName)) {
-				log("Location is ---> " + locationList.get(i).getText());
+		log("In Location Search Method");
+		for (int i = 0; i < locationNameDetails.size(); i++) {
+			log("Size of Location List - " + locationNameDetails.size());
+			if (locationNameDetails.get(i).getText().contains(locationName)) {
+				log("Location is ---> " + locationNameDetails.get(i).getText());
 				log("Search Provider");
-				log("Provider of user found at " + locationList.get(i).getText());
-				IHGUtil.waitForElement(driver, 5, locationList.get(i));
-				locationList.get(i).click();
+				log("Provider of user found at " + locationNameDetails.get(i).getText());
+				IHGUtil.waitForElement(driver, 5, locationNameDetails.get(i));
+				locationSelect.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
@@ -139,13 +155,28 @@ public class Location extends PSS2MainPage {
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 
+//	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
+//		log("location is  ");
+//		log("location " + dateTime);
+//		for (int i = 0; i < locationList.size(); i++) {
+//			if (locationList.get(i).getText().contains(dateTime)) {
+//				log("Location of user found at " + locationList.get(i).getText());
+//				javascriptClick(locationList.get(i));
+//				return PageFactory.initElements(driver, AppointmentDateTime.class);
+//			}
+//		}
+//		return null;
+//	}
+	
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
 		log("location is  ");
 		log("location " + dateTime);
-		for (int i = 0; i < locationList.size(); i++) {
-			if (locationList.get(i).getText().contains(dateTime)) {
-				log("Location of user found at " + locationList.get(i).getText());
-				javascriptClick(locationList.get(i));
+		for (int i = 0; i < locationNameDetails.size(); i++) {
+			if (locationNameDetails.get(i).getText().contains(dateTime)) {
+	               log("Search Location");
+	                log("Location of user found at " + locationNameDetails.get(i).getText());
+	                IHGUtil.waitForElement(driver, 5, locationNameDetails.get(i));
+	                locationSelect.get(i).click();
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
 		}
