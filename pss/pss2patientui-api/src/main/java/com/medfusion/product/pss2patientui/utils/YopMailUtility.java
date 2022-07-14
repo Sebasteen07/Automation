@@ -33,6 +33,7 @@ public class YopMailUtility extends PSS2MainPage{
 		goInboxButton.click();
 		Thread.sleep(1000);
 		driver.switchTo().frame("ifinbox");
+		Thread.sleep(1000);
 		List<WebElement> len = driver.findElements(By.xpath("//div[@class='m']/button/div[2]"));
 		int l = len.size();
 
