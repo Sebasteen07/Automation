@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.messages;
 
 import java.util.List;
@@ -59,11 +60,6 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 		super(driver);
 	}
 
-	/**
-	 * Gives an indication if the page is loaded.
-	 * 
-	 * @return true or false
-	 */
 	public boolean isPageLoaded() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -78,11 +74,6 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Searches for all messages related to Virtual Office Visit.
-	 * 
-	 * @throws InterruptedException
-	 */
 	public void searchForVirtualOfficeVisitMessages() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -90,16 +81,6 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 		executeSearch(PracticeMessageServiceType.VIRTUAL_OFFICE_VISIT, null, null, null, null);
 	}
 
-	/**
-	 * Searches for all messages given the parameters supplied. Call retrieveMessage after searching to find a specific message.
-	 * 
-	 * @param serviceType use the PracticeMessageServiceType to declare
-	 * @param firstNameText the first name of the patient
-	 * @param lastNameText the last name of the patient
-	 * @param subjectText the subject to search against
-	 * @param statusText the visible status in the select box of the message
-	 * @throws InterruptedException
-	 */
 	private void executeSearch(String serviceType, String firstNameText, String lastNameText, String subjectText, String statusText) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 
@@ -147,13 +128,6 @@ public class PracticeMessagesSearchPage extends BasePageObject {
 		btnSearch.click();
 	}
 
-	/**
-	 * Finds the message from the message search list that contains in the subject the text supplied as an argument.
-	 * 
-	 * @param subjectText unique subject text to identify the message
-	 * @return PracticeMessage or null if nothing is found
-	 * @throws InterruptedException
-	 */
 	public PracticeMessagePage retrieveMessage(String subjectText) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(10000);

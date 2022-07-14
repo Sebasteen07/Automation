@@ -2756,3 +2756,39 @@ Feature: Test fuctionality of Appointment precheck
     And I send a manual reminder for the scheduled appointment
     Then I verify on modal popup history all manual reminder logs should be displayed
     And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is on then broadcast message in mail show first name
+    When I go to settings tab and click on notifications tab
+    And I enable display patient first name and save the notifications
+    And I schedule an appointment and I send broadcast message to patient
+    Then I verify broadcast message recieved in mail and show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify if display first name is off then broadcast message in mail does not show first name
+    When I go to settings tab and click on notifications tab
+    And I disable display patient first name and save the notifications
+    And I schedule an appointment and I send broadcast message to patient
+    Then I verify broadcast message recieved in mail and not show first name
+    And logout from practice provisioning portal
+
+  Scenario: Verify curbside confirmation links shows you have already arrived when patient gets confirmation on email and patient confirms over email again
+    When I schedule an appointment in "en"
+    And I received curbside message on email and confirm arrival
+    And I verify curbside confirmation links shows you have already arrived when patient again trying to confirm from mail
+    And logout from practice provisioning portal
+
+  Scenario: To verify if system allows to do precheck after associating active/inactive appointment type for IMH & MEdfusion form
+    When logout from practice provisioning portal
+    And I login to practice
+    And I associate appointment type
+    And I schedule an appointment for associated appointment type
+    Then I verify while doing precheck associated appointment type should be display
+    And logout from practice provisioning portal
+
+  Scenario: To verify if system allows to do precheck after associating active/inactive appointment type for IMH & MEdfusion form
+    When logout from practice provisioning portal
+    And I login to new practice
+    And I associate appointment type for new practice
+    And I schedule an appointment for associated appointment type for new practice
+    Then I verify while doing precheck associated appointment type should be display for new practice
+    And logout from practice provisioning portal

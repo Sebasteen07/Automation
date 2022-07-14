@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils;
 
 import static org.testng.Assert.assertEquals;
@@ -88,7 +88,6 @@ public class WebPoster {
 	 * Post your Request.xml for more details see line comments
 	 * 
 	 * @param sResourceFile
-	 * @throws Exception
 	 */
 	public void postFromResourceFile(String sResourceFile) throws Exception {
 
@@ -159,7 +158,6 @@ public class WebPoster {
 	 * Post your Request.xml for more details see line comments
 	 * 
 	 * @param sResourceFile
-	 * @throws Exception
 	 */
 	public String smpostFromResourceFile(String sResourceFile, String xmldata) throws Exception {
 

@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.rcm.pojo;
 
 import java.io.IOException;
@@ -351,9 +352,6 @@ public class Statement {
         /**
          *  practiceManagementStatementId, systemId, emrId, statementFormat, statementBillingAccountNumber, 
          *  statementDate, paymentDueDate, and some (see doc) guarantor details are required for a valid statement
-         * @throws IllegalStateException when required data were missing
-         * @return
-         * @throws IOException 
          */
         public Statement buildStatement() throws IOException{
             if ((systemId == 0)         

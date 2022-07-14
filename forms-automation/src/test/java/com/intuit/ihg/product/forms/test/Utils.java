@@ -20,7 +20,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.medfusion.common.utils.EncryptionUtils;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
@@ -42,14 +41,14 @@ public class Utils {
 
 	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, Patient patient,
 			PropertyFileLoader testData) {
-		return loginPI(driver, practiceType, patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()),
+		return loginPI(driver, practiceType, patient.getUsername(), patient.getPassword(),
 				testData);
 	}
 
 	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) {
 		String url = getPortalURL(practiceType, true, testData);
 		return loginPI(driver, url, testData.getProperty("patient.username"),
-				EncryptionUtils.decrypt(testData.getProperty("patient.password")));
+				testData.getProperty("patient.password"));
 	}
 
 	public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, String username,
@@ -78,11 +77,11 @@ public class Utils {
 
 		log("Create patient");
 		Patient patient = createPatientPI(driver, username, url, testData);
-		logLogin(url, patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()));
+		logLogin(url, patient.getUsername(), patient.getPassword());
 
 		log("Login");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
-		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), EncryptionUtils.decrypt(patient.getPassword()));
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 		return homePage;
 	}
 

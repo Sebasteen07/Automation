@@ -376,4 +376,28 @@ locals {
     queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
     maven_parameter      = "mvn clean install"
   }
+
+  appointment_precheck_ui = {
+    name                 = "${local.jobname-prefix}appointment-precheck-ui"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Appointments"
+    execution_folder     = "appointment-precheck-ui"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
+
+  appointment_precheckui_api = {
+    name                 = "${local.jobname-prefix}appointment-precheckui-api"
+    codecommit_branch    = "development"
+    PollForSourceChanges = true
+    pxp_application      = "Appointments"
+    execution_folder     = "appointment-precheckui-api"
+    maven_test_skip      = "true"
+    build_timeout        = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+    queued_timeout       = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+    maven_parameter      = "mvn clean install"
+  }
 }

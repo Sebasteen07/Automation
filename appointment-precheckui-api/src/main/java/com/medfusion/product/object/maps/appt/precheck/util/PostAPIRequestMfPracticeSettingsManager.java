@@ -302,4 +302,12 @@ public class PostAPIRequestMfPracticeSettingsManager extends BaseTestNGWebDriver
 				.put("practice/" + practiceId + "/forms").then().log().all().extract().response();
 		return response;
 	}
+	
+	public Response getUpdateForm(String baseUrl,String payload, Map<String, String> Header, String practiceId) {
+		log("Execute get request for Update the forms list for an existing practice");
+		RestAssured.baseURI=baseUrl;
+		Response response = given().log().all().body(payload).headers(Header).when()
+				.put("practice/" + practiceId + "/forms").then().log().all().extract().response();
+		return response;
+	}
 }
