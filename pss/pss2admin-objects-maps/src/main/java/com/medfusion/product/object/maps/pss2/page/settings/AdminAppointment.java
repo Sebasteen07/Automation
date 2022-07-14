@@ -76,10 +76,10 @@ public class AdminAppointment extends SettingsTab {
 	private WebElement pastApptMonths;
 
 	@FindBy(how = How.ID, using = "radioc0")
-	private WebElement radioOptionRCP;
+	private WebElement radioOptionPCP;
 
 	@FindBy(how = How.ID, using = "radioc1")
-	private WebElement radioOptionPCP;
+	private WebElement radioOptionRCP;
 
 	@FindBy(how = How.XPATH, using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[5]/div[1]/form[2]/div[1]/div[2]/div[1]/div[1]/label[1]/i[1]")
 	private WebElement allowFCT;
@@ -90,7 +90,7 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.ID, using = "pcpAvailabilityDuration")
 	private WebElement pcpAvailabilityDuration;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='basic']//div//fieldset//button[@class='btn btn-primary'][contains(text(),'Save')]")
+	@FindBy(how = How.XPATH, using = "//*[text()='Resource Configuration']/parent::*/parent::*//button[contains(text(),'Save')]")
 	private WebElement buttonSaveResourceConfg;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='appt']/form/fieldset/div/div/button")

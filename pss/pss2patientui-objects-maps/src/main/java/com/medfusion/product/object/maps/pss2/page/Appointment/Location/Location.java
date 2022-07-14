@@ -26,8 +26,11 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 
 public class Location extends PSS2MainPage {
 
-	@FindAll({ @FindBy(xpath = "//a[@class='locationlink locationlinkclick']") })
+	@FindAll({ @FindBy(xpath = "//*[@class='locationlink locationlinkclick']") })
 	private List<WebElement> locationList;
+
+	@FindAll({ @FindBy(xpath = "//*[@class='select-button']") })
+	private List<WebElement> selectLocationList;
 
 	@FindAll({ @FindBy(xpath = "//a[contains(text(),'River Oaks Main')]") })
 	private List<WebElement> locationRever;
@@ -64,6 +67,21 @@ public class Location extends PSS2MainPage {
 				log("Search Location");
 				log("Location of user found at " + locationList.get(i).getText());
 				javascriptClick(locationList.get(i));
+				log("clicke on location  " + locationName);
+				return PageFactory.initElements(driver, AppointmentPage.class);
+			}
+		}
+		return null;
+	}
+	
+	public AppointmentPage selectAppointment1(String locationName) throws InterruptedException {
+		isViewallmessagesButtonPresent(driver);
+		log("location " + locationName);
+		for (int i = 0; i < locationList.size(); i++) {
+			if (locationList.get(i).getText().contains(locationName)) {
+				log("Search Location");
+				log("Location of user found at " + locationList.get(i).getText());
+				javascriptClick(selectLocationList.get(i));
 				log("clicke on location  " + locationName);
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}

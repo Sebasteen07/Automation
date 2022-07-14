@@ -220,6 +220,11 @@ public class ManageResource extends PSS2MenuPage {
 		log("Enter the resource in search box "+resourceName);
 		searchResource.sendKeys(resourceName);
 	}
+	
+	public void clearSearchResource() {
+		IHGUtil.waitForElement(driver, 6, searchResource);
+		searchResource.clear();
+	}
 
 	public void resourceSearchApt(String resourceName) {
 		resourceSearchApt.sendKeys(resourceName);
@@ -267,6 +272,22 @@ public class ManageResource extends PSS2MenuPage {
 
 	public Boolean isSharedPatientTrueForResource() {
 		return Boolean.valueOf(resourceSharePatients.getAttribute("ng-reflect-model"));
+	}
+	
+	public void enableSharePatient() throws InterruptedException {
+		pageDown(1000);
+		log("Is Share patient selected " + resourceSharePatients.isSelected());
+		if(resourceSharePatients.isSelected() == false) {
+			clickShareToggle();
+		}
+	}
+	
+	public void disableSharePatient() throws InterruptedException {
+		pageDown(1000);
+		log("Is Share patient selected " + resourceSharePatients.isSelected());
+		if(resourceSharePatients.isSelected() == true) {
+			clickShareToggle();
+		}
 	}
 
 	public void clickShareToggle() {
