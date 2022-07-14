@@ -9,6 +9,7 @@
 					<methods>					
 					<exclude name="testRescheduleAppointmentNG()" />
 					<include name="testCancelFromEmailNG()" />
+					<include name="testBookApptWithoutLastQuestionNG()" />
 				</methods>
 
 
