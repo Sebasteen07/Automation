@@ -2244,7 +2244,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		yo.deleteEmail(driver, userName);
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testBookApptWithoutLastQuestionNG")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelFromEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
