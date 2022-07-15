@@ -382,4 +382,14 @@ public class PayloadDetails {
 				accountHolderFirstName, accountHolderLastName, accountType, accountNumber,
 				routingNumber, isPrimary);
 	}
+
+	public static Map<String, Object> getPayloadForCreatingInstaMedDigitalWalletForACard(String mmid, String defaultPaymentMethod,
+																						 String patientUrn,
+																						 String cardAlias, String cardExpiryDate,
+																						 String cardHolderName, String cardNumber,
+																						 String cardType, String cvv) {
+		return Card.getCardsPayload(mmid, defaultPaymentMethod, patientUrn, cardAlias,
+				cardExpiryDate, cardHolderName, cardNumber, cardType,
+				cvv);
+	}
 }
