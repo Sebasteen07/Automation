@@ -391,6 +391,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		clickOnBubbleIcon();
 		clickOnDifferentPatientView();
+		handleWeNeedToConfirmSomethingModal();
 
 	}
 
