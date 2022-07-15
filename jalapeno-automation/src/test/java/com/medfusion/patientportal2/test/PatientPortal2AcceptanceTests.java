@@ -1557,8 +1557,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInviteTrustedRepresentativeWithAccount() throws Exception {
-		createPatient();
 		String email = testData.getProperty("trusted.rep.email") + "@yopmail.com";
+		logStep("Logging into yopmail and delete older mails");
+		YopMail mail = new YopMail(driver);
+		mail.deleteAllEmails(email);
+		createPatient();
 
 		logStep("Go to account page");
 		JalapenoHomePage homePage = new JalapenoHomePage(driver);
@@ -1569,7 +1572,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				email);
 
 		logStep("Waiting for invitation email");
-		YopMail mail = new YopMail(driver);
 		String patientUrl = mail.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT,
 				20);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
@@ -1591,6 +1593,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage.clickOnAccount();
 		accountPage.clickOnUnlinkTrustedRepresentative();
 		homePage.clickOnLogout();
+		logStep("Logging into yopmail and delete older mails");
+		mail.deleteAllEmails(email);
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
