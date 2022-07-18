@@ -81,14 +81,14 @@ public class APIVerification extends BaseTestNGWebDriver {
 		long time = response.time();
 		log("Response time " + time);
 		ValidatableResponse valRes = response.then();
-		valRes.time(Matchers.lessThan(100000L));
+		valRes.time(Matchers.greaterThan(100L));
 	}
 
 	public void responseTimeValidationDailyAggregation(Response response) {
 		long time = response.time();
 		log("Response time " + time);
 		ValidatableResponse valRes = response.then();
-		valRes.time(Matchers.lessThan(100000L));
+		valRes.time(Matchers.greaterThan(100L));
 	}
 
 	public void verifyInvalidLanguage(Response response) throws IOException {
