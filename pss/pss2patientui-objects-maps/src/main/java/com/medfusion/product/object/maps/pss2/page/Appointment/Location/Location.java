@@ -74,7 +74,7 @@ public class Location extends PSS2MainPage {
 		return null;
 	}
 	
-	public AppointmentPage selectAppointment1(String locationName) throws InterruptedException {
+	public AppointmentPage selectLocation(String locationName) throws InterruptedException {
 		isViewallmessagesButtonPresent(driver);
 		log("location " + locationName);
 		for (int i = 0; i < locationList.size(); i++) {

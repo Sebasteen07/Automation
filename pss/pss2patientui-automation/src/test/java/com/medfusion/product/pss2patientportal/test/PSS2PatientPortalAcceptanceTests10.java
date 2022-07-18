@@ -484,7 +484,7 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
 		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verify Location Page and location =" + testData.getLocation());
-		AppointmentPage appointment = location.selectAppointment1(testData.getLocation());
+		AppointmentPage appointment = location.selectLocation(testData.getLocation());
 		logStep("Verify Appointment Page and appointment to be selected = " + appointmentTypeName);
 		Provider provider = appointment.selectTypeOfProvider(appointmentTypeName,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
@@ -558,7 +558,7 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
 		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verify Location Page and location =" + testData.getLocation());
-		AppointmentPage appointment = location.selectAppointment1(testData.getLocation());
+		AppointmentPage appointment = location.selectLocation(testData.getLocation());
 		logStep("Verify Appointment Page and appointment to be selected = " + appointmentTypeName);
 		Provider provider = appointment.selectTypeOfProvider(appointmentTypeName,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
@@ -632,7 +632,7 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
 		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verify Location Page and location =" + testData.getLocation());
-		AppointmentPage appointment = location.selectAppointment1(testData.getLocation());
+		AppointmentPage appointment = location.selectLocation(testData.getLocation());
 		logStep("Verify Appointment Page and appointment to be selected = " + appointmentTypeName);
 		Provider provider = appointment.selectTypeOfProvider(appointmentTypeName,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
