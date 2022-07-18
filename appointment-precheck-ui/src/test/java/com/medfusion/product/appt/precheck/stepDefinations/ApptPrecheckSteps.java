@@ -11027,5 +11027,69 @@ public class ApptPrecheckSteps extends BaseTest {
 		scrollAndWait(200, -300, 5000);
 		
 	}
+	
+	@When("I login to existing practice")
+	public void i_login_to_existing_practice() throws InterruptedException {
+		log("Practice provisining login details");
+		scrollAndWait(200, 300, 10000);
+		log("Username : " + propertyData.getProperty("practice.username.ng"));
+		log("Password : " + propertyData.getProperty("practice.password.ng"));
+		loginPage.login(propertyData.getProperty("practice.username.ng"),
+			propertyData.getProperty("practice.password.ng"));
+		scrollAndWait(200, 300, 10000);
+	}
+	@When("I add IMH forms")
+	public void i_add_imh_forms() throws NullPointerException, IOException {
+		log("Add IMH form");
+		Response response = postAPIRequest.getUpdateForm(propertyData.getProperty("baseurl.mf.practice.settings.manager"),
+			prcticePayload.getUpdateFormPayload(true, propertyData.getProperty("imh.new.form"),
+					propertyData.getProperty("associate.appt.type")),
+			headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), 
+			propertyData.getProperty("imh.form.practice.id"));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+	}
+	@When("I search form added in UI")
+	public void i_search_form_added_in_ui() throws NullPointerException, InterruptedException {
+	    mainPage.clickOnSettingTab();
+	    formsPage.clickOnFormsTab();
+	    formsPage.searchForm(propertyData.getProperty("imh.new.form"));
+	    assertTrue(formsPage.isFormDisplay(propertyData.getProperty("imh.new.form")));
+	}
+	@When("I schedule an appointment after adding form")
+	public void i_schedule_an_appointment_after_adding_form() throws NullPointerException, IOException, InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("imh.form.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),	
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		driver.navigate().refresh();
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnLaunchPatientModeButton();
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnContinueButton();
+	}
+	@Then("I verify while doing precheck added form should be displayed and updated in the precheck forms list")
+	public void i_verify_while_doing_precheck_added_form_should_be_displayed_and_updated_in_the_precheck_forms_list() throws NullPointerException, InterruptedException {
+		assertTrue(apptPage.getFormInPrecheckFlow(propertyData.getProperty("precheck.first.name"),
+				propertyData.getProperty("precheck.middle.name"), 
+				propertyData.getProperty("precheck.last.name"),
+				"jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.number"),
+				propertyData.getProperty("imh.new.form")));
+		
+			loginPage.login(propertyData.getProperty("practice.username.ng"),
+				propertyData.getProperty("practice.password.ng"));
+			scrollAndWait(200, -300, 5000);
+	}
 
 }
