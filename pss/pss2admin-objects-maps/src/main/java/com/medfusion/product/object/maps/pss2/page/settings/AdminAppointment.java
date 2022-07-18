@@ -75,10 +75,10 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.ID, using = "pastapptmonths")
 	private WebElement pastApptMonths;
 
-	@FindBy(how = How.XPATH, using = "//*[text()=' Primary Care Provider ']")
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Primary Care Provider')]/preceding-sibling::input")
 	private WebElement radioOptionPCP;
 
-	@FindBy(how = How.XPATH, using = "//*[text()=' Responsible Care Provider ']")
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Responsible Care Provider')]/preceding-sibling::input")
 	private WebElement radioOptionRCP;
 
 	@FindBy(how = How.XPATH, using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[5]/div[1]/form[2]/div[1]/div[2]/div[1]/div[1]/label[1]/i[1]")
