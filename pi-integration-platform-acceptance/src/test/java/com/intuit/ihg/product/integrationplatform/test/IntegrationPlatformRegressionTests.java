@@ -2993,15 +2993,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		logStep("Do NEW Pharmacy Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyNewPayload,
-				testData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequestWithOauthToken(testData.PharmacyRenewalUrl, pharmacyNewPayload,
+				testData.ResponsePath,newToken);
 		Log4jUtil.log("processingUrl " + processingUrl);
 
 		Boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			RestUtils.setupHttpGetRequestOauthToken(processingUrl, testData.ResponsePath,newToken);
 			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 				completed = true;
 				break;
@@ -3042,14 +3042,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		logStep("Do DELETE Pharmacy Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
-		String processingDeleteUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, deletePayload,
-				testData.ResponsePath);
+		String processingDeleteUrl =RestUtils.setupHttpPostRequestWithOauthToken( testData.PharmacyRenewalUrl, deletePayload,
+				testData.ResponsePath,newToken);
 		Log4jUtil.log("processingUrl " + processingDeleteUrl);
 
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			RestUtils.setupHttpGetRequestOauthToken(processingUrl, testData.ResponsePath,newToken);
+//			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
 			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 				completed = true;
 				break;
