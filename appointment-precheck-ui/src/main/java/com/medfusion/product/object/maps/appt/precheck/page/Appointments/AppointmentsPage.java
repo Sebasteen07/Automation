@@ -490,7 +490,7 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//button[@id='launchPatientModeButton']")
 	private WebElement launchPatientModeButton;
 
-	@FindBy(how = How.XPATH, using = "//button[text()='Continue']")
+	@FindBy(how = How.XPATH, using = "//button[@id='undefinedContinue']")
 	private WebElement continueButton;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='firstName']")

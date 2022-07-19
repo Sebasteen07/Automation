@@ -241,4 +241,25 @@ public class Card {
 
 			return wallet;
 		}
+
+		public static Map<String, Object> getCardsPayload(String mmid, String defaultPaymentMethod, String patientUrn,
+														  String cardAlias, String cardExpiryDate,
+														  String cardHolderName, String cardNumber,
+														  String cardType, String cvv){
+			Map<String, Object> wallet = new HashMap<String, Object>();
+			wallet.put("mmid", mmid);
+			wallet.put("defaultPaymentMethod", defaultPaymentMethod);
+			wallet.put("patientUrn", patientUrn);
+
+			Map<String, Object> card = new HashMap<String, Object>();
+			card.put("cardAlias", cardAlias);
+			card.put("cardExpiryDate", cardExpiryDate);
+			card.put("cardHolderName", cardHolderName);
+			card.put("cardNumber", cardNumber);
+			card.put("cardType", cardType);
+			card.put("cvv", cvv);
+			wallet.put("card", card);
+
+			return wallet;
+		}
 }

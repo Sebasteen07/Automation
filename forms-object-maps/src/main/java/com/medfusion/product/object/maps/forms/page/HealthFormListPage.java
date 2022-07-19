@@ -76,7 +76,7 @@ public class HealthFormListPage extends BasePageObject {
 		} catch (NoSuchElementException ex) {
 			driver.switchTo().defaultContent();
 		}
-		driver.switchTo().frame(newFormIframe);
+		driver.switchTo().frame(iframeforms);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 
