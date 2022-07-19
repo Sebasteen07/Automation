@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage;
 
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
@@ -14,7 +14,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 
-// TODO THIS PAGE ISN'T FULLY REFACTORED
 public class JalapenoPayBillsStatementPage extends MedfusionPage {
 
 		@FindBy(how = How.LINK_TEXT, using = "My Account")
@@ -34,11 +33,6 @@ public class JalapenoPayBillsStatementPage extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "makepayment")
 		private WebElement makePaymentButton;
-
-		/**
-		 * @Author:Jakub Calabek
-		 * @Date:24.7.2013
-		 */
 
 		public JalapenoPayBillsStatementPage(WebDriver driver) {
 				super(driver);

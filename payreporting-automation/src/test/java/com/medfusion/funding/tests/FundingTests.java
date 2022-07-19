@@ -59,9 +59,6 @@ public class FundingTests extends BaseTestNG {
 
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test(enabled = true, groups = { "FundingAcceptanceTest" })
 	public void testBasicPostEmaf() throws Exception {
 		log("Test posting emaf to funding endpoint");

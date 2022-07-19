@@ -1433,5 +1433,21 @@ public class MfPracticeSettingsManagerPayload {
 				+ "	]";
 		return saveImhForm;
 	}
+	
+	public String getUpdateFormPayload(boolean apptTypeValue,String title,String apptType) {
+		String saveImhForm = "[\r\n"
+				+ "  {\r\n"
+				+ "	\"appointmentTypes\":[ \r\n"+"\""+apptType+"\"\r\n"
+				+ "	],\r\n"
+				+ "	\"enabledByAppointmentType\": \""+apptTypeValue+"\",\r\n"
+				+ "  \"formSource\": \"IMH\",\r\n"
+				+ "	\"id\": null,\r\n"
+				+ "	\"title\": \""+title+"\",\r\n"
+				+ "	\"url\": null\r\n"
+				+ "	}\r\n"
+				+ "	]";
+		return saveImhForm;
+	}
+
 				
 }

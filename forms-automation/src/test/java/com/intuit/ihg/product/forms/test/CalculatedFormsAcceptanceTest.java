@@ -10,7 +10,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.medfusion.common.utils.EncryptionUtils;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFormsList;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
@@ -39,7 +38,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	/**
 	 * Tect Case in TestLink: MF-1265
 	 *
-	 * @throws Exception
+	 * @throws Exception when exception occurs
 	 * @author phajek
 	 * @Date: 13/02/2015 StepsToReproduce: logStep in to SG as SU Go to Forms Config
 	 *        Unpublish all forms Delete all forms Search and add a new Calculated
@@ -92,7 +91,7 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 	public void testCalculatedFormSGEdit() throws Exception {
 		String newWelcomeMessage = "Welcome " + IHGUtil.createRandomNumber();
 		SiteGenPracticeHomePage SGPracticePage = new SiteGenSteps().logInUserToSG(driver,
-				testData.getProperty("sitegen.username1"), EncryptionUtils.decrypt(testData.getProperty("sitegen.password1")));
+				testData.getProperty("sitegen.username1"), testData.getProperty("sitegen.password1"));
 
 		DiscreteFormsList formsConfigPage = SGPracticePage.clickLnkDiscreteForms();
 		driver.manage().window().maximize();

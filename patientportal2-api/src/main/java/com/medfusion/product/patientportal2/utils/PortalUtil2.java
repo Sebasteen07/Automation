@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.patientportal2.utils;
 
 import java.awt.Toolkit;
@@ -93,8 +93,8 @@ public class PortalUtil2 extends IHGUtil {
 	 *
 	 * @param username
 	 * @param url
-	 * @return
-	 * @throws Exception
+	 * 
+	 * @return boolean
 	 */
 	public static boolean checkUsernameEmailIsUnique(String username, String url) throws Exception {
 		IHGUtil.PrintMethodName();

@@ -490,7 +490,7 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//button[@id='launchPatientModeButton']")
 	private WebElement launchPatientModeButton;
 
-	@FindBy(how = How.XPATH, using = "//button[text()='Continue']")
+	@FindBy(how = How.XPATH, using = "//button[@id='undefinedContinue']")
 	private WebElement continueButton;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='firstName']")
@@ -748,7 +748,9 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[2]")
 	private WebElement selectPatientCheckbox;
 	
-	
+	@FindBy(how = How.XPATH, using = "//button[text()='Continue']")
+	private WebElement clickOnContinue;
+
 	
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -4008,7 +4010,101 @@ public class AppointmentsPage extends BasePageObject {
 			jse.executeScript("arguments[0].click();", selectTime);
 			Thread.sleep(10000);
 	}
+		
+
+		public void clickOnContinue() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, clickOnContinue);
+			jse.executeScript("arguments[0].click();", clickOnContinue);
+			Thread.sleep(10000);
+			
+		}
+
+		
+		public boolean getFormInPrecheckFlow(String firstName, String middleName,
+				String lastName, String email, String PhoneNo,String form) throws InterruptedException {
+			
+			IHGUtil.waitForElement(driver, 40, precheckPageTitle);
+			
+			fName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			fName.sendKeys(Keys.BACK_SPACE);
+			fName.sendKeys(firstName);
+
+			midName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			midName.sendKeys(Keys.BACK_SPACE);
+			midName.sendKeys(middleName);
+
+			lName.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			lName.sendKeys(Keys.BACK_SPACE);
+			lName.sendKeys(lastName);
+			log("Enter first name , middle name and last name");
+
+			phoneNo.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			phoneNo.sendKeys(Keys.BACK_SPACE);
+			phoneNo.sendKeys(PhoneNo);
+
+			mail.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+			mail.sendKeys(Keys.BACK_SPACE);
+			mail.sendKeys(email);
+			submit.click();
+			
+			log("Completing precheck");
+				try {
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, okButton);
+					okButton.click();
+				}
+				
+				IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+				saveAndContinueButton.click();
+			
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+					skipAndPayInOffice.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+					payInOfficeButton.click();
+				}
+				
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndPayInOffice);
+					skipAndPayInOffice.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, payInOfficeButton);
+					payInOfficeButton.click();
+				}
+
+				try {
+					IHGUtil.waitForElement(driver, 5, skipAndFinishLater);
+					skipAndFinishLater.click();
+				}catch(NoSuchElementException e){
+					IHGUtil.waitForElement(driver, 5, saveAndContinueButton);
+					saveAndContinueButton.click();
+				}
+				
+				boolean visibility = false;
+				try {
+					visibility=driver.findElement(By.xpath("//p[text()='"+form+"']")).isDisplayed();
+						log("Form is displayed");
+						return visibility;
+					} catch (NoSuchElementException e) {
+						log("Form is not displayed");
+						
+					}
+				
+				jse.executeScript("arguments[0].click();", clickOnContinue);
+					
+				iAmDoneButton.click();
+				IHGUtil.waitForElement(driver, 5, logOutButton);
+				logOutButton.click();
+				return visibility;
+				}
+		
+		
+		}
 
 
 
-}
+

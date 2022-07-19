@@ -364,4 +364,32 @@ public class PayloadDetails {
 				AccountHolderFirstName, AccountHolderLastName));
 		return authorizesalemap;
 	}
+
+	public static Map<String, Object> getPayloadForCreatingInstaMedDigitalWallet(String mmid, String defaultPaymentMethod, String patientUrn,
+																			 String accountAlias, String accountHolderFirstName,
+																				 String accountHolderLastName, String accountType,
+																				 String accountNumber, String routingNumber) {
+		return Card.getCardsListForInstaMedDigitalWallet(mmid, defaultPaymentMethod, patientUrn, accountAlias,
+						accountHolderFirstName, accountHolderLastName, accountType, accountNumber,
+						routingNumber);
+	}
+
+	public static Map<String, Object> getPayloadForAddingAccountToInstaMedDigitalWallet(String mmid, String defaultPaymentMethod,
+																						String accountAlias, String accountHolderFirstName,
+																						String accountHolderLastName, String accountType,
+																						String accountNumber, String routingNumber, boolean isPrimary) {
+		return Card.getCardsListForAddAccountToExistingWallet(mmid, defaultPaymentMethod, accountAlias,
+				accountHolderFirstName, accountHolderLastName, accountType, accountNumber,
+				routingNumber, isPrimary);
+	}
+
+	public static Map<String, Object> getPayloadForCreatingInstaMedDigitalWalletForACard(String mmid, String defaultPaymentMethod,
+																						 String patientUrn,
+																						 String cardAlias, String cardExpiryDate,
+																						 String cardHolderName, String cardNumber,
+																						 String cardType, String cvv) {
+		return Card.getCardsPayload(mmid, defaultPaymentMethod, patientUrn, cardAlias,
+				cardExpiryDate, cardHolderName, cardNumber, cardType,
+				cvv);
+	}
 }
