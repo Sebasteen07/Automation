@@ -534,7 +534,7 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		adminUtils.pageRefresh(driver);
 		manageResource.selectResource(providerName);
-		manageResource.enableSharePatient();
+		manageResource.disableSharePatient();
 		manageResource.clearSearchResource();
 		manageResource.selectResource(providerName1);
 		manageResource.disableSharePatient();
@@ -608,7 +608,7 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		adminUtils.pageRefresh(driver);
 		manageResource.selectResource(providerName);
-		manageResource.enableSharePatient();
+		manageResource.disableSharePatient();
 		manageResource.clearSearchResource();
 		manageResource.selectResource(providerName1);
 		manageResource.disableSharePatient();

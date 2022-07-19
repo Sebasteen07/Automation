@@ -1796,7 +1796,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(providerName);
-		manageResource.enableSharePatient();
+		manageResource.disableSharePatient();
 		manageResource.clearSearchResource();
 		manageResource.selectResource(providerName1);
 		manageResource.disableSharePatient();
