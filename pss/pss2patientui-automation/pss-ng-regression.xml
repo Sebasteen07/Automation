@@ -42,33 +42,22 @@
 
 				</methods>
 			</class>
-
 			<class
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
-
 				<methods>
 					<exclude name="testRescheduleAppointmentNG()" />
 					<include name="testCancelFromEmailNG()" />
 					<include name="testBookApptWithoutLastQuestionNG()" />
 				</methods>
-
-
 			</class>
-
 			<class
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests05">
-
 				<methods>
-
-
 					<include name="test01UI_ForceLastSeen_BookFirst_NG()" />
 					<include name="test01UI_ForceLastSeen_NG()" />
 					<include name="test01UI_ForceLastSeen_Specialty_NG()" />
 					<include name="test01UI_LastSeenProvider_NG()" />
-
 				</methods>
-
-
 			</class>
 		</classes>
 	</test> <!-- Test -->
