@@ -549,6 +549,11 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
 		aPIVerification.responseCodeValidation(response, 200);
+		
+		  logStep("Show Provider On Using AM ");
+	        Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+	                payloadAM01.turnONOFFShowProvider(true));
+	        aPIVerification.responseCodeValidation(responseShowOff, 200);
 
 		String name = propertyData.getProperty("prerequisite.appointmenttype.name.ng");
 		String extAppID = propertyData.getProperty("prerequisite.appointmenttype.extapp.id.ng");
@@ -711,6 +716,11 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
 		aPIVerification.responseCodeValidation(response, 200);
+		
+		  logStep("Show Provider On Using AM ");
+	        Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+	                payloadAM01.turnONOFFShowProvider(true));
+	        aPIVerification.responseCodeValidation(responseShowOff, 200);
 
 		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
 		String timezone = aPIVerification.responseKeyValidationJson(response, "practiceTimezone");
@@ -918,6 +928,11 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
 		aPIVerification.responseCodeValidation(response, 200);
+		
+		  logStep("Show Provider On Using AM ");
+	        Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
+	                payloadAM01.turnONOFFShowProvider(true));
+	        aPIVerification.responseCodeValidation(responseShowOff, 200);
 
 		String name = propertyData.getProperty("prerequisite.appointmenttype.name.ng");
 		String extAppID = propertyData.getProperty("prerequisite.appointmenttype.extapp.id.ng");
