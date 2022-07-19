@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.practice.tests;
 
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -57,17 +57,8 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 				logStep("Verify whether the payment is completed successfully.");
 				assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
 						"The payment is completed properly.");
-
-				//stepCounter = 0; //TODO
 		}
 
-		/**
-		 * @param driver
-		 * @param testData
-		 * @return
-		 * @throws Exception
-		 * @brief Returns the generated amount, formatted as $ amount displayed
-		 */
 		public String virtualCardSwipeTest(WebDriver driver, PropertyFileLoader testData) throws Exception {
 				logStep("Navigate to Login page");
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
@@ -98,7 +89,6 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 				assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
 						"The payment is completed properly.");
 
-				//stepCounter = 0; //TODO
 				return IHGUtil.formatNumber(Integer.parseInt(amount) * 100);
 		}
 }

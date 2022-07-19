@@ -1,3 +1,4 @@
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.virtualofficevisit;
 
 import java.text.ParseException;
@@ -78,11 +79,6 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 		super(driver);
 	}
 
-	/**
-	 * Gives an indication if the page loaded as expected
-	 * 
-	 * @return true or false
-	 */
 	public boolean isPageLoaded() {
 		IHGUtil.PrintMethodName();
 		// PracticeUtil.setPracticeFrame(driver);
@@ -97,10 +93,6 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Performs a basic search with the status as 'OPEN', assignment as 'ALL', and date range as default. Once the search is called, call the getDetails method to
-	 * retrieve the specific item.
-	 */
 	public void doBasicSearch() {
 		IHGUtil.PrintMethodName();
 		// PracticeUtil.setPracticeFrame(driver);
@@ -116,13 +108,6 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 		hasSearched = true;
 	}
 
-	/**
-	 * Will find the first Virtual Office Detail request that was received after the submitted date and click on it. If nothing is found a null is returned.
-	 * 
-	 * @param sentDate
-	 * @return the Virtual Office Visit take action page or null if no results matched
-	 * @throws ParseException
-	 */
 	public AskAStaffQuestionDetailStep1Page getDetails(Date sentDate) throws ParseException {
 		IHGUtil.PrintMethodName();
 		// PracticeUtil.setPracticeFrame(driver);
@@ -131,24 +116,10 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 			doBasicSearch();
 		}
 		submittedDate.click();
-		/*
-		 * // Date receivedDate = formatter.parse(item.getText()); for (WebElement submittedDate : submittedDates) { String[] parsedDate =
-		 * submittedDate.getText().split("\\n"); String formattedDate = parsedDate[0] + " " + parsedDate[1]; log("Date grabbed from table: [" + formattedDate +
-		 * "]");
-		 * 
-		 * Date receivedDate = formatter.parse(formattedDate); if (sentDate.compareTo(receivedDate) <= 0) { submittedDate.click(); return
-		 * PageFactory.initElements(driver, VirtualOfficeVisitTakeActionPage.class); } }
-		 * 
-		 * return null;
-		 */
+
 		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep1Page.class);
 	}
 
-	/**
-	 * Sets the assignment option.
-	 * 
-	 * @param vovAssignment provided from VirtualOfficeVisitAssignment class
-	 */
 	private void setVovAssignment(String vovAssignment) {
 		for (WebElement option : vovAssignments) {
 			if (option.getAttribute("value").equalsIgnoreCase(vovAssignment)) {
@@ -158,11 +129,6 @@ public class VirtualOfficeVisitSearchPage extends BasePageObject {
 		}
 	}
 
-	/**
-	 * Sets the status option.
-	 * 
-	 * @param vovStatus provided from VirtualOfficeVisitStatus class
-	 */
 	private void setVovStatus(String vovStatus) {
 		for (WebElement option : status) {
 			if (option.getAttribute("value").equalsIgnoreCase(vovStatus)) {

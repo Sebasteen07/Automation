@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 
 import static org.testng.Assert.fail;
@@ -232,9 +232,6 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 		}
 	}
 
-	/**
-	 * Click on the View health data
-	 */
 	public void clickBtnViewHealthData() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, btnViewHealthData);

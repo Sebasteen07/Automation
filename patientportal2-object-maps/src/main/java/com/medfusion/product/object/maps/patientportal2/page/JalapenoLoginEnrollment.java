@@ -18,8 +18,6 @@ import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayN
 /**
  * Only to use for enrollment story as we  some of the element will be disabled from sitegen.As for normal
  *  jalapeno login while loading the page we are verifying those element.
- * 
- * @throws Exception
  */
 
 public class JalapenoLoginEnrollment extends MedfusionPage {

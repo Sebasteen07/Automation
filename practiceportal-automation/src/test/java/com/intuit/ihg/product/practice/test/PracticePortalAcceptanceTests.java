@@ -1,4 +1,4 @@
-//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.practice.test;
 
 import org.testng.annotations.BeforeClass;
@@ -57,7 +57,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author:- rperkinsjr
 	 * @Date:-3/27/2013
 	 * @User Story ID in Rally : NA
@@ -84,13 +83,11 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: bbinisha User Story : US6575
 	 * @Date: 07/26/2013
 	 * @StepsToReproduce: Practice portal login Click on Manage TreatmentPlan Click
 	 *                    on 'Submit' button Enter the treatment info Click on
 	 *                    'Create TreatmentPlan' button.
-	 * @AreaImpacted:
 	 */
 	@Test(enabled = true, groups = { "AcceptanceTests" })
 	public void testCreateTreatmentPlan() throws Exception {
@@ -119,7 +116,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: bbinisha refactored by Prokop Rehacek User Story : US6579
 	 * @Date: 07/26/2013
 	 * @StepsToReproduce: Practice portal login Click on 'Virtual Card Swiper' Enter
@@ -135,7 +131,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: Prokop Rehacek User Story : US6579
 	 * @Date: 3/11/2014
 	 * @StepsToReproduce: Practice portal login Click on 'Virtual Card Swiper' Enter
@@ -152,7 +147,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: Kiran_GT
 	 * @Date: 07/26/2013
 	 * @StepsToReproduce: Practice Portal login Click on Patient Search Link Set
@@ -180,7 +174,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: Prokop Rehacek
 	 * @Date: 04/14/2014
 	 * @StepsToReproduce: 1. Practice Portal login 2. Click on Patient Search Link
@@ -216,7 +209,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: Prokop Rehacek
 	 * @Date: 07/26/2013
 	 * @StepsToReproduce:
@@ -258,7 +250,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: Gajendran
 	 * @Date: 07/26/2013
 	 * @StepsToReproduce: Patient login
@@ -288,7 +279,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: Kiran_GT
 	 * @Date: 07/26/2013
 	 * @StepsToReproduce: Practice Portal login Click on Patient Messaging
@@ -320,7 +310,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: Kiran_GT
 	 * @Date: 07/29/2013
 	 * @StepsToReproduce: Practice Portal login Click on Online Bill Payment--->Make
@@ -353,7 +342,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	/**
-	 * @throws Exception
 	 * @Author: bbinisha User Story : US6488
 	 * @Date: 08/01/2013
 	 * @StepsToReproduce: Practice portal login Click on 'Online Billpay' Click on

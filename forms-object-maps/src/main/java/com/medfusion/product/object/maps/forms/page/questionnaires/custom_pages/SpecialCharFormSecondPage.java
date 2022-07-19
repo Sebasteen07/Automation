@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.custom_pages;
 
 import org.openqa.selenium.WebDriver;
@@ -28,9 +29,6 @@ public class SpecialCharFormSecondPage extends PortalCustomFormPage {
 		severeButt.click();
 	}
 
-	/**
-	 * @brief Signs consent with a name containing quote marks
-	 */
 	public void signConsent() {
 		consent.clear();
 		consent.sendKeys("Frankie \"Tester\" Testguy");
