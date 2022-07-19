@@ -2792,3 +2792,12 @@ Feature: Test fuctionality of Appointment precheck
     And I schedule an appointment for associated appointment type for new practice
     Then I verify while doing precheck associated appointment type should be display for new practice
     And logout from practice provisioning portal
+
+  Scenario: To verify on adding IMH/Medfusion form on doing precheck forms should get populated and precheck flow should get completed
+    When logout from practice provisioning portal
+    And I login to existing practice
+    And I add IMH forms
+    And I search form added in UI
+    And I schedule an appointment after adding form
+    Then I verify while doing precheck added form should be displayed and updated in the precheck forms list
+    And logout from practice provisioning portal

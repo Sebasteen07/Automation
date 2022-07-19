@@ -86,11 +86,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return createdTs;
 	}
 
-	/**
-	 * Gives indication if the Appt Request Detail page loaded.
-	 * 
-	 * @return true or false
-	 */
 	public boolean isApptRequestDetailPageLoaded() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -107,14 +102,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Will process an appt request based upon the values in the ApptRequestEntity
-	 * and move to the next page.
-	 * 
-	 * @param entity
-	 * @param MessageErrorfilePath
-	 * @param MessagefilePath
-	 */
 	public void processApptAndSubmitAttachment(ApptRequestEntity entity, String MessageErrorfilePath,
 			String MessagefilePath) throws InterruptedException {
 		Thread.sleep(5000);
@@ -209,13 +196,7 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 
 		btnSubmitApptRequest.click();
 	}
-
-	/**
-	 * Will mark request as cancelled and continue to next step
-	 * 
-	 * @return appt request search page
-	 */
-
+	
 	public ApptRequestDetailStep2Page chooseApproveAndSubmit() throws InterruptedException {
 		Thread.sleep(5000);
 		IHGUtil.PrintMethodName();
@@ -227,12 +208,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
 	
-	/**
-	 * Will mark request as Proccessed Externally to next step
-	 * 
-	 * @return appt request search page
-	 */
-
 	public ApptRequestDetailStep2Page chooseprocessedExternallyAndSubmit() throws InterruptedException {
 		Thread.sleep(5000);
 		IHGUtil.PrintMethodName();
@@ -244,12 +219,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
 
-	/**
-	 * Will mark request as Proccessed Externally to next step
-	 * 
-	 * @return appt request search page
-	 */
-
 	public ApptRequestDetailStep2Page chooseSetToPendingAndSubmit() throws InterruptedException {
 		Thread.sleep(5000);
 		IHGUtil.PrintMethodName();
@@ -260,11 +229,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		processApptAndSubmit(entity);
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
-	/**
-	 * Will mark request as cancelled and continue to next step
-	 * 
-	 * @return appt request search page
-	 */
 
 	public ApptRequestDetailStep2Page chooseRequestCancelAndSubmit() throws InterruptedException {
 		Thread.sleep(5000);
@@ -277,12 +241,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
 
-	/**
-	 * Will mark request as Update Appointment and continue to next step
-	 * 
-	 * @return appt request search page
-	 */
-
 	public ApptRequestDetailStep2Page chooseUpdateAppointmentAndSubmit() throws InterruptedException {
 		Thread.sleep(5000);
 		IHGUtil.PrintMethodName();
@@ -294,12 +252,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		processApptAndSubmit(entity);
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
-
-	/**
-	 * Will mark request as Communicate only and continue to next step
-	 * 
-	 * @return appt request search page
-	 */
 
 	public ApptRequestDetailStep2Page chooseCommunicateAndSubmit() throws InterruptedException {
 		Thread.sleep(5000);
@@ -314,12 +266,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
 
-	/**
-	 * Will mark request as Approved , add attachment and continue to next step
-	 * 
-	 * @return appt request search page
-	 */
-
 	public ApptRequestDetailStep2Page chooseApproveAndSubmitAttachment(String MessageErrorfilePath,
 			String MessagefilePath) throws InterruptedException {
 		Thread.sleep(5000);
@@ -332,11 +278,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
 
-	/**
-	 * Will mark request as cancelled and continue to next step
-	 * 
-	 * @return appt request search page
-	 */
 	public ApptRequestDetailStep2Page chooseCancelAndSubmit() throws InterruptedException {
 		Thread.sleep(5000);
 		IHGUtil.PrintMethodName();
@@ -347,11 +288,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 		return PageFactory.initElements(driver, ApptRequestDetailStep2Page.class);
 	}
 
-	/**
-	 * Will check Secure Message subject text & return subject text
-	 * 
-	 * @return
-	 */
 	public String getPracticeMessageSubject() {
 		if (isApptRequestDetailPageLoaded() == false) {
 			IHGUtil.PrintMethodName();
@@ -362,11 +298,6 @@ public class ApptRequestDetailStep1Page extends BasePageObject {
 
 	}
 
-	/**
-	 * Will check Secure Message reply text & returns message text
-	 * 
-	 * @return message body text
-	 */
 	public String getPracticeMessageBody() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);

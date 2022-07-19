@@ -21,11 +21,6 @@ public class ApptRequestDetailStep2Page extends BasePageObject {
 		super(driver);
 	}
 
-	/**
-	 * Indicates whether process confirmation page is displayed.
-	 * 
-	 * @return true or false
-	 */
 	public boolean isProcessPageLoaded() {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -41,11 +36,6 @@ public class ApptRequestDetailStep2Page extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Will process the appt request and redirect to the Appt Request search page
-	 * 
-	 * @return the appt request search page
-	 */
 	public ApptRequestSearchPage processApptRequest() throws InterruptedException {
 		Thread.sleep(10000);
 		IHGUtil.PrintMethodName();

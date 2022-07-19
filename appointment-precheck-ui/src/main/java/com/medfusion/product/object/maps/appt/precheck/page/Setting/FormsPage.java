@@ -1,6 +1,8 @@
 package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -51,6 +53,9 @@ public class FormsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//button[@id='primaryDelete']")
 	private WebElement clickDeleteButton;
+	
+	@FindBy(how = How.XPATH, using = "//input[@class='form-search-input']")
+	private WebElement searchForm;
 	
 	public FormsPage(WebDriver driver) {
 			super(driver);
@@ -136,6 +141,25 @@ public class FormsPage extends BasePageObject {
 		public void clickDeleteButton() {
 			IHGUtil.waitForElement(driver, 10, clickDeleteButton);
 			jse.executeScript("arguments[0].click();", clickDeleteButton);
+		}
+		
+		public void searchForm(String form) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			searchForm.sendKeys(form);
+			Thread.sleep(5000);
+		}
+		
+		public boolean isFormDisplay(String form) {
+			IHGUtil.PrintMethodName();
+			boolean visibility = false;
+			try {
+				visibility=driver.findElement(By.xpath("//p[text()='"+form+"']")).isDisplayed();
+					log("Form is displayed");
+					return visibility;
+				} catch (NoSuchElementException e) {
+					log("Form is not displayed");
+					return visibility;
+				}
 		}
 }
 		

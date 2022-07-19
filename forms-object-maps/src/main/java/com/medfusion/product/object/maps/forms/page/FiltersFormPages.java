@@ -1,4 +1,4 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page;
 
 import java.util.concurrent.TimeUnit;
@@ -20,7 +20,6 @@ public class FiltersFormPages extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
-
 	
 	@FindBy(xpath = "//div[@id='s2id_locationFilter']/a[@class='select2-choice']")
 	private WebElement locationComboBox;
@@ -43,44 +42,28 @@ public class FiltersFormPages extends BasePageObject {
 	private static final By iFrameLocationComboBoxXpath = By.xpath("//div[@id='s2id_locationFilter']/a[@class='select2-choice']");	
 	private static final By iFrameProviderComboBoxXpath = By.xpath("//div[@id='s2id_providerFilter']/a[@class='select2-choice']"); 
 	
-	/**
-	 * Select Location DropDown
-	 */
 	public void selectFirstOptionLocationComboBox() {
 		IHGUtil.PrintMethodName();
 		locationComboBox.click();
 		selectFirstLocationComboBox.click();
 	}
 
-	/**
-	 * Submit Location Button
-	 */
 	public void selectLocationButton() {
 		IHGUtil.PrintMethodName();
 		javascriptClick(selectLocationButton);
 	}
 
-	/**
-	 * Select Provider DropDown
-	 */
 	public void selectFirstOptionProviderComboBox() {
 		IHGUtil.PrintMethodName();
 		providerComboBox.click();
 		selectFirstProviderComboBox.click();
 	}
 
-	/**
-	 * Submit Provider Button
-	 */
 	public void selectProviderButton() {
 		IHGUtil.PrintMethodName();
 		javascriptClick(selectProviderButton);
 	}
 
-	/**
-	 * If multiple locations and providers are configured for a pratice This method
-	 * will select first option from dropdown and click on select button
-	 */
 	public HealthFormListPage selectfilterforms() throws InterruptedException {
 		IHGUtil iHGUtil = new IHGUtil(driver);
 		driver.switchTo().frame("iframe");

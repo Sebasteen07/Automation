@@ -49,15 +49,6 @@ public class PatientActivation implements IPatientActivation {
 	    return editPatientSetExternalID( driver,  testData,  patientInfo,"78");
 	}
 	
-	/**
-	 *  Sets the external id to any external system, the element name of the box filled is "patientid_%externalSystemId" 
-	 *  e.g. patientid_78 for rsdk, patientid_79 for elekta, etc...
-	 * @param driver
-	 * @param testData
-	 * @param patientInfo
-	 * @param elementName
-	 * @return patient info
-	 */
 	@Override
 	public PatientInfo editPatientSetExternalID(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo,String externalSystemId)
             throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException {
