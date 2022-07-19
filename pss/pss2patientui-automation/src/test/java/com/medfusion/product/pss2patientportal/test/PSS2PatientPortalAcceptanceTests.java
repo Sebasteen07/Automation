@@ -954,7 +954,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 
 		testData.setFutureApt(false);
-		//testData.setInsuranceAtEnd(true);
 
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
@@ -968,10 +967,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
 			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
 		}
-
-//		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
-//				payloadAM.resourceConfigRulePutPayload());
-//		aPIVerification.responseCodeValidation(responseRulePost, 200);
 		
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
 		aPIVerification.responseCodeValidation(response, 200);
@@ -2313,7 +2308,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		//yo.deleteEmail(driver, userName);
+		yo.deleteEmail(driver, userName);
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
