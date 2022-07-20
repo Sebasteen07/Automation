@@ -15,6 +15,46 @@
 				
 				</methods>
 			</class>
+			
+			<class
+				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
+				<methods>
+
+					<include name="testBookApptWithoutLastQuestionNG" />
+					<include name="testSSOFlowNG()" />
+					<include name="testE2ELoginlessForExistingPatientNG" />
+
+					<include name="testPreventSchedPastNG()" />
+					<include name="testPreventSchedFutureNG()" />
+
+					<include name="testE2ELoginlessForNewPatientNG" />
+
+					<include name="testLoginlessWithInsuranceNG" />
+
+					<include name="testLastQuestionRequiredNG" />
+					<include name="testBookApptWithoutLastQuestionNG()" />
+					<include name="testBookApptWithLastQuestionNG()" />
+
+					<include name="testCancelFromEmailNG()" />
+					<include name="testCancelE2ETestingNG()" />
+
+					<include name="testRescheduleAppointmentNG" />
+					<include name="testRescheduleviaEmailNotifiicationNG()" />
+
+					<include name="testAcceptSameDayNG()" />
+					<include name="testANGRuleNG()" />
+					<include name="testaNGRulewithSpecialityNG()" />
+					<include name="testE2ELinkNGnerationNG()" />
+					<include name="testincludeSlotsNG()" />
+
+
+					<include name="testLeadTimeNG()" />
+					<include name="testMaxperDayNG()" />
+					<include name="testPCPShareONNG()" />
+					<include name="testTimeMarkNG()" />
+
+				</methods>
+			</class>
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

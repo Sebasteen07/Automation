@@ -29,6 +29,15 @@ public class Location extends PSS2MainPage {
 	@FindAll({ @FindBy(xpath = "//*[@class='locationlink locationlinkclick']") })
 	private List<WebElement> locationList;
 	
+	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']") })
+	private List<WebElement> locationListNew;
+	
+	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']/b") })
+	private List<WebElement> locationNameDetails;
+	
+	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']/div[2]/div/a") })
+	private List<WebElement> locationSelect;
+
 	@FindAll({ @FindBy(xpath = "//a[contains(text(),'River Oaks Main')]") })
 	private List<WebElement> locationRever;
 
@@ -49,15 +58,6 @@ public class Location extends PSS2MainPage {
 
 	@FindAll({@FindBy(xpath = "//a[@class='locationlink locationlinkclick']")})
 	private List<WebElement> locationListByZipCode;
-	
-	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']") })
-    private List<WebElement> locationListNew;
-
-    @FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']/b") })
-    private List<WebElement> locationNameDetails;
-
-    @FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']/div[2]/div/a") })
-    private List<WebElement> locationSelect;
 
 	public Location(WebDriver driver) {
 		super(driver);
