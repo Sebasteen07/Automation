@@ -1772,4 +1772,35 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		}
 		patientFlow.logout();
 	}
+	
+	public void enableCareTeamWithSharePatientONSettings(WebDriver driver, AdminUser adminUser, Appointment appointment,
+			String providerName, String providerName1) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		patientflow.turnOnProvider();
+		setRulesNoSpecialitySet1(patientflow);
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		log("Is Care team toggle enabled" + adminAppointment.toggleAllowPCPONOF());
+		appointment.setPcptoggleState(adminAppointment.toggleAllowPCPONOF());
+		Log4jUtil.log("Status of PCP is " + appointment.isPcptoggleState());
+		if (appointment.isPcptoggleState() == false) {
+			Log4jUtil.log("Status of PCP  OFF");
+			adminAppointment.pcptoggleclick();
+			Log4jUtil.log("Status of PCP  OFF and Clicked on ON");
+		} else {
+			Log4jUtil.log("Status of PCP is Already ON");
+		}
+		adminAppointment.selectPrimaryCareProvider();
+		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageResource manageResource = pssPracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(providerName);
+		manageResource.disableSharePatient();
+		manageResource.clearSearchResource();
+		manageResource.selectResource(providerName1);
+		manageResource.disableSharePatient();
+		pageRefresh(driver);
+		manageResource.logout();
+	}
 }
