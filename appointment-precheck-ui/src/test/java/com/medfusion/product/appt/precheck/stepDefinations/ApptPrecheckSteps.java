@@ -11109,13 +11109,14 @@ public class ApptPrecheckSteps extends BaseTest {
 		formsPage.searchForm(propertyData.getProperty("imh.appt.title"));
 		formsPage.clickOnAppointmentTypesForForms();
 		formsPage.selectAppointmentTypeForForms();
+		formsPage.selectAppointmentTypeForForm();
 		formsPage.clickOnBackArrow();
 	}
 	@When("I deassociate appointment types to forms")
 	public void i_deassociate_appointment_types_to_forms() throws InterruptedException, NullPointerException, IOException {
 		formsPage.searchForm(propertyData.getProperty("imh.appt.title"));
 		formsPage.clickOnAppointmentTypesForForms();
-		formsPage.selectAppointmentTypeForForms();
+		formsPage.deselectAppointmentTypeForForms();
 		formsPage.clickOnBackArrow();
 	}
 	@Then("I verify newly added forms should be reflected after doing get call")

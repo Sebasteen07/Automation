@@ -75,6 +75,9 @@ public class FormsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//input[@id='select-2e2a986d-cd58-4272-ab91-0546daf77f26']")
 	private WebElement selectAppointmentTypeForForms;
 	
+	@FindBy(how = How.XPATH, using = "//input[@id='select-c1d76bfa-676a-4788-8433-5cb3a91b8a81']")
+	private WebElement selectAppointmentTypeForForm;
+	
 	@FindBy(how = How.XPATH, using = "//p[@class='mf-list__element--primary']")
 	private WebElement IMHForm;
 
@@ -220,14 +223,25 @@ public class FormsPage extends BasePageObject {
 		
 		public void selectAppointmentTypeForForms() {
 			IHGUtil.waitForElement(driver, 10, selectAppointmentTypeForForms);
-			if(selectAppointmentTypeForForms.isSelected()) {
-				log("appointment type is already selected");
-			}
-			else {
-				
+			boolean selected = selectAppointmentTypeForForms.isSelected();
+			if(!selected) {
 				jse.executeScript("arguments[0].click();", selectAppointmentTypeForForms);
 				log("select appointment type");
 			}
+		}
+		
+		public void selectAppointmentTypeForForm() {
+			IHGUtil.waitForElement(driver, 10, selectAppointmentTypeForForm);
+			boolean selected = selectAppointmentTypeForForm.isSelected();
+			if(!selected) {
+				jse.executeScript("arguments[0].click();", selectAppointmentTypeForForm);
+				log("select appointment type");
+			}
+		}
+		
+		public void deselectAppointmentTypeForForms() {
+			IHGUtil.waitForElement(driver, 10, selectAppointmentTypeForForms);
+			jse.executeScript("arguments[0].click();", selectAppointmentTypeForForms);
 		}
 
 }
