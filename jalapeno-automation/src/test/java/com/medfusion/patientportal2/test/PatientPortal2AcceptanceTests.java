@@ -4768,8 +4768,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testLAAppointmentProcessExternallyStatus2() throws Exception {
 		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 		logStep("Load login page and login");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
-		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+        JalapenoHomePage homePage = loginPage.login(testData.getProperty("app.user.id"), testData.getProperty("app.password"));
 
 		logStep("Switching to Dependent Account");
 		homePage.faChangePatient();
@@ -4817,8 +4817,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
 
 		logStep("Login back to patient portal");
-		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
-		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+        homePage = loginPage.login(testData.getProperty("app.user.id"), testData.getProperty("app.password"));
 
 		logStep("Switching to Dependent Account");
 		homePage.faChangePatient();
