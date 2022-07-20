@@ -2801,3 +2801,12 @@ Feature: Test fuctionality of Appointment precheck
     And I schedule an appointment after adding form
     Then I verify while doing precheck added form should be displayed and updated in the precheck forms list
     And logout from practice provisioning portal
+
+  Scenario: To verify if imh forms and medfusion forms are added from practice provisioning then same forms should be reflected in Get call
+    When logout from practice provisioning portal
+    And I login to existing practice
+    And I add IMH forms from practice provisioning UI
+    And I associate appointment types to forms
+    And I deassociate appointment types to forms
+    Then I verify newly added forms should be reflected after doing get call
+    And logout from practice provisioning portal
