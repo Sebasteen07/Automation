@@ -26,7 +26,7 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 
 public class Location extends PSS2MainPage {
 
-	@FindAll({ @FindBy(xpath = "//a[@class='locationlink locationlinkclick']") })
+	@FindAll({ @FindBy(xpath = "//*[@class='locationlink locationlinkclick']") })
 	private List<WebElement> locationList;
 	
 	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']") })
@@ -66,7 +66,7 @@ public class Location extends PSS2MainPage {
 	private String addressValue = null;
 
 	public AppointmentPage selectAppointment(String locationName) throws InterruptedException {
-        log("In Location Search Method");
+		log("In Location Search Method");
         for (int i = 0; i < locationNameDetails.size(); i++) {
             log("Size of Location List - "+locationNameDetails.size());
             if (locationNameDetails.get(i).getText().contains(locationName)) {
