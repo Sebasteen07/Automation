@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -78,14 +79,16 @@ public class SelectMedicationsPage  extends BasePageObject {
 			availablemedicationcheckbx.click();
 			}
 			else {
-				log(chooseMedicationTextField+"   send");	
+				log("Acarbose 100 mg Tab is selected from list");	
 				driver.switchTo().defaultContent();
 				chooseMedicationTextField.sendKeys("Acarbose 100 mg Tab");
 				IHGUtil.waitForElement(driver, 5, chooseFirstMedicationTextField); 
 				chooseFirstMedicationTextField.click();
 			}
-			btnContinue.click();
-		}
+  			Actions action=new Actions(driver);
+  			action.moveToElement(btnContinue).click().build().perform();
+  			IHGUtil.waitForElement(driver, 5, btnContinue); 
+			}
 		catch (Exception e) {
 			log(e.toString());	
 		}	

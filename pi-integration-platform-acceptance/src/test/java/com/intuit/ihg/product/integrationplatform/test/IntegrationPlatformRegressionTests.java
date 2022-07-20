@@ -3588,7 +3588,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			// do the call and save xml, ",0" is there because of the since
 			// attribute format
 			Thread.sleep(4000);
-			RestUtils.setupHttpGetRequestOauthToken(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
+			RestUtils.setupHttpGetRequestOauthToken(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 			logStep("Checking validity of the response xml");
 
 			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails,
@@ -3611,7 +3611,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Prescription ID: " + prescriptionId);
 
 			logStep("Do Message Post Request" + postXML);
-			String processingUrl =RestUtils.setupHttpPostRequestWithOauthToken(testData.getRestUrl(), postXML,
+			String processingUrl =RestUtils.setupHttpPostRequestWithOauthToken(testData.getRestV3Url(), postXML,
 					testData.getResponsePath(),newToken);
 
 			logStep("Get processing status until it is completed");

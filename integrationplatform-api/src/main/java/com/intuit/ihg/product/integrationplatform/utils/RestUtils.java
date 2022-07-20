@@ -46,11 +46,13 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.jdom.JDOMException;
@@ -1318,14 +1320,25 @@ public class RestUtils {
 		HttpClient client = new DefaultHttpClient();
 		Log4jUtil.log("Post Request Url: " + strUrl);
 
+		RequestConfig Default = RequestConfig.DEFAULT;
+
+	    RequestConfig requestConfig = RequestConfig.copy(Default)
+	    		  .setSocketTimeout(80000)
+	            .setConnectTimeout(20000)
+	            .setConnectionRequestTimeout(20000)
+	            .build();
+//	   HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+	   
+	   
 		HttpPost request = new HttpPost();
-		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+//		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		request.setURI(new URI(strUrl));
 		request.setEntity(new StringEntity(payload));
 		request.setHeader("Connection", "keep-alive");
 		request.setHeader("Accept-Encoding", "gzip, deflate, br");
 		request.addHeader("Content-Type", "application/xml");
 		request.setHeader("Authorization", "Bearer " + token);
+		request.setConfig(requestConfig);
 		Log4jUtil.log("Post Request Url4: ");
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
@@ -1351,14 +1364,24 @@ public class RestUtils {
 		HttpClient client = new DefaultHttpClient();
 		Log4jUtil.log("Post Request Url: " + strUrl);
 
+		RequestConfig Default = RequestConfig.DEFAULT;
+
+	    RequestConfig requestConfig = RequestConfig.copy(Default)
+	            .setSocketTimeout(80000)
+	            .setConnectTimeout(50000)
+	            .setConnectionRequestTimeout(50000)
+	            .build();
+//	   HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+		
+		
 		HttpPost request = new HttpPost();
-		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+//		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		request.setURI(new URI(strUrl));
 		request.setEntity(new StringEntity(payload));		
 		request.addHeader("Authorization", "Basic " + token);
 		request.addHeader("Content-Type", "application/x-www-form-urlencoded");
 		request.setHeader("Accept", "application/json");
-
+		request.setConfig(requestConfig);
 		Log4jUtil.log("Post Request Url4: ");
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
@@ -1898,28 +1921,47 @@ public class RestUtils {
 		HttpClient client = new DefaultHttpClient();
 		Log4jUtil.log("GET call with Token.");
 		Log4jUtil.log("GET Request Url: " + strUrl);
+		RequestConfig Default = RequestConfig.DEFAULT;
 
+	    RequestConfig requestConfig = RequestConfig.copy(Default)
+	    		  .setSocketTimeout(80000)
+	            .setConnectTimeout(20000)
+	            .setConnectionRequestTimeout(20000)
+	            .build();
+//	   HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+		
 		HttpGet httpGetReq = new HttpGet(strUrl);
-		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+//		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		httpGetReq.setURI(new URI(strUrl));
 		httpGetReq.addHeader("Authorization", "Bearer " + token);
 		httpGetReq.addHeader("Content-Type", "application/xml");
+		httpGetReq.setConfig(requestConfig);
 		HttpResponse resp = client.execute(httpGetReq);
 		HttpEntity entity = resp.getEntity();
 		String sResp = "";
+		try {
 		if (entity != null) {
 			sResp = EntityUtils.toString(entity);
 			Log4jUtil.log("Check for http 200 response");
-		} else {
-			Log4jUtil.log("Check for http 204 response");
-		}
+			assertTrue(resp.getStatusLine().getStatusCode() == 200, "Get Request response is "
+					+ resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+			
+				Thread.sleep(10000);
+			
+			Log4jUtil.log("GET sResp=" + sResp);
+			writeFile(responseFilePath, sResp);
 
-		assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
-				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
-		writeFile(responseFilePath, sResp);
-		if (resp.containsHeader("Next-URI")) {
-			Header[] h = resp.getHeaders("Next-URI");
-			headerUrl = h[0].getValue();
+			if (resp.containsHeader("Next-URI")) {
+				Header[] h = resp.getHeaders("Next-URI");
+				headerUrl = h[0].getValue();
+			}
+			
+		} else {
+			Log4jUtil.log("204 response found");
+
+		}
+		} catch (InterruptedException e) {
+			Log4jUtil.log("exception is  : "+e);
 		}
 	}
 
@@ -3978,7 +4020,9 @@ public class RestUtils {
 
 		for (int i = 0; i < pnode.getLength(); i++) {
 			Element element = (Element) pnode.item(i);
-			String medicationId = element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent();
+				if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD") || !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+					String medicationId = element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent();
+				}
 			
 			String reaString = element.getElementsByTagName("MedicationName").item(0).getFirstChild().getNodeValue();
 			if (reaString.equalsIgnoreCase(medication)) {
@@ -3998,8 +4042,11 @@ public class RestUtils {
 				medication_details
 						.add(element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue().toString());
 				medication_details.add(element.getElementsByTagName("AdditionalInformation").item(0).getTextContent().toString());
-				medication_details.add(element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent().toString());
-				medication_details.add(element.getElementsByTagName("ExternalSystemId").item(0).getTextContent().toString());
+				if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD") || !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+					medication_details.add(element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent().toString());
+					medication_details.add(element.getElementsByTagName("ExternalSystemId").item(0).getTextContent().toString());
+				}
+				
 				node = node.getParentNode().getParentNode();
 				
 				Log4jUtil.log("Node name for prescription:"+node.getNodeName());
@@ -4059,20 +4106,22 @@ public class RestUtils {
 		Node nRefillNumber = element.getElementsByTagName(IntegrationConstants.REFILL_NUMBER_TAG).item(0);
 		Node nPrescriptionNumber = element.getElementsByTagName(IntegrationConstants.PRESCRIPTION_NUMBER_TAG).item(0);
 		Node nAdditionalInformation = element.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
-		Node nExternalMedicationID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_MEDICATION_ID).item(0);
-		Node nExternalSystemID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_SYSTEM_ID).item(0);
-
 		
+		if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+			Node nExternalMedicationID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_MEDICATION_ID).item(0);
+			Node nExternalSystemID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_SYSTEM_ID).item(0);
+			nExternalMedicationID.setTextContent(medication_details.get(7));
+			nExternalSystemID.setTextContent(medication_details.get(8));
+		}
+				
 		nPrescriptionNumber.setTextContent((String) IntegrationConstants.PRESCRIPTION_NO);
 		nRefillNumber.setTextContent((String) IntegrationConstants.NO_OF_REFILLS);
 		nQuantity.setTextContent((String) IntegrationConstants.QUANTITY);
 		nMedicationDosage.setTextContent(medication_details.get(1));
 		nMedicationName.setTextContent(medication_details.get(0));
 		nAdditionalInformation.setTextContent(medication_details.get(6));
-		nExternalMedicationID.setTextContent(medication_details.get(7));
-		nExternalSystemID.setTextContent(medication_details.get(8));
 
-		String SigCode = "IWVH";
+		String SigCode = "TICN";
 		Node nSigCodeAbbreviation = element.getElementsByTagName("SigCodeAbbreviation").item(0);
 		Node nSigCodeMeaning = element.getElementsByTagName("SigCodeMeaning").item(0);
 
