@@ -11091,5 +11091,43 @@ public class ApptPrecheckSteps extends BaseTest {
 				propertyData.getProperty("practice.password.ng"));
 			scrollAndWait(200, -300, 5000);
 	}
+	
+	@When("I add IMH forms from practice provisioning UI")
+	public void i_add_imh_forms_from_practice_provisioning_ui() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		formsPage.clickOnFormsTab();
+		formsPage.clickOnAddformButton();
+		formsPage.clickOnIMHForm();
+	}
+	@When("I associate appointment types to forms")
+	public void i_associate_appointment_types_to_forms() throws InterruptedException {
+		formsPage.addIMHForm(propertyData.getProperty("imh.form.new.title"));
+		formsPage.searchForm(propertyData.getProperty("imh.form.new.title"));
+		formsPage.clickOnAppointmentTypesForForms();
+		formsPage.selectAppointmentTypeForForms();
+		formsPage.clickOnBackArrow();
+		formsPage.searchForm(propertyData.getProperty("imh.appt.title"));
+		formsPage.clickOnAppointmentTypesForForms();
+		formsPage.selectAppointmentTypeForForms();
+		formsPage.selectAppointmentTypeForForm();
+		formsPage.clickOnBackArrow();
+	}
+	@When("I deassociate appointment types to forms")
+	public void i_deassociate_appointment_types_to_forms() throws InterruptedException, NullPointerException, IOException {
+		formsPage.searchForm(propertyData.getProperty("imh.appt.title"));
+		formsPage.clickOnAppointmentTypesForForms();
+		formsPage.deselectAppointmentTypeForForms();
+		formsPage.clickOnBackArrow();
+	}
+	@Then("I verify newly added forms should be reflected after doing get call")
+	public void i_verify_newly_added_forms_should_be_reflected_after_doing_get_call() throws NullPointerException, IOException {
+		Response response = postAPIRequest.getListOfForms(
+				propertyData.getProperty("baseurl.mf.practice.settings.manager"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
+				propertyData.getProperty("imh.form.practice.id"));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+	}
+
 
 }
