@@ -1406,6 +1406,21 @@ locals {
       chrome_driver_version = "101.0.4951.41"
       cron_shedule          = "cron(40 2 ? * 1 *)"
     }
+
+    "qa-automation-api" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "appointment-precheckui-api"
+      test_environment      = "qa1"
+      suite_xml             = "appointment_Precheck_Api.xml"
+      pxp_application       = "Appointments"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -X clean install"
+      google_chrome_version = "102.0.5005.61-1"
+      chrome_driver_version = "101.0.4951.41"
+      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+    }
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)

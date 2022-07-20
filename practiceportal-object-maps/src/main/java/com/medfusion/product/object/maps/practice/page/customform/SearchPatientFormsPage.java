@@ -64,11 +64,6 @@ public class SearchPatientFormsPage extends BasePageObject {
 		super(driver);
 	}
 
-	/**
-	 * Gives an indication if the page loaded as expected
-	 * 
-	 * @return true or false
-	 */
 	public boolean isPageLoaded() {
 		IHGUtil.PrintMethodName();
 		boolean result = false;
@@ -86,17 +81,7 @@ public class SearchPatientFormsPage extends BasePageObject {
 		return PageFactory.initElements(driver, SearchPartiallyFilledPage.class);
 	}
 
-	/**
-	 * Desc :-SearchPatientFormsWithOpenStatus method will filter the latest custorm form
-	 * 
-	 * @param firstName
-	 * @param lastName
-	 * @param dob_month
-	 * @param dob_day
-	 * @param dob_year
-	 */
 	public SearchPatientFormsResultPage SearchPatientFormsWithOpenStatus(String firstName, String lastName, String dob_month, String dob_day, String dob_year) {
-
 		txtFirstName.sendKeys(firstName);
 		txtLastName.sendKeys(lastName);
 
@@ -124,16 +109,7 @@ public class SearchPatientFormsPage extends BasePageObject {
 		return PageFactory.initElements(driver, SearchPatientFormsResultPage.class);
 	}
 
-
-
-	/**
-	 * Search for discrete form
-	 * 
-	 * @param discreteFormName
-	 */
-
 	public SearchPatientFormsResultPage SearchDiscreteFormsWithOpenStatus(String discreteFormName) {
-
 		Select start_m = new Select(dropDownForm);
 		start_m.selectByVisibleText(discreteFormName);
 		btnSearch.click();

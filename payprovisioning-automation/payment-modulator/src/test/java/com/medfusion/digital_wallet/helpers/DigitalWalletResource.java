@@ -67,4 +67,19 @@ public class DigitalWalletResource extends DigitalWalletBaseTest {
 		return response;
 	}
 
+	public Response createInstaMedWalletForACard(String token, String enterprise_id, String patient_id, String mmid,
+										 String defaultPaymentMethod, String patientUrn, String cardAlias,
+										 String cardExpiryDate, String cardHolderName, String cardNumber,
+										 String cardType, String cvv) throws Exception {
+		testData = new PropertyFileLoader();
+		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForCreatingInstaMedDigitalWalletForACard(mmid, defaultPaymentMethod,
+				patientUrn, cardAlias, cardExpiryDate, cardHolderName, cardNumber, cardType,
+				cvv);
+
+		Response response = given().spec(requestSpec).auth().oauth2(token).body(digitalWallet).when()
+				.post("/enterprises/"+ enterprise_id + "/patients/"+ patient_id +"/wallets").then().extract().response();
+
+		return response;
+	}
+
 }

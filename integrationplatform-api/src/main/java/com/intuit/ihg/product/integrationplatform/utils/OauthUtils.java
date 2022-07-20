@@ -58,12 +58,6 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class OauthUtils {
 
-	/**
-	 * Performs OAuth Get Request and saves the resposse
-	 * 
-	 * @param strUrl server Get url
-	 * @param responseFilePath path to save the response
-	 */
 	public static void setupHttpGetRequest(String strUrl, String responseFilePath) throws IOException {
 		IHGUtil.PrintMethodName();
 
@@ -88,12 +82,6 @@ public class OauthUtils {
 		}
 	}
 
-	/**
-	 * Reads the contents from an InputStream and captures them in a String
-	 * 
-	 * @param xmlFilePath path where to store XML.
-	 * @param xml String xml to store
-	 */
 	private static void writeFile(String xmlFilePath, String xml) throws IOException {
 		FileWriter out = new FileWriter(xmlFilePath);
 		out.write(xml);
@@ -101,8 +89,6 @@ public class OauthUtils {
 			out.close();
 		}
 	}
-
-
 
 	public static String prepareSecureMessage(String xmlFileName, String from, String to, String subject, String messageID)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
@@ -179,16 +165,6 @@ public class OauthUtils {
 		return writer.toString();
 	}
 
-
-	/**
-	 * Performs OAuth Post Request and saves the response
-	 * 
-	 * @param strUrl server Post url
-	 * @param payload Post payload
-	 * @param responseFilePath path to save the response
-	 * 
-	 * @return Processing Status header from Response
-	 */
 	public static String setupHttpPostRequest(String strUrl, String payload, String responseFilePath) throws IOException {
 		IHGUtil.PrintMethodName();
 
@@ -244,12 +220,6 @@ public class OauthUtils {
 
 	}
 
-
-	/**
-	 * @param fileName
-	 * 
-	 * @return String of XML
-	 */
 	public static String convertXMLFileToString(String fileName) {
 		IHGUtil.PrintMethodName();
 		try {

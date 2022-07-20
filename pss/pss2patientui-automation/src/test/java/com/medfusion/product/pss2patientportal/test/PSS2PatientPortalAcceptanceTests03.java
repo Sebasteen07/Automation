@@ -549,7 +549,6 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
 		aPIVerification.responseCodeValidation(response, 200);
-		
 		logStep("Show Provider On Using AM ");
 		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
 				payloadAM01.turnONOFFShowProvider(true));
@@ -717,6 +716,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
 		aPIVerification.responseCodeValidation(response, 200);
 		
+
 		logStep("Show Provider On Using AM ");
 		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
 				payloadAM01.turnONOFFShowProvider(true));
@@ -928,7 +928,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
 		aPIVerification.responseCodeValidation(response, 200);
-		
+
 		logStep("Show Provider On Using AM ");
 		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
 				payloadAM01.turnONOFFShowProvider(true));
