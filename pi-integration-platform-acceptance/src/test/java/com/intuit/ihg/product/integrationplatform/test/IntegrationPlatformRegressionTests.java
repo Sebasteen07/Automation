@@ -575,7 +575,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEvent(testData, driver, version);
+		MU2UtilsObj.mu2GetEvent(testData, driver, version,newToken);
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
@@ -656,8 +656,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long since = timestamp / 1000L - 60 * 24;
 		log("Getting patients since timestamp: " + since);
 		log("PUSH_RESPONSEPATH: " + testData.PUSH_RESPONSEPATH);
-		RestUtils.setupHttpGetRequest(testData.PATIENT_INVITE_RESTURL + "?since=" + since + ",0",
-				testData.PUSH_RESPONSEPATH);
+		RestUtils.setupHttpGetRequestOauthToken(testData.PATIENT_INVITE_RESTURL + "?since=" + since + ",0",
+				testData.PUSH_RESPONSEPATH,newToken);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
 		String patientID = MU2UtilsObj.getMedfusionID(testData.PUSH_RESPONSEPATH, patientDetail.get(0));
@@ -678,7 +678,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		logStep("Login Portal 2.0");
 
-		MU2UtilsObj.mu2GetEvent(testData, driver, version);
+		MU2UtilsObj.mu2GetEvent(testData, driver, version,newToken);
 	}
 
 	@DataProvider(name = "portalVersion")
@@ -1932,7 +1932,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(8000);
 		testData.CCDMessageID1 = ccdDetail.get(0);
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true, version);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true, version,newToken);
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
@@ -1961,7 +1961,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.CCDMessageID1 = ccdDetail.get(0);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, true, version);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, true, version,newToken);
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
@@ -2038,7 +2038,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.PatientFirstName_MU2 = patientDetail.get(0);
 		testData.patientUA_MU2_LastName = patientDetail.get(1);
 
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true, patientID);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true, patientID,newToken);
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
@@ -2075,7 +2075,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.CCDMessageID2 = ccdDetail1.get(0);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false, version);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false, version,newToken);
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
@@ -2100,13 +2100,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Send CCD to Patient");
 		ArrayList<String> ccdDetail = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
 				testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2_Existing, EHDCObj.ccdXMLPath,
-				testData.PATIENT_EXTERNAL_ID, testData.token);
+				testData.PATIENT_EXTERNAL_ID, newToken);
 		log(ccdDetail.get(0));
 		Thread.sleep(8000);
 
 		ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
 				testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,
-				testData.PATIENT_EXTERNAL_ID, testData.token);
+				testData.PATIENT_EXTERNAL_ID, newToken);
 		log(ccdDetail1.get(0));
 		Thread.sleep(8000);
 		testData.CCDMessageID1 = ccdDetail.get(0);
@@ -2114,7 +2114,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
 
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, false, version);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, false, version,newToken);
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
@@ -2139,7 +2139,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		iPIDCSendPatientInvite sendPatientInviteObj = new SendPatientInvite();
 		ArrayList<String> patientDetail = sendPatientInviteObj.sendPatientInviteToPractice(
 				testData.PATIENT_INVITE_RESTURL, testData.PATIENT_PRACTICEID, testData.PATIENT_EXTERNAL_ID,
-				"01/01/2010", "27560", testData.token);
+				"01/01/2010", "27560",newToken);
 
 		log("Following are patient details:");
 		int i = 0;
@@ -2169,27 +2169,27 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		logStep("Post CCD to Patient");
 		ArrayList<String> ccdDetail = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
 				testData.PATIENT_PRACTICEID, patientDetail.get(0), EHDCObj.ccdXMLPath, testData.PATIENT_EXTERNAL_ID,
-				testData.token);
+				newToken);
 		log(ccdDetail.get(0));
 		Thread.sleep(8000);
 		log("Send 2nd CCD to Patient");
 		ArrayList<String> ccdDetail1 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
 				testData.PATIENT_PRACTICEID, testData.patientUA_ExternalPatientID_MU2, EHDCObj.ccdXMLPath,
-				testData.PATIENT_EXTERNAL_ID, testData.token);
+				testData.PATIENT_EXTERNAL_ID,newToken);
 		log(ccdDetail1.get(0));
 		Thread.sleep(8000);
 
 		log("Send 3rd CCD to Patient");
 		ArrayList<String> ccdDetail3 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
 				testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH2, testData.PATIENT_EXTERNAL_ID,
-				testData.token);
+				newToken);
 		log(ccdDetail3.get(0));
 		Thread.sleep(8000);
 
 		log("Send 4th CCD to Patient");
 		ArrayList<String> ccdDetail4 = sendCCDObj.sendCCDToPractice(EHDCObj.RestUrl, EHDCObj.From,
 				testData.PATIENT_PRACTICEID, patientDetail.get(0), testData.CCDPATH3, testData.PATIENT_EXTERNAL_ID,
-				testData.token);
+				newToken);
 		log(ccdDetail4.get(0));
 
 		testData.CCDMessageID1 = ccdDetail.get(0);
@@ -2219,7 +2219,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.patientUA_MU2_LastName = patientDetail.get(1);
 
 		Thread.sleep(8000);
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false, version);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false, version,newToken);
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests1", "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2312,7 +2312,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					Long since = timestamp / 1000L;
 					String getURL = testData.ccd_url1_FE + "Batch";
 					log("Do a Get CcdExchangeBatch API call");
-					RestUtils.setupHttpGetRequest(getURL + "?since=" + since + ",0", testData.responsePath_CCD1_FE);
+					RestUtils.setupHttpGetRequestOauthToken(getURL + "?since=" + since + ",0", testData.responsePath_CCD1_FE,newToken);
 					log("Verify updated GI/SO values in Get CcdExchangeBatch API call response");
 					RestUtils.verifyEGQUpdatedValuesInCCDExchangeBatch(testData.responsePath_CCD1_FE, updatedValue,
 							dropValue,"v2");

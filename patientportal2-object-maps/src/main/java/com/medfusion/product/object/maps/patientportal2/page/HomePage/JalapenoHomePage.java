@@ -68,7 +68,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_bill_pay")
 	private WebElement payments;
 
-	@FindBy(how = How.ID, using = "feature_discrete_forms")
+	@FindBy(how = How.XPATH, using = "//a[@id='feature_discrete_forms']")
 	private WebElement forms;
 
 	@FindBy(how = How.ID, using = "feature_ccdList")
@@ -215,6 +215,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public HealthFormListPage clickOnHealthForms() {
 		log("Clicking on Health Forms button");
+		IHGUtil.waitForElement(driver, 50, forms);
 		javascriptClick(forms);
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
@@ -228,6 +229,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public MedicationsHomePage clickOnMedications(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 50, medications);
 		javascriptClick(medications);
 		return PageFactory.initElements(driver, MedicationsHomePage.class);
 	}
@@ -236,6 +238,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		log("Clicking on Medical Record Summaries button on dashboard");
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		jse.executeScript("window.scrollBy(0,400)", "");
+		IHGUtil.waitForElement(driver, 50, medicalRecordSummaries);
 		medicalRecordSummaries.click();
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
 	}

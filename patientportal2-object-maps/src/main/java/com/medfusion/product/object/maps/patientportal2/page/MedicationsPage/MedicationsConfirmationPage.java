@@ -56,6 +56,7 @@ public class MedicationsConfirmationPage extends BasePageObject {
 		javascriptClick(btnConfirm);
 		log("It Clicked on confirm button");
 		IHGUtil.waitForElement(driver, 20, confirmPopup);
+		IHGUtil.waitForElement(driver, 20, successMsg);
 		String successMsgOnPopup = successMsg.getText();
 		btnClose.click();
 		Thread.sleep(1000);
