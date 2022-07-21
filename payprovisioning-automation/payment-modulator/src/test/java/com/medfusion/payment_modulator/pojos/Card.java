@@ -262,4 +262,25 @@ public class Card {
 
 			return wallet;
 		}
+
+		public static Map<String, Object> payloadForAddCardToExistingWallet(String mmid, String defaultPaymentMethod,
+																					String accountAlias, String cardHolderName,
+																					 String cardExpiryDate, String cardNumber,
+																					String cardType, String cvv, boolean isPrimary){
+			Map<String, Object> wallet = new HashMap<String, Object>();
+			wallet.put("mmid", mmid);
+			wallet.put("defaultPaymentMethod", defaultPaymentMethod);
+
+			Map<String, Object> card = new HashMap<String, Object>();
+			card.put("cardAlias", accountAlias);
+			card.put("cardHolderName", cardHolderName);
+			card.put("cardExpiryDate", cardExpiryDate);
+			card.put("cardNumber", cardNumber);
+			card.put("cardType", cardType);
+			card.put("cvv", cvv);
+			card.put("primaryCard", isPrimary);
+			wallet.put("card", card);
+
+			return wallet;
+		}
 }

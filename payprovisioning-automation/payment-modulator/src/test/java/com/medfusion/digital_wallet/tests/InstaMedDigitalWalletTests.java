@@ -71,7 +71,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
 
     @Test(priority = 2, dataProvider = "mod_instamed_different_merchants", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testCreateWalletForInvalidMerchants(String mmid, String patientUrn, int statusCodeVerify,
-                                                           String verifyErrorText, String verifyMessageText) throws Exception {
+                                                    String verifyErrorText, String verifyMessageText) throws Exception {
 
         String token = DigitalWalletAPIUtils.getTokenForCustomer();
 
@@ -123,7 +123,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
         Assert.assertTrue(jsonPath.get("accounts.bankAccountType").toString()
                 .contains(accountType));
         Assert.assertTrue(jsonPath.get("accounts.bankAccountNumberLastFour").toString()
-                .contains(accountNo.substring(accountNo.length()-4)));
+                .contains(accountNo.substring(accountNo.length() - 4)));
         Assert.assertTrue(jsonPath.get("accounts.bankRoutingNumber").toString()
                 .contains(testData.getProperty("bank.routing.number")));
         Assert.assertTrue(jsonPath.get("accounts.primaryAccount").toString().contains("true"));
@@ -153,9 +153,9 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
 
     @Test(priority = 2, dataProvider = "wallet_invalid_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testAddAccountToInstaMedWalletWithInvalidData(String mmid, String defaultPaymentMethod, String patientUrn, String accountAlias,
-                                                        String accountHolderFirstName, String accountHolderLastName, String accountType,
-                                                        String accountNumber, String routingNumber, int status,
-                                                        String error, String message) throws Exception {
+                                                              String accountHolderFirstName, String accountHolderLastName, String accountType,
+                                                              String accountNumber, String routingNumber, int status,
+                                                              String error, String message) throws Exception {
         String token = DigitalWalletAPIUtils.getTokenForCustomer();
         DigitalWalletResource digitalWallet = new DigitalWalletResource();
         String accountNo = IHGUtil.createRandomNumericString(9);
@@ -176,7 +176,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
 
     @Test(priority = 1, dataProvider = "valid_card_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testCreateInstaMedWalletUsingCard(String defaultPaymentMethod, String patientUrn, String alias, String cardExpiryDate,
-                                         String cardHolderName, String cardNumber, String cardType, String cvv) throws Exception {
+                                                  String cardHolderName, String cardNumber, String cardType, String cvv) throws Exception {
         String token = DigitalWalletAPIUtils.getTokenForCustomer();
         DigitalWalletResource digitalWallet = new DigitalWalletResource();
         String patientId = IHGUtil.createRandomNumericString(36);
@@ -193,7 +193,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
         Assert.assertTrue(jsonPath.get("defaultPaymentMethod").toString().equals(testData.getProperty("deafult.payment.method.card")));
         Assert.assertTrue(jsonPath.get("cards.cardAlias").toString().contains(alias));
         Assert.assertTrue(jsonPath.get("cards.cardHolderName").toString().contains(cardHolderName));
-        Assert.assertTrue(jsonPath.get("cards.cardNumberLastFour").toString().contains(cardNumber.substring(cardNumber.length()-4)));
+        Assert.assertTrue(jsonPath.get("cards.cardNumberLastFour").toString().contains(cardNumber.substring(cardNumber.length() - 4)));
         Assert.assertTrue(jsonPath.get("cards.cardType").toString().contains(cardType));
         Assert.assertTrue(jsonPath.get("cards.cardExpiryDate").toString().contains(cardExpiryDate));
         Assert.assertTrue(jsonPath.get("cards.primaryCard").toString().contains("true"));
@@ -203,9 +203,9 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
 
     @Test(priority = 2, dataProvider = "wallet_invalid_card_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testCreateInstaMedWalletForACardWithInvalidData(String mmid, String defaultPaymentMethod, String patientUrn, String alias,
-                                                        String cardExpiryDate, String cardHolderName, String cardNumber,
-                                                        String cardType, String cvv, int status,
-                                                        String error, String message, String propertyMessage) throws Exception {
+                                                                String cardExpiryDate, String cardHolderName, String cardNumber,
+                                                                String cardType, String cvv, int status,
+                                                                String error, String message, String propertyMessage) throws Exception {
         String token = DigitalWalletAPIUtils.getTokenForCustomer();
         DigitalWalletResource digitalWallet = new DigitalWalletResource();
         String patientId = IHGUtil.createRandomNumericString(36);
@@ -218,12 +218,83 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
 
         if (jsonPath.get("error") != null) {
             Assert.assertTrue(jsonPath.get("status").equals(status));
-               Assert.assertTrue(jsonPath.get("error").toString().contains(error));
+            Assert.assertTrue(jsonPath.get("error").toString().contains(error));
             if (message.isEmpty()) {
                 jsonPath.get("propertyMessages").toString().contains(propertyMessage);
-            }else {
+            } else {
                 Assert.assertTrue(jsonPath.get("message").toString().contains(message));
             }
         }
     }
+
+    @Test(priority = 1, dataProvider = "valid_cards", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    public void testAddCardToExistingInstaMedWallet(String defaultPaymentMethod, String alias,
+                                                    String cardExpiryDate, String cardNumber,
+                                                    String cardType, String cvv) throws Exception {
+        String token = DigitalWalletAPIUtils.getTokenForCustomer();
+        DigitalWalletResource digitalWallet = new DigitalWalletResource();
+        String randomCardHolderName = testData.getProperty("bank.account.holder.first.name") + IHGUtil.createRandomNumericString(4);
+
+        Response response = digitalWallet.addCardToExistingInstaMedWallet(token, testData.getProperty("enterprise.id"),
+                testData.getProperty("patient.id"), testData.getProperty("instamed.mmid"),
+                defaultPaymentMethod, alias, randomCardHolderName,
+                cardExpiryDate, cardNumber, cardType, cvv, true);
+
+        JsonPath jsonPath = new JsonPath(response.asString());
+
+        Assert.assertTrue(response.getStatusCode() == 201);
+        Assert.assertTrue(jsonPath.get("defaultPaymentMethod").toString().equals(testData.getProperty("deafult.payment.method.card")));
+        Assert.assertTrue(jsonPath.get("cards.cardAlias").toString().contains(alias));
+        Assert.assertTrue(jsonPath.get("cards.cardHolderName").toString().contains(randomCardHolderName));
+        Assert.assertTrue(jsonPath.get("cards.cardNumberLastFour").toString().contains(cardNumber.substring(cardNumber.length() - 4)));
+        Assert.assertTrue(jsonPath.get("cards.cardType").toString().contains(cardType));
+        Assert.assertTrue(jsonPath.get("cards.cardExpiryDate").toString().contains(cardExpiryDate));
+        Assert.assertTrue(jsonPath.get("cards.primaryCard").toString().contains("true"));
+        Assert.assertTrue(jsonPath.get("cards.isInstaMed").toString().contains("true"));
+    }
+
+    @Test(priority = 1, dataProvider = "instamed_different_patients_adding_card", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    public void testAddDuplicateCardsToExistingInstaMedWalletBadRequest(String patientId, int status, String error, String message) throws Exception {
+        String token = DigitalWalletAPIUtils.getTokenForCustomer();
+        DigitalWalletResource digitalWallet = new DigitalWalletResource();
+
+        Response response = digitalWallet.addCardToExistingInstaMedWallet(token, testData.getProperty("enterprise.id"),
+                patientId, testData.getProperty("instamed.mmid"),
+                testData.getProperty("deafult.payment.method.card"), testData.getProperty("account.alias"),
+                testData.getProperty("bank.account.holder.first.name"),
+                testData.getProperty("instamed.card.expiration.number"), testData.getProperty("card.number2"),
+                testData.getProperty("type2"), testData.getProperty("cvv.amex"), true);
+
+        JsonPath jsonPath = new JsonPath(response.asString());
+
+        if (jsonPath.get("error") != null) {
+            Assert.assertTrue(jsonPath.get("status").equals(status));
+            Assert.assertTrue(jsonPath.get("message").toString().contains(message));
+            Assert.assertTrue(jsonPath.get("error").toString().contains(error));
+        }
+    }
+
+    @Test(priority = 2, dataProvider = "wallet_invalid_card_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    public void testAddCardToInstaMedWalletWithInvalidData(String mmid, String defaultPaymentMethod, String patientUrn, String alias,
+                                                           String cardExpiryDate, String cardHolderName, String cardNumber,
+                                                           String cardType, String cvv, int status,
+                                                           String error, String message, String propertyMessage) throws Exception {
+        String token = DigitalWalletAPIUtils.getTokenForCustomer();
+        DigitalWalletResource digitalWallet = new DigitalWalletResource();
+
+        Response response = digitalWallet.addCardToExistingInstaMedWallet(token, testData.getProperty("enterprise.id"),
+                testData.getProperty("patient.id"), mmid, defaultPaymentMethod, alias, cardHolderName,
+                cardExpiryDate, cardNumber, cardType, cvv, true);
+
+        JsonPath jsonPath = new JsonPath(response.asString());
+        if (message.equalsIgnoreCase("Provided payment from is not valid")) {
+            Assert.assertTrue(jsonPath.get("status").equals(status));
+            Assert.assertTrue(jsonPath.get("error").toString().contains(error));
+        } else {
+            Assert.assertTrue(jsonPath.get("status").equals(status));
+            Assert.assertTrue(jsonPath.get("message").toString().contains(message));
+            Assert.assertTrue(jsonPath.get("error").toString().contains(error));
+        }
+    }
+
 }

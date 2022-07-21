@@ -392,4 +392,12 @@ public class PayloadDetails {
 				cardExpiryDate, cardHolderName, cardNumber, cardType,
 				cvv);
 	}
+	public static Map<String, Object> getPayloadForAddingCardToInstaMedDigitalWallet(String mmid, String defaultPaymentMethod,
+																					 String accountAlias, String cardHolderName,
+																					 String cardExpiryDate, String cardNumber,
+																					 String cardType, String cvv, boolean isPrimary) {
+		return Card.payloadForAddCardToExistingWallet(mmid, defaultPaymentMethod, accountAlias,
+				cardHolderName, cardExpiryDate, cardNumber, cardType,
+				cvv, isPrimary);
+	}
 }
