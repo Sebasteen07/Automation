@@ -2776,3 +2776,37 @@ Feature: Test fuctionality of Appointment precheck
     And I received curbside message on email and confirm arrival
     And I verify curbside confirmation links shows you have already arrived when patient again trying to confirm from mail
     And logout from practice provisioning portal
+
+  Scenario: To verify if system allows to do precheck after associating active/inactive appointment type for IMH & MEdfusion form
+    When logout from practice provisioning portal
+    And I login to practice
+    And I associate appointment type
+    And I schedule an appointment for associated appointment type
+    Then I verify while doing precheck associated appointment type should be display
+    And logout from practice provisioning portal
+
+  Scenario: To verify if system allows to do precheck after associating active/inactive appointment type for IMH & MEdfusion form
+    When logout from practice provisioning portal
+    And I login to new practice
+    And I associate appointment type for new practice
+    And I schedule an appointment for associated appointment type for new practice
+    Then I verify while doing precheck associated appointment type should be display for new practice
+    And logout from practice provisioning portal
+
+  Scenario: To verify on adding IMH/Medfusion form on doing precheck forms should get populated and precheck flow should get completed
+    When logout from practice provisioning portal
+    And I login to existing practice
+    And I add IMH forms
+    And I search form added in UI
+    And I schedule an appointment after adding form
+    Then I verify while doing precheck added form should be displayed and updated in the precheck forms list
+    And logout from practice provisioning portal
+
+  Scenario: To verify if imh forms and medfusion forms are added from practice provisioning then same forms should be reflected in Get call
+    When logout from practice provisioning portal
+    And I login to existing practice
+    And I add IMH forms from practice provisioning UI
+    And I associate appointment types to forms
+    And I deassociate appointment types to forms
+    Then I verify newly added forms should be reflected after doing get call
+    And logout from practice provisioning portal

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+	<test thread-count="5" name="Test">
+		<classes>
+			<class
+				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests05">
+				
+					<methods>
+
+					
+					<include name="test01UI_ForceLastSeen_BookFirst_NG()" />
+					<include name="test01UI_ForceLastSeen_NG()" />
+					<include name="test01UI_ForceLastSeen_Specialty_NG()" />
+					<include name="test01UI_LastSeenProvider_NG()" />
+
+				</methods>
+
+
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

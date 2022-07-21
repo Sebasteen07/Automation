@@ -22,7 +22,7 @@ public class MedicationsConfirmationPage extends BasePageObject {
 	@FindBy(how = How.ID, using = "additional-comment")
 	private WebElement textComment;
 
-	@FindBy(how = How.XPATH, using = "//button[.=' Confirm '] | //span[.='  Confirm ']")
+	@FindBy(how = How.XPATH, using = "//div[@class='form-buttons']/button[2]")
 	private WebElement btnConfirm;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='form-buttons ng-scope']/button[@type='button']")

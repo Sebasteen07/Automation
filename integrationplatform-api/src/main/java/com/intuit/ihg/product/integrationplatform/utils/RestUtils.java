@@ -91,14 +91,6 @@ public class RestUtils {
 	public static int responseCode;
 	public static List<String> patientDatails = new ArrayList<String>();
 
-	/**
-	 * Performs OAuth Get Request and saves the response
-	 * 
-	 * @param strUrl           server Get url
-	 * @param responseFilePath path to save the response
-	 * 
-	 * @return String of GET request
-	 */
 	public static String setupHttpGetRequest(String strUrl, String responseFilePath)
 			throws IOException, InterruptedException {
 		IHGUtil.PrintMethodName();
@@ -136,12 +128,6 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * Reads the contents from an InputStream and captures them in a String
-	 * 
-	 * @param xmlFilePath path where to store XML.
-	 * @param xml         String xml to store
-	 */
 	public static void writeFile(String xmlFilePath, String xml) throws IOException {
 		FileWriter out = new FileWriter(xmlFilePath);
 		out.write(xml);
@@ -151,12 +137,6 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 	}
 
-	/**
-	 * Reads the XML and checks asked Question if it complies
-	 * 
-	 * @param xmlFileName XML to check
-	 * @param timestamp of a sent Question to check
-	 */
 	public static void isQuestionResponseXMLValid(String xmlFileName, Long timestamp)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -210,12 +190,6 @@ public class RestUtils {
 		return gnMessageThreadID;
 	}
 
-	/**
-	 * Reads the XML and checks REASON
-	 * 
-	 * @param xmlFileName XML to check
-	 */
-	
 	public static String GetAppointmentId(String xmlFileName)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -293,12 +267,6 @@ public class RestUtils {
 		Log4jUtil.log("response is ok");
 	}
 
-	/**
-	 * Reads the XML and checks Medication Details
-	 * 
-	 * @param xmlFileName XML to check
-	 * @param medicationName
-	 */
 	public static void isMedicationDetailsResponseXMLValid(String xmlFileName, String medicationName)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -318,8 +286,7 @@ public class RestUtils {
 				Node nQuantity = ele.getElementsByTagName(JalapenoConstants.QUANTITY_TAG).item(0);
 				Node nPrescriptionNumber = ele.getElementsByTagName(JalapenoConstants.PRESCRIPTION_NUMBER_TAG).item(0);
 				Node nRefillNumber = ele.getElementsByTagName(JalapenoConstants.REFILL_NUMBER_TAG).item(0);
-				Node nAdditionalInformation = ele.getElementsByTagName(JalapenoConstants.ADDITIONAL_INFO_TAG)
-						.item(0);
+				Node nAdditionalInformation = ele.getElementsByTagName(JalapenoConstants.ADDITIONAL_INFO_TAG).item(0);
 				assertEquals(nDosage.getTextContent(), JalapenoConstants.DOSAGE,
 						"The actual value of dosage doesnt equal the expected value");
 				assertEquals(nQuantity.getTextContent(), JalapenoConstants.QUANTITY,
@@ -338,16 +305,6 @@ public class RestUtils {
 		Log4jUtil.log("response is ok");
 	}
 
-	/**
-	 * Reads the XML and checks asked Question if it complies
-	 * 
-	 * @param xmlFileName XML question to prepare
-	 * @param from        sender of a message - external System ID
-	 * @param to          recipient of a Message - external Patient ID
-	 * @param subject     message subject
-	 * 
-	 * @return XML message as a String
-	 */
 	public static String prepareSecureMessage(String xmlFileName, String from, String to, String subject,
 			String messageID) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
@@ -454,15 +411,6 @@ public class RestUtils {
 		return writer.toString();
 	}
 
-	/**
-	 * Performs OAuth Post Request and saves the resposse
-	 * 
-	 * @param strUrl           server Post url
-	 * @param payload          Post payload
-	 * @param responseFilePath path to save the response
-	 * 
-	 * @return Processing Status header from Response
-	 */
 	public static String setupHttpPostRequest(String strUrl, String payload, String responseFilePath)
 			throws IOException {
 		IHGUtil.PrintMethodName();
@@ -487,8 +435,7 @@ public class RestUtils {
 			Log4jUtil.log("Check post response: " + sResp);
 
 			Log4jUtil.log("Check for http 200/202 response");
-			assertTrue(
-					resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 202,
+			assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 202,
 					"Get Request response is " + resp.getStatusLine().getStatusCode()
 							+ " instead of 200/202. Response message:\n" + sResp);
 			Log4jUtil.log("Response Code" + resp.getStatusLine().getStatusCode());
@@ -506,15 +453,6 @@ public class RestUtils {
 		return null;
 	}
 
-	/**
-	 * Sets up OAuth for requests
-	 * 
-	 * @param oAuthKeySStorePath
-	 * @param oAuthProperty
-	 * @param appToken
-	 * @param username
-	 * @param password
-	 */
 	public static void oauthSetup(String oAuthKeySStorePath, String oAuthProperty, String appToken, String username,
 			String password) throws Exception {
 		IHGUtil.PrintMethodName();
@@ -561,7 +499,8 @@ public class RestUtils {
 		return true;
 	}
 
-	public static String getDataJobID(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+	public static String getDataJobID(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(xmlFileName);
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.DATA_JOB_ID);
@@ -573,14 +512,6 @@ public class RestUtils {
 		return s;
 	}
 
-	/**
-	 * Checks if the patient address lines are the same as in xml response
-	 * 
-	 * @param xmlFileName response xml path
-	 * @param patientId   id of a patient to check
-	 * @param firstLine   first address line
-	 * @param secondLine  second address line
-	 */
 	public static void isPatientUpdated(String xmlFileName, String patientId, String firstLine, String secondLine)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -634,8 +565,8 @@ public class RestUtils {
 			if (node.getChildNodes().item(0).getTextContent().contains(messageIdentifier.toString())) {
 				Element question = (Element) node.getParentNode();
 				Node message = question.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(0);
-				assertEquals(message.getChildNodes().item(0).getTextContent(),
-						IntegrationConstants.MESSAGE_REPLY, "Received reply is not the same as sent");
+				assertEquals(message.getChildNodes().item(0).getTextContent(), IntegrationConstants.MESSAGE_REPLY,
+						"Received reply is not the same as sent");
 				found = true;
 				break;
 			}
@@ -805,8 +736,7 @@ public class RestUtils {
 					Node nethnicity = patient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
 					Log4jUtil.log("Searching: Patient Ethnicity:" + testData.patientDetailList.get(j + 1).getEthnicity()
 							+ ", and Actual Patient ethnicity is:" + nethnicity.getTextContent().toString());
-					assertEquals(nethnicity.getTextContent(),
-							testData.patientDetailList.get(j + 1).getEthnicity(),
+					assertEquals(nethnicity.getTextContent(), testData.patientDetailList.get(j + 1).getEthnicity(),
 							"Patient has different ethnicity than expected. ethnicity is: "
 									+ nethnicity.getTextContent());
 					Node npreferredLanguage = patient.getElementsByTagName(IntegrationConstants.PREFERREDLANGUAGE)
@@ -865,16 +795,6 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * @param xmlFileName
-	 * @param parentNode
-	 * @param reason
-	 * @param subject
-	 * @param reply
-	 * @param appointment
-	 * 
-	 * @return String of XML
-	 */
 	public static String findValueOfChildNode(String xmlFileName, String parentNode, String reason, String subject,
 			String reply, String appointment) throws ParserConfigurationException, SAXException, IOException,
 			TransformerException, DOMException, ParseException {
@@ -922,18 +842,6 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * @param xmlFileName
-	 * @param app_req_id
-	 * @param From
-	 * @param To
-	 * @param subject
-	 * @param reply
-	 * @param updatedDateTime
-	 * @param createdDateTime
-	 * 
-	 * @return String of DOM
-	 */
 	public static String postAppointmentRequest(String xmlFileName, String app_req_id, String From, String To,
 			String createdDateTime, String updatedDateTime, String subject, String reply)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException, DOMException,
@@ -983,11 +891,6 @@ public class RestUtils {
 		return domToString(doc);
 	}
 
-	/**
-	 * @param createdDateTime
-	 * 
-	 * @return scheduleDate
-	 */
 	private static String ScheduledDate(String createdDateTime) throws ParseException {
 		String scheduleDate = null;
 		SimpleDateFormat formatter, FORMATTER;
@@ -999,11 +902,6 @@ public class RestUtils {
 		return scheduleDate;
 	}
 
-	/**
-	 * @param createdDateTime
-	 * 
-	 * @return sentDate
-	 */
 	private static String SentDate(String createdDateTime) throws ParseException {
 		String sentDate = null;
 		SimpleDateFormat formatter, FORMATTER;
@@ -1015,22 +913,12 @@ public class RestUtils {
 		return sentDate;
 	}
 
-	/**
-	 * @param xmlFilePath
-	 * 
-	 * @return String of XML file
-	 */
 	public static String fileToString(String xmlFilePath) {
 		IHGUtil.PrintMethodName();
 		String xmlInString = convertXMLFileToString(xmlFilePath);
 		return xmlInString;
 	}
 
-	/**
-	 * @param fileName
-	 * 
-	 * @return String of XML file
-	 */
 	public static String convertXMLFileToString(String fileName) {
 		IHGUtil.PrintMethodName();
 		try {
@@ -1048,16 +936,6 @@ public class RestUtils {
 		return null;
 	}
 
-	/**
-	 * @param xmlFileName
-	 * @param parentNode
-	 * @param medication
-	 * @param rxSMSubject
-	 * @param rxSMBody
-	 * @param prescriptionPath
-	 * 
-	 * @return updatedXML
-	 */
 	public static String findValueOfMedicationNode(String xmlFileName, String parentNode, String medication,
 			String rxSMSubject, String rxSMBody, String prescriptionPath) throws ParserConfigurationException,
 			SAXException, IOException, DOMException, ParseException, TransformerException {
@@ -1119,17 +997,6 @@ public class RestUtils {
 		return updatedXML;
 	}
 
-	/**
-	 * @param prescriptionPath
-	 * @param getPrescription_id
-	 * @param medication_details
-	 * @param getCreatedDateTime
-	 * @param getUpdatedDateTime
-	 * @param rxSMSubject
-	 * @param rxSMBody
-	 * 
-	 * @return String of DOM
-	 */
 	private static String postMedicationRequest(String prescriptionPath, String getPrescription_id,
 			ArrayList<String> medication_details, String getCreatedDateTime, String getUpdatedDateTime,
 			String rxSMSubject, String rxSMBody) throws DOMException, ParseException, TransformerException,
@@ -1206,11 +1073,6 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * @param epoch
-	 * 
-	 * @return readGMTtime
-	 */
 	public static String readTime(long epoch) {
 		String time = String.valueOf(epoch);
 		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -1220,11 +1082,6 @@ public class RestUtils {
 		return readGMTtime;
 	}
 
-	/**
-	 * @param xmlFileName
-	 * @param messageID
-	 * @param readdatetimestamp
-	 */
 	public static void isReadCommunicationMessage(String xmlFileName, String messageID, String readdatetimestamp)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -1258,26 +1115,12 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * @param tag
-	 * @param element
-	 * 
-	 * @return String of node
-	 */
 	private static String getValue(String tag, Element element) {
 		NodeList nodes = element.getElementsByTagName(tag).item(0).getChildNodes();
 		Node node = (Node) nodes.item(0);
 		return node.getNodeValue();
 	}
 
-	/**
-	 * @param strUrl
-	 * @param payload
-	 * @param responseFilePath
-	 * @param externalSystemID
-	 * 
-	 * @return String
-	 */
 	public static String setupHttpPostRequestExceptOauth(String strUrl, String payload, String responseFilePath,
 			String externalSystemID) throws IOException, URISyntaxException {
 		IHGUtil.PrintMethodName();
@@ -1299,8 +1142,7 @@ public class RestUtils {
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
 		Log4jUtil.log("Check for http 200/202 response");
-		assertTrue(
-				response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
+		assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
 				"Get Request response is " + response.getStatusLine().getStatusCode()
 						+ " instead of 200/202. Response message:\n" + sResp);
 		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
@@ -1311,10 +1153,10 @@ public class RestUtils {
 			return h[0].getValue();
 		}
 		return null;
-
 	}
 
-	public static String setupHttpPostRequestWithOauthToken(String strUrl, String payload, String responseFilePath, String token) throws IOException, URISyntaxException {
+	public static String setupHttpPostRequestWithOauthToken(String strUrl, String payload, String responseFilePath,
+			String token) throws IOException, URISyntaxException {
 		IHGUtil.PrintMethodName();
 
 		HttpClient client = new DefaultHttpClient();
@@ -1327,11 +1169,8 @@ public class RestUtils {
 	            .setConnectTimeout(20000)
 	            .setConnectionRequestTimeout(20000)
 	            .build();
-//	   HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+	    HttpPost request = new HttpPost();
 	   
-	   
-		HttpPost request = new HttpPost();
-//		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		request.setURI(new URI(strUrl));
 		request.setEntity(new StringEntity(payload));
 		request.setHeader("Connection", "keep-alive");
@@ -1344,7 +1183,8 @@ public class RestUtils {
 		String sResp = EntityUtils.toString(response.getEntity());
 		Log4jUtil.log("Check for http 200/202 response");
 		assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
-				"Get Request response is " + response.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
+				"Get Request response is " + response.getStatusLine().getStatusCode()
+						+ " instead of 200/202. Response message:\n" + sResp);
 		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
 		writeFile(responseFilePath, sResp);
 
@@ -1353,12 +1193,10 @@ public class RestUtils {
 			return h[0].getValue();
 		}
 		return null;
-
 	}
 
-
-	public static void setupHttpPostRequestForOauth(String strUrl, String payload, String responseFilePath, String token)
-			throws IOException, URISyntaxException {
+	public static void setupHttpPostRequestForOauth(String strUrl, String payload, String responseFilePath,
+			String token) throws IOException, URISyntaxException {
 		IHGUtil.PrintMethodName();
 
 		HttpClient client = new DefaultHttpClient();
@@ -1370,14 +1208,10 @@ public class RestUtils {
 	            .setSocketTimeout(80000)
 	            .setConnectTimeout(50000)
 	            .setConnectionRequestTimeout(50000)
-	            .build();
-//	   HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
-		
-		
+	            .build();		
 		HttpPost request = new HttpPost();
-//		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		request.setURI(new URI(strUrl));
-		request.setEntity(new StringEntity(payload));		
+		request.setEntity(new StringEntity(payload));
 		request.addHeader("Authorization", "Basic " + token);
 		request.addHeader("Content-Type", "application/x-www-form-urlencoded");
 		request.setHeader("Accept", "application/json");
@@ -1387,19 +1221,14 @@ public class RestUtils {
 		String sResp = EntityUtils.toString(response.getEntity());
 		Log4jUtil.log("Check for http 200/202 response");
 		assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
-				"Get Request response is " + response.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
+				"Get Request response is " + response.getStatusLine().getStatusCode()
+						+ " instead of 200/202. Response message:\n" + sResp);
 		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
 		Log4jUtil.log(sResp);
 		writeFile(responseFilePath, sResp);
 
-
-
 	}
-	/**
-	 * @param responsePath
-	 * 
-	 * @return boolean of whether or not it is completed
-	 */
+
 	public static boolean isCCDProcessingCompleted(String responsePath)
 			throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(responsePath);
@@ -1412,13 +1241,6 @@ public class RestUtils {
 		return true;
 	}
 
-	/**
-	 * 
-	 * @param responsePath
-	 * @param externalPatientID
-	 * @param firstname
-	 * @param medfusionID
-	 */
 	public static void isPatientAppeared(String responsePath, String externalPatientID, String medfusionID,
 			String firstname) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -1432,8 +1254,7 @@ public class RestUtils {
 				NodeList node = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID);
 				Log4jUtil.log("Searching: Medfusion Patient ID:" + medfusionID
 						+ ", and Actual Medfusion Patient ID is: " + node.item(i).getTextContent().toString());
-				assertTrue(node.item(i).getTextContent().equals(medfusionID),
-						"Medfusion Patient Id was not found");
+				assertTrue(node.item(i).getTextContent().equals(medfusionID), "Medfusion Patient Id was not found");
 				node = doc.getElementsByTagName(IntegrationConstants.CCDTAG);
 				assertTrue(node.item(i).getTextContent().contains("<given>" + firstname + "</given>"),
 						"CCD DATA was not Found");
@@ -1444,14 +1265,8 @@ public class RestUtils {
 				fail("Patient was not found");
 			}
 		}
-
 	}
 
-	/**
-	 * Generate random String for Sig Code
-	 * 
-	 * @return random string
-	 */
 	public static String generateRandomString() {
 		String CHAR_LIST = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		StringBuffer randStr = new StringBuffer();
@@ -1495,13 +1310,6 @@ public class RestUtils {
 		return updatelist;
 	}
 
-	/**
-	 * 
-	 * @param xmlFileName
-	 * @param practicePatientId
-	 * @param list
-	 * @param insuranceName
-	 */
 	public static void verifyPatientDetails(String xmlFileName, String practicePatientId, List<String> list,
 			String insuranceName) throws ParserConfigurationException, SAXException, IOException, ParseException {
 		Document doc = buildDOMXML(xmlFileName);
@@ -1617,8 +1425,7 @@ public class RestUtils {
 					Log4jUtil.log("Checking Patient Relation To Subscriber, Subscriber Date Of Birth, Group Number");
 					Node PatientRelationToSubscriber = ele
 							.getElementsByTagName(IntegrationConstants.PATIENTRELATIONTOSUBSCRIBER).item(0);
-					assertEquals(PatientRelationToSubscriber.getTextContent(),
-							list.get(26).toUpperCase(),
+					assertEquals(PatientRelationToSubscriber.getTextContent(), list.get(26).toUpperCase(),
 							"Patient has different PatientRelationToSubscriber than expected. InsuranceZipCode is: "
 									+ PatientRelationToSubscriber.getTextContent());
 					Node SubscriberDateOfBirth = ele.getElementsByTagName(IntegrationConstants.SUBSCRIBERDATEOFBIRTH)
@@ -1632,18 +1439,10 @@ public class RestUtils {
 									+ GroupNumber.getTextContent());
 					break;
 				}
-
 			}
-
 		}
-
 	}
 
-	/**
-	 * 
-	 * @param dateString
-	 * @return Date
-	 */
 	private static String convertDate(String dateString) throws ParseException {
 		SimpleDateFormat givenFormat = new SimpleDateFormat("dd/mm/yyyy");
 		SimpleDateFormat expectedFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -1652,13 +1451,6 @@ public class RestUtils {
 		return expectedDate;
 	}
 
-	/**
-	 * 
-	 * @param xmlFileName
-	 * @param practicePatientId
-	 * @param medfusionPatientID
-	 * @return String of DOM
-	 */
 	public static String prepareCCD(String xmlFileName, String practicePatientId, String medfusionPatientID)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
@@ -1672,12 +1464,6 @@ public class RestUtils {
 		return domToString(doc);
 	}
 
-	/**
-	 * Generate Batch PIDC xml with unique values of Patient ExternalID , First Name & Last Name
-	 * 
-	 * @param xmlFileName
-	 * @return String of DOM
-	 */
 	public static String generateBatchPIDC(String xmlFileName)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
@@ -1710,36 +1496,15 @@ public class RestUtils {
 		return domToString(doc);
 	}
 
-	/**
-	 * add patient details
-	 * 
-	 * @param data
-	 */
 	public static void testData(String data) {
 		patientDatails.add(data);
 	}
 
-	/**
-	 * remove the special characters from string and return normal string
-	 * 
-	 * @param specialDataString - Given string with special character
-	 * @return String without special characters
-	 */
 	public static String escapeXml(String specialDataString) {
 		return specialDataString.replaceAll("&amp;", "&").replaceAll("&gt;", ">").replaceAll("&lt;", "<")
 				.replaceAll("&quot;", "\"").replaceAll("&apos;", "'");
 	}
 
-	/**
-	 * 
-	 * @param responsePath
-	 * @param patientAccountNumber
-	 * @param amt
-	 * @param CClastdig
-	 * @param CCtype
-	 * @param status
-	 * @param confirmationNumber
-	 */
 	public static void isPaymentAppeared(String responsePath, String patientAccountNumber, String amt, String CClastdig,
 			String CCtype, String status, String confirmationNumber)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -1798,14 +1563,6 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * 
-	 * @param xmlFile
-	 * @param paymentID
-	 * @param amount
-	 * @param type
-	 * @return String of DOM
-	 */
 	public static String preparePayment(String xmlFile, String paymentID, String amount, String type)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
@@ -1916,7 +1673,8 @@ public class RestUtils {
 		}
 	}
 
-	public static void setupHttpGetRequestOauthToken(String strUrl, String responseFilePath, String token) throws IOException, URISyntaxException {
+	public static void setupHttpGetRequestOauthToken(String strUrl, String responseFilePath, String token)
+			throws IOException, URISyntaxException {
 		IHGUtil.PrintMethodName();
 		HttpClient client = new DefaultHttpClient();
 		Log4jUtil.log("GET call with Token.");
@@ -1928,10 +1686,8 @@ public class RestUtils {
 	            .setConnectTimeout(20000)
 	            .setConnectionRequestTimeout(20000)
 	            .build();
-//	   HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
-		
 		HttpGet httpGetReq = new HttpGet(strUrl);
-//		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000).setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+
 		httpGetReq.setURI(new URI(strUrl));
 		httpGetReq.addHeader("Authorization", "Bearer " + token);
 		httpGetReq.addHeader("Content-Type", "application/xml");
@@ -1965,16 +1721,6 @@ public class RestUtils {
 		}
 	}
 
-	/**
-	 * 
-	 * @param xmlFileName
-	 * @param newdata
-	 * @return String of DOM
-	 * @throws ParserConfigurationException If a parser configuration exception occurred
-	 * @throws SAXException If a SAX exception occurred
-	 * @throws IOException If an input or output exception occurred
-	 * @throws TransformerException If a transformer exception occurred
-	 */
 	public static String generateBatchAMDC(String xmlFileName, List<?> newdata)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
@@ -2049,8 +1795,7 @@ public class RestUtils {
 					 * Log4jUtil.log("Searching: Confirmation Number:" + confirmationNumber +
 					 * ", and Actual Confirmation Number is:" +
 					 * nconfirmationNumber.getTextContent().toString());
-					 * assertEquals(nconfirmationNumber.getTextContent(),
-					 * confirmationNumber,
+					 * assertEquals(nconfirmationNumber.getTextContent(), confirmationNumber,
 					 * "Payment has different confirmation Number than expected. Amount is: " +
 					 * nconfirmationNumber.getTextContent());
 					 */
@@ -2064,13 +1809,6 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * 
-	 * @param strUrl
-	 * @param responseFilePath
-	 * @throws IOException If an input or output exception occurred
-	 * @throws URISyntaxException If URI syntax exception occurred
-	 */
 	public static String setupHttpGetRequestExceptoAuth(String strUrl, String responseFilePath)
 			throws IOException, URISyntaxException {
 		IHGUtil.PrintMethodName();
@@ -2107,13 +1845,6 @@ public class RestUtils {
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param xmlFileName
-	 * @throws ParserConfigurationException If an parser configuration exception occurred
-	 * @throws SAXException If an SAX exception occurred
-	 * @throws IOException If an input or output exception occurred
-	 */
 	public static void checkPatientRegistered(String xmlFileName, List<String> updateData)
 			throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(xmlFileName);
@@ -2159,19 +1890,17 @@ public class RestUtils {
 										+ nAddress2.getTextContent());
 						Node nHomePhone = nPatient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(0);
 						Log4jUtil.log("Searching: Patient Home Phone :" + updateData.get(4)
-							+ ", and Actual Patient Home Phone is:"
-							+ StringUtils.remove(StringUtils.remove(
-								StringUtils.remove(StringUtils
-									.remove(nHomePhone.getTextContent(), "("), ")"),
-								"-"), " "));
+								+ ", and Actual Patient Home Phone is:"
+								+ StringUtils.remove(StringUtils.remove(
+										StringUtils.remove(StringUtils.remove(nHomePhone.getTextContent(), "("), ")"),
+										"-"), " "));
 						assertEquals(
-							StringUtils.remove(StringUtils.remove(
-								StringUtils.remove(StringUtils
-									.remove(nHomePhone.getTextContent(), "("), ")"),
-								"-"), " "),
-							updateData.get(4),
-							"Medfusion Patient Home Phone has different than expected. HomePhone is: "
-								+ nHomePhone.getTextContent());
+								StringUtils.remove(StringUtils.remove(
+										StringUtils.remove(StringUtils.remove(nHomePhone.getTextContent(), "("), ")"),
+										"-"), " "),
+								updateData.get(4),
+								"Medfusion Patient Home Phone has different than expected. HomePhone is: "
+										+ nHomePhone.getTextContent());
 						Node nDOB = nPatient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(0);
 						Log4jUtil.log("Searching: Patient Date of Birth :" + updateData.get(5)
 								+ ", and Actual Patient Date of Birth is:" + nDOB.getTextContent().toString());
@@ -2207,17 +1936,6 @@ public class RestUtils {
 		assertTrue(found, "Patient was not found in the response XML");
 
 	}
-
-	/**
-	 * 
-	 * @param xmlFileName
-	 * @param patientID
-	 * @param insuranceData
-	 * @param insurance_Name
-	 * @throws ParserConfigurationException If an parser configuration exception occurred
-	 * @throws SAXException If an SAX exception occurred
-	 * @throws IOException If an input or output exception occurred
-	 */
 
 	public static void verifyHealthPatientInsuranceDetails(String xmlFileName, String patientID,
 			List<String> insuranceData, String insurance_Name)
@@ -2290,8 +2008,7 @@ public class RestUtils {
 			Log4jUtil.log("Error :" + e);
 		}
 
-		assertTrue(emailMessageLink.length() != 0,
-				"New secure message was not found in patient inbox ");
+		assertTrue(emailMessageLink.length() != 0, "New secure message was not found in patient inbox ");
 
 		Log4jUtil.log("Delete all messages from Inbox");
 		gBot.deleteAllMessagesFromInbox(gmailUserName, gmailPassword);
@@ -2300,24 +2017,6 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * Generate PIDC payload with contains special characters data in given
-	 * parameter except practice patient ID.
-	 * 
-	 * @param xmlFileName
-	 * @param practicePatientId
-	 * @param fName
-	 * @param mName
-	 * @param lName
-	 * @param address1
-	 * @param address2
-	 * @param email
-	 * @return dom to string
-	 * @throws ParserConfigurationException If a parser configuration exception occurred
-	 * @throws SAXException If a SAX exception occurred
-	 * @throws IOException If an input or output exception occurred
-	 * @throws TransformerException If a transformer exception occurred
-	 */
 	public static String generatePIDCSpecialCharacter(String xmlFileName, String practicePatientId, String fName,
 			String mName, String lName, String address1, String address2, String email)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
@@ -2355,14 +2054,6 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * Verify recent CCD message in patient portal.
-	 * 
-	 * @param ccdDate          actual CCD date displayed in patient portal
-	 * @param ccdSendTimestamp POST CCD send timestamp
-	 * @return boolean whether not date is found
-	 * @throws ParseException If a parser exception occurred
-	 */
 	public static boolean verifyCCDMessageDate(String ccdDate, long ccdSendTimestamp) throws ParseException {
 		IHGUtil.PrintMethodName();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
@@ -2385,16 +2076,6 @@ public class RestUtils {
 		return monthString;
 	}
 
-	/**
-	 * Checks if the patient statement delivery preference is correct
-	 * 
-	 * @param xmlFileName response xml path
-	 * @param MFId        is id of a patient to check
-	 * @param Pref        is Statement Delivery Preference selected by patient
-	 * @throws SAXException If a SAX exception occurred
-	 * @throws ParserConfigurationException If a parser configuration exception occurred
-	 * @throws IOException If an input or output exception occurred
-	 */
 	public static void isStatementPreferenceCorrect(String xmlFileName, String MFId, String Pref)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -2420,19 +2101,6 @@ public class RestUtils {
 
 	}
 
-	/**
-	 * Reads the XML and checks asked Question if it complies
-	 * 
-	 * @param xmlFileName XML Statement Preference POST Payload
-	 * @param MFId        - Medfusion Member Id
-	 * @param extId       - external Patient ID
-	 * @param Pref        - Statement Preference
-	 * @return XML message as a String
-	 * @throws ParserConfigurationException If a parser configuration exception occurred
-	 * @throws IOException If an input or output exception occurred
-	 * @throws SAXException If a SAX exception occurred
-	 * @throws TransformerException If a transformer exception occurred
-	 */
 	public static String preparePostStatementPreference(String xmlFileName, String MFId, String extId, String Pref)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
@@ -2549,8 +2217,7 @@ public class RestUtils {
 			Element FirstNameElem = (Element) DirInfo.getElementsByTagName("FirstName").item(0);
 			if (firstName != null) {
 				Log4jUtil.log("FirstName : " + FirstNameElem.getTextContent() + "  :  " + firstName.trim());
-				assertTrue(
-						FirstNameElem.getTextContent().toLowerCase().contains(firstName.trim().toLowerCase()));
+				assertTrue(FirstNameElem.getTextContent().toLowerCase().contains(firstName.trim().toLowerCase()));
 			}
 
 			Element LastNameElem = (Element) DirInfo.getElementsByTagName("LastName").item(0);
@@ -2577,8 +2244,7 @@ public class RestUtils {
 			if (specialityType != null) {
 				Log4jUtil.log("SpecialtyType : " + SpecialtyTypeElem.getTextContent() + " specialityType "
 						+ specialityType.trim());
-				assertEquals(SpecialtyTypeElem.getTextContent().toLowerCase(),
-						specialityType.trim().toLowerCase());
+				assertEquals(SpecialtyTypeElem.getTextContent().toLowerCase(), specialityType.trim().toLowerCase());
 			}
 
 			Element SpecialtyClassificationElem = (Element) DirInfo.getElementsByTagName("SpecialtyClassification")
@@ -2999,8 +2665,7 @@ public class RestUtils {
 
 			Log4jUtil.log("------------------Verifying PreviousTest Information-------------------------");
 			Element Testname = (Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(2);
-			assertEquals(Testname.getTextContent(), list.get(15),
-					"Test Actual values are different from expected");
+			assertEquals(Testname.getTextContent(), list.get(15), "Test Actual values are different from expected");
 			Log4jUtil.log(
 					"Verifying Test actual " + Testname.getTextContent().toString() + " with Expected " + list.get(15));
 
@@ -3267,8 +2932,7 @@ public class RestUtils {
 		if (entity != null) {
 			sResp = EntityUtils.toString(entity);
 			Log4jUtil.log("Check for http 200 response");
-			assertTrue(
-					resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
+			assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
 					"Get Request response is " + resp.getStatusLine().getStatusCode()
 							+ " instead of 200. Response message received:\n" + sResp);
 			writeFile(responseFilePath, sResp);
@@ -3296,13 +2960,12 @@ public class RestUtils {
 		request.setEntity(new StringEntity(payload));
 		request.setHeader("Noun", "Encounter");
 		request.setHeader("Verb", "Completed");
-		request.addHeader("Authorization", "Bearer "+accessToken);
+		request.addHeader("Authorization", "Bearer " + accessToken);
 		request.addHeader("Content-Type", "application/json");
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
 		Log4jUtil.log("Check for http 200/202 response");
-		assertTrue(
-				response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
+		assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
 				"Get Request response is " + response.getStatusLine().getStatusCode()
 						+ " instead of 200/202. Response message:\n" + sResp);
 		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
@@ -3320,7 +2983,6 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
-		// boolean found = false;
 		for (int i = 0; i < patients.getLength(); i++) {
 			if (patients.item(i).getTextContent().equals(practicePatientId)) {
 				Log4jUtil
@@ -3564,6 +3226,7 @@ public class RestUtils {
 			Element GenderIdentityEle = (Element) GenderIdentity;
 			Node EGQGINode = GenderIdentityEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
 			Log4jUtil.log("GI node value= " + EGQGINode.getTextContent() + "   EGQValue = " + EGQValue);
+
 			assertTrue(EGQGINode.getTextContent().trim().equalsIgnoreCase(EGQValue),
 					"Value mismatched");
 			}
@@ -3578,6 +3241,7 @@ public class RestUtils {
 			Element SexualOrientationEle = (Element) SexualOrientation;
 			Node EGQSONode = SexualOrientationEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
 			Log4jUtil.log("SO node value = " + EGQSONode.getTextContent() + "   EGQValue = " + EGQValue);
+
 			assertTrue(EGQSONode.getTextContent().trim().equalsIgnoreCase(EGQValue),
 					"Value mismatched");
 			}
@@ -3663,13 +3327,11 @@ public class RestUtils {
 		assertTrue(InsuranceFileNameEle.getTextContent().contains(fileName), "File name did not Matched");
 		Log4jUtil.log(
 				"Matching Actual FileType : " + InsuranceFileTypeEle.getTextContent() + " with Expected " + fileType);
-		assertTrue(InsuranceFileTypeEle.getTextContent().equalsIgnoreCase(fileType),
-				"File type did not Matched");
+		assertTrue(InsuranceFileTypeEle.getTextContent().equalsIgnoreCase(fileType), "File type did not Matched");
 
 		Boolean base64FileMatch = matchBase64String(attachmentContentEle.getTextContent(), uploadedImagBase64);
 		Log4jUtil.log("Does insurance image card Matched : " + base64FileMatch);
-		assertTrue(base64FileMatch,
-				"Image uploaded Did not Matched with image in the insurance detail api call.");
+		assertTrue(base64FileMatch, "Image uploaded Did not Matched with image in the insurance detail api call.");
 	}
 
 	public static Boolean deleteFile(String fileName) {
@@ -3974,9 +3636,9 @@ public class RestUtils {
 		Log4jUtil.log("Searching Prescription Header ID: " + PrescriptionHeaderId);
 		return PrescriptionHeaderId;
 	}
-	
-	public static void isMedicationDetailsNewResponseXMLValid(String xmlFileName, String medicationName, String additionalComment)
-			throws ParserConfigurationException, SAXException, IOException {
+
+	public static void isMedicationDetailsNewResponseXMLValid(String xmlFileName, String medicationName,
+			String additionalComment) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 
@@ -3991,10 +3653,12 @@ public class RestUtils {
 			if (node.getChildNodes().item(0).getTextContent().contains(medicationName)) {
 				Element ele = (Element) nodes.item(i).getParentNode();
 				Node nDosage = ele.getElementsByTagName(IntegrationConstants.DOSAGE_TAG).item(0);
+
 				Node additionalCommentNode =ele.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
 				assertEquals(nDosage.getTextContent().toUpperCase(), JalapenoConstants.DOSAGE,
 						"The actual value of dosage doesnt equal the expected value");
-				assertEquals(additionalCommentNode.getTextContent(),additionalComment,"The actual value of Additional commnet doesnt equal the expected value");
+				assertEquals(additionalCommentNode.getTextContent(), additionalComment,
+						"The actual value of Additional commnet doesnt equal the expected value");
 				found = true;
 				break;
 			}
@@ -4002,7 +3666,7 @@ public class RestUtils {
 		assertTrue(found, "Medication Name was not found in response XML");
 		Log4jUtil.log("response is ok");
 	}
-	
+
 	public static String findValueOfMedicationNodeNew(String xmlFileName, String parentNode, String medication,
 			String rxSMSubject, String rxSMBody, String prescriptionPath) throws ParserConfigurationException,
 			SAXException, IOException, DOMException, ParseException, TransformerException {
@@ -4020,6 +3684,7 @@ public class RestUtils {
 
 		for (int i = 0; i < pnode.getLength(); i++) {
 			Element element = (Element) pnode.item(i);
+
 				if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD") || !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
 					String medicationId = element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent();
 				}
@@ -4031,7 +3696,7 @@ public class RestUtils {
 						.getNodeValue().toString());
 				medication_details.add(element.getElementsByTagName("MedicationDosage").item(0).getFirstChild()
 						.getNodeValue().toString());
-				
+
 				element = (Element) element.getParentNode();
 				medication_details.add(element.getElementsByTagName("RequestedLocation").item(0).getFirstChild()
 						.getNodeValue().toString());
@@ -4048,13 +3713,13 @@ public class RestUtils {
 				}
 				
 				node = node.getParentNode().getParentNode();
-				
-				Log4jUtil.log("Node name for prescription:"+node.getNodeName());
+
+				Log4jUtil.log("Node name for prescription:" + node.getNodeName());
 				if (node.hasAttributes()) {
 					Attr attr = (Attr) node.getAttributes().getNamedItem("id");
 					getPrescription_id = attr.getValue();
 				}
-				
+
 				element = (Element) element.getParentNode();
 				String getCreatedDateTime = element.getElementsByTagName("CreatedDateTime").item(0).getFirstChild()
 						.getNodeValue();
@@ -4069,7 +3734,7 @@ public class RestUtils {
 		}
 		return updatedXML;
 	}
-	
+
 	private static String postMedicationRequestNew(String prescriptionPath, String getPrescription_id,
 			ArrayList<String> medication_details, String getCreatedDateTime, String getUpdatedDateTime,
 			String rxSMSubject, String rxSMBody) throws DOMException, ParseException, TransformerException,
@@ -4113,7 +3778,7 @@ public class RestUtils {
 			nExternalMedicationID.setTextContent(medication_details.get(7));
 			nExternalSystemID.setTextContent(medication_details.get(8));
 		}
-				
+
 		nPrescriptionNumber.setTextContent((String) IntegrationConstants.PRESCRIPTION_NO);
 		nRefillNumber.setTextContent((String) IntegrationConstants.NO_OF_REFILLS);
 		nQuantity.setTextContent((String) IntegrationConstants.QUANTITY);
@@ -4152,7 +3817,7 @@ public class RestUtils {
 		return domToString(doc);
 
 	}
-	
+
 	public static String getAttachmentRefId(String responseFilePath)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -4161,7 +3826,7 @@ public class RestUtils {
 		String attchmentRefId = InternalAttachmentID.getTextContent().toString();
 		return attchmentRefId;
 	}
-	
+
 	public static boolean isResponseContainsErrorNode(String xmlFileName)
 			throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(xmlFileName);
@@ -4169,20 +3834,23 @@ public class RestUtils {
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
 		NodeList errorNode = doc.getElementsByTagName("Error");
 
-		for (int i = 0; i < nodes.getLength()-1; i++) {
+		for (int i = 0; i < nodes.getLength() - 1; i++) {
 			if (!nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED)) {
 				Log4jUtil.log("Error while processing response: " + errorNode.item(0).getTextContent());
 			}
 			assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
 					"Processing Status is failed for No '" + i + "' message");
 		}
-		
-		assertTrue(nodes.item(nodes.getLength()-1).getTextContent().equals(IntegrationConstants.STATE_ERRORED),"Response Contains Node with Error State for invalid data");
-		Log4jUtil.log("Error Node Contains : "+doc.getElementsByTagName("Description").item(0).getTextContent() +" with severity "+doc.getElementsByTagName("Severity").item(0).getTextContent());
+
+		assertTrue(nodes.item(nodes.getLength() - 1).getTextContent().equals(IntegrationConstants.STATE_ERRORED),
+				"Response Contains Node with Error State for invalid data");
+		Log4jUtil.log("Error Node Contains : " + doc.getElementsByTagName("Description").item(0).getTextContent()
+				+ " with severity " + doc.getElementsByTagName("Severity").item(0).getTextContent());
 		return true;
 	}
 
-	public static boolean isResponseContainsErrorNodeBatch(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+	public static boolean isResponseContainsErrorNodeBatch(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(xmlFileName);
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
@@ -4195,13 +3863,14 @@ public class RestUtils {
 						" Processing Status is failed for No '" + i + "' message");
 				return true;
 			}
-			assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED), "Processing Status is failed for No '" + i + "' message");
+			assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+					"Processing Status is failed for No '" + i + "' message");
 		}
 
 		assertTrue(nodes.item(nodes.getLength() - 1).getTextContent().equals(IntegrationConstants.STATE_ERRORED),
 				"Response Contains Node with Error State for invalid data");
-		Log4jUtil.log("Error Node Contains : " + doc.getElementsByTagName("Description").item(0).getTextContent() + " with severity "
-				+ doc.getElementsByTagName("Severity").item(0).getTextContent());
+		Log4jUtil.log("Error Node Contains : " + doc.getElementsByTagName("Description").item(0).getTextContent()
+				+ " with severity " + doc.getElementsByTagName("Severity").item(0).getTextContent());
 		return true;
 	}
 
@@ -4213,21 +3882,21 @@ public class RestUtils {
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.ATTACHMENT_URL);
 		String attchmentURL = nodes.item(0).getTextContent();
 		Log4jUtil.log("response is ok");
-		Log4jUtil.log("Attachement URL :   "+attchmentURL);
+		Log4jUtil.log("Attachement URL :   " + attchmentURL);
 		return attchmentURL;
 	}
-	
-	public static void validateAttachementName(String xmlFileName,String fileName)
+
+	public static void validateAttachementName(String xmlFileName, String fileName)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 		Log4jUtil.log("finding AttachmentURL");
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.FILE_NAME);
 		String attchmentName = nodes.item(0).getTextContent().replaceAll("\\+", " ");
-		Log4jUtil.log("Filename in respons: "+attchmentName);
+		Log4jUtil.log("Filename in respons: " + attchmentName);
 		assertTrue(attchmentName.equals(fileName), "Attachment File Names are Equal");
 	}
-	
+
 	public static void isPatientPresent(String responsePath, String TestPatientIDUserName)
 			throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(responsePath);
@@ -4249,5 +3918,4 @@ public class RestUtils {
 		assertTrue(found, "Patient was found in GET call with 200 Response");
 	}
 
-		
 }

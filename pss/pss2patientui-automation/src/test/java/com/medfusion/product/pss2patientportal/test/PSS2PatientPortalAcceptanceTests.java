@@ -954,7 +954,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 
 		testData.setFutureApt(false);
-		testData.setInsuranceAtEnd(true);
 
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
@@ -968,10 +967,16 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
 			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
 		}
+		
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
+		aPIVerification.responseCodeValidation(response, 200);
 
-		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
-				payloadAM.resourceConfigRulePutPayload());
-		aPIVerification.responseCodeValidation(responseRulePost, 200);
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		String patientMatch=payloadAM.patientInfoWithOptionalLLNG();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
 		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
@@ -2234,7 +2239,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		yo.deleteEmail(driver, userName);
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testBookApptWithoutLastQuestionNG")
 	public void testCancelFromEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");

@@ -1,4 +1,4 @@
-// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 
 import static org.testng.Assert.assertTrue;
@@ -394,6 +394,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		clickOnBubbleIcon();
 		clickOnDifferentPatientView();
+		handleWeNeedToConfirmSomethingModal();
 
 	}
 
@@ -401,12 +402,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return outstandingPatientBalance.getText();
 	}
 
-	/**
-	 * checks if the BUTTON is visible, because the banner contracts to an empty
-	 * element mf-blink-banner when hidden
-	 *
-	 * @return
-	 */
 	public boolean isBlinkBannerDisplayed() {
 		boolean ret = false;
 		try {

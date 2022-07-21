@@ -26,8 +26,17 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 
 public class Location extends PSS2MainPage {
 
-	@FindAll({ @FindBy(xpath = "//a[@class='locationlink locationlinkclick']") })
+	@FindAll({ @FindBy(xpath = "//*[@class='locationlink locationlinkclick']") })
 	private List<WebElement> locationList;
+	
+	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']") })
+	private List<WebElement> locationListNew;
+	
+	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']/b") })
+	private List<WebElement> locationNameDetails;
+	
+	@FindAll({ @FindBy(xpath = "//div[@class='list-group-item-location listingOfappointments col-sm-12 col-xs-12']/div[2]/div/a") })
+	private List<WebElement> locationSelect;
 
 	@FindAll({ @FindBy(xpath = "//a[contains(text(),'River Oaks Main')]") })
 	private List<WebElement> locationRever;
@@ -57,29 +66,31 @@ public class Location extends PSS2MainPage {
 	private String addressValue = null;
 
 	public AppointmentPage selectAppointment(String locationName) throws InterruptedException {
-		isViewallmessagesButtonPresent(driver);
-		log("location " + locationName);
-		for (int i = 0; i < locationList.size(); i++) {
-			if (locationList.get(i).getText().contains(locationName)) {
-				log("Search Location");
-				log("Location of user found at " + locationList.get(i).getText());
-				javascriptClick(locationList.get(i));
-				log("clicke on location  " + locationName);
-				return PageFactory.initElements(driver, AppointmentPage.class);
-			}
-		}
-		return null;
-	}
-
+		log("In Location Search Method");
+        for (int i = 0; i < locationNameDetails.size(); i++) {
+            log("Size of Location List - "+locationNameDetails.size());
+            if (locationNameDetails.get(i).getText().contains(locationName)) {
+                log("Location is ---> " + locationNameDetails.get(i).getText());
+                log("Search Provider");
+                log("Provider of user found at " + locationNameDetails.get(i).getText());
+                IHGUtil.waitForElement(driver, 5, locationNameDetails.get(i));
+                locationSelect.get(i).click();
+                return PageFactory.initElements(driver, AppointmentPage.class);
+            }
+        }
+        return PageFactory.initElements(driver, AppointmentPage.class);
+    }
+	
 	public Provider searchProvider(String locationName) throws InterruptedException {
-		log("In SearchProvider Method");
-		for (int i = 0; i < locationList.size(); i++) {
-			if (locationList.get(i).getText().contains(locationName)) {
-				log("Location is ---> " + locationList.get(i).getText());
+		log("In Location Search Method");
+		for (int i = 0; i < locationNameDetails.size(); i++) {
+			log("Size of Location List - " + locationNameDetails.size());
+			if (locationNameDetails.get(i).getText().contains(locationName)) {
+				log("Location is ---> " + locationNameDetails.get(i).getText());
 				log("Search Provider");
-				log("Provider of user found at " + locationList.get(i).getText());
-				IHGUtil.waitForElement(driver, 5, locationList.get(i));
-				locationList.get(i).click();
+				log("Provider of user found at " + locationNameDetails.get(i).getText());
+				IHGUtil.waitForElement(driver, 5, locationNameDetails.get(i));
+				locationSelect.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
@@ -101,10 +112,12 @@ public class Location extends PSS2MainPage {
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
 		log("location is  ");
 		log("location " + dateTime);
-		for (int i = 0; i < locationList.size(); i++) {
-			if (locationList.get(i).getText().contains(dateTime)) {
-				log("Location of user found at " + locationList.get(i).getText());
-				javascriptClick(locationList.get(i));
+		for (int i = 0; i < locationNameDetails.size(); i++) {
+			if (locationNameDetails.get(i).getText().contains(dateTime)) {
+	               log("Search Location");
+	                log("Location of user found at " + locationNameDetails.get(i).getText());
+	                IHGUtil.waitForElement(driver, 5, locationNameDetails.get(i));
+	                locationSelect.get(i).click();
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
 		}

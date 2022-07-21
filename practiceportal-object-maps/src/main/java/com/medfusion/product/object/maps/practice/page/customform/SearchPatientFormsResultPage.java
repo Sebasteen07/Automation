@@ -21,11 +21,6 @@ public class SearchPatientFormsResultPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * Click on View Link and go to Patient CustomForm Detail Page
-	 * 
-	 * @return ViewPatientFormPage
-	 */
 	public ViewPatientFormPage clickViewLink() throws Exception {
 		IHGUtil.PrintMethodName();
 

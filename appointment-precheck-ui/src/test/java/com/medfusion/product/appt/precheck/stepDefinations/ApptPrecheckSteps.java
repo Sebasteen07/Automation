@@ -22,6 +22,8 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.appt.precheck.payload.AptPrecheckPayload;
 import com.medfusion.product.appt.precheck.payload.MfAppointmentSchedulerPayload;
+import com.medfusion.product.appt.precheck.payload.MfAppointmentTypesPayload;
+import com.medfusion.product.appt.precheck.payload.MfPracticeSettingsManagerPayload;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.Main.ApptPrecheckMainPage;
 import com.medfusion.product.object.maps.appt.precheck.page.Appointments.AppointmentsPage;
@@ -37,7 +39,9 @@ import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestAptPrecheck;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
+import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentTypes;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfNotificationSubscriptionManager;
+import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfPracticeSettingsManager;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -63,6 +67,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	AptPrecheckPayload aptPrecheckPayload;
 	CurbsideCheckInPage curbsidePage;
 	PostAPIRequestMfNotificationSubscriptionManager subsManager;
+    public PostAPIRequestMfPracticeSettingsManager postAPIRequest;
+    public static MfPracticeSettingsManagerPayload prcticePayload;
 
 	@Given("user lauch practice provisioning url")
 	public void user_lauch_practice_provisioning_url() throws Exception {
@@ -84,6 +90,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		aptPrecheckPayload = AptPrecheckPayload.getAptPrecheckPayload();
 		subsManager = PostAPIRequestMfNotificationSubscriptionManager
 				.getPostAPIRequestMfNotificationSubscriptionManager();
+        postAPIRequest = PostAPIRequestMfPracticeSettingsManager.getPostAPIRequestMfPracticeSettingsManager();
+        prcticePayload = MfPracticeSettingsManagerPayload.getMfPracticeSettingsManagerPayload();
 		commonMethod = new CommonMethods();
 		log("Practice provisining url-- " + propertyData.getProperty("practice.provisining.url.ge"));
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
@@ -10911,6 +10919,215 @@ public class ApptPrecheckSteps extends BaseTest {
 		driver.switchTo().window(currentWindow);
 		Thread.sleep(10000);
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	
 	}
+	@When("I login to practice")
+		public void i_login_to_practice() throws NullPointerException, InterruptedException {
+		log("Practice provisining login details");
+		scrollAndWait(200, 300, 10000);
+		log("Username : " + propertyData.getProperty("practice.username.ng"));
+		log("Password : " + propertyData.getProperty("practice.password.ng"));
+		loginPage.login(propertyData.getProperty("practice.username.ng"),
+			propertyData.getProperty("practice.password.ng"));
+		scrollAndWait(200, 300, 10000);
+		
+	}
+	@When("I associate appointment type")
+		public void i_associate_appointment_type() throws NullPointerException, IOException {
+		log("Add IMH form");
+		Response response = postAPIRequest.getUpdateForm(propertyData.getProperty("baseurl.mf.practice.settings.manager"),
+				prcticePayload.getUpdateFormPayload(true, propertyData.getProperty("imh.appt.title"),propertyData.getProperty("associate.appt.type")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), propertyData.getProperty("imh.form.practice.id"));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+	}
+	@When("I schedule an appointment for associated appointment type")
+		public void i_schedule_an_appointment_for_associated_appointment_type_and_do_precheck() throws NullPointerException, IOException, InterruptedException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("imh.form.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),	
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		driver.navigate().refresh();
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnLaunchPatientModeButton();
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnContinueButton();
+		}
+	@Then("I verify while doing precheck associated appointment type should be display")
+		public void i_verify_while_doing_precheck_associated_appointment_type_should_be_display() throws InterruptedException {
+		assertTrue(apptPage.getFormInPrecheckFlow(propertyData.getProperty("precheck.first.name"),
+			propertyData.getProperty("precheck.middle.name"), propertyData.getProperty("precheck.last.name"),
+			"jordan" + Appointment.randomNumber + "@YOPmail.com",
+			propertyData.getProperty("precheck.phone.number"),propertyData.getProperty("imh.appt.title")));
+		loginPage.login(propertyData.getProperty("practice.username.ng"),
+			propertyData.getProperty("practice.password.ng"));
+		scrollAndWait(200, -300, 5000);
+		
+	}
+	@When("I login to new practice")
+		public void i_login_to_new_practice() throws NullPointerException, InterruptedException {
+		log("Practice provisining login details");
+		scrollAndWait(200, 300, 10000);
+		log("Username : " + propertyData.getProperty("new.practice.user.name"));
+		log("Password : " + propertyData.getProperty("new.practice.password"));
+		loginPage.login(propertyData.getProperty("new.practice.user.name"),
+			propertyData.getProperty("new.practice.password"));
+		scrollAndWait(200, 300, 10000);
+		
+	}
+	@When("I associate appointment type for new practice")
+		public void i_associate_appointment_type_for_new_practice() throws NullPointerException, IOException {
+		log("Add IMH form");
+		Response response = postAPIRequest.getUpdateForm(propertyData.getProperty("baseurl.mf.practice.settings.manager"),
+			prcticePayload.getUpdateFormPayload(true, propertyData.getProperty("imh.appt.title"),propertyData.getProperty("associate.appt.type")),
+			headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), propertyData.getProperty("new.practice.id"));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		
+	}
+	@When("I schedule an appointment for associated appointment type for new practice")
+		public void i_schedule_an_appointment_for_associated_appointment_type_for_new_practice() throws InterruptedException, NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+			propertyData.getProperty("new.practice.id"),
+			payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+					"jordan" + Appointment.randomNumber + "@YOPmail.com"),	
+			headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+			Appointment.apptId);
+		driver.navigate().refresh();
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnLaunchPatientModeButton();
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnContinueButton();
+		
+	}
+	@Then("I verify while doing precheck associated appointment type should be display for new practice")
+		public void i_verify_while_doing_precheck_associated_appointment_type_should_be_display_for_new_practice() throws NullPointerException, InterruptedException {
+		assertTrue(apptPage.getFormInPrecheckFlow(propertyData.getProperty("precheck.first.name"),
+			propertyData.getProperty("precheck.middle.name"), propertyData.getProperty("precheck.last.name"),
+			"jordan" + Appointment.randomNumber + "@YOPmail.com",
+			propertyData.getProperty("precheck.phone.number"),propertyData.getProperty("imh.appt.title")));
+		loginPage.login(propertyData.getProperty("new.practice.user.name"),
+			propertyData.getProperty("new.practice.password"));
+		scrollAndWait(200, -300, 5000);
+		
+	}
+	
+	@When("I login to existing practice")
+	public void i_login_to_existing_practice() throws InterruptedException {
+		log("Practice provisining login details");
+		scrollAndWait(200, 300, 10000);
+		log("Username : " + propertyData.getProperty("practice.username.ng"));
+		log("Password : " + propertyData.getProperty("practice.password.ng"));
+		loginPage.login(propertyData.getProperty("practice.username.ng"),
+			propertyData.getProperty("practice.password.ng"));
+		scrollAndWait(200, 300, 10000);
+	}
+	@When("I add IMH forms")
+	public void i_add_imh_forms() throws NullPointerException, IOException {
+		log("Add IMH form");
+		Response response = postAPIRequest.getUpdateForm(propertyData.getProperty("baseurl.mf.practice.settings.manager"),
+			prcticePayload.getUpdateFormPayload(true, propertyData.getProperty("imh.new.form"),
+					propertyData.getProperty("associate.appt.type")),
+			headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), 
+			propertyData.getProperty("imh.form.practice.id"));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+	}
+	@When("I search form added in UI")
+	public void i_search_form_added_in_ui() throws NullPointerException, InterruptedException {
+	    mainPage.clickOnSettingTab();
+	    formsPage.clickOnFormsTab();
+	    formsPage.searchForm(propertyData.getProperty("imh.new.form"));
+	    assertTrue(formsPage.isFormDisplay(propertyData.getProperty("imh.new.form")));
+	}
+	@When("I schedule an appointment after adding form")
+	public void i_schedule_an_appointment_after_adding_form() throws NullPointerException, IOException, InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("imh.form.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes,propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),	
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		driver.navigate().refresh();
+		apptPage.filterPatientId(Appointment.patientId);
+		apptPage.clickOnPatientName(Appointment.patientId, Appointment.apptId);
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnLaunchPatientModeButton();
+		scrollAndWait(0, -3000, 5000);
+		apptPage.clickOnContinueButton();
+	}
+	@Then("I verify while doing precheck added form should be displayed and updated in the precheck forms list")
+	public void i_verify_while_doing_precheck_added_form_should_be_displayed_and_updated_in_the_precheck_forms_list() throws NullPointerException, InterruptedException {
+		assertTrue(apptPage.getFormInPrecheckFlow(propertyData.getProperty("precheck.first.name"),
+				propertyData.getProperty("precheck.middle.name"), 
+				propertyData.getProperty("precheck.last.name"),
+				"jordan" + Appointment.randomNumber + "@YOPmail.com",
+				propertyData.getProperty("precheck.phone.number"),
+				propertyData.getProperty("imh.new.form")));
+		
+			loginPage.login(propertyData.getProperty("practice.username.ng"),
+				propertyData.getProperty("practice.password.ng"));
+			scrollAndWait(200, -300, 5000);
+	}
+	
+	@When("I add IMH forms from practice provisioning UI")
+	public void i_add_imh_forms_from_practice_provisioning_ui() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		formsPage.clickOnFormsTab();
+		formsPage.clickOnAddformButton();
+		formsPage.clickOnIMHForm();
+	}
+	@When("I associate appointment types to forms")
+	public void i_associate_appointment_types_to_forms() throws InterruptedException {
+		formsPage.addIMHForm(propertyData.getProperty("imh.form.new.title"));
+		formsPage.searchForm(propertyData.getProperty("imh.form.new.title"));
+		formsPage.clickOnAppointmentTypesForForms();
+		formsPage.selectAppointmentTypeForForms();
+		formsPage.clickOnBackArrow();
+		formsPage.searchForm(propertyData.getProperty("imh.appt.title"));
+		formsPage.clickOnAppointmentTypesForForms();
+		formsPage.selectAppointmentTypeForForms();
+		formsPage.selectAppointmentTypeForForm();
+		formsPage.clickOnBackArrow();
+	}
+	@When("I deassociate appointment types to forms")
+	public void i_deassociate_appointment_types_to_forms() throws InterruptedException, NullPointerException, IOException {
+		formsPage.searchForm(propertyData.getProperty("imh.appt.title"));
+		formsPage.clickOnAppointmentTypesForForms();
+		formsPage.deselectAppointmentTypeForForms();
+		formsPage.clickOnBackArrow();
+	}
+	@Then("I verify newly added forms should be reflected after doing get call")
+	public void i_verify_newly_added_forms_should_be_reflected_after_doing_get_call() throws NullPointerException, IOException {
+		Response response = postAPIRequest.getListOfForms(
+				propertyData.getProperty("baseurl.mf.practice.settings.manager"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
+				propertyData.getProperty("imh.form.practice.id"));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+	}
+
 
 }
