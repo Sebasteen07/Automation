@@ -11143,6 +11143,7 @@ public class ApptPrecheckSteps extends BaseTest {
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), 
 				Appointment.patientId, Appointment.apptId);
 	}
+	
 	@Then("I verify user is able to see appt scheduled and reminders in mail")
 	public void i_verify_user_is_able_to_see_appt_scheduled_and_reminders_in_mail() throws Exception {
 	    YopMail yopMail = new YopMail(driver);
@@ -11157,7 +11158,6 @@ public class ApptPrecheckSteps extends BaseTest {
 	    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
 	    		propertyData.getProperty("curbside.checkin.mail.subject"),
 	    		propertyData.getProperty("curbside.checkin.mail.title") , 5));
-	    
 	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 
 	}
@@ -11169,6 +11169,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	   generalPage.enablePrecheckCheckbox();
 	   mainPage.clickOnAppointmentsTab();
 	}
+	
 	@When("I schedule an apointment and precheck is on")
 	public void i_schedule_an_apointment_and_precheck_is_on() throws NullPointerException, IOException, InterruptedException {
 		Appointment.patientId = commonMethod.generateRandomNum();
@@ -11178,8 +11179,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 				propertyData.getProperty("apt.precheck.practice.id"),
-				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
-						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"), 
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"), 
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 				Appointment.apptId);
 	}
@@ -11190,8 +11191,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
 		    		propertyData.getProperty("appt.email.subject"),
 		    		propertyData.getProperty("appt.start.precheck.title"),5));
-		
-		 loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 	}
 	
 	@When("I disable precheck checkbox")
@@ -11215,7 +11215,6 @@ public class ApptPrecheckSteps extends BaseTest {
 						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
 				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
 				Appointment.apptId);
-		scrollAndWait(0, 300 , 5000);
 	}
 	
 	@Then("I verify user is not able to do precheck through mail")
@@ -11224,10 +11223,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
 		    		propertyData.getProperty("appt.email.subject"),
 		    		propertyData.getProperty("appt.start.precheck.title"),5));
-		
-		 loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
-		 mainPage.clickOnSettingTab();
-		 generalPage.enablePrecheckCheckbox();
-		 generalPage.clickOnUpdateSettingbutton();
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		generalPage.enablePrecheckCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
 	}
 }
