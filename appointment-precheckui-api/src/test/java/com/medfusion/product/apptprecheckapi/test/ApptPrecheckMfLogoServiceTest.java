@@ -117,6 +117,7 @@ public class ApptPrecheckMfLogoServiceTest extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 	}
 
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateLogoByIdPut() throws IOException {
 		Response response = postAPIRequest.updateLogoById(propertyData.getProperty("upload.logo"),
