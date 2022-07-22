@@ -369,6 +369,25 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		logStep("Set up the API authentication");
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		Response response;
+		
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
 		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.allowDuplicateONOff(false));
 		validateAdapter.verifyResourceConfigPost(response);
 
@@ -417,6 +436,25 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		logStep("Set up the API authentication");
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		Response response;
+		
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
 		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.allowDuplicateONOff(false));
 		validateAdapter.verifyResourceConfigPost(response);
 
