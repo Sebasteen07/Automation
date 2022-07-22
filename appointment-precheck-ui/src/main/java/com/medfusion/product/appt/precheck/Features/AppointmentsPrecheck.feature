@@ -2810,3 +2810,20 @@ Feature: Test fuctionality of Appointment precheck
     And I deassociate appointment types to forms
     Then I verify newly added forms should be reflected after doing get call
     And logout from practice provisioning portal
+
+  Scenario: verify user receives appt scheduled and reminder mail when appt is scheduled from PSS
+    When I schedule an apointment from PSS
+    Then I verify user is able to see appt scheduled and reminders in mail
+    And logout from practice provisioning portal
+
+  Scenario: verify user can see 'start precheck' in mail when precheck is on
+    When I enable precheck checkbox
+    And I schedule an apointment and precheck is on
+    Then I verify user is able to see 'start precheck' in mail
+    And logout from practice provisioning portal
+
+  Scenario: verify user cannot do precheck from mail when precheck is off
+    When I disable precheck checkbox
+    And I schedule an apointment and precheck is off
+    Then I verify user is not able to do precheck through mail
+    And logout from practice provisioning portal
