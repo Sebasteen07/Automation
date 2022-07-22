@@ -37,6 +37,9 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Specialty')]")
 	private WebElement editSpecialityTab;
+	
+	@FindBy(how = How.XPATH, using = "//ul[@id='tabs3']//a[contains(text(),'Specialty')]")
+	private WebElement resourceEditSpecialityTab;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[4]/a")
 	private WebElement editAptTypeTab;
@@ -58,6 +61,9 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"tab33\"]/table/tbody/tr[1]/td[3]/div/label/input")
 	private WebElement resourceSpecilaityEnabled;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tab33']/table/tbody/tr[1]/td[3]/div//label/i")
+	private WebElement specilaityToggleEnabled;
 
 	@FindBy(how = How.ID, using = "search-appointmenttype")
 	private WebElement resourceSearchApt;
@@ -587,5 +593,35 @@ public class ManageResource extends PSS2MenuPage {
 	public void appointmentDurationClickForDisable() {
 		appointmentDurationButton.click();
 		appointmentTypeSave.click();
+	}
+	
+	
+	public void clickSpecialityTab() throws InterruptedException {
+		commonMethods.highlightElement(resourceEditSpecialityTab);
+		resourceEditSpecialityTab.click();
+	}
+	
+	public void resourceSearchSpeciality(String specialityName) {
+		resourceSearchSpeciality.clear();
+		resourceSearchSpeciality.sendKeys(specialityName);
+	}
+	
+	public boolean isSpecialityEnabled() throws InterruptedException {
+		String background_color = specilaityToggleEnabled.getCssValue("background-color");
+		log("verifying the color of RESOURCE SPECIALITY : " + background_color);
+		Thread.sleep(1000);
+		if (background_color.equals("rgba(93, 143, 194, 1)")) {
+			log("RESOURCE SPECIALITY is ALREADY turned ON..");
+			return true;
+		}  else {
+			log("RESOURCE SPECIALITY is NOT turned ON.");
+			return false;
+		}
+	}
+	
+	public void enableSpeciality() throws InterruptedException {
+		if(!isSpecialityEnabled()) {
+			javascriptClick(specilaityToggleEnabled);
+		} 
 	}
 }
