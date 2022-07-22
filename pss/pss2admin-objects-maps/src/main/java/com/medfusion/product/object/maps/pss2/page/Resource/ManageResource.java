@@ -606,19 +606,20 @@ public class ManageResource extends PSS2MenuPage {
 	}
 	
 	public boolean isSpecialityEnabled() throws InterruptedException {
-		String background_color = specialtyToggleEnabled.getCssValue("background-color");
-		log("verifying the color of RESOURCE SPECIALITY : " + background_color);
+		String bgColor = specialtyToggleEnabled.getCssValue("background-color");
+		log("verifying the color of Resource Specialty : " + bgColor);
 		Thread.sleep(1000);
-		if (background_color.equals("rgba(93, 143, 194, 1)")) {
-			log("RESOURCE SPECIALITY is ALREADY turned ON..");
+		if (bgColor.equals("rgba(93, 143, 194, 1)")) {
+			log("Resource Specialty is already turned on..");
 			return true;
 		}  else {
-			log("RESOURCE SPECIALITY is NOT turned ON.");
+			log("Resource Specialty is not turned on.");
 			return false;
 		}
 	}
 	
 	public void enableSpecialty() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 6, specialtyToggleEnabled);
 		if(!isSpecialityEnabled()) {
 			javascriptClick(specialtyToggleEnabled);
 		} 

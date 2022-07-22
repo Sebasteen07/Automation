@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
@@ -54,13 +53,13 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		AdminAppointment appointment = pssPracticeConfig.gotoAdminAppointmentTab();
 		log("Is Care team toggle enabled" + appointment.toggleAllowPCPONOF());
 		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());
-		Log4jUtil.log("Status of PCP is " + testData.isPcptoggleState());
+		log("Status of PCP is " + testData.isPcptoggleState());
 		if (testData.isPcptoggleState() == false) {
-			Log4jUtil.log("Status of PCP  OFF");
+			log("Status of PCP  OFF");
 			appointment.pcptoggleclick();
-			Log4jUtil.log("Status of PCP  OFF and Clicked on ON");
+			log("Status of PCP  OFF and Clicked on ON");
 		} else {
-			Log4jUtil.log("Status of PCP is Already ON");
+			log("Status of PCP is Already ON");
 		}
 		appointment.selectPrimaryCareProvider();
 		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
@@ -72,7 +71,6 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		manageResource.enableSharePatient();
 		manageResource.clickSpecialtyTab();
 		manageResource.resourceSearchSpecialty(specialty);
-		Thread.sleep(1000);
 		manageResource.enableSpecialty();
 		manageResource.clearSearchResource();
 		manageResource.selectResource(providerName1);
@@ -80,7 +78,6 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		manageResource.enableSharePatient();
 		manageResource.clickSpecialtyTab();
 		manageResource.resourceSearchSpecialty(specialty);
-		Thread.sleep(1000);
 		manageResource.enableSpecialty();
 		adminUtils.pageRefresh(driver);
 		manageResource.logout();
@@ -106,11 +103,11 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		logStep("Verify Appointment Page and appointment to be selected = " + appointmentTypeName);
 		Provider provider = appointmentPage.selectTypeOfProvider(appointmentTypeName,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		ArrayList<String> l2= new ArrayList<String>();
-		l2=provider.getBookList();	
-		log("List of book from Patient UI- " + l2);
-		assertTrue(l2.contains(providerName1));
-		assertTrue(l2.contains(providerName));
+		ArrayList<String> bookList= new ArrayList<String>();
+		bookList=provider.getBookList();	
+		log("List of book from Patient UI- " + bookList);
+		assertTrue(bookList.contains(providerName1));
+		assertTrue(bookList.contains(providerName));
 		logStep("Verify Provider Page and PCP = " + providerName);
 		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(providerName);
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
@@ -140,13 +137,13 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		AdminAppointment appointment = pssPracticeConfig.gotoAdminAppointmentTab();
 		log("Is Care team toggle enabled" + appointment.toggleAllowPCPONOF());
 		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());
-		Log4jUtil.log("Status of PCP is " + testData.isPcptoggleState());
+		log("Status of PCP is " + testData.isPcptoggleState());
 		if (testData.isPcptoggleState() == false) {
-			Log4jUtil.log("Status of PCP  OFF");
+			log("Status of PCP  OFF");
 			appointment.pcptoggleclick();
-			Log4jUtil.log("Status of PCP  OFF and Clicked on ON");
+			log("Status of PCP  OFF and Clicked on ON");
 		} else {
-			Log4jUtil.log("Status of PCP is Already ON");
+			log("Status of PCP is Already ON");
 		}
 		appointment.selectPrimaryCareProvider();
 		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
@@ -158,7 +155,6 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		manageResource.enableSharePatient();
 		manageResource.clickSpecialtyTab();
 		manageResource.resourceSearchSpecialty(specialty);
-		Thread.sleep(1000);
 		manageResource.enableSpecialty();
 		manageResource.clearSearchResource();
 		manageResource.selectResource(providerName1);
@@ -166,7 +162,6 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		manageResource.enableSharePatient();
 		manageResource.clickSpecialtyTab();
 		manageResource.resourceSearchSpecialty(specialty);
-		Thread.sleep(1000);
 		manageResource.enableSpecialty();
 		adminUtils.pageRefresh(driver);
 		manageResource.logout();
@@ -192,11 +187,11 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		logStep("Verify Appointment Page and appointment to be selected = " + appointmentTypeName);
 		Provider provider = appointmentPage.selectTypeOfProvider(appointmentTypeName,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		ArrayList<String> l2= new ArrayList<String>();
-		l2=provider.getBookList();	
-		log("List of book from Patient UI- " + l2);
-		assertTrue(l2.contains(providerName1));
-		assertTrue(l2.contains(providerName));
+		ArrayList<String> bookList= new ArrayList<String>();
+		bookList=provider.getBookList();	
+		log("List of book from Patient UI- " + bookList);
+		assertTrue(bookList.contains(providerName1));
+		assertTrue(bookList.contains(providerName));
 		logStep("Verify Provider Page and PCP = " + providerName);
 		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(providerName);
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
@@ -226,13 +221,13 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		AdminAppointment appointment = pssPracticeConfig.gotoAdminAppointmentTab();
 		log("Is Care team toggle enabled" + appointment.toggleAllowPCPONOF());
 		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());
-		Log4jUtil.log("Status of PCP is " + testData.isPcptoggleState());
+		log("Status of PCP is " + testData.isPcptoggleState());
 		if (testData.isPcptoggleState() == false) {
-			Log4jUtil.log("Status of PCP  OFF");
+			log("Status of PCP  OFF");
 			appointment.pcptoggleclick();
-			Log4jUtil.log("Status of PCP  OFF and Clicked on ON");
+			log("Status of PCP  OFF and Clicked on ON");
 		} else {
-			Log4jUtil.log("Status of PCP is Already ON");
+			log("Status of PCP is Already ON");
 		}
 		appointment.selectPrimaryCareProvider();
 		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
@@ -244,7 +239,6 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		manageResource.enableSharePatient();
 		manageResource.clickSpecialtyTab();
 		manageResource.resourceSearchSpecialty(specialty);
-		Thread.sleep(1000);
 		manageResource.enableSpecialty();
 		manageResource.clearSearchResource();
 		manageResource.selectResource(providerName1);
@@ -252,7 +246,6 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		manageResource.enableSharePatient();
 		manageResource.clickSpecialtyTab();
 		manageResource.resourceSearchSpecialty(specialty);
-		Thread.sleep(1000);
 		manageResource.enableSpecialty();
 		adminUtils.pageRefresh(driver);
 		manageResource.logout();
@@ -278,11 +271,11 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		logStep("Verify Appointment Page and appointment to be selected = " + appointmentTypeName);
 		Provider provider = appointmentPage.selectTypeOfProvider(appointmentTypeName,
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		ArrayList<String> l2= new ArrayList<String>();
-		l2=provider.getBookList();	
-		log("List of book from Patient UI- " + l2);
-		assertTrue(l2.contains(providerName1));
-		assertTrue(l2.contains(providerName));
+		ArrayList<String> bookList= new ArrayList<String>();
+		bookList=provider.getBookList();	
+		log("List of book from Patient UI- " + bookList);
+		assertTrue(bookList.contains(providerName1));
+		assertTrue(bookList.contains(providerName));
 		logStep("Verify Provider Page and PCP = " + providerName);
 		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(providerName);
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
