@@ -11129,5 +11129,105 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(response.getStatusCode(), 200);
 	}
 
+	@When("I schedule an apointment from PSS")
+	public void i_schedule_an_apointment_from_pss() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+				apptSched.aptPutAppointmentPss(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayloadPSS(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), 
+				Appointment.patientId, Appointment.apptId);
+	}
+	@Then("I verify user is able to see appt scheduled and reminders in mail")
+	public void i_verify_user_is_able_to_see_appt_scheduled_and_reminders_in_mail() throws Exception {
+	    YopMail yopMail = new YopMail(driver);
+	    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
+	    		propertyData.getProperty("appointment.email.subject"),
+	    		propertyData.getProperty("appointment.email.title") , 5));
+	    
+	    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
+	    		propertyData.getProperty("appt.email.subject"),
+	    		propertyData.getProperty("appt.reminder.in.en") , 5));
+	    
+	    assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
+	    		propertyData.getProperty("curbside.checkin.mail.subject"),
+	    		propertyData.getProperty("curbside.checkin.mail.title") , 5));
+	    
+	    loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 
+	}
+	
+	@When("I enable precheck checkbox")
+	public void i_disable_precheck() throws InterruptedException {
+	   mainPage.clickOnSettingTab();
+	   scrollAndWait(0, 300, 5000);
+	   generalPage.enablePrecheckCheckbox();
+	   mainPage.clickOnAppointmentsTab();
+	}
+	@When("I schedule an apointment and precheck is on")
+	public void i_schedule_an_apointment_and_precheck_is_on() throws NullPointerException, IOException, InterruptedException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	
+	@Then("I verify user is able to see {string} in mail")
+	public void i_verify_user_is_able_to_see_in_mail(String string) throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
+		    		propertyData.getProperty("appt.email.subject"),
+		    		propertyData.getProperty("appt.start.precheck.title"),5));
+		
+		 loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("I disable precheck checkbox")
+	public void i_disable_precheck_checkbox() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		generalPage.disablePrecheckCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+		mainPage.clickOnAppointmentsTab();
+	}
+	
+	@When("I schedule an apointment and precheck is off")
+	public void i_schedule_an_apointment_and_precheck_is_off() throws NullPointerException, IOException, InterruptedException {
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
+		Appointment.randomNumber = commonMethod.generateRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						"jordan" + Appointment.randomNumber + "@YOPmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		scrollAndWait(0, 300 , 5000);
+	}
+	
+	@Then("I verify user is not able to do precheck through mail")
+	public void i_verify_user_is_not_able_to_do_precheck_through_mail() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertFalse(yopMail.isMessageInEmailInbox("jordan" + Appointment.randomNumber + "@YOPmail.com", 
+		    		propertyData.getProperty("appt.email.subject"),
+		    		propertyData.getProperty("appt.start.precheck.title"),5));
+		
+		 loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		 mainPage.clickOnSettingTab();
+		 generalPage.enablePrecheckCheckbox();
+		 generalPage.clickOnUpdateSettingbutton();
+	}
 }
