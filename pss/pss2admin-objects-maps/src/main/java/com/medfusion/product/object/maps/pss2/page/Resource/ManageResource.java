@@ -39,7 +39,7 @@ public class ManageResource extends PSS2MenuPage {
 	private WebElement editSpecialityTab;
 	
 	@FindBy(how = How.XPATH, using = "//ul[@id='tabs3']//a[contains(text(),'Specialty')]")
-	private WebElement resourceEditSpecialityTab;
+	private WebElement resourceEditSpecialtyTab;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[4]/a")
 	private WebElement editAptTypeTab;
@@ -57,13 +57,13 @@ public class ManageResource extends PSS2MenuPage {
 	private WebElement resoureceSharePatientToggle;
 
 	@FindBy(how = How.ID, using = "search-specialty")
-	private WebElement resourceSearchSpeciality;
+	private WebElement resourceSearchSpecialty;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"tab33\"]/table/tbody/tr[1]/td[3]/div/label/input")
 	private WebElement resourceSpecilaityEnabled;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tab33']/table/tbody/tr[1]/td[3]/div//label/i")
-	private WebElement specilaityToggleEnabled;
+	private WebElement specialtyToggleEnabled;
 
 	@FindBy(how = How.ID, using = "search-appointmenttype")
 	private WebElement resourceSearchApt;
@@ -595,19 +595,18 @@ public class ManageResource extends PSS2MenuPage {
 		appointmentTypeSave.click();
 	}
 	
-	
-	public void clickSpecialityTab() throws InterruptedException {
-		commonMethods.highlightElement(resourceEditSpecialityTab);
-		resourceEditSpecialityTab.click();
+	public void clickSpecialtyTab() throws InterruptedException {
+		commonMethods.highlightElement(resourceEditSpecialtyTab);
+		resourceEditSpecialtyTab.click();
 	}
 	
-	public void resourceSearchSpeciality(String specialityName) {
-		resourceSearchSpeciality.clear();
-		resourceSearchSpeciality.sendKeys(specialityName);
+	public void resourceSearchSpecialty(String specialityName) {
+		resourceSearchSpecialty.clear();
+		resourceSearchSpecialty.sendKeys(specialityName);
 	}
 	
 	public boolean isSpecialityEnabled() throws InterruptedException {
-		String background_color = specilaityToggleEnabled.getCssValue("background-color");
+		String background_color = specialtyToggleEnabled.getCssValue("background-color");
 		log("verifying the color of RESOURCE SPECIALITY : " + background_color);
 		Thread.sleep(1000);
 		if (background_color.equals("rgba(93, 143, 194, 1)")) {
@@ -619,9 +618,9 @@ public class ManageResource extends PSS2MenuPage {
 		}
 	}
 	
-	public void enableSpeciality() throws InterruptedException {
+	public void enableSpecialty() throws InterruptedException {
 		if(!isSpecialityEnabled()) {
-			javascriptClick(specilaityToggleEnabled);
+			javascriptClick(specialtyToggleEnabled);
 		} 
 	}
 }

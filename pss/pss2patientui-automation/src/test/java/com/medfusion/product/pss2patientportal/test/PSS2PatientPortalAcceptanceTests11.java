@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
 import static org.testng.Assert.assertTrue;
@@ -43,7 +44,7 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		String providerName = propertyData.getProperty("ct.book.name.ng");
 		String providerName1 = propertyData.getProperty("ct.book.name1.ng");
 		String appointmentTypeName = propertyData.getProperty("ct.appointment.type.ng");
-		String speciality = propertyData.getProperty("ct.speciality.ng");
+		String specialty = propertyData.getProperty("ct.specialty.ng");
 		
 		logStep("Login to PSS Admin portal");
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
@@ -69,18 +70,18 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		
 		manageResource.selectResource(providerName);
 		manageResource.enableSharePatient();
-		manageResource.clickSpecialityTab();
-		manageResource.resourceSearchSpeciality(speciality);
+		manageResource.clickSpecialtyTab();
+		manageResource.resourceSearchSpecialty(specialty);
 		Thread.sleep(1000);
-		manageResource.enableSpeciality();
+		manageResource.enableSpecialty();
 		manageResource.clearSearchResource();
 		manageResource.selectResource(providerName1);
 		manageResource.clickGeneralTab();
 		manageResource.enableSharePatient();
-		manageResource.clickSpecialityTab();
-		manageResource.resourceSearchSpeciality(speciality);
+		manageResource.clickSpecialtyTab();
+		manageResource.resourceSearchSpecialty(specialty);
 		Thread.sleep(1000);
-		manageResource.enableSpeciality();
+		manageResource.enableSpecialty();
 		adminUtils.pageRefresh(driver);
 		manageResource.logout();
 		
@@ -98,7 +99,7 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, zipCode, phoneNumber);
 		homePage.btnStartSchedClick();
 		Speciality specialityObj = homePage.skipInsuranceForSpeciality(driver);
-		StartAppointmentInOrder startAppointmentInOrder = specialityObj.selectSpeciality(speciality);
+		StartAppointmentInOrder startAppointmentInOrder = specialityObj.selectSpeciality(specialty);
 		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verify Location Page and location =" + testData.getLocation());
 		AppointmentPage appointmentPage = location.selectAppointment(testData.getLocation());
@@ -130,7 +131,7 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		String providerName = propertyData.getProperty("ct.book.name.ge");
 		String providerName1 = propertyData.getProperty("ct.book.name1.ge");
 		String appointmentTypeName = propertyData.getProperty("ct.appointment.type.ge");
-		String speciality = propertyData.getProperty("ct.speciality.ge");
+		String specialty = propertyData.getProperty("ct.specialty.ge");
 		
 		logStep("Login to PSS Admin portal");
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
@@ -155,18 +156,18 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		
 		manageResource.selectResource(providerName);
 		manageResource.enableSharePatient();
-		manageResource.clickSpecialityTab();
-		manageResource.resourceSearchSpeciality(speciality);
+		manageResource.clickSpecialtyTab();
+		manageResource.resourceSearchSpecialty(specialty);
 		Thread.sleep(1000);
-		manageResource.enableSpeciality();
+		manageResource.enableSpecialty();
 		manageResource.clearSearchResource();
 		manageResource.selectResource(providerName1);
 		manageResource.clickGeneralTab();
 		manageResource.enableSharePatient();
-		manageResource.clickSpecialityTab();
-		manageResource.resourceSearchSpeciality(speciality);
+		manageResource.clickSpecialtyTab();
+		manageResource.resourceSearchSpecialty(specialty);
 		Thread.sleep(1000);
-		manageResource.enableSpeciality();
+		manageResource.enableSpecialty();
 		adminUtils.pageRefresh(driver);
 		manageResource.logout();
 		
@@ -184,7 +185,7 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, zipCode, phoneNumber);
 		homePage.btnStartSchedClick();
 		Speciality specialityObj = homePage.skipInsuranceForSpeciality(driver);
-		StartAppointmentInOrder startAppointmentInOrder = specialityObj.selectSpeciality(speciality);
+		StartAppointmentInOrder startAppointmentInOrder = specialityObj.selectSpeciality(specialty);
 		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verify Location Page and location =" + testData.getLocation());
 		AppointmentPage appointmentPage = location.selectAppointment(testData.getLocation());
@@ -216,7 +217,7 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		String providerName = propertyData.getProperty("ct.book.name.gw");
 		String providerName1 = propertyData.getProperty("ct.book.name1.gw");
 		String appointmentTypeName = propertyData.getProperty("ct.appointment.type.gw");
-		String speciality = propertyData.getProperty("ct.speciality.gw");
+		String specialty = propertyData.getProperty("ct.specialty.gw");
 		
 		logStep("Login to PSS Admin portal");
 		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
@@ -241,18 +242,18 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		
 		manageResource.selectResource(providerName);
 		manageResource.enableSharePatient();
-		manageResource.clickSpecialityTab();
-		manageResource.resourceSearchSpeciality(speciality);
+		manageResource.clickSpecialtyTab();
+		manageResource.resourceSearchSpecialty(specialty);
 		Thread.sleep(1000);
-		manageResource.enableSpeciality();
+		manageResource.enableSpecialty();
 		manageResource.clearSearchResource();
 		manageResource.selectResource(providerName1);
 		manageResource.clickGeneralTab();
 		manageResource.enableSharePatient();
-		manageResource.clickSpecialityTab();
-		manageResource.resourceSearchSpeciality(speciality);
+		manageResource.clickSpecialtyTab();
+		manageResource.resourceSearchSpecialty(specialty);
 		Thread.sleep(1000);
-		manageResource.enableSpeciality();
+		manageResource.enableSpecialty();
 		adminUtils.pageRefresh(driver);
 		manageResource.logout();
 		
@@ -270,7 +271,7 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, zipCode, phoneNumber);
 		homePage.btnStartSchedClick();
 		Speciality specialityObj = homePage.skipInsuranceForSpeciality(driver);
-		StartAppointmentInOrder startAppointmentInOrder = specialityObj.selectSpeciality(speciality);
+		StartAppointmentInOrder startAppointmentInOrder = specialityObj.selectSpeciality(specialty);
 		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verify Location Page and location =" + testData.getLocation());
 		AppointmentPage appointmentPage = location.selectAppointment(testData.getLocation());
