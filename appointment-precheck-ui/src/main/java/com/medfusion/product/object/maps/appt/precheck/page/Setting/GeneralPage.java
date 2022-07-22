@@ -100,7 +100,7 @@ public class GeneralPage extends BaseTest {
 	@FindBy(how=How.XPATH, using ="//button[@class='mf-cta__secondary']")
 	private WebElement chooseFileforProvider;
 	
-	@FindBy(how=How.XPATH, using ="(//div[@id='react-tabs-1']//section//div//div//h3//span[@class='mf-icon mf-icon__checkbox--checked mf-color__action mf-icon-pointer mf-managed-solution-checkbox'])[5]")
+	@FindBy(how=How.XPATH, using ="(//div[@id='react-tabs-1']//section//div//div//h3)[5]//span")
 	private WebElement precheckCheckbox;
 
 
