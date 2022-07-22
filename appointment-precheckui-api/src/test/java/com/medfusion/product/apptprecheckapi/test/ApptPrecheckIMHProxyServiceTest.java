@@ -196,7 +196,7 @@ public class ApptPrecheckIMHProxyServiceTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 400);
 		apiVerification.verifyImhMasterListIfAlreadyExist(response,
-				propertyData.getProperty("message.forms.already.exist"));
+				propertyData.getProperty("message.forms.already.exist.negative"));
 		apiVerification.responseTimeValidation(response);
 	}
 
