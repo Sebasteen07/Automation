@@ -99,6 +99,10 @@ public class GeneralPage extends BaseTest {
 	
 	@FindBy(how=How.XPATH, using ="//button[@class='mf-cta__secondary']")
 	private WebElement chooseFileforProvider;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@id='react-tabs-1']//section//div//div//h3)[5]//span")
+	private WebElement precheckCheckbox;
+
 
 	private static GeneralPage generalPage = new GeneralPage();
 
@@ -379,7 +383,23 @@ public class GeneralPage extends BaseTest {
 		IHGUtil.waitForElement(driver, 10, practiceDisplayName);
 		practiceDisplayName.sendKeys(practiceName);
 	}
-
-
+	
+	public void enablePrecheckCheckbox() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, precheckCheckbox);
+		boolean enabled = precheckCheckbox.isEnabled();
+		if (enabled) {
+			log("Precheck checkbox already Enabled");
+			
+		} 
+		else if(!enabled) {
+			precheckCheckbox.click();
+			log("Enable precheck checkbox");
+		}
+	}
+	
+	public void disablePrecheckCheckbox() {
+		IHGUtil.waitForElement(driver, 10, precheckCheckbox);
+		precheckCheckbox.click();
+	}
 	
 }
