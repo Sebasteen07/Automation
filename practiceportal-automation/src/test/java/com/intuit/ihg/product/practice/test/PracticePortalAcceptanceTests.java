@@ -239,14 +239,10 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 				"No success message on send!");
 
 		logStep("Access Mailinator and check for received email");
-//		Mailinator mailinator = new Mailinator();
 		YopMail mail = new YopMail(driver);
 		assertTrue(mail.getEmailContent(testData.getProperty("forgot.username.mail"),
 				testData.getProperty("forgot.username.mail.subject"), testData.getProperty("forgot.username.login"),
-				10), "Mail not received after max retries");
-//		assertTrue(mailinator.catchNewMessageCheckContent(testData.getProperty("forgot.username.mail"),
-//				testData.getProperty("forgot.username.mail.subject"), testData.getProperty("forgot.username.login"), 10),
-//				"Mail not received after max retries");
+				20), "Mail not received after max retries");
 	}
 
 	/**
@@ -554,7 +550,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		String inEmail = "Reset Password Now";
 
 		YopMail mail = new YopMail(driver);
-		String resetPasswordLink = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 15);
+		String resetPasswordLink = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 20);
 		log("Link from mail is" + resetPasswordLink);
 
 		String url = getRedirectUrl(resetPasswordLink);
@@ -598,12 +594,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = testData.getProperty("forgot.password.mail").split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-//		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
-//				passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
-//		String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
-
+		
 		YopMail email = new YopMail(driver);
-		String receivedEmail = email.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 15);
+		String receivedEmail = email.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 20);
 		log("Link from mail is" + receivedEmail);
 
 		System.out.println("Link from mail is" + receivedEmail);
@@ -700,12 +693,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Waiting for invitation email");
 		YopMail mail = new YopMail(driver);
 		String patientUrl = mail.getLinkFromEmail(localpatient.getEmail(),
-				"You are invited to create a Patient Portal guardian account at", "Sign Up!", 15);
+				"You are invited to create a Patient Portal guardian account at", "Sign Up!", 20);
 
-		// String patientUrl = new
-		// Mailinator().getLinkFromEmail(localpatient.getEmail(), "You are invited to
-		// create a Patient Portal guardian account at",
-		// "Sign Up!", 15);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
