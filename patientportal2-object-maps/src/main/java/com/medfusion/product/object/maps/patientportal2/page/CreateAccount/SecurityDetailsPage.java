@@ -162,6 +162,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 				if (new IHGUtil(driver).exists(statementDailougeBox)) {
 						log("Statement delivery preference lightbox is displayed");
+						Thread.sleep(3000); //Waiting for statement pop up to load completely.
 						if (deliveryPref == 1) {
 							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(paperPaymentPreference));
 								paperPaymentPreference.click();
