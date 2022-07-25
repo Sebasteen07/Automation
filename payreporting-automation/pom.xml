@@ -61,35 +61,6 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.9</version>
-				<executions>
-					<execution>
-						<phase>integration-test</phase>
-						<configuration>
-<!--							<groups>${testGroups}</groups> -->
-							<suiteXmlFiles>
-								<!--suppress UnresolvedMavenProperty -->
-								<suiteXmlFile>${payreporting-testng.xml}</suiteXmlFile>
-							</suiteXmlFiles>
-							<systemPropertyVariables>
-								<testRoot>${basedir}</testRoot>
-								<org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
-
-							</systemPropertyVariables>
-							<properties>
-								<usedefaultlisteners>false</usedefaultlisteners>
-								<workingDirectory>target/surefire-reports/</workingDirectory>
-							</properties>
-						</configuration>
-						<goals>
-							<goal>integration-test</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.2</version>
 				<executions>
@@ -109,14 +80,6 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 </project>
