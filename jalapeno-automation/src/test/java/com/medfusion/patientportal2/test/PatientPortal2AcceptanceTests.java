@@ -1557,10 +1557,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInviteTrustedRepresentativeWithAccount() throws Exception {
-		String email = testData.getProperty("trusted.rep.email") + "@yopmail.com";
-		logStep("Logging into yopmail and delete older mails");
-		YopMail mail = new YopMail(driver);
-		mail.deleteAllEmails(email);
+		String email = PortalUtil2.generateUniqueUsername("login", testData) + "@yopmail.com";
 		createPatient();
 
 		logStep("Go to account page");
@@ -1572,6 +1569,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				email);
 
 		logStep("Waiting for invitation email");
+		YopMail mail = new YopMail(driver);
 		String patientUrl = mail.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT,
 				20);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
@@ -1592,9 +1590,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Unlink account from test patient");
 		homePage.clickOnAccount();
 		accountPage.clickOnUnlinkTrustedRepresentative();
-		homePage.clickOnLogout();
-		logStep("Logging into yopmail and delete older mails");
-		mail.deleteAllEmails(email);
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2228,11 +2223,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getProperty("doctor.login.practice2"), testData.getProperty("doctor.password.practice2"),
 				testData.getPortalUrl(), dependentPatientFirstName);
 
-		log("Waiting for welcome mail at patient inbox from second practice");
-		YopMail mail = new YopMail(driver);
-		assertTrue(mail.getEmailContent(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
-				WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE, 10));
-
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,
 				testData.getProperty("enrol.practice.url2"));
 		JalapenoHomePage jalapenoHomePage = loginPage.login(guardianPatientLogin, testData.getPassword());
@@ -2241,7 +2231,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Switching to Second Practice to verify auto enrollment");
 		jalapenoHomePage.switchPractice(testData.getProperty("practice.name1"));
+		jalapenoHomePage.clickOnLogout();
 
+		log("Waiting for welcome mail at patient inbox from second practice");
+		YopMail mail = new YopMail(driver);
+		assertTrue(mail.getEmailContent(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
+				WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE, 10));
+		
 		logStep("Auto Enrollment to Second Practice is completed");
 	}
 
