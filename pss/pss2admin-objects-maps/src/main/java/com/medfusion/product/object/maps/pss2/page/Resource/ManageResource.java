@@ -37,6 +37,9 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Specialty')]")
 	private WebElement editSpecialityTab;
+	
+	@FindBy(how = How.XPATH, using = "//ul[@id='tabs3']//a[contains(text(),'Specialty')]")
+	private WebElement resourceEditSpecialtyTab;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[4]/a")
 	private WebElement editAptTypeTab;
@@ -54,10 +57,13 @@ public class ManageResource extends PSS2MenuPage {
 	private WebElement resoureceSharePatientToggle;
 
 	@FindBy(how = How.ID, using = "search-specialty")
-	private WebElement resourceSearchSpeciality;
+	private WebElement resourceSearchSpecialty;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"tab33\"]/table/tbody/tr[1]/td[3]/div/label/input")
 	private WebElement resourceSpecilaityEnabled;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tab33']/table/tbody/tr[1]/td[3]/div//label/i")
+	private WebElement specialtyToggleEnabled;
 
 	@FindBy(how = How.ID, using = "search-appointmenttype")
 	private WebElement resourceSearchApt;
@@ -587,5 +593,35 @@ public class ManageResource extends PSS2MenuPage {
 	public void appointmentDurationClickForDisable() {
 		appointmentDurationButton.click();
 		appointmentTypeSave.click();
+	}
+	
+	public void clickSpecialtyTab() throws InterruptedException {
+		commonMethods.highlightElement(resourceEditSpecialtyTab);
+		resourceEditSpecialtyTab.click();
+	}
+	
+	public void resourceSearchSpecialty(String specialityName) {
+		resourceSearchSpecialty.clear();
+		resourceSearchSpecialty.sendKeys(specialityName);
+	}
+	
+	public boolean isSpecialityEnabled() throws InterruptedException {
+		String bgColor = specialtyToggleEnabled.getCssValue("background-color");
+		log("verifying the color of Resource Specialty : " + bgColor);
+		Thread.sleep(1000);
+		if (bgColor.equals("rgba(93, 143, 194, 1)")) {
+			log("Resource Specialty is already turned on..");
+			return true;
+		}  else {
+			log("Resource Specialty is not turned on.");
+			return false;
+		}
+	}
+	
+	public void enableSpecialty() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 6, specialtyToggleEnabled);
+		if(!isSpecialityEnabled()) {
+			javascriptClick(specialtyToggleEnabled);
+		} 
 	}
 }

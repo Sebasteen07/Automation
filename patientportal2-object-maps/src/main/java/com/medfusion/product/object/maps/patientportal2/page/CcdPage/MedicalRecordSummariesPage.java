@@ -122,11 +122,11 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//span[text()='Hypertensive Emergency']")
 	private WebElement hypertensiveEmergency;
 
-	@FindBy(how = How.XPATH, using = "//span[text()='Hypothyroidism']")
-	private WebElement hypothyroidism;
+	@FindBy(how = How.XPATH, using = "//label[@id='HwSearchLabel']")
+	private WebElement searchTextBox;
 
-	@FindBy(how = How.XPATH, using = "//span[text()='Organ Transplant Rejection']")
-	private WebElement organTransplantRejection;
+	@FindBy(how = How.XPATH, using = "//*[@id='HwLandingPageConditions']//h2")
+	private WebElement conditionsSection;
 
 	@FindBy(how = How.XPATH, using = "//span[text()='Fever']")
 	private WebElement fever;
@@ -399,16 +399,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		return hypertensiveEmergency.getText();
 	}
 
-	public String getHypothyroidism() {
-		IHGUtil.waitForElement(driver, 60, hypothyroidism);
-		return hypothyroidism.getText();
-	}
-
-	public String getOrganTransplantRejection() {
-		IHGUtil.waitForElement(driver, 60, organTransplantRejection);
-		return organTransplantRejection.getText();
-	}
-
 	public String getFever() {
 		IHGUtil.waitForElement(driver, 60, fever);
 		return fever.getText();
@@ -512,6 +502,16 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		} catch (Exception e) {
 		}
 		return false;
+	}
+
+	public String getSearchItemTextBox() {
+		IHGUtil.waitForElement(driver, 60, searchTextBox);
+		return searchTextBox.getText();
+	}
+
+	public String getConditionsHeader() {
+		IHGUtil.waitForElement(driver, 60, conditionsSection);
+		return conditionsSection.getText();
 	}
 
 }
