@@ -371,6 +371,39 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("--------------------------------WAIT FOR RULE LTB TO BE ADDED--------------------------------");
 	}
 	
+	public void setRulesWithSpeciality(PatientFlow patientflow) throws InterruptedException {
+		patientflow.removeAllRules();
+		Log4jUtil.log("-----------------------------------------------------------------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("AppointmentType");
+		patientflow.addNewRules(PSSConstants.RULE_SPECIALITY_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE STBL TO BE ADDED--------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Location");
+		patientflow.addNewRules(PSSConstants.RULE_SPECIALITY_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE SLTB TO BE ADDED--------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Provider");
+		patientflow.addNewRules(PSSConstants.RULE_SPECIALITY_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE SBLT TO BE ADDED--------------------------------");
+	}
+
+	
 	public void addRuleWithoutBook(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
