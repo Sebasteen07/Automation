@@ -8,7 +8,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-parent-pom</artifactId>
-        <version>22.5.0-SNAPSHOT</version>
+        <version>22.5.0rc-SNAPSHOT</version>
     </parent>
 	
 	<artifactId>integrationplatform-api</artifactId>
@@ -33,7 +33,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>22.5.0-SNAPSHOT</ihg.version>
+		<ihg.version>22.5.0rc-SNAPSHOT</ihg.version>
 	</properties>
 
 	<dependencies>
@@ -59,12 +59,12 @@
 		<dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>qa-automation-utils</artifactId>
-  			<version>22.5.0-SNAPSHOT</version>
+  			<version>22.5.0rc-SNAPSHOT</version>
   		</dependency>
   		 <dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>patientportal2-object-maps</artifactId>
-  			<version>22.5.0-SNAPSHOT</version>
+  			<version>22.5.0rc-SNAPSHOT</version>
   		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -89,13 +89,13 @@
 		<dependency>
 	      <groupId>com.intuit.qhg.hub.schemas</groupId>
 	      <artifactId>Messages</artifactId>
-	      <version>22.5.0-SNAPSHOT</version>
+	      <version>22.5.0rc-SNAPSHOT</version>
 	      <scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client</artifactId>
-			<version>22.5.0-SNAPSHOT</version>
+			<version>22.5.0rc-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jayway.awaitility</groupId>
@@ -106,7 +106,7 @@
 	  	<dependency>
 	  		<groupId>com.intuit.eh.core</groupId>
 	  		<artifactId>eh-core-dto</artifactId>
-	  		<version>22.5.0-SNAPSHOT</version>
+	  		<version>22.5.0rc-SNAPSHOT</version>
 	  	</dependency>
 
 	  	<dependency>
@@ -132,7 +132,7 @@
         <dependency>
 	  	 	<groupId>com.intuit.ihg</groupId>
 	  	 	<artifactId>practiceportal-object-maps</artifactId>
-	  	 	<version>22.5.0-SNAPSHOT</version>
+	  	 	<version>22.5.0rc-SNAPSHOT</version>
 	  </dependency>
 	  
 	  <dependency>
