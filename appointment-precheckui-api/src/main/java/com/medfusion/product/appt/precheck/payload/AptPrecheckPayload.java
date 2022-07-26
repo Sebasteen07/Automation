@@ -335,13 +335,13 @@ public class AptPrecheckPayload {
 					+ "  \"patientName\": \"AppScheduler One\",\r\n"
 					+ "  \"patientDob\": \""+dob+"\",\r\n"
 					+ "  \"patientEmail\": \"sujit.kolhe@yahoo.com\",\r\n"
-					+ "  \"creditCardName\": \"Health\",\r\n"
+					+ "  \"creditCardName\": \"pay1\",\r\n"
 					+ "  \"creditCardNumber\": \"4111111111111111\",\r\n"
 					+ "  \"creditCardType\": \"VISA\",\r\n"
-					+ "  \"creditCardExpirationDate\": \"2023-01-01\",\r\n"
-					+ "  \"creditCardCvvCode\": \"333\",\r\n"
+					+ "  \"creditCardExpirationDate\": \"2025-01-01\",\r\n"
+					+ "  \"creditCardCvvCode\": \"444\",\r\n"
 					+ "  \"creditCardZip\": \"12345\",\r\n"
-					+ "  \"amount\": 20\r\n"
+					+ "  \"amount\": 50\r\n"
 					+ "}";
 			return balancePay;
 	}
