@@ -206,4 +206,11 @@ public class Location extends PSS2MainPage {
 		return null;
 	}
 	
+	public void searchLocationByChangingRadius() throws InterruptedException {
+		WebElement searchRadius = driver.findElement(By.xpath("//*[@id='sel1']"));
+		Select selectOptions = new Select(searchRadius);
+		selectOptions.selectByIndex(1);
+		Thread.sleep(2000);
+		log("Nearby zip code and search radius are edited successfully");
+	}
 }
