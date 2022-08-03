@@ -3685,10 +3685,11 @@ public class RestUtils {
 		for (int i = 0; i < pnode.getLength(); i++) {
 			Element element = (Element) pnode.item(i);
 
-				if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD") || !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+				if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+					if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
 					String medicationId = element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent();
 				}
-			
+				}
 			String reaString = element.getElementsByTagName("MedicationName").item(0).getFirstChild().getNodeValue();
 			if (reaString.equalsIgnoreCase(medication)) {
 				Node node = element.getElementsByTagName("MedicationName").item(0).getParentNode();
@@ -3707,9 +3708,12 @@ public class RestUtils {
 				medication_details
 						.add(element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue().toString());
 				medication_details.add(element.getElementsByTagName("AdditionalInformation").item(0).getTextContent().toString());
-				if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD") || !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
-					medication_details.add(element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent().toString());
-					medication_details.add(element.getElementsByTagName("ExternalSystemId").item(0).getTextContent().toString());
+				
+				if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+					if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+						medication_details.add(element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent().toString());
+						medication_details.add(element.getElementsByTagName("ExternalSystemId").item(0).getTextContent().toString());
+				}
 				}
 				
 				node = node.getParentNode().getParentNode();

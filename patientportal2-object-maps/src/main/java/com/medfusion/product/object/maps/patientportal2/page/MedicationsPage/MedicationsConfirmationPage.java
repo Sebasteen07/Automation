@@ -79,11 +79,13 @@ public class MedicationsConfirmationPage extends BasePageObject {
 	}
 
 	public String getMedicationdetails(WebDriver driver) throws InterruptedException {
+		IHGUtil.waitForElement(driver, 20, medicationdetails);
 		String confirmMedicationDetails = medicationdetails.getText();
 		return confirmMedicationDetails;
 	}
 
 	public String getpharamcyDetails(WebDriver driver) throws InterruptedException {
+		IHGUtil.waitForElement(driver, 20, pharamcyDetails);
 		String confirmPharamcyDetails = pharamcyDetails.getText();
 		return confirmPharamcyDetails;
 	}

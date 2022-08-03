@@ -145,7 +145,7 @@ public class PatientRegistrationUtils {
 
 
 
-	public static void pidcPatientRegistration(String ChannelVersion, WebDriver driver, String portalVersion) throws Exception {
+	public static void pidcPatientRegistration(String ChannelVersion, WebDriver driver, String portalVersion,String token) throws Exception {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		PIDCInfo testData = new PIDCInfo();
 		Long timestamp = System.currentTimeMillis();
@@ -277,7 +277,7 @@ public class PatientRegistrationUtils {
 		for (int i = 0; i < 1; i++) {
 			// wait 60 seconds so the message can be processed
 			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequestExceptOauth(processingUrl, ResponsePath);
+			RestUtils.setupHttpGetRequest(processingUrl, ResponsePath);
 			if (RestUtils.isMessageProcessingCompleted(ResponsePath)) {
 				completed = true;
 				return completed;

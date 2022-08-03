@@ -29,6 +29,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.SkipException;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -112,6 +113,8 @@ import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import com.medfusion.product.practice.api.pojo.Practice;
 
+import antlr.StringUtils;
+
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	String newToken = "";
@@ -183,7 +186,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 	}
 
-	@BeforeTest(enabled = true, groups = {"RegressionTests2", "AcceptanceTests"})
+	@BeforeMethod(enabled = true, groups = {"RegressionTests1","RegressionTests2", "AcceptanceTests"})
 	public void testOauthTokenExpiryCases() throws Exception {
 
 		log("Test Case: testOauthTokenExpiryCases");
@@ -260,14 +263,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Partner Message ID:" + messageID);
 			logStep("Do Message Post Request");
 			log("responsePath: " + testData.ResponsePath);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
-
+			String processingUrl = RestUtils.setupHttpPostRequestWithOauthToken(testData.RestUrl, message, testData.ResponsePath,newToken);
+			log("processingUrl " + processingUrl);
+			 
 			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
 				Thread.sleep(70000);
-				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				RestUtils.setupHttpGetRequestOauthToken(processingUrl, testData.ResponsePath,newToken);
 				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 					completed = true;
 					break;
@@ -286,14 +290,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			logStep("Do Message Post Request");
 			log("responsePath: " + testData.ResponsePath);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
-
+			String processingUrl = RestUtils.setupHttpPostRequestWithOauthToken(testData.RestV3Url, message, testData.ResponsePath,newToken);
+			log("processingUrl " + processingUrl);
+			 
 			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
 				Thread.sleep(60000);
-				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				RestUtils.setupHttpGetRequestOauthToken(processingUrl, testData.ResponsePath,newToken);
 				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 					completed = true;
 					break;
@@ -348,14 +353,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Getting messages since timestamp: " + since);
 		if (version.equals("v1")) {
-			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0",
-					testData.ResponsePath);
+			RestUtils.setupHttpGetRequestOauthToken(testData.ReadCommuniationURL + "?since=" + since + ",0",testData.ResponsePath,newToken);
 
 			logStep("Validate the message id and read time in response");
 			RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
 		} else {
-			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURLV3 + "?since=" + since + ",0",
-					testData.ResponsePath);
+			RestUtils.setupHttpGetRequestOauthToken(testData.ReadCommuniationURLV3 + "?since=" + since + ",0",testData.ResponsePath,newToken);
 
 			logStep("Validate the message id and read time in response");
 			RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
@@ -368,13 +371,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 		if (version.equals("v1")) {
 			logStep("Do a GET and get the message");
-			RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
+			RestUtils.setupHttpGetRequestOauthToken(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath,newToken);
 
 			logStep("Validate message reply");
 			RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 		} else {
 			logStep("Do a GET and get the message");
-			RestUtils.setupHttpGetRequest(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath);
+			RestUtils.setupHttpGetRequestOauthToken(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath,newToken);
 
 			logStep("Validate message reply");
 			RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
@@ -693,7 +696,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Test Case: PIDC Patient Registration v1 channel for portal-" + portalVersion);
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		PatientRegistrationUtils.pidcPatientRegistration("v1", driver, portalVersion);
+		PatientRegistrationUtils.pidcPatientRegistration("v1", driver, portalVersion,newToken);
 	}
 
 	@Test(enabled = true, dataProvider = "portalVersion", groups = { "RegressionTests1",
@@ -702,7 +705,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Test Case: PIDC Patient Registration v2 channel for portal-" + portalVersion);
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		PatientRegistrationUtils.pidcPatientRegistration("v2", driver, portalVersion);
+		PatientRegistrationUtils.pidcPatientRegistration("v2", driver, portalVersion,newToken);
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests1" }, retryAnalyzer = RetryAnalyzer.class)
@@ -949,13 +952,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("message xml : " + message);
 			logStep("Do Message Post Request");
 			log("ResponsePath:- " + testData.ResponsePath);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequestWithOauthToken(testData.RestUrl, message, testData.ResponsePath,newToken);
 			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
 				Thread.sleep(60000);
-				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				RestUtils.setupHttpGetRequestOauthToken(processingUrl, testData.ResponsePath,newToken);
 				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 					completed = true;
 					break;
@@ -970,13 +973,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("message xml : " + message);
 			logStep("Do Message Post Request");
 			log("ResponsePath:- " + testData.ResponsePath);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequestWithOauthToken(testData.RestUrl, message, testData.ResponsePath,newToken);
 			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
 				Thread.sleep(60000);
-				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				RestUtils.setupHttpGetRequestOauthToken(processingUrl, testData.ResponsePath,newToken);
 				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 					completed = true;
 					break;
@@ -1208,7 +1211,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		for (int i = 0; i < 1; i++) {
 			// wait 60 seconds so the message can be processed
 			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequestExceptOauth(processingUrl, testData.getResponsePath());
+			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 				completed = true;
 
@@ -2769,7 +2772,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Test Case: PIDC Patient Registration v3 channel for portal-" + portalVersion);
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		PatientRegistrationUtils.pidcPatientRegistration("v3", driver, portalVersion);
+		PatientRegistrationUtils.pidcPatientRegistration("v3", driver, portalVersion,newToken);
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
