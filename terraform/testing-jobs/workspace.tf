@@ -95,6 +95,7 @@ locals {
     dev3-practiceportal-regression1      = "dev3-practiceportal-regression1"
     qa1-practiceportal-regression1       = "qa1-practiceportal-regression1"
     qa-automation-api                    = "qa-automation-api"
+    qa-automation-appointment-ui         = "qa-automation-appointment-ui"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
