@@ -1411,7 +1411,7 @@ locals {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "appointment-precheckui-api"
-      test_environment      = "qa1"
+      test_environment      = "dev3"
       suite_xml             = "appointment_Precheck_Api.xml"
       pxp_application       = "Appointments"
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
