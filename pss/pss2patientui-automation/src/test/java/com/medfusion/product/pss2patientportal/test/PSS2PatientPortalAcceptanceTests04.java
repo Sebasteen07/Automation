@@ -1857,7 +1857,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void test() throws Exception {
+	public void testLinkGenWithSpecialityNG() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -1869,14 +1869,58 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		logStep("Show Provider On Using AM ");
 		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,
 				payloadAM01.turnONOFFShowProvider(true));
-		apv.responseCodeValidation(responseShowOff, 200);
-		
-		Response spe = postAPIRequestAM.specialitySave(practiceId,
-				payloadAM01.saveSpeciality());
+		apv.responseCodeValidation(responseShowOff, 200);	
+		String  id=propertyData.getProperty("speciality.id04");
+		int specialityId=Integer.parseInt(id);
+		Response spe = postAPIRequestAM.specialitySave(practiceId,payloadAM01.saveSpecialityNG(specialityId));
 		apv.responseCodeValidation(spe, 200);
-
-
-
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGW());
+		apv.responseCodeValidation(response, 200);
+		
+		log("link is   " + testData.getLinkProviderURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		HomePage homepage;
+		homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
+				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
+				testData.getPrimaryNumber());
+		logStep("Click on Start Scheduling Button");
+		homepage.btnStartSchedClick();
+		Speciality speciality;
+		speciality = homepage.skipInsuranceForSpeciality(driver);
+		String expectedText=propertyData.getProperty("popup.messege");
+		String actualText=speciality.linkSpecialityText();
+		assertEquals(expectedText, actualText);		
+		speciality.linkSpecialityOkBtn();
+		homepage.btnStartSchedClick();
+		speciality = homepage.skipInsuranceForSpeciality(driver);
+		String expectedSp ="sp1";
+		String s=speciality.selectSpeciality1(expectedSp);
+		assertNotEquals(expectedSp, s);	
+		Response resetSpeciality = postAPIRequestAM.specialitySave(practiceId,payloadAM01.saveResetSpecialityNG(specialityId));
+		apv.responseCodeValidation(resetSpeciality, 200);
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLinkGenWithSpecialityGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		addRule("S,L,T,B", "S,T,L,B");
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId,payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);	
+		String  id=propertyData.getProperty("speciality.id04");
+		int specialityId=Integer.parseInt(id);
+		Response spe = postAPIRequestAM.specialitySave(practiceId,payloadAM01.saveSpecialityGW(specialityId));
+		apv.responseCodeValidation(spe, 200);
 		logStep("Patient Matching By Using Adapter Modulator");
 		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
 		apv.responseCodeValidation(response, 200);
@@ -1886,8 +1930,6 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		Thread.sleep(1000);
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		Thread.sleep(3000);
-		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
 		HomePage homepage;
 		homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
 				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
@@ -1896,19 +1938,16 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		homepage.btnStartSchedClick();
 		Speciality speciality;
 		speciality = homepage.skipInsuranceForSpeciality(driver);
-		String text=speciality.linkSpecialityText();
-		log("Link text is "+text);
+		String expectedText=propertyData.getProperty("popup.messege");
+		String actualText=speciality.linkSpecialityText();
+		assertEquals(expectedText, actualText);		
 		speciality.linkSpecialityOkBtn();
 		homepage.btnStartSchedClick();
 		speciality = homepage.skipInsuranceForSpeciality(driver);
 		String expectedSp ="sp1";
 		String s=speciality.selectSpeciality1(expectedSp);
-		assertNotEquals(expectedSp, s);
-		
-		Response resetSpeciality = postAPIRequestAM.specialitySave(practiceId,
-				payloadAM01.saveResetSpeciality());
+		assertNotEquals(expectedSp, s);	
+		Response resetSpeciality = postAPIRequestAM.specialitySave(practiceId,payloadAM01.saveResetSpecialityGW(specialityId));
 		apv.responseCodeValidation(resetSpeciality, 200);
-
-
 	}
 }
