@@ -9,8 +9,8 @@ locals {
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
   encrypted_key                 = "JPQ0Fn4qZ0C0sSzSGbOULMxWlo0jeuseRQPbe3Y6AeCR63VEenEio2wXEZ8t"
-  google_chrome_version         = "104.0.5112.81-1"
-  chrome_driver_version         = "104.0.5112.79"
+  google_chrome_version         = "103.0.5060.134-1"
+  chrome_driver_version         = "103.0.5060.53"
 
 
   inputs = {
@@ -1407,6 +1407,36 @@ locals {
       google_chrome_version = local.google_chrome_version
       chrome_driver_version = local.chrome_driver_version
       cron_schedule         = "cron(40 2 ? * 1 *)"
+    }
+
+    "qa-automation-api" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "appointment-precheckui-api"
+      test_environment      = "dev3"
+      suite_xml             = "appointment_Precheck_Api.xml"
+      pxp_application       = "Appointments"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -X clean install"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule          = "cron(0 20 ? * 1-5 *)"
+    }
+
+    "qa-automation-appointment-ui" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "appointment-precheck-ui"
+      test_environment      = "dev3"
+      suite_xml             = "cucumber-tests.xml"
+      pxp_application       = "Appointments"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -X clean install"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule          = "cron(0 0 1 * ? *)"
     }
   }
 
