@@ -1307,7 +1307,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
 		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
-		assertEquals(js.getString("pssSettings.enabled"), pssSetting, "PSS Setting was incorrect");
+		assertNotEquals(js.getString("pssSettings.enabled"), pssSetting, "PSS Setting was incorrect");
 	}
 
 	public void verifyCreateSetting(Response response, String practiceId) throws IOException {

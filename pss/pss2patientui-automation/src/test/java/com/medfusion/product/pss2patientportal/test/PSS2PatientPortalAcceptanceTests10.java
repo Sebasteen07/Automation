@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.decisionTree.ManageDecisionTree;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
@@ -520,13 +519,13 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
 		log("Is Care team toggle enabled" + adminAppointment.toggleAllowPCPONOF());
 		testData.setPcptoggleState(adminAppointment.toggleAllowPCPONOF());
-		Log4jUtil.log("Status of PCP is " + testData.isPcptoggleState());
+		log("Status of PCP is " + testData.isPcptoggleState());
 		if (testData.isPcptoggleState() == false) {
-			Log4jUtil.log("Status of PCP  OFF");
+			log("Status of PCP  OFF");
 			adminAppointment.pcptoggleclick();
-			Log4jUtil.log("Status of PCP  OFF and Clicked on ON");
+			log("Status of PCP  OFF and Clicked on ON");
 		} else {
-			Log4jUtil.log("Status of PCP is Already ON");
+			log("Status of PCP is Already ON");
 		}
 		adminAppointment.selectPrimaryCareProvider();
 		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
@@ -594,13 +593,13 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
 		log("Is Care team toggle enabled" + adminAppointment.toggleAllowPCPONOF());
 		testData.setPcptoggleState(adminAppointment.toggleAllowPCPONOF());
-		Log4jUtil.log("Status of PCP is " + testData.isPcptoggleState());
+		log("Status of PCP is " + testData.isPcptoggleState());
 		if (testData.isPcptoggleState() == false) {
-			Log4jUtil.log("Status of PCP  OFF");
+			log("Status of PCP  OFF");
 			adminAppointment.pcptoggleclick();
-			Log4jUtil.log("Status of PCP  OFF and Clicked on ON");
+			log("Status of PCP  OFF and Clicked on ON");
 		} else {
-			Log4jUtil.log("Status of PCP is Already ON");
+			log("Status of PCP is Already ON");
 		}
 		adminAppointment.selectPrimaryCareProvider();
 		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
@@ -644,6 +643,172 @@ public class PSS2PatientPortalAcceptanceTests10 extends BaseTestNGWebDriver {
 		assertTrue(l2.contains(providerName));
 		logStep("Verify Provider Page and PCP = " + providerName);
 		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(providerName);
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyByChangingRadiusOfLocationOnPatientUI_NG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		String zipCode = propertyData.getProperty("location.zip.code.ng");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		logStep("Login to PSS Admin portal");
+		adminUtils.adminSettingsLocationSearchByZipcode(driver, adminUser, testData, testData.getLocation(), zipCode);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		location.searchLocationByZipCode(zipCode);
+		if(location.chooseLocationText().contains(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location searched by changing zip code is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		location.searchLocationByChangingRadius();
+		if(location.chooseLocationText().contains(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location searched by changing radius of location is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyByChangingRadiusOfLocationOnPatientUI_GE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		String zipCode = propertyData.getProperty("location.zip.code.ge");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		logStep("Login to PSS Admin portal");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		adminAppointment.toggleSearchLocationClick();
+		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageLocation manageLocation = pssPracticeConfig.gotoLocation();
+		adminUtils.pageRefresh(driver);
+		manageLocation.selectlocation(testData.getLocation());
+		manageLocation.changeAddressZipCode(zipCode);
+		manageLocation.logout();
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		location.searchLocationByZipCode(zipCode);
+		if(location.chooseLocationText().contains(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location searched by changing zip code is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		location.searchLocationByChangingRadius();
+		if(location.chooseLocationText().contains(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location searched by changing radius of location is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
+		log("Test Case Passed");
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void verifyByChangingRadiusOfLocationOnPatientUI_GW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		String zipCode = propertyData.getProperty("location.zip.code.gw");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		logStep("Login to PSS Admin portal");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		adminAppointment.toggleSearchLocationClick();
+		AdminPatientMatching adminpatientmatching = pssPracticeConfig.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageLocation manageLocation = pssPracticeConfig.gotoLocation();
+		adminUtils.pageRefresh(driver);
+		manageLocation.selectlocation(testData.getLocation());
+		manageLocation.changeAddressZipCode(zipCode);
+		manageLocation.logout();
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		location.searchLocationByZipCode(zipCode);
+		if(location.chooseLocationText().contains(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location searched by changing zip code is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		location.searchLocationByChangingRadius();
+		if(location.chooseLocationText().contains(testData.getLocation())) {
+			Assert.assertTrue(true);
+			log("Location searched by changing radius of location is matching");
+		}else {
+			Assert.assertTrue(false);
+		}
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verify Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(testData.getProvider());
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		log("Test Case Passed");

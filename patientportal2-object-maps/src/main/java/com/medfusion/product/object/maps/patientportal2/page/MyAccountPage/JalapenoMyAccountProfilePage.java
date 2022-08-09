@@ -298,6 +298,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	}
 
 	public boolean modifyAndValidatePageContent() throws InterruptedException {
+		Thread.sleep(3000); //Waiting for page to load completely.
 		Map<WebElement, String> itemsToChange = new HashMap<WebElement, String>();
 		itemsToChange.put(address1Textbox, "address");
 		itemsToChange.put(cityTextbox, "city");

@@ -122,8 +122,8 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 	public void testCareTeam_BasicCareTeam_NG() throws Exception {
 		
 		
-		log("PSS-19765: Verify if PCP+ Care Team Members are displayed when Force booking with the");
-		log("provider before showing the care team (days) is set to 0");
+		log("PSS-15457 : To verify if Care Team members are displayed when PCP gets filtered");
+		log(" due to its slots unavailability");
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -236,8 +236,8 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 	public void testCareTeam_BasicCareTeam_GW() throws Exception {
 		
 		
-		log("PSS-19765: Verify if PCP+ Care Team Members are displayed when Force booking with the");
-		log("provider before showing the care team (days) is set to 0");
+		log("PSS-15457 : To verify if Care Team members are displayed when PCP gets filtered");
+		log(" due to its slots unavailability");
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -331,8 +331,8 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 	public void testCareTeam_BasicCareTeam_GE() throws Exception {
 		
 		
-		log("PSS-19765: Verify if PCP+ Care Team Members are displayed when Force booking with the");
-		log("provider before showing the care team (days) is set to 0");
+		log("PSS-15457 : To verify if Care Team members are displayed when PCP gets filtered");
+		log(" due to its slots unavailability");
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -791,8 +791,7 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 	public void testCareTeam_SharePatient_NG() throws Exception {
 		
 		
-		log("PSS-19765: Verify if PCP+ Care Team Members are displayed when Force booking with the");
-		log("provider before showing the care team (days) is set to 0");
+		log("PSS-12105: PCP/RP get displayed on the UI when Share Patient is ON without specialty");
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -910,8 +909,7 @@ public class PSS2PatientPortalAcceptanceTests09_CareTeam extends BaseTestNGWebDr
 	public void testCareTeam_SharePatient_GW() throws Exception {
 		
 		
-		log("PSS-19765: Verify if PCP+ Care Team Members are displayed when Force booking with the");
-		log("provider before showing the care team (days) is set to 0");
+		log("PSS-12105: PCP/RP get displayed on the UI when Share Patient is ON without specialty");
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();

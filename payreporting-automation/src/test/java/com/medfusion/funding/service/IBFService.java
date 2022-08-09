@@ -39,7 +39,8 @@ public class IBFService extends BaseTestNG {
 			throws IOException {
 		log("Creating test emaf file");
 		URL emafPath = ClassLoader.getSystemResource("data-driven/" + emafSourceFileName);
-		try (BufferedReader sourceReader = new BufferedReader(new FileReader(emafPath.getFile()))) {
+		BufferedReader sourceReader = new BufferedReader(new FileReader(emafPath.getFile()));
+		try {
 			String emafLine;
 			BufferedWriter emafWriter = new BufferedWriter(new FileWriter(emafTargetFileName));
 			String transactionID = transactionToEmaf.getTransactionId();
@@ -94,8 +95,9 @@ public class IBFService extends BaseTestNG {
 			emafWriter.close();
 		} catch (IOException ioException) {
 			throw new IOException("Error reading/writing emaf file: " + ioException);
+		} finally {
+			sourceReader.close();
 		}
-
 	}
 
 	public int postEmaf(String emafFileName, String fundingDate) throws ClientProtocolException, IOException {
@@ -167,10 +169,10 @@ public class IBFService extends BaseTestNG {
 
 	public void verifyGetReportResponse(Reports report) {
 		Assert.notNull(report.getApiCustomerName());
-		Assert.isTrue(report.getApiCustomerName().equalsIgnoreCase("NG Pay") ||
-				report.getApiCustomerName().equalsIgnoreCase("NG Enterprise") ||
-				report.getApiCustomerName().equalsIgnoreCase("NG Office") ||
-				report.getApiCustomerName().equalsIgnoreCase("Test Pay Customer"));
+		Assert.isTrue(report.getApiCustomerName().equalsIgnoreCase("NG Pay")
+				|| report.getApiCustomerName().equalsIgnoreCase("NG Enterprise")
+				|| report.getApiCustomerName().equalsIgnoreCase("NG Office")
+				|| report.getApiCustomerName().equalsIgnoreCase("Test Pay Customer"));
 		Assert.notNull(report.getCountOfMMIDs());
 	}
 

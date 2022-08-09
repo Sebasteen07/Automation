@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.intuit.ihg</groupId>
     <artifactId>ihg-depot-parent-pom</artifactId>
-    <version>22.5.0-SNAPSHOT</version>
+    <version>22.6.0-SNAPSHOT</version>
   </parent>
   
   <artifactId>precheckAppointment-object-maps</artifactId>
@@ -19,7 +19,7 @@
 	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>22.5.0-SNAPSHOT</ihg.version>
+		<ihg.version>22.6.0-SNAPSHOT</ihg.version>
 	</properties>
 
 	<dependencies>

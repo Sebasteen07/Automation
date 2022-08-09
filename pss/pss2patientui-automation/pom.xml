@@ -3,14 +3,14 @@
   <parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-parent-pom</artifactId>
-	  <version>22.5.0-SNAPSHOT</version>
+	  <version>22.6.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>pss2patientui-automation</artifactId>
   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>22.5.0-SNAPSHOT</ihg.version>
-        <dcf-version>22.5.0-SNAPSHOT</dcf-version>
+        <ihg.version>22.6.0-SNAPSHOT</ihg.version>
+        <dcf-version>22.6.0-SNAPSHOT</dcf-version>
   </properties>
  
  <repositories>
