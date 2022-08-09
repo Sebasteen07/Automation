@@ -3777,10 +3777,12 @@ public class RestUtils {
 		Node nAdditionalInformation = element.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
 		
 		if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
-			Node nExternalMedicationID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_MEDICATION_ID).item(0);
-			Node nExternalSystemID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_SYSTEM_ID).item(0);
-			nExternalMedicationID.setTextContent(medication_details.get(7));
-			nExternalSystemID.setTextContent(medication_details.get(8));
+			if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+				Node nExternalMedicationID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_MEDICATION_ID).item(0);
+				Node nExternalSystemID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_SYSTEM_ID).item(0);
+				nExternalMedicationID.setTextContent(medication_details.get(7));
+				nExternalSystemID.setTextContent(medication_details.get(8));
+		}
 		}
 
 		nPrescriptionNumber.setTextContent((String) IntegrationConstants.PRESCRIPTION_NO);

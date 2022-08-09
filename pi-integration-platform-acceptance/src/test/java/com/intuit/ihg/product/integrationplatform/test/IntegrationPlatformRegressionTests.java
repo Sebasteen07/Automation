@@ -3942,7 +3942,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Test Case: Test to validate the patient Invite E2E workflow with the JSON payload for V3 endpoint");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-		PatientRegistrationUtils.pidcPatientRegistrationJSONPayload("v3", driver, portalVersion);
+		PatientRegistrationUtils.pidcPatientRegistrationJSONPayload("v3", driver, portalVersion,newToken);
 	}
 
 	@Test(enabled = true, dataProvider = "portalVersion", groups = {
