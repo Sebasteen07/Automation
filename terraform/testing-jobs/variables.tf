@@ -88,3 +88,9 @@ variable "slack_chatbot" {
   description = "The name of the slack chatbot that would be used to send notification"
   default     = "pxp-mf-qa-dev-alarms-notify-slack-channel"
 }
+
+variable "encrypted_key" {
+  type        = string
+  description = "The value of the encryption key"
+  default     = "JPQ0Fn4qZ0C0sSzSGbOULMxWlo0jeuseRQPbe3Y6AeCR63VEenEio2wXEZ8t"
+}
