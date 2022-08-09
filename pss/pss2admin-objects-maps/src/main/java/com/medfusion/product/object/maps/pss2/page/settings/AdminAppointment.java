@@ -57,7 +57,6 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//input[@id='allowpcp']")
 	private WebElement allowPCPToggle;
 	
-	//Added below xpath by R
 	@FindBy(how = How.XPATH, using = "//input[@id='forceCareTeam']")
 	private WebElement allowFCTToggle;
 	
@@ -196,7 +195,6 @@ public class AdminAppointment extends SettingsTab {
 		log("Clicked on Save Button...............");
 	}
 
-	//Adding below method to get FCT selected status by R
 	public boolean toggleAllowFCTONOF() throws InterruptedException {
 		pageDown();
 		return allowFCTToggle.isSelected();

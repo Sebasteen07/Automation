@@ -393,7 +393,6 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);		
 		log("Test Case Passed");
 		
-		//Reset care team data
 		adminUtils.resetCareTeamData(driver, adminUser, testData, appointment, careTeam, providerName1, providerName2);
 	}
 	
@@ -417,7 +416,8 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		adminUtils.setRulesNoSpecialitySet1(patientflow);
 		AdminAppointment appointment = pssPracticeConfig.gotoAdminAppointmentTab();
 		log("Is Care team toggle enabled" + appointment.toggleAllowPCPONOF());
-		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());		log("Status of PCP is " + testData.isPcptoggleState());
+		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());		
+		log("Status of PCP is " + testData.isPcptoggleState());
 		if (testData.isPcptoggleState() == false) {
 			log("Status of PCP  OFF");
 			appointment.pcptoggleclick();
@@ -502,7 +502,6 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);		
 		log("Test Case Passed");
 	
-		//Reset care team data
 		adminUtils.resetCareTeamData(driver, adminUser, testData, appointment, careTeam, providerName1, providerName2);	
 	}
 	
@@ -612,7 +611,6 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);		
 		log("Test Case Passed");
 		
-		//Reset care team data
 		adminUtils.resetCareTeamData(driver, adminUser, testData, appointment, careTeam, providerName1, providerName2);
 	}
 }

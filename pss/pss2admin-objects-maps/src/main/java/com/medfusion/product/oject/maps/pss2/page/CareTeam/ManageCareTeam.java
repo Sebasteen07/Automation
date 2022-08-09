@@ -79,7 +79,6 @@ public class ManageCareTeam extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='search-book'][@name='search-book']")
 	private WebElement searchResourceinCT;
 
-	//Added below xpaths by R
 	@FindBy(how = How.XPATH, using = "//a[@title='Add Practice CareTeam']")
 	private WebElement manageAddCareTeam;
 	
@@ -117,7 +116,6 @@ public class ManageCareTeam extends PSS2MenuPage {
 		statusDropdown.selectByVisibleText(Level);
 	}
 
-	//Added below methods
 	public void manageAddCareTeam() throws InterruptedException {
 		manageAddCareTeam.click();
 	}	

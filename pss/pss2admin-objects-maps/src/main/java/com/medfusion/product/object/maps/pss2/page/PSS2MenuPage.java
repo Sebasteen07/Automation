@@ -52,7 +52,6 @@ public class PSS2MenuPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//a[@href='#/app/cancelreason']")
 	private WebElement linkCancelReason;
 	
-	//Added by R to expand/collapse menu
 	@FindBy(how=How.ID, using="app")
 	private WebElement menuSidebar;
 	
@@ -128,7 +127,6 @@ public class PSS2MenuPage extends PSS2MainPage {
 		}
 	}
 	
-	//Added by R to hide/expand side menu bar
 	public void hideMenuSidebar() {
 		if(!menuSidebar.getAttribute("class").contains("nav-static"))  {
 			menuHideToggleIcon.click();

@@ -1838,7 +1838,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.logout();
 	}
 	
-	//Added by R For Resetting the CareTeam 
 	public void resetCareTeamData(WebDriver driver, AdminUser adminUser, Appointment testData,
 			AdminAppointment appointment, String careTeam,  String providerName1, String providerName2) throws Exception {
 		logStep("Login to PSS Admin portal");
