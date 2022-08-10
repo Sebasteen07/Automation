@@ -56,7 +56,10 @@ public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "//input[@id='allowpcp']")
 	private WebElement allowPCPToggle;
-
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='forceCareTeam']")
+	private WebElement allowFCTToggle;
+	
 	@FindBy(how = How.ID, using = "searchlocation")
 	private WebElement searchLocation;
 	
@@ -187,6 +190,19 @@ public class AdminAppointment extends SettingsTab {
 	public void pcptoggleclick() throws InterruptedException {
 		javascriptClick(allowPCP1);
 		log("Clicked on PCP ON....................");
+		pcpbuttonSave.click();
+		Thread.sleep(5000);
+		log("Clicked on Save Button...............");
+	}
+
+	public boolean toggleAllowFCTONOF() throws InterruptedException {
+		pageDown();
+		return allowFCTToggle.isSelected();
+	}
+	
+	public void fcttoggleclick() throws InterruptedException {
+		javascriptClick(allowFCTToggle);
+		log("Clicked on FCT ON....................");
 		pcpbuttonSave.click();
 		Thread.sleep(5000);
 		log("Clicked on Save Button...............");

@@ -51,6 +51,12 @@ public class PSS2MenuPage extends PSS2MainPage {
 	
 	@FindBy(how = How.XPATH, using = "//a[@href='#/app/cancelreason']")
 	private WebElement linkCancelReason;
+	
+	@FindBy(how=How.ID, using="app")
+	private WebElement menuSidebar;
+	
+	@FindBy(how=How.XPATH, using="//ul[@class='navbar-nav flex-row']/li/a[@placement='bottom']")
+	private WebElement menuHideToggleIcon;
 
 	public PSS2MenuPage(WebDriver driver) {
 		super(driver);
@@ -118,6 +124,12 @@ public class PSS2MenuPage extends PSS2MainPage {
 			logout.click();
 		} catch (Exception E) {
 			log("Exception occured while logging out. " + E);
+		}
+	}
+	
+	public void hideMenuSidebar() {
+		if(!menuSidebar.getAttribute("class").contains("nav-static"))  {
+			menuHideToggleIcon.click();
 		}
 	}
 }

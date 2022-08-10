@@ -29,6 +29,7 @@ import com.medfusion.product.object.maps.pss2.page.settings.InsuranceCarrier;
 import com.medfusion.product.object.maps.pss2.page.settings.LinkTab;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
+import com.medfusion.product.oject.maps.pss2.page.CareTeam.ManageCareTeam;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 
@@ -1835,5 +1836,36 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.disableSharePatient();
 		pageRefresh(driver);
 		manageResource.logout();
+	}
+	
+	public void resetCareTeamData(WebDriver driver, AdminUser adminUser, Appointment testData,
+			AdminAppointment appointment, String careTeam,  String providerName1, String providerName2) throws Exception {
+		logStep("Login to PSS Admin portal");
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageCareTeam manageCareTeam = pssPracticeConfig.gotoCareTeam();
+		pageRefresh(driver);
+		manageCareTeam.selectCareTeamName(careTeam);
+		manageCareTeam.gotoGeneralInforamtion();
+		manageCareTeam.deleteAssociatedResource(providerName1);
+		manageCareTeam.deleteAssociatedResource(providerName2);
+		Thread.sleep(1000);
+		manageCareTeam.back();
+		pageRefresh(driver);
+		manageCareTeam.deleteCareTeam(careTeam);
+		pssPracticeConfig.gotoSettings();
+		pssPracticeConfig.hideMenuSidebar();
+		pssPracticeConfig.gotoAdminAppointmentTab();
+		Thread.sleep(1000);
+		log("Is Care team toggle enabled" + appointment.toggleAllowPCPONOF());
+		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());
+		log("Status of PCP is " + testData.isPcptoggleState());
+		if (testData.isPcptoggleState() == true) {
+			log("Status of PCP  ON");
+			appointment.pcptoggleclick();
+			log("Status of PCP  ON and Clicked on OFF");
+		} else {
+			log("Status of PCP is Already OFF");
+		}	
+		manageCareTeam.logout();
 	}
 }
