@@ -3,23 +3,37 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<!-- Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved. -->
+	<!-- Copyright 2022 NXGN Management, LLC. All Rights Reserved. -->
 
 	<parent>
-        <groupId>com.intuit.ihg</groupId>
-        <artifactId>ihg-depot-parent-pom</artifactId>
-        <version>22.6.0-SNAPSHOT</version>
-    </parent>
-	
+		<groupId>com.nextgen.qa.automation</groupId>
+		<artifactId>qa-parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
 	<artifactId>qa-automation-utils</artifactId>
 	<name>qa-automation-utils</name>
 	<packaging>jar</packaging>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nextgen-pxp-mf-build--pxp-mf-plugin-mirror</id>
+			<name>nextgen-pxp-mf-build--pxp-mf Repository Mirror - Plugins</name>
+			<url>https://nextgen-pxp-mf-build-997401518295.d.codeartifact.us-east-2.amazonaws.com/maven/pxp-mf/</url>
+		</pluginRepository>
+	</pluginRepositories>
+	
 	<repositories>
 		<repository>
-			<id>IHG-nexus</id>
-			<name>IHG-nexus</name>
-			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+			<id>nexus-old</id>
+			<name>Medfusion Release Nexus Repository</name>
+			<url>http://maven.qhg.local/nexus/content/repositories/releases</url>
+		</repository>
+
+		<repository>
+			<id>nextgen-pxp-mf-build--pxp-mf</id>
+			<name>nextgen-pxp-mf-build--pxp-mf Repository Mirror</name>
+			<url>https://nextgen-pxp-mf-build-997401518295.d.codeartifact.us-east-2.amazonaws.com/maven/pxp-mf/</url>
 		</repository>
 	</repositories>
 
