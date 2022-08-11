@@ -666,7 +666,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		assertFalse(homePage.isLiveChatDisplayed());
 	}
 
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
+	
 	public void testPortalURLSU() throws Exception {
 
 		SiteGenLoginPage loginpage;
@@ -730,7 +730,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 	
-	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	private void testUpdateEnterpriseForAPracticeSU() throws Exception {
 		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
 		SiteGenHomePage pSiteGenHomePage;
