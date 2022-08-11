@@ -1864,7 +1864,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			appointment.pcptoggleclick();
 			log("Status of PCP  ON and Clicked on OFF");
 		} else {
-			//log("Status of PCP is Already OFF");
+			log("Status of PCP is Already OFF");
 		}	
 		manageCareTeam.logout();
 	}
