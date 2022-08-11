@@ -1897,7 +1897,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		speciality.linkSpecialityOkBtn();
 		homepage.btnStartSchedClick();
 		speciality = homepage.skipInsuranceForSpeciality(driver);
-		String expectedSp ="sp1";
+		String expectedSp =propertyData.getProperty("speciality.name04");
 		String s=speciality.selectSpeciality1(expectedSp);
 		assertNotEquals(expectedSp, s);	
 		Response resetSpeciality = postAPIRequestAM.specialitySave(practiceId,payloadAM01.saveResetSpecialityNG(specialityId));
@@ -1944,7 +1944,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		speciality.linkSpecialityOkBtn();
 		homepage.btnStartSchedClick();
 		speciality = homepage.skipInsuranceForSpeciality(driver);
-		String expectedSp ="sp1";
+		String expectedSp =propertyData.getProperty("speciality.name04");
 		String s=speciality.selectSpeciality1(expectedSp);
 		assertNotEquals(expectedSp, s);	
 		Response resetSpeciality = postAPIRequestAM.specialitySave(practiceId,payloadAM01.saveResetSpecialityGW(specialityId));
@@ -1991,7 +1991,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver {
 		speciality.linkSpecialityOkBtn();
 		homepage.btnStartSchedClick();
 		speciality = homepage.skipInsuranceForSpeciality(driver);
-		String expectedSp ="sp1";
+		String expectedSp =propertyData.getProperty("speciality.name04");
 		String s=speciality.selectSpeciality1(expectedSp);
 		assertNotEquals(expectedSp, s);	
 		Response resetSpeciality = postAPIRequestAM.specialitySave(practiceId,payloadAM01.saveResetSpecialityGE(specialityId));
