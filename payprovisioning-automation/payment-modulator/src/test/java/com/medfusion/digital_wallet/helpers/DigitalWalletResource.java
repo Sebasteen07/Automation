@@ -99,4 +99,15 @@ public class DigitalWalletResource extends DigitalWalletBaseTest {
         return response;
     }
 
+    public Response getListOfCardsInAWallet(String token, String enterpriseID, String patientId) throws IOException {
+        testData = new PropertyFileLoader();
+
+        Response response = given().that().spec(requestSpec).header("Authorization", "Bearer" + token).when()
+                .get("/enterprises/" + enterpriseID + "/patients/" + patientId + "/wallets")
+                .then().extract().response();
+
+        return response;
+
+    }
+
 }
