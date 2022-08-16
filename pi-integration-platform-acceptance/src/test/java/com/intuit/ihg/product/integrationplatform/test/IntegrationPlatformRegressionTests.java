@@ -186,7 +186,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 	}
 
-	@BeforeMethod(enabled = true, groups = {"RegressionTests1","RegressionTests2", "AcceptanceTests"})
+	@BeforeMethod(enabled = true)
 	public void testOauthTokenExpiryCases() throws Exception {
 
 		log("Test Case: testOauthTokenExpiryCases");

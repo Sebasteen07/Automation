@@ -1143,9 +1143,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// do the call and save xml, ",0" is there because of the since
 
 		if (version.contains("v1")) {
-			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 		} else if (version.contains("v3")) {
-			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 		}
 
 		logStep("Checking validity of the response xml");
@@ -1154,7 +1154,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		if (version.contains("v3")) {
 			String attachementURL = RestUtils.isResponseContainsValidAttachmentURL(testData.getResponsePath());
 			logStep("Make GET call with attachement URL");
-			RestUtils.setupHttpGetRequest(attachementURL, testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(attachementURL, testData.getResponsePath(),newToken);
 		}
 		
 		logStep("Validate the FileName in the attachement URL response");
