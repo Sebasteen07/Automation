@@ -11,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 
 public class ManageCareTeam extends PSS2MenuPage {
@@ -71,13 +72,31 @@ public class ManageCareTeam extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='search-resource']")
 	private WebElement searchForResource;
 
-	@FindBy(how = How.XPATH, using = "//tbody//tr//td//div[@class='display-inline-block checkbox-ios']//label//input[@type='checkbox']")
+	@FindBy(how = How.XPATH, using = "//tbody//tr//td//div[@class='display-inline-block checkbox-ios']//label//i")
 	private WebElement toggleResourceONOFF;
 
 	// Associated Resource
 	@FindBy(how = How.XPATH, using = "//input[@id='search-book'][@name='search-book']")
 	private WebElement searchResourceinCT;
 
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Practice CareTeam']")
+	private WebElement manageAddCareTeam;
+	
+	@FindAll(@FindBy(how=How.XPATH,using="//td[@role='gridcell']/span/a"))
+	private List<WebElement> ctNameList;
+	
+	@FindBy(how=How.XPATH, using="//input[@id='name']//ancestor::form//a")
+	private WebElement addGeneralInfo;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='search-book']")
+	private WebElement searchAssscoaitedResource;
+	
+	@FindBy(how = How.XPATH, using="//table[@role='grid']//a")
+	private WebElement deleteAssociatedResource;
+	
+	@FindAll(@FindBy(how = How.XPATH, using="//table[@role='grid']//td[@role='gridcell']/a"))
+	private WebElement deleteCT;
+	
 	public ManageCareTeam(WebDriver driver) {
 		super(driver);
 	}
@@ -97,4 +116,86 @@ public class ManageCareTeam extends PSS2MenuPage {
 		statusDropdown.selectByVisibleText(Level);
 	}
 
+	public void manageAddCareTeam() throws InterruptedException {
+		manageAddCareTeam.click();
+	}	
+
+	public void enterGeneralInfoName(String ctName) throws InterruptedException {
+		Thread.sleep(1000);
+		editCareTeamName.click();
+		editCareTeamName.clear();
+		editCareTeamName.sendKeys(ctName);
+		buttonSaveCareTeam.click();
+	}
+
+	public void selectCareTeamName(String ctName) {
+
+		for(WebElement name:ctNameList) {
+			String providerName=name.getText();
+			if(ctName.contentEquals(providerName)) {
+				name.click();
+				break;
+			}
+		}
+	}
+
+	public void gotoGeneralInforamtion() {
+		addGeneralInfo.click();
+	}
+	
+	public void searchResource(String resource1,String resource2) throws InterruptedException {
+		Thread.sleep(1000);
+		searchForResource.click();
+		searchForResource.clear();
+		Thread.sleep(1000);
+		searchForResource.sendKeys(resource1);
+		Thread.sleep(1000);
+		toggleResourceONOFF.click();
+		Thread.sleep(1000);
+		searchForResource.click();
+		searchForResource.clear();
+		Thread.sleep(1000);
+		searchForResource.sendKeys(resource2);
+		Thread.sleep(1000);
+		toggleResourceONOFF.click();	
+
+	}
+
+	public void back() throws InterruptedException {
+		backtoManageCareTeam.click();
+	}
+	
+	public void deleteAssociatedResource(String bookName) throws InterruptedException {
+		Thread.sleep(5000);
+		searchAssscoaitedResource.click();
+		searchAssscoaitedResource.clear();
+		searchAssscoaitedResource.sendKeys(bookName);
+		Thread.sleep(5000);
+		deleteAssociatedResource.click();
+		Thread.sleep(5000);
+	}
+	
+	public void searchCT(String ctName) throws InterruptedException {
+		Thread.sleep(5000);
+		search_CareTeam.click();
+		search_CareTeam.clear();
+		search_CareTeam.sendKeys(ctName);
+	}
+	
+	public void deleteCareTeam(String ctName) throws InterruptedException {
+		searchCT(ctName);
+		IHGUtil.waitForElement(driver, 5, deleteCT);
+		deleteCT.click();
+	}
+	
+	public void searchResource(String resource) throws InterruptedException {
+		Thread.sleep(1000);
+		searchForResource.click();
+		searchForResource.clear();
+		Thread.sleep(1000);
+		searchForResource.sendKeys(resource);
+		Thread.sleep(1000);
+		toggleResourceONOFF.click();
+			
+	}
 }

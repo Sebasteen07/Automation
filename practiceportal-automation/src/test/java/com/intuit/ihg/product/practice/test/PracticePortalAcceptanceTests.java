@@ -238,7 +238,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pPatientDashboardPage.getFeedback().contains("Username email sent to patient"),
 				"No success message on send!");
 
-		logStep("Access Mailinator and check for received email");
+		logStep("Access Yopmail and check for received email");
 		YopMail mail = new YopMail(driver);
 		assertTrue(mail.getEmailContent(testData.getProperty("forgot.username.mail"),
 				testData.getProperty("forgot.username.mail.subject"), testData.getProperty("forgot.username.login"),
@@ -1195,8 +1195,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testResendPatientInvitationFailures() throws Exception {
+	public void testResendPatientInvitationFailuresSU() throws Exception {
 		PracticeLoginPage practiceLogin;
 		PracticeHomePage practiceHome;
 

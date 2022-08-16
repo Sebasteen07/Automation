@@ -2965,6 +2965,19 @@ public class PayloadAM02 {
 		return payload;
 	}	
 	
+	public String addBookInCareTeamPayload(int careTeamId, int bookid) {
+		String payload = "{\r\n"
+				+ "  \"careTeam\": {\r\n"
+				+ "    \"id\": "+careTeamId+"\r\n"
+				+ "  },\r\n"
+				+ "  \"book\": [\r\n"
+				+ "    {\r\n"
+				+ "      \"id\": "+bookid+"\r\n"
+				+ "    }\r\n"
+				+ "  ]\r\n"
+				+ "}";
+		return payload;
+	}	
 	
 	public String insurancePyaload(boolean bool) {
 

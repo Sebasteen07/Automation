@@ -12,6 +12,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.List;
+import java.util.Map;
+
 public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
 
     @BeforeTest
@@ -69,7 +72,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
         }
     }
 
-    @Test(priority = 2, dataProvider = "mod_instamed_different_merchants", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    @Test(priority = 3, dataProvider = "mod_instamed_different_merchants", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testCreateWalletForInvalidMerchants(String mmid, String patientUrn, int statusCodeVerify,
                                                     String verifyErrorText, String verifyMessageText) throws Exception {
 
@@ -97,7 +100,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
         }
     }
 
-    @Test(priority = 1, dataProvider = "valid_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    @Test(priority = 4, dataProvider = "valid_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testAddAccountToExistingInstaMedWallet(String defaultPaymentMethod, String patientUrn, String alias,
                                                        String bankHolderName, String bankHolderLastName, String accountType,
                                                        String accountNumber, String routingNo) throws Exception {
@@ -129,7 +132,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
         Assert.assertTrue(jsonPath.get("accounts.primaryAccount").toString().contains("true"));
     }
 
-    @Test(priority = 1, dataProvider = "instamed_different_patients", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    @Test(priority = 5, dataProvider = "instamed_different_patients", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testAddDuplicateAccountToExistingInstaMedWalletBadRequest(String patientId, int status, String error, String message) throws Exception {
         String token = DigitalWalletAPIUtils.getTokenForCustomer();
         DigitalWalletResource digitalWallet = new DigitalWalletResource();
@@ -151,7 +154,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
         }
     }
 
-    @Test(priority = 2, dataProvider = "wallet_invalid_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    @Test(priority = 6, dataProvider = "wallet_invalid_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testAddAccountToInstaMedWalletWithInvalidData(String mmid, String defaultPaymentMethod, String patientUrn, String accountAlias,
                                                               String accountHolderFirstName, String accountHolderLastName, String accountType,
                                                               String accountNumber, String routingNumber, int status,
@@ -174,7 +177,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
     }
 
 
-    @Test(priority = 1, dataProvider = "valid_card_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    @Test(priority = 7, dataProvider = "valid_card_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testCreateInstaMedWalletUsingCard(String defaultPaymentMethod, String patientUrn, String alias, String cardExpiryDate,
                                                   String cardHolderName, String cardNumber, String cardType, String cvv) throws Exception {
         String token = DigitalWalletAPIUtils.getTokenForCustomer();
@@ -201,7 +204,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
 
     }
 
-    @Test(priority = 2, dataProvider = "wallet_invalid_card_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    @Test(priority = 8, dataProvider = "wallet_invalid_card_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testCreateInstaMedWalletForACardWithInvalidData(String mmid, String defaultPaymentMethod, String patientUrn, String alias,
                                                                 String cardExpiryDate, String cardHolderName, String cardNumber,
                                                                 String cardType, String cvv, int status,
@@ -227,7 +230,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
         }
     }
 
-    @Test(priority = 1, dataProvider = "valid_cards", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    @Test(priority = 9, dataProvider = "valid_cards", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testAddCardToExistingInstaMedWallet(String defaultPaymentMethod, String alias,
                                                     String cardExpiryDate, String cardNumber,
                                                     String cardType, String cvv) throws Exception {
@@ -253,7 +256,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
         Assert.assertTrue(jsonPath.get("cards.isInstaMed").toString().contains("true"));
     }
 
-    @Test(priority = 1, dataProvider = "instamed_different_patients_adding_card", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    @Test(priority = 10, dataProvider = "instamed_different_patients_adding_card", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testAddDuplicateCardsToExistingInstaMedWalletBadRequest(String patientId, int status, String error, String message) throws Exception {
         String token = DigitalWalletAPIUtils.getTokenForCustomer();
         DigitalWalletResource digitalWallet = new DigitalWalletResource();
@@ -274,7 +277,7 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
         }
     }
 
-    @Test(priority = 2, dataProvider = "wallet_invalid_card_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
+    @Test(priority = 11, dataProvider = "wallet_invalid_card_data", dataProviderClass = DigitalWalletTestData.class, enabled = true)
     public void testAddCardToInstaMedWalletWithInvalidData(String mmid, String defaultPaymentMethod, String patientUrn, String alias,
                                                            String cardExpiryDate, String cardHolderName, String cardNumber,
                                                            String cardType, String cvv, int status,
@@ -295,6 +298,74 @@ public class InstaMedDigitalWalletTests extends DigitalWalletBaseTest {
             Assert.assertTrue(jsonPath.get("message").toString().contains(message));
             Assert.assertTrue(jsonPath.get("error").toString().contains(error));
         }
+    }
+
+    @Test(priority = 12, enabled = true)
+    public void getListOfCards() throws Exception {
+        String token = DigitalWalletAPIUtils.getTokenForCustomer();
+        DigitalWalletResource digitalWallet = new DigitalWalletResource();
+
+        Response response = digitalWallet.getListOfCardsInAWallet(token, testData.getProperty("enterprise.id"),
+                testData.getProperty("patient.id"));
+
+        JsonPath jsonPath = new JsonPath(response.asString());
+
+        Assert.assertNotNull(jsonPath.get("cards"));
+        Assert.assertNotNull(jsonPath.get("accounts"));
+        int accountPrimary = 0, cardPrimary = 0;
+
+        List<Map<String, Object>> accounts = jsonPath.getList("accounts");
+        for(int i=0; i< accounts.size(); i++){
+            Assert.assertNotNull(jsonPath.get("accounts[" + i + "].externalAccountId"));
+            Assert.assertNotNull(jsonPath.get("accounts[" + i + "].bankAccountHolderFirstName"));
+            Assert.assertNotNull(jsonPath.get("accounts[" + i + "].bankAccountHolderLastName"));
+            Assert.assertNotNull(jsonPath.get("accounts[" + i + "].bankAccountType"));
+            Assert.assertNotNull(jsonPath.get("accounts[" + i + "].bankAccountNumberLastFour"));
+            Assert.assertNotNull(jsonPath.get("accounts[" + i + "].token"));
+            Assert.assertNotNull(jsonPath.get("accounts[" + i + "].bankRoutingNumber"));
+            Assert.assertNotNull(jsonPath.get("accounts[" + i + "].primaryAccount"));
+
+            Assert.assertTrue(jsonPath.get("accounts[" + i + "].bankAccountType").toString().equals("BUSINESS") ||
+                    jsonPath.get("accounts[" + i + "].bankAccountType").toString().equals("CHECKING") ||
+                    jsonPath.get("accounts[" + i + "].bankAccountType").toString().equals("SAVINGS"));
+
+            Assert.assertTrue(jsonPath.get("accounts[" + i + "].bankAccountNumberLastFour").toString().length() == 4);
+
+            if(jsonPath.get("accounts[" + i + "].primaryAccount").equals(true)){
+                ++accountPrimary;
+            }
+
+        }
+
+        List<Map<String, Object>> cards = jsonPath.getList("cards");
+        for(int i=0; i< cards.size(); i++) {
+            Assert.assertNotNull(jsonPath.get("cards[" + i + "].externalCardId"));
+            Assert.assertNotNull(jsonPath.get("cards[" + i + "].cardHolderName"));
+            Assert.assertNotNull(jsonPath.get("cards[" + i + "].cardNumberLastFour"));
+            Assert.assertNotNull(jsonPath.get("cards[" + i + "].cardType"));
+            Assert.assertNotNull(jsonPath.get("cards[" + i + "].cardExpiryDate"));
+            Assert.assertNotNull(jsonPath.get("cards[" + i + "].token"));
+            Assert.assertNotNull(jsonPath.get("cards[" + i + "].primaryCard"));
+            Assert.assertNotNull(jsonPath.get("cards[" + i + "].isInstaMed"));
+            Assert.assertNotNull(jsonPath.get("cards[" + i + "].expired"));
+
+            Assert.assertTrue(jsonPath.get("cards[" + i + "].cardNumberLastFour").toString().length() == 4);
+
+            Assert.assertTrue(jsonPath.get("cards[" + i + "].cardType").equals("VI") ||
+                    jsonPath.get("cards[" + i + "].cardType").equals("MC") ||
+                    jsonPath.get("cards[" + i + "].cardType").equals("AX") ||
+                    jsonPath.get("cards[" + i + "].cardType").equals("DI"));
+
+            if(jsonPath.get("cards[" + i + "].primaryCard").equals(true)){
+                ++cardPrimary;
+            }
+            Assert.assertTrue(jsonPath.get("cards[" + i + "].isInstaMed").equals(true));
+
+            Assert.assertTrue(jsonPath.get("cards[" + i + "].expired").equals(true) ||
+                    jsonPath.get("cards[" + i + "].expired").equals(false));
+        }
+
+        Assert.assertTrue(accountPrimary == 1 && cardPrimary == 1);
     }
 
 }
