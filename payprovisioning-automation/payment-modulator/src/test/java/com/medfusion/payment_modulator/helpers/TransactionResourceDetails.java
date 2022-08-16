@@ -144,4 +144,18 @@ public class TransactionResourceDetails extends BaseRest {
 		return response;
 	}
 
+	public Response saleUsingSavedCard(String mmid,
+									   String accountNumber,
+									   String consumerName, String source,
+									   String paymentMethodId, int transactionAmount) throws Exception {
+		testData = new PropertyFileLoader();
+		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForDigitalWalletSale(accountNumber, consumerName, source,
+				paymentMethodId, transactionAmount);
+
+		Response response = given().spec(requestSpec).body(digitalWallet).when()
+				.post("sale/" + mmid).then().log().all().extract().response();
+
+		return response;
+	}
+
 }

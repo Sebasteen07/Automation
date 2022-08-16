@@ -397,4 +397,11 @@ public class PayloadDetails {
                 cardHolderName, cardExpiryDate, cardNumber, cardType,
                 cvv, isPrimary);
     }
+
+    public static Map<String, Object> getPayloadForDigitalWalletSale(String accountNumber,
+                                                                     String consumerName, String source,
+                                                                     String paymentMethodId, int transactionAmount) {
+        return Card.payloadForSaleUsingDigitalWallet(accountNumber, consumerName, source,
+                paymentMethodId, transactionAmount);
+    }
 }
