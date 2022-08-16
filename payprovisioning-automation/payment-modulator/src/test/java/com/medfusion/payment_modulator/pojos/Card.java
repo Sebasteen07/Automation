@@ -287,13 +287,15 @@ public class Card {
     }
 
     public static Map<String, Object> payloadForSaleUsingDigitalWallet(String accountNumber,
-                                                                       String consumerName, String source,
+                                                                       String consumerFirstName,
+                                                                       String consumerLastName, String source,
                                                                        String paymentMethodId, int transactionAmount) {
         Map<String, Object> salePayload = new HashMap<String, Object>();
 
         Map<String, Object> mfGatewayConsumer = new HashMap<String, Object>();
         mfGatewayConsumer.put("accountNumber", accountNumber);
-        mfGatewayConsumer.put("consumerName", consumerName);
+        mfGatewayConsumer.put("consumerFirstName", consumerFirstName);
+        mfGatewayConsumer.put("consumerLastName", consumerLastName);
         salePayload.put("mfGatewayConsumer", mfGatewayConsumer);
 
         Map<String, Object> mfGatewayMerchant = new HashMap<String, Object>();

@@ -399,9 +399,9 @@ public class PayloadDetails {
     }
 
     public static Map<String, Object> getPayloadForDigitalWalletSale(String accountNumber,
-                                                                     String consumerName, String source,
+                                                                     String consumerFName, String consumerLName, String source,
                                                                      String paymentMethodId, int transactionAmount) {
-        return Card.payloadForSaleUsingDigitalWallet(accountNumber, consumerName, source,
+        return Card.payloadForSaleUsingDigitalWallet(accountNumber, consumerFName, consumerLName, source,
                 paymentMethodId, transactionAmount);
     }
 }
