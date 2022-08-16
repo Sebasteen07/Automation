@@ -187,4 +187,15 @@ public class ManageCareTeam extends PSS2MenuPage {
 		IHGUtil.waitForElement(driver, 5, deleteCT);
 		deleteCT.click();
 	}
+	
+	public void searchResource(String resource) throws InterruptedException {
+		Thread.sleep(1000);
+		searchForResource.click();
+		searchForResource.clear();
+		Thread.sleep(1000);
+		searchForResource.sendKeys(resource);
+		Thread.sleep(1000);
+		toggleResourceONOFF.click();
+			
+	}
 }

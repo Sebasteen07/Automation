@@ -1868,4 +1868,37 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		}	
 		manageCareTeam.logout();
 	}
+	
+	public void resetCareTeamData(WebDriver driver, AdminUser adminUser, Appointment testData,
+			AdminAppointment appointment, String careTeam,  String[] providerNames) throws Exception {
+		logStep("Login to PSS Admin portal");
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageCareTeam manageCareTeam = pssPracticeConfig.gotoCareTeam();
+		pageRefresh(driver);
+		manageCareTeam.selectCareTeamName(careTeam);
+		manageCareTeam.gotoGeneralInforamtion();
+		for(int i=0; i<providerNames.length;i++) {
+			manageCareTeam.deleteAssociatedResource(providerNames[i]);
+		}
+		Thread.sleep(1000);
+		manageCareTeam.back();
+		pageRefresh(driver);
+		manageCareTeam.deleteCareTeam(careTeam);
+		pssPracticeConfig.gotoSettings();
+		pssPracticeConfig.hideMenuSidebar();
+		pssPracticeConfig.gotoAdminAppointmentTab();
+		Thread.sleep(1000);
+		log("Is Care team toggle enabled" + appointment.toggleAllowPCPONOF());
+		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());
+		log("Status of PCP is " + testData.isPcptoggleState());
+		if (testData.isPcptoggleState() == true) {
+			log("Status of PCP  ON");
+			appointment.pcptoggleclick();
+			log("Status of PCP  ON and Clicked on OFF");
+		} else {
+			log("Status of PCP is Already OFF");
+		}	
+		manageCareTeam.logout();
+	}
+
 }
