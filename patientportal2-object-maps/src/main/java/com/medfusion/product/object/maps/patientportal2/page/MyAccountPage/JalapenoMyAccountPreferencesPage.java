@@ -28,7 +28,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	@FindBy(how = How.ID, using = "statementPreference")
 	private WebElement statementPreference;
 
-	@FindBy(how = How.XPATH, using = "//ng-select[@id='languages']")
+	@FindBy(how = How.XPATH, using = "//div[@id='preferredLanguage_field']//span[@class='ng-value-label']")
 	private WebElement preferredLanguageSelect;
 
 	@FindBy(how = How.XPATH, using = "//input[@title='languages']")
@@ -40,10 +40,10 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	@FindBy(how = How.NAME, using = "provider")
 	private WebElement preferredProvider;
 
-	@FindBy(how = How.XPATH, using = "//ng-select[@id='listOfProviders']//span[2]")
+	@FindBy(how = How.XPATH, using = "//div[@id='preferredProviders_field']//span[2]")
 	private List<WebElement> selectedPreferredProviders;
 
-	@FindBy(how = How.XPATH, using = "//ng-select[@id='listOfProviders']//input")
+	@FindBy(how = How.XPATH, using = "//div[@id='preferredProviders_field']//div[@class='ng-placeholder']")
 	private WebElement addPreferredProvider;
 
 	@FindBy(how = How.ID, using = "messagingOptOut")
@@ -62,8 +62,8 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	@FindBy(how = How.XPATH, using = "//select[@id='statementPreference']")
 	private WebElement selectedStatementPreference;
 
-	private static final String ADD_PREFERRED_PROVIDER_LOCATOR_TEMPLATE = "//ng-select[@id='listOfProviders']//span[text()='%s']";
-	private static final String REMOVE_PREFERRED_PROVIDER_LOCATOR = "//ng-select[@id='listOfProviders']//span[contains(text(),'×')]";
+	private static final String ADD_PREFERRED_PROVIDER_LOCATOR_TEMPLATE = "//div[@id='preferredProviders_field']//span[text()='%s']";
+	private static final String REMOVE_PREFERRED_PROVIDER_LOCATOR = "//div[@id='preferredProviders_field']//span[contains(text(),'×')]";
 
 	public JalapenoMyAccountPreferencesPage(WebDriver driver) {
 		super(driver);
