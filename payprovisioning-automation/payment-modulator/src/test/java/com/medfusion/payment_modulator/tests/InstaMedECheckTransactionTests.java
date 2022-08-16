@@ -1,6 +1,9 @@
 package com.medfusion.payment_modulator.tests;
 
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.digital_wallet.helpers.DigitalWalletResource;
+import com.medfusion.digital_wallet.utils.DigitalWalletAPIUtils;
+import com.medfusion.digital_wallet.utils.DigitalWalletTestData;
 import com.medfusion.payment_modulator.helpers.TransactionResourceDetails;
 import com.medfusion.payment_modulator.utils.ModulatorTestData;
 import com.medfusion.payment_modulator.utils.Validations;
@@ -127,6 +130,46 @@ public class InstaMedECheckTransactionTests extends BaseRest {
         Assert.assertTrue(jsonpath.get("instamedDetail.accountHolderName")
                     .equals(testData.getProperty("bank.account.holder.first.name")+" "+testData.getProperty("bank.account.holder.last.name")));
 
+    }
+
+    @Test(priority=5, enabled = true, dataProvider = "sale", dataProviderClass = DigitalWalletTestData.class)
+    public void testSaleUsingSavedPaymentMethodOnFile(String consumerFName, String consumerLName, String source,
+                                                      String paymentMethodId, String amount, String response,
+                                                      String responseCode) throws Exception {
+
+        TransactionResourceDetails transaction = new TransactionResourceDetails();
+        Response response1 = transaction.saleUsingSavedCard(testData.getProperty("instamed.mmid"),
+                testData.getProperty("account.number"), consumerFName, consumerLName ,source, paymentMethodId , Integer.parseInt(amount));
+
+        JsonPath jsonPath = new JsonPath(response1.asString());
+        Assert.assertNotNull(jsonPath.get("responseTime"));
+        Assert.assertNotNull(jsonPath.get("orderId"));
+        Assert.assertNotNull(jsonPath.get("externalTransactionId"));
+        Assert.assertTrue(jsonPath.get("responseCode").toString().equals(responseCode));
+        Assert.assertTrue(jsonPath.get("message").toString().contains(response));
+
+        if (jsonPath.get("responseCode").toString().equals("000") || jsonPath.get("responseCode").toString().equals("010")) {
+            Assert.assertNotNull(jsonPath.get("authCode")); }
+        else{ Assert.assertNull(jsonPath.get("authCode")); }
+    }
+
+    @Test(priority=6, enabled = true, dataProvider = "sale_invalid_data", dataProviderClass = DigitalWalletTestData.class)
+    public void testSaleUsingSavedPaymentMethodOnFileWithInvalidData(String consumerFName, String consumerLName, String source,
+                                                      String paymentMethodId, String amount, int status,
+                                                      String error, String message) throws Exception {
+
+        TransactionResourceDetails transaction = new TransactionResourceDetails();
+        Response response1 = transaction.saleUsingSavedCard(testData.getProperty("instamed.mmid"),
+                testData.getProperty("account.number"), consumerFName, consumerLName, source, paymentMethodId , Integer.parseInt(amount));
+
+        JsonPath jsonPath = new JsonPath(response1.asString());
+        Assert.assertTrue(jsonPath.getInt("status") == status);
+        Assert.assertTrue(jsonPath.get("error").toString().contains(error));
+
+        if (jsonPath.get("message") != null) {
+            Assert.assertTrue(jsonPath.get("message").toString().contains(message)); }
+        else{
+            Assert.assertTrue(jsonPath.get("propertyMessages").toString().contains(message)); }
     }
 }
 

@@ -629,4 +629,47 @@ public class DigitalWalletTestData extends DigitalWalletBaseTest {
 
         };
     }
+
+    @DataProvider(name = "sale")
+    public static Object[][] dataProviderSale() throws Exception {
+        testData = new PropertyFileLoader();
+        return new Object[][]{
+                {testData.getProperty("first.name"), testData.getProperty("last.name"),
+                        testData.getProperty("payment.source.patient.portal"), testData.getProperty("payment.method.id.card"),
+                        testData.getProperty("transaction.amount"), "Approved", "000"},
+                {testData.getProperty("first.name"), testData.getProperty("last.name"),
+                        testData.getProperty("olbp.payment.type"), testData.getProperty("payment.method.id.account"),
+                        testData.getProperty("transaction.amount"), "Approved", "000"},
+                {testData.getProperty("first.name"), testData.getProperty("last.name"),
+                        testData.getProperty("payment.source"), testData.getProperty("payment.method.id.account"),
+                        testData.getProperty("transaction.amount") , "Approved", "000"},
+                {testData.getProperty("first.name"), testData.getProperty("last.name"),
+                        testData.getProperty("payment.source.precheck.copay"), testData.getProperty("payment.method.id.card"),
+                        testData.getProperty("transaction.amount.partial.approval"), "Approved", "010"},
+                {testData.getProperty("first.name"), testData.getProperty("last.name"),
+                        testData.getProperty("payment.source.precheck.balance"), testData.getProperty("payment.method.id.card"),
+                        testData.getProperty("transaction.amount.declined"), "Declined", "005"},
+
+        };
+    }
+
+    @DataProvider(name = "sale_invalid_data")
+    public static Object[][] dataProviderSaleInvalidData() throws Exception {
+        testData = new PropertyFileLoader();
+        return new Object[][]{
+                {testData.getProperty("first.name"), testData.getProperty("last.name"),
+                        testData.getProperty("payment.source.patient.portal"), " ",
+                        testData.getProperty("transaction.amount"), 400, "Bad Request", "Transaction not found."},
+                {testData.getProperty("first.name"), testData.getProperty("last.name"),
+                        testData.getProperty("payment.source.patient.portal"), "test123",
+                        testData.getProperty("transaction.amount"), 400, "Bad Request", "Transaction not found."},
+                {testData.getProperty("first.name"), testData.getProperty("last.name"),
+                        testData.getProperty("payment.source.patient.portal"), testData.getProperty("payment.method.id.card"),
+                        "0", 400, "Bad Request", "Transaction amount cannot be less than 1"},
+                {testData.getProperty("first.name"), testData.getProperty("last.name"),
+                        " ", testData.getProperty("payment.method.id.account"),
+                        testData.getProperty("transaction.amount"), 400, "Bad Request", "Payment source provided is not valid"}
+
+        };
+    }
 }
