@@ -613,6 +613,284 @@ public class PSS2PatientPortalAcceptanceTests11 extends BaseTestNGWebDriver {
 		
 		adminUtils.resetCareTeamData(driver, adminUser, testData, appointment, careTeam, providerName1, providerName2);
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void VerifyProvidersAreDisplayedBasedOnFCTConfig_NG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		String providerName = propertyData.getProperty("bct.book.name.ng");
+		String providerName1 = propertyData.getProperty("bct.book.name1.ng");
+		String providerName2 = propertyData.getProperty("bct.book.name2.ng");
+		String appointmentTypeName = propertyData.getProperty("bct.appointment.type.ng");
+		logStep("Login to PSS Admin portal");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		patientflow.turnOnProvider();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		AdminAppointment appointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		log("Is Care team toggle enabled" + appointment.toggleAllowPCPONOF());
+		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());		
+		log("Status of PCP is " + testData.isPcptoggleState());
+		if (testData.isPcptoggleState() == false) {
+			log("Status of PCP  OFF");
+			appointment.pcptoggleclick();
+			log("Status of PCP  OFF and Clicked on ON");
+		} else {
+			log("Status of PCP is Already ON");
+		}
+		appointment.selectPrimaryCareProvider();	
+		log("Is Force Care team toggle enabled" + appointment.toggleAllowFCTONOF());
+		if (appointment.toggleAllowFCTONOF() == false) {
+			log("Status of PCP  OFF");
+			appointment.fcttoggleclick();
+			log("Status of FCT  OFF and Clicked on ON");
+		} else {
+			log("Status of FCT is Already ON");
+		}
+		String fctDuration = propertyData.getProperty("bct.fct.days.t11.ng");
+		String pcpDuration = propertyData.getProperty("bct.pcp.days.t11.ng");
+		appointment.forceCareteamDuration(fctDuration);
+		appointment.pCPAvailabilityDuration(pcpDuration);
+		String careTeam = propertyData.getProperty("bct.ct.name.ng");
+		String careTeamBook = propertyData.getProperty("bct.book.name1.ng");
+		String careTeamBook2 = propertyData.getProperty("bct.book.name2.ng");
+		String careTeamBook3 = propertyData.getProperty("bct.book.name.ng");
+		ManageCareTeam manageCareTeam = pssPracticeConfig.gotoCareTeam();
+		adminUtils.pageRefresh(driver);
+		manageCareTeam.manageAddCareTeam();
+		manageCareTeam.enterGeneralInfoName(careTeam);
+		manageCareTeam.gotoGeneralInforamtion();
+		manageCareTeam.searchResource(careTeamBook);
+		manageCareTeam.searchResource(careTeamBook2);
+		manageCareTeam.searchResource(careTeamBook3);
+		Thread.sleep(1000);
+		manageCareTeam.back();
+		manageCareTeam.logout();
+		
+		String fn = propertyData.getProperty("ct.fn.pm11.ng");
+		String ln = propertyData.getProperty("ct.ln.pm11.ng");
+		String dob = propertyData.getProperty("ct.dob.pm11.ng");
+		String email = propertyData.getProperty("ct.email.pm11.ng");
+		String gender = propertyData.getProperty("ct.gender.pm11.ng");
+		String phoneNumber = propertyData.getProperty("ct.phone.number.pm11.ng");
+		String zipCode = propertyData.getProperty("ct.zip.code.pm11.ng");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, zipCode, phoneNumber);
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointmentPage = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + appointmentTypeName);
+		Provider provider = appointmentPage.selectTypeOfProvider(appointmentTypeName,
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		ArrayList<String> bookList= new ArrayList<String>();
+		bookList=provider.getBookList();	
+		log("List of book from Patient UI- " + bookList);
+		assertTrue(bookList.contains(providerName));
+		assertFalse(bookList.contains(providerName1));
+		assertTrue(bookList.contains(providerName2));
+		logStep("Verify Provider Page and PCP = " + providerName2);
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(providerName2);
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);		
+		log("Test Case Passed");
+		String[] providerNames = {providerName, providerName1, providerName2};
+		adminUtils.resetCareTeamData(driver, adminUser, testData, appointment, careTeam, providerNames);	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void VerifyProvidersAreDisplayedBasedOnFCTConfig_GW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		String providerName = propertyData.getProperty("bct.book.name.gw");
+		String providerName1 = propertyData.getProperty("bct.book.name1.gw");
+		String providerName2 = propertyData.getProperty("bct.book.name2.gw");
+		String appointmentTypeName = propertyData.getProperty("bct.appointment.type.gw");	
+		logStep("Login to PSS Admin portal");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		AdminAppointment appointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		log("Is Care team toggle enabled" + appointment.toggleAllowPCPONOF());
+		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());		
+		log("Status of PCP is " + testData.isPcptoggleState());
+		if (testData.isPcptoggleState() == false) {
+			log("Status of PCP  OFF");
+			appointment.pcptoggleclick();
+			log("Status of PCP  OFF and Clicked on ON");
+		} else {
+			log("Status of PCP is Already ON");
+		}
+		appointment.selectPrimaryCareProvider();
+		
+		log("Is Force Care team toggle enabled" + appointment.toggleAllowFCTONOF());
+		if (appointment.toggleAllowFCTONOF() == false) {
+			log("Status of PCP  OFF");
+			appointment.fcttoggleclick();
+			log("Status of FCT  OFF and Clicked on ON");
+		} else {
+			log("Status of FCT is Already ON");
+		}
+		String fctDuration = propertyData.getProperty("bct.fct.days.t11.gw");
+		String pcpDuration = propertyData.getProperty("bct.pcp.days.t11.gw");
+		appointment.forceCareteamDuration(fctDuration);
+		appointment.pCPAvailabilityDuration(pcpDuration);
+		String careTeam = propertyData.getProperty("bct.ct.name.gw");
+		String careTeamBook = propertyData.getProperty("bct.book.name1.gw");
+		String careTeamBook2 = propertyData.getProperty("bct.book.name2.gw");
+		String careTeamBook3 = propertyData.getProperty("bct.book.name.gw");
+		ManageCareTeam manageCareTeam = pssPracticeConfig.gotoCareTeam();
+		adminUtils.pageRefresh(driver);
+		manageCareTeam.manageAddCareTeam();
+		manageCareTeam.enterGeneralInfoName(careTeam);
+		manageCareTeam.gotoGeneralInforamtion();
+		manageCareTeam.searchResource(careTeamBook);
+		manageCareTeam.searchResource(careTeamBook2);
+		manageCareTeam.searchResource(careTeamBook3);
+		Thread.sleep(1000);
+		manageCareTeam.back();
+		manageCareTeam.logout();
+    	
+		String fn = propertyData.getProperty("ct.fn.pm11.gw");
+		String ln = propertyData.getProperty("ct.ln.pm11.gw");
+		String dob = propertyData.getProperty("ct.dob.pm11.gw");
+		String email = propertyData.getProperty("ct.email.pm11.gw");
+		String gender = propertyData.getProperty("ct.gender.pm11.gw");
+		String phoneNumber = propertyData.getProperty("ct.phone.number.pm11.gw");
+		String zipCode = propertyData.getProperty("ct.zip.code.pm11.gw");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, zipCode, phoneNumber);
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointmentPage = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + appointmentTypeName);
+		Provider provider = appointmentPage.selectTypeOfProvider(appointmentTypeName,
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		ArrayList<String> bookList= new ArrayList<String>();
+		bookList=provider.getBookList();	
+		log("List of book from Patient UI- " + bookList);
+		assertTrue(bookList.contains(providerName));
+		assertFalse(bookList.contains(providerName1));
+		assertTrue(bookList.contains(providerName2));
+		logStep("Verify Provider Page and PCP = " + providerName2);
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(providerName2);
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);		
+		log("Test Case Passed");
+		String[] providerNames = {providerName, providerName1, providerName2};
+		adminUtils.resetCareTeamData(driver, adminUser, testData, appointment, careTeam, providerNames);	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void VerifyProvidersAreDisplayedBasedOnFCTConfig_GE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils patientUtils = new PSSPatientUtils();
+		String providerName = propertyData.getProperty("bct.book.name.ge");
+		String providerName1 = propertyData.getProperty("bct.book.name1.ge");
+		String providerName2 = propertyData.getProperty("bct.book.name2.ge");
+		String appointmentTypeName = propertyData.getProperty("bct.appointment.type.ge");	
+		logStep("Login to PSS Admin portal");
+		PSS2PracticeConfiguration pssPracticeConfig = adminUtils.loginToAdminPortal(driver, adminUser);
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		adminUtils.setRulesNoSpecialitySet1(patientflow);
+		AdminAppointment appointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		log("Is Care team toggle enabled" + appointment.toggleAllowPCPONOF());
+		testData.setPcptoggleState(appointment.toggleAllowPCPONOF());		
+		log("Status of PCP is " + testData.isPcptoggleState());
+		if (testData.isPcptoggleState() == false) {
+			log("Status of PCP  OFF");
+			appointment.pcptoggleclick();
+			log("Status of PCP  OFF and Clicked on ON");
+		} else {
+			log("Status of PCP is Already ON");
+		}
+		appointment.selectPrimaryCareProvider();	
+		log("Is Force Care team toggle enabled" + appointment.toggleAllowFCTONOF());
+		if (appointment.toggleAllowFCTONOF() == false) {
+			log("Status of PCP  OFF");
+			appointment.fcttoggleclick();
+			log("Status of FCT  OFF and Clicked on ON");
+		} else {
+			log("Status of FCT is Already ON");
+		}
+		String fctDuration = propertyData.getProperty("bct.fct.days.t11.ge");
+		String pcpDuration = propertyData.getProperty("bct.pcp.days.t11.ge");
+		appointment.forceCareteamDuration(fctDuration);
+		appointment.pCPAvailabilityDuration(pcpDuration);
+		String careTeam = propertyData.getProperty("bct.ct.name.ge");
+		String careTeamBook = propertyData.getProperty("bct.book.name1.ge");
+		String careTeamBook2 = propertyData.getProperty("bct.book.name2.ge");
+		String careTeamBook3 = propertyData.getProperty("bct.book.name.ge");
+		ManageCareTeam manageCareTeam = pssPracticeConfig.gotoCareTeam();
+		adminUtils.pageRefresh(driver);
+		manageCareTeam.manageAddCareTeam();
+		manageCareTeam.enterGeneralInfoName(careTeam);
+		manageCareTeam.gotoGeneralInforamtion();
+		manageCareTeam.searchResource(careTeamBook);
+		manageCareTeam.searchResource(careTeamBook2);
+		manageCareTeam.searchResource(careTeamBook3);
+		Thread.sleep(1000);
+		manageCareTeam.back();
+		manageCareTeam.logout();
+		
+		String fn = propertyData.getProperty("ct.fn.pm11.ge");
+		String ln = propertyData.getProperty("ct.ln.pm11.ge");
+		String dob = propertyData.getProperty("ct.dob.pm11.ge");
+		String email = propertyData.getProperty("ct.email.pm11.ge");
+		String gender = propertyData.getProperty("ct.gender.pm11.ge");
+		String phoneNumber = propertyData.getProperty("ct.phone.number.pm11.ge");
+		String zipCode = propertyData.getProperty("ct.zip.code.pm11.ge");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, zipCode, phoneNumber);
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = homePage.skipInsurance(driver);
+		Location location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verify Location Page and location =" + testData.getLocation());
+		AppointmentPage appointmentPage = location.selectAppointment(testData.getLocation());
+		logStep("Verify Appointment Page and appointment to be selected = " + appointmentTypeName);
+		Provider provider = appointmentPage.selectTypeOfProvider(appointmentTypeName,
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		ArrayList<String> bookList= new ArrayList<String>();
+		bookList=provider.getBookList();	
+		log("List of book from Patient UI- " + bookList);
+		assertTrue(bookList.contains(providerName));
+		assertFalse(bookList.contains(providerName1));
+		assertTrue(bookList.contains(providerName2));
+		logStep("Verify Provider Page and PCP = " + providerName2);
+		AppointmentDateTime aptDateTime = provider.getProviderAndClick1(providerName2);
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);		
+		log("Test Case Passed");
+		String[] providerNames = {providerName, providerName1, providerName2};
+		adminUtils.resetCareTeamData(driver, adminUser, testData, appointment, careTeam, providerNames);	
+	}
 }
 
 
