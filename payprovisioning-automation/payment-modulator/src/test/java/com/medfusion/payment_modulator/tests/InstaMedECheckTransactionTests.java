@@ -153,7 +153,7 @@ public class InstaMedECheckTransactionTests extends BaseRest {
         }
     }
 
-    @Test(priority=5, enabled = true, dataProvider = "sale_invalid_data", dataProviderClass = DigitalWalletTestData.class)
+    @Test(priority=6, enabled = true, dataProvider = "sale_invalid_data", dataProviderClass = DigitalWalletTestData.class)
     public void testSaleUsingSavedPaymentMethodOnFileWithInvalidData(String consumerName,  String source,
                                                       String paymentMethodId, String amount, int status,
                                                       String error, String message) throws Exception {
