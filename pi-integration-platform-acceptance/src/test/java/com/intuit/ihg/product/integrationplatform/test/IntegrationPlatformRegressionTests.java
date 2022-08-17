@@ -186,7 +186,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 	}
 
-	@BeforeMethod(enabled = true)
+	@BeforeMethod(enabled = true,groups = { "RegressionTests1","RegressionTests2","RegressionTests3","AcceptanceTests" })
 	public void testOauthTokenExpiryCases() throws Exception {
 
 		log("Test Case: testOauthTokenExpiryCases");
@@ -1286,7 +1286,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					}
 					log("Updated Value :" + updatedValue);
 					log("Do a GET on PIDC Url to fetch updated patient for " + version);
-					String responseCodeV = RestUtils.setupHttpGetRequestWithEmptyResponse(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+					String responseCodeV = RestUtils.setupHttpGetRequestWithEmptyResponseWithToken(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 					if (!responseCodeV.equalsIgnoreCase("204")) {
 						Thread.sleep(800);
 						RestUtils.validateNode(testData.getResponsePath(), updatedValue, dropValue, testData.getPracticeId_PIDC_20());
@@ -1325,7 +1325,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Thread.sleep(40000);
 			Long since = timestamp / 1000L - 60 * 24;
 			log("Do a GET on PIDC Url to fetch updated patient for " + version);
-			String responseCode = RestUtils.setupHttpGetRequestWithEmptyResponse(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			String responseCode = RestUtils.setupHttpGetRequestWithEmptyResponseWithToken(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 			Thread.sleep(800);
 			if (!responseCode.equalsIgnoreCase("204")) {
 				if (version.equalsIgnoreCase("v1") && updatedValue == "UNKNOWN" || updatedValue == "UNDIFFERENTIATED") {
@@ -1353,8 +1353,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 			Thread.sleep(40000);
 			log("Do a GET on PIDC Url to fetch updated patient for " + version);
-			String languageResponse = RestUtils.setupHttpGetRequestWithEmptyResponse(
-					testData.getRestUrl() + "?since=" + since1 + ",0", testData.getResponsePath());
+			String languageResponse = RestUtils.setupHttpGetRequestWithEmptyResponseWithToken(
+					testData.getRestUrl() + "?since=" + since1 + ",0", testData.getResponsePath(),newToken);
 			if (!languageResponse.equalsIgnoreCase("204")) {
 				Thread.sleep(800);
 				RestUtils.validateNode(testData.getResponsePath(), languageType[v], 'L',
@@ -1404,8 +1404,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long since = timestamp / 1000L - 60 * 24;
 
 		logStep("Invoke Get PIDC and verify patient details for version " + version);
-		RestUtils.setupHttpGetRequestExceptoAuth(testData.getRestUrl() + "?since=" + since + ",0",
-				testData.getResponsePath());
+		RestUtils.setupHttpGetRequestOauthToken(testData.getRestUrl() + "?since=" + since + ",0",
+				testData.getResponsePath(),newToken);
 		Thread.sleep(10000);
 		RestUtils.checkPatientRegistered(testData.getResponsePath(), patientData);
 	}
