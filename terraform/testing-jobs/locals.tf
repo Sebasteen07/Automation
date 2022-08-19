@@ -9,6 +9,8 @@ locals {
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
   encrypted_key                 = "JPQ0Fn4qZ0C0sSzSGbOULMxWlo0jeuseRQPbe3Y6AeCR63VEenEio2wXEZ8t"
+  google_chrome_version         = "103.0.5060.134-1"
+  chrome_driver_version         = "103.0.5060.53"
 
 
   inputs = {
@@ -21,9 +23,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(10 6 ? * 3 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(10 6 ? * 3 *)"
       pxp_application       = "Portal"
     }
 
@@ -36,9 +38,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install -Dgroups=AccessibilityTests"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(45 0 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(45 0 ? * 1 *)"
       pxp_application       = "Portal"
     }
 
@@ -51,9 +53,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U -Dgroups=RegressionTests"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(0 1 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 1 ? * 1 *)"
       pxp_application       = "Portal"
     }
 
@@ -66,9 +68,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U -Dgroups=AcceptanceTests"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(0 0 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 0 ? * 1 *)"
       pxp_application       = "Portal"
     }
 
@@ -81,9 +83,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(0 23 ? * 6 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 23 ? * 6 *)"
       pxp_application       = "Portal"
     }
 
@@ -96,9 +98,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(0 0 ? * 6 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 0 ? * 6 *)"
       pxp_application       = "Portal"
     }
 
@@ -111,9 +113,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(30 23 ? * 6 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 23 ? * 6 *)"
       pxp_application       = "Portal"
     }
 
@@ -126,9 +128,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(45 23 ? * 6 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(45 23 ? * 6 *)"
       pxp_application       = "Portal"
     }
 
@@ -141,9 +143,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(0 1 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 1 ? * 1 *)"
       pxp_application       = "PatientSelfScheduling"
     }
 
@@ -157,9 +159,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(0 23 ? * 6 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 23 ? * 6 *)"
     }
 
     "prod-forms-regression2" = {
@@ -172,9 +174,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "93.0.4577.63"
-      cron_shedule          = "cron(30 23 ? * 6 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 23 ? * 6 *)"
     }
 
     "prod-integrations2-acceptance" = {
@@ -187,9 +189,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(20 0 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(20 0 ? * 1 *)"
     }
 
     "prod-integrations2-regression1" = {
@@ -202,9 +204,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(25 0 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(25 0 ? * 1 *)"
     }
 
     "prod-integrations2-regression2" = {
@@ -217,9 +219,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(25 0 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(25 0 ? * 1 *)"
     }
 
     "prod-integrations2-regression3" = {
@@ -232,9 +234,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(25 0 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(25 0 ? * 1 *)"
     }
 
     "prod-pss-acceptance" = {
@@ -247,9 +249,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(5 1 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(5 1 ? * 1 *)"
     }
 
     "demo-integrations2-regression1" = {
@@ -262,9 +264,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(0 2 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 2 ? * 4 *)"
     }
 
     "demo-integrations2-regression2" = {
@@ -277,9 +279,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(0 2 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 2 ? * 4 *)"
     }
 
     "demo-integrations2-regression3" = {
@@ -292,9 +294,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(0 2 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 2 ? * 4 *)"
     }
 
     "prod-integrations-acceptance-oauth10" = {
@@ -307,9 +309,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(0 22 ? * 6 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 22 ? * 6 *)"
     }
 
     "prod-integrations1-acceptance" = {
@@ -322,9 +324,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(0 23 ? * 6 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 23 ? * 6 *)"
     }
 
     "prod-integrations1-regression" = {
@@ -337,9 +339,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(30 22 ? * 6 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 22 ? * 6 *)"
     }
 
     "demo-integrations-acceptance-oauth10" = {
@@ -352,9 +354,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "96.0.4664.45-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(0 0 ? * 3 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 0 ? * 3 *)"
     }
 
     "demo-integrations1-acceptance" = {
@@ -367,9 +369,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.110-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(10 0 ? * 3 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(10 0 ? * 3 *)"
     }
 
     "demo-integrations1-regression" = {
@@ -382,9 +384,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "96.0.4664.110-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(50 0 ? * 3 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(50 0 ? * 3 *)"
     }
 
     "prod-practiceportal-regression1" = {
@@ -397,9 +399,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.110-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(0 0 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 0 ? * 1 *)"
     }
 
     "prod-p2p-directmessage" = {
@@ -412,9 +414,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "96.0.4664.110-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(15 1 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(15 1 ? * 1 *)"
     }
 
     "prod-rcm-acceptance" = {
@@ -427,9 +429,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.110-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(0 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 2 ? * 1 *)"
     }
 
     "prod-practiceportal-regression2" = {
@@ -442,9 +444,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.110-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(15 0 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(15 0 ? * 1 *)"
     }
 
     "prod-sitegen-regression" = {
@@ -457,9 +459,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.110-1"
-      chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(30 0 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 0 ? * 1 *)"
     }
 
     "demo-ng-integration-pf-acceptance" = {
@@ -472,9 +474,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.71-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(0 17 * * ? *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 17 * * ? *)"
     }
 
     "demo-ng-int-pf-acceptance-index" = {
@@ -487,9 +489,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.71-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(0 14 * * ? *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 14 * * ? *)"
     }
 
     "demo-ng-int-pf-acceptance-payment" = {
@@ -502,9 +504,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.71-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(0 23 * * ? *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 23 * * ? *)"
     }
 
     "demo-ng-int-pf-regression" = {
@@ -517,9 +519,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.71-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(0 21 ? * 2 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 21 ? * 2 *)"
     }
 
     "demo-practiceportal-regression1" = {
@@ -532,9 +534,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "97.0.4692.99-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(40 1 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(40 1 ? * 4 *)"
     }
 
     "demo-practiceportal-regression2" = {
@@ -547,9 +549,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "97.0.4692.99-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(0 3 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 3 ? * 4 *)"
     }
 
     "demo-sitegen-regression" = {
@@ -562,9 +564,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "97.0.4692.99-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(0 3 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 3 ? * 4 *)"
     }
 
     "demo-pss-at-acceptance" = {
@@ -577,9 +579,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.99-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(10 6 ? * 3 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(10 6 ? * 3 *)"
     }
 
     "demo-pss-ge-acceptance" = {
@@ -592,9 +594,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.99-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(10 6 ? * 3 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(10 6 ? * 3 *)"
     }
 
     "demo-pss-geadapter-acceptance" = {
@@ -607,9 +609,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.99-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "demo-pss-gw-acceptance" = {
@@ -622,9 +624,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.99-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(10 6 ? * 3 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(10 6 ? * 3 *)"
     }
 
     "demo-pss-ng-acceptance" = {
@@ -637,9 +639,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.99-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(10 6 ? * 3 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(10 6 ? * 3 *)"
     }
 
     "demo-pss-ngadapter-acceptance" = {
@@ -652,9 +654,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "97.0.4692.99-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "demo-payreporting-e2e-element" = {
@@ -667,9 +669,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "98.0.4758.102-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(0 0 ? * 2 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 0 ? * 2 *)"
     }
 
     "demo-payreporting-e2e-paypal" = {
@@ -682,9 +684,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "98.0.4758.102-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(5 0 ? * 2 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(5 0 ? * 2 *)"
     }
 
     "demo-payreporting-e2e-qbms" = {
@@ -697,9 +699,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "98.0.4758.102-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(10 0 ? * 2 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(10 0 ? * 2 *)"
     }
 
     "demo-payreporting-payments" = {
@@ -712,9 +714,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "98.0.4758.102-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(15 0 ? * 2 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(15 0 ? * 2 *)"
     }
 
     "demo-payreporting-smoke" = {
@@ -727,9 +729,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "98.0.4758.102-1"
-      chrome_driver_version = "97.0.4692.71"
-      cron_shedule          = "cron(20 0 ? * * *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(20 0 ? * * *)"
     }
 
     "demo-precheck" = {
@@ -742,9 +744,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "99.0.4844.51-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 2 ? * 2 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 2 ? * 2 *)"
     }
 
     "demo-rcm-acceptance" = {
@@ -757,9 +759,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "99.0.4844.51-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(5 23 ? * 2 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(5 23 ? * 2 *)"
     }
 
     "dev3-pss-api-geadapter-acceptance" = {
@@ -772,9 +774,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "dev3-pss-api-ngadapter-acceptance" = {
@@ -787,9 +789,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "dev3-pss-regression1" = {
@@ -802,9 +804,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "qa1-integration-acceptance" = {
@@ -817,9 +819,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 3 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 3 ? * 1 *)"
     }
 
     "qa1-integration-acceptance-2_0" = {
@@ -832,9 +834,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 3 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 3 ? * 1 *)"
     }
 
     "qa1-integration-acceptance-oauth10" = {
@@ -847,9 +849,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 3 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 3 ? * 1 *)"
     }
 
     "qa1-integration-regression" = {
@@ -862,9 +864,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 3 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 3 ? * 1 *)"
     }
 
     "qa1-pi-integration-regression" = {
@@ -877,9 +879,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 3 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 3 ? * 1 *)"
     }
 
     "qa1-practice-portal-acceptance" = {
@@ -892,9 +894,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(40 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(40 2 ? * 1 *)"
     }
 
     "qa1-sitegen-regression" = {
@@ -907,9 +909,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "99.0.4844.82-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(40 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(40 2 ? * 1 *)"
     }
 
     "dev3-integrations2-acceptance" = {
@@ -922,9 +924,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.60-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(15 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(15 20 ? * 1-5 *)"
     }
 
     "dev3-integrations2-regression1" = {
@@ -937,9 +939,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.60-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "dev3-integrations2-regression2" = {
@@ -952,9 +954,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.60-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "dev3-integrations2-regression3" = {
@@ -967,9 +969,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.60-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "dev3-integrations-acceptance-oauth10" = {
@@ -982,9 +984,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(15 18 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(15 18 ? * 1-5 *)"
     }
 
     "dev3-integrations1-acceptance" = {
@@ -997,9 +999,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(0 19 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 19 ? * 1-5 *)"
     }
 
     "dev3-integrations1-regression" = {
@@ -1012,9 +1014,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.75-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "dev3-payreporting-e2e-element" = {
@@ -1027,9 +1029,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "dev3-payreporting-payments" = {
@@ -1042,9 +1044,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "demo-patient-portal-regression1" = {
@@ -1057,9 +1059,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(45 1 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(45 1 ? * 4 *)"
     }
 
     "demo-patient-portal-regression2" = {
@@ -1072,9 +1074,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(30 1 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 1 ? * 4 *)"
     }
 
     "demo-patient-portal-regression3" = {
@@ -1087,9 +1089,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(15 1 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(15 1 ? * 4 *)"
     }
 
     "demo-patient-portal-regression4" = {
@@ -1102,9 +1104,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(0 1 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 1 ? * 4 *)"
     }
 
     "dev3-pss20-acceptance" = {
@@ -1117,9 +1119,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.127-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(0 18 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 18 ? * 1-5 *)"
     }
 
     "dev3-sitegen-regression" = {
@@ -1132,9 +1134,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "100.0.4896.127-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(30 18 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 18 ? * 1-5 *)"
     }
 
     "dev3-ng-int-platform-regression" = {
@@ -1147,9 +1149,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "100.0.4896.88-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(15 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(15 20 ? * 1-5 *)"
     }
 
     "dev3-rcm-precheck-acceptance" = {
@@ -1162,9 +1164,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "100.0.4896.127-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(45 18 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(45 18 ? * 1-5 *)"
     }
 
     "demo-forms-regression1" = {
@@ -1177,9 +1179,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "100.0.4896.127-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(0 1 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 1 ? * 4 *)"
     }
 
     "demo-forms-regression2" = {
@@ -1192,9 +1194,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "100.0.4896.127-1"
-      chrome_driver_version = "99.0.4844.51"
-      cron_shedule          = "cron(30 1 ? * 4 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 1 ? * 4 *)"
     }
 
     "dev3-forms-regression1" = {
@@ -1207,9 +1209,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "100.0.4896.127-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 20 ? * 1-5 *)"
     }
 
     "dev3-forms-regression2" = {
@@ -1222,9 +1224,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "100.0.4896.127-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(15 18 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(15 18 ? * 1-5 *)"
     }
 
     "dev3-patientportal-regression1" = {
@@ -1237,9 +1239,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(30 18 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 18 ? * 1-5 *)"
     }
 
     "dev3-patientportal-regression2" = {
@@ -1252,9 +1254,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(30 19 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 19 ? * 1-5 *)"
     }
 
     "dev3-patientportal-regression3" = {
@@ -1267,9 +1269,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(0 19 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(0 19 ? * 1-5 *)"
     }
 
     "dev3-patientportal-regression4" = {
@@ -1282,9 +1284,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "100.0.4896.20"
-      cron_shedule          = "cron(30 19 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 19 ? * 1-5 *)"
     }
 
     "qa1-forms-regression1" = {
@@ -1297,9 +1299,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(30 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 2 ? * 1 *)"
     }
 
     "qa1-forms-regression2" = {
@@ -1312,9 +1314,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(30 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 2 ? * 1 *)"
     }
 
     "qa1-patientportal-regression1" = {
@@ -1327,9 +1329,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(30 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 2 ? * 1 *)"
     }
 
     "qa1-patientportal-regression2" = {
@@ -1342,9 +1344,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(30 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 2 ? * 1 *)"
     }
 
     "qa1-patientportal-regression3" = {
@@ -1357,9 +1359,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(30 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 2 ? * 1 *)"
     }
 
     "qa1-patientportal-regression4" = {
@@ -1372,9 +1374,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "101.0.4951.54-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(30 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(30 2 ? * 1 *)"
     }
 
     "dev3-practiceportal-regression1" = {
@@ -1387,9 +1389,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "102.0.5005.61-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(15 18 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(15 18 ? * 1-5 *)"
     }
 
     "qa1-practiceportal-regression1" = {
@@ -1402,9 +1404,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "102.0.5005.61-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(40 2 ? * 1 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule         = "cron(40 2 ? * 1 *)"
     }
 
     "qa-automation-api" = {
@@ -1417,9 +1419,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -X clean install"
-      google_chrome_version = "102.0.5005.61-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(0 20 ? * 1-5 *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule          = "cron(0 20 ? * 1-5 *)"
     }
 
     "qa-automation-appointment-ui" = {
@@ -1432,9 +1434,9 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn -X clean install"
-      google_chrome_version = "102.0.5005.61-1"
-      chrome_driver_version = "101.0.4951.41"
-      cron_shedule          = "cron(0 0 1 * ? *)"
+      google_chrome_version = local.google_chrome_version
+      chrome_driver_version = local.chrome_driver_version
+      cron_schedule          = "cron(0 0 1 * ? *)"
     }
   }
 

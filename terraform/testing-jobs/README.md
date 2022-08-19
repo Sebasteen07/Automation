@@ -5,17 +5,17 @@ This directory contains Terraform configurations to create a testing-jobs AWS re
 
 ## Pre-requisites
 The following resources are the pre-requisites from common folder
-  - CodeCommit repository by the name qa-automation-mirror for mirroring the qa-automation repo from Bitbucket
-  - KMS keys ARN stored in SSM parameter - /nextgen/kms/data/default for data encryption key
-  - Bucket ARN stored in SSM parameter - /nextgen/codepipeline/artifact-store/default for storing CodePipeline artifacts & logs
-  - SNS topic ARN for Slack notifications
+- CodeCommit repository by the name qa-automation-mirror for mirroring the qa-automation repo from Bitbucket
+- KMS keys ARN stored in SSM parameter - /nextgen/kms/data/default for data encryption key
+- Bucket ARN stored in SSM parameter - /nextgen/codepipeline/artifact-store/default for storing CodePipeline artifacts & logs
+- SNS topic ARN for Slack notifications
 
 ## AWS Design Reference
 ![AWS_Design](assets/pxp-qa-automation-design.png)
 
 ## Terraform versions
 ### Recommended
-- Terraform v 1.0.3 and above  
+- Terraform v 1.0.3 and above
 - AWS Provider v 3.59.0 and above
 
 ### Minimum
@@ -78,7 +78,7 @@ inputs = {
     maven_parameter       = "mvn -U clean install"
     google_chrome_version = "93.0.4577.82-1"
     chrome_driver_version = "92.0.4515.107"
-    cron_shedule          = "cron(10 6 ? * 3 *)"
+    cron_schedule          = "cron(10 6 ? * 3 *)"
     pxp_application       = "Portal"
   }
 }
@@ -88,9 +88,9 @@ This requires Terraform version 1.0.3 and above.
 
 ## Creating a new testing job
 
-Each testing job is created under a workspace of its own.  
+Each testing job is created under a workspace of its own.
 
-The repository is set up to substitute the current workspace name as the testing job purpose. So, make sure that the Terraform workspace by the testing job purpose is created and the selected workspace is the one whose name is the same as the defined testing job purpose.  
+The repository is set up to substitute the current workspace name as the testing job purpose. So, make sure that the Terraform workspace by the testing job purpose is created and the selected workspace is the one whose name is the same as the defined testing job purpose.
 
 ### Workspace for the new job
 As an example, if the name of the testing job purpose is `demo-integrations2-acceptance` & the workspace is not exits, then create a workspace named `demo-integrations2-acceptance`
@@ -107,8 +107,8 @@ terraform workspace select demo-integrations2-acceptance
 ```
 ### Code changes for the new job
 #### **workspaces.tf**
-The configuration file **`workspaces.tf`** ensures that we are making changes to a valid job created under a valid workspace. For this purpose, the list variable `valid_workspaces` has the list of all valid workspaces. 
-In order to add a new job, we need to update this variable with a new workspace name specific to the job that needs to be added.  
+The configuration file **`workspaces.tf`** ensures that we are making changes to a valid job created under a valid workspace. For this purpose, the list variable `valid_workspaces` has the list of all valid workspaces.
+In order to add a new job, we need to update this variable with a new workspace name specific to the job that needs to be added.
 
 For example:
 ```
@@ -124,7 +124,7 @@ The configuration file `locals.tf` has parameters for each individual job under 
 Copy the `<demo-integrations2-acceptance>` section from the `locals.tf` file & paste it by changing it to supported `<testing job purpose>` as described in the `workspace.tf` also in above section. Fill in all the required information for the new testing job.
 
 Additionally, some parameter defaults are set specifically set for specific testing job purpose/regions(for pxp-build, restricted to us-east-2).
-Go through the locals section above to understand the various local reference for execution and update accordingly.  
+Go through the locals section above to understand the various local reference for execution and update accordingly.
 
 Using the configurations is easy. Run the following commands from within the `terraform/testing-jobs/` directory:
 ```
