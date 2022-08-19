@@ -8,10 +8,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+
+import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 
 
-public class SecureExchangeLoginPage {
+public class SecureExchangeLoginPage  extends BasePageObject{
 	protected WebDriver driver;
 	@FindBy(how = How.ID, using = "UserName")
 	public WebElement inputUserName;
@@ -28,10 +31,11 @@ public class SecureExchangeLoginPage {
 	@FindBy(how = How.XPATH, using = "//span[@title='implementationteam@direct.medfusion.com']")
 	public WebElement mailClick;
 	
-	@FindBy(how = How.XPATH, using ="(//span[text()='Inbox'])[2]")
+	@FindBy(how = How.XPATH, using ="//span[@title='implementationteam@direct.medfusion.com']/../../..//span[.='Inbox']")
 	public WebElement inboxClick;
 	
 	public SecureExchangeLoginPage(WebDriver driver,String url) {
+		super(driver);
 		this.driver = driver;
 		driver.get(url);
 		driver.manage().window().maximize();
@@ -43,11 +47,10 @@ public class SecureExchangeLoginPage {
 		inputUserName.sendKeys(username);
 		inputPassword.sendKeys(password);
 		buttonSignIn.click();
-		
-		if(IHGUtil.getEnvironmentType().equals("prod")) {
-			startClick.click();
-			mailClick.click();
-			inboxClick.click();
+		if(IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+			javascriptClick(startClick);
+			javascriptClick(mailClick);
+			javascriptClick(inboxClick);
 			}
 		
 		return PageFactory.initElements(driver, SecureExchangeEmailPage.class);

@@ -6,10 +6,16 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Random;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.testng.SkipException;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -24,6 +30,7 @@ import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
+import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.PayNow;
@@ -35,6 +42,7 @@ import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
+import com.intuit.ihg.product.integrationplatform.utils.TokenData;
 import com.intuit.ihg.product.integrationplatform.utils.YopMailUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
@@ -74,7 +82,7 @@ import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
  */
 
 public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
-
+	String newToken = "";
 	/*
 	 * ////@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer =
 	 * RetryAnalyzer.class) public void testGetAppointmentRequest() throws Exception
@@ -151,6 +159,52 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	 * RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason); }
 	 */
 
+	@BeforeMethod(enabled = true)
+	public void testOauthTokenExpiryCases() throws Exception {
+
+		log("Test Case: testOauthTokenExpiryCases");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		logStep("Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		TokenData testData = new TokenData();
+
+		LoadPreTestDataObj.loadTokenDataFromProperty(testData);
+
+		String body = String.format("grant_type=password&username=%s&password=%s", testData.OAuthUsername, testData.OAuthPassword);
+		log("message :- " + body);
+
+		logStep("Do Message Post Request");
+
+			RestUtils.setupHttpPostRequestForOauth(testData.tokenUrl, body, testData.ResponsePath, testData.tokenClient);
+
+			try {
+				InputStream is = new FileInputStream(testData.ResponsePath);
+				String jsonTxt = IOUtils.toString(is, "UTF-8");				
+				JSONObject json = new JSONObject(jsonTxt);
+
+				int timeDuration = Integer.parseInt(json.get("expiresIn") + "");
+
+				if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEV3") || IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+					if (timeDuration == 2579999) {
+						assertTrue(true);
+					}
+				} else if (IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+					if (timeDuration == 1799) {
+						assertTrue(true);
+					}
+				}
+
+				newToken = json.get("accessToken").toString();
+				log("newToken is set here!!!");
+			} catch (Exception e) {
+				log("Exception found : "+e);
+			}
+			
+	}
+	
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCAskQuestionPaid(String version) throws Exception {
@@ -1089,9 +1143,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// do the call and save xml, ",0" is there because of the since
 
 		if (version.contains("v1")) {
-			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 		} else if (version.contains("v3")) {
-			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath(),newToken);
 		}
 
 		logStep("Checking validity of the response xml");
@@ -1100,7 +1154,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		if (version.contains("v3")) {
 			String attachementURL = RestUtils.isResponseContainsValidAttachmentURL(testData.getResponsePath());
 			logStep("Make GET call with attachement URL");
-			RestUtils.setupHttpGetRequest(attachementURL, testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(attachementURL, testData.getResponsePath(),newToken);
 		}
 		
 		logStep("Validate the FileName in the attachement URL response");

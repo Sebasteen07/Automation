@@ -278,6 +278,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 
 	private boolean areEmailLightboxElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		IHGUtil.waitForElement(driver, 10, unsecureTransmit);
 		webElementsList.add(secureTransmit);
 		webElementsList.add(unsecureTransmit);
 		if (unsecureTransmit.isSelected()) {

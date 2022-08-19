@@ -63,12 +63,17 @@ public class LocationAndProviderPage {
 	}
 
 	public String getPracticeLocation(WebDriver driver) {
-
+		try {
 		IHGUtil.waitForElement(driver, 10, selectedLocation);
 		String location = selectedLocation.getText();
 		locationDropdown.click();
 		locationDropdown.sendKeys(location);
 		return location;
+		}
+		catch (Exception e) {
+			Log4jUtil.log(e + "");
+			return "";
+		}
 	}
 
 	public String getPracticeProvider() {

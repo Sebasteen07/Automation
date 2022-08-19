@@ -58,7 +58,7 @@ public class MU2Utils {
 	private String ActionTimestamp = null;
 	private List<String> portalTime = new ArrayList<String>();
 	
-	public void mu2GetEvent(MU2GetEventData testData,WebDriver driver, String version)  throws Exception {
+	public void mu2GetEvent(MU2GetEventData testData,WebDriver driver, String version, String token)  throws Exception {
 
 		long timestamp = System.currentTimeMillis();
 		Log4jUtil.log("TIME STAMP for MU2 Pull API SinceTime: " + Long.toString(timestamp));
@@ -119,10 +119,10 @@ public class MU2Utils {
 		
 		homePage.clickOnLogout();
 		
-		getMUEventAndVerify(testData, timestamp,transmitTimestamp,version);
+		getMUEventAndVerify(testData, timestamp,transmitTimestamp,version,token);
 	}
 	
-	public void getMUEventAndVerify(MU2GetEventData testData,Long timestamp,Long transmitTimestamp, String version) throws Exception {
+	public void getMUEventAndVerify(MU2GetEventData testData,Long timestamp,Long transmitTimestamp, String version,String token) throws Exception {
 		
 		Log4jUtil.log("MU2GetEvent Step 7: Waiting for Events sync in DWH");
 		Thread.sleep(720000);
@@ -134,14 +134,14 @@ public class MU2Utils {
 		if(version.equals("v1")) {
 			Log4jUtil.log("Original PULL API URl: " + testData.PULLAPI_URL);
 			String restPullUrl = new StringBuilder(testData.PULLAPI_URL).append("&sinceTime=").append(timestamp).append("&maxEvents=40").toString();
-	        RestUtils.setupHttpGetRequest(restPullUrl, testData.PUSH_RESPONSEPATH);
+	        RestUtils.setupHttpGetRequestOauthToken(restPullUrl, testData.PUSH_RESPONSEPATH,token);
 			Log4jUtil.log("Updated PULL API URL: " + restPullUrl);
 
 		}
 		else {
 			Log4jUtil.log("Original PULL API URl: " + testData.PULLAPI_URLV3);
 			String restPullUrlV3 = new StringBuilder(testData.PULLAPI_URLV3).append("&sinceTime=").append(timestamp).append("&maxEvents=40").toString();
-	        RestUtils.setupHttpGetRequest(restPullUrlV3, testData.PUSH_RESPONSEPATH);
+	        RestUtils.setupHttpGetRequestOauthToken(restPullUrlV3, testData.PUSH_RESPONSEPATH,token);
 			Log4jUtil.log("Updated PULL API URL: " + restPullUrlV3);
 		}
 		
@@ -237,7 +237,8 @@ public class MU2Utils {
 								break;
 
 						} else {
-							Log4jUtil.log("Resource type is not matching..");
+							Log4jUtil.log("Resource type is not matching.Values to be found in xml:" 
+						+"resourceType-->" +resourceType+"action-->"+action+"patientid-->"+patientExternalId+"fn-->"+firstName+"ln-->"+lastName);
 						}
 					} else {
 						Log4jUtil.log(recordedTimeStamp + " is less than " + timeStamp);
@@ -333,7 +334,7 @@ public class MU2Utils {
 		return medfusionID;
 	}
 	
-	public void mu2GetEventGuardian(MU2GetEventData testData,WebDriver driver,Boolean existingGuardian,Boolean isCCDViewer,String version) throws Exception {
+	public void mu2GetEventGuardian(MU2GetEventData testData,WebDriver driver,Boolean existingGuardian,Boolean isCCDViewer,String version, String token) throws Exception {
 		Long timestamp = System.currentTimeMillis();
 		Long transmitTimestamp = null;
 		String currentDate = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm a").format(new java.util.Date (timestamp));
@@ -441,7 +442,7 @@ public class MU2Utils {
 			Thread.sleep(5000);
 		}
 		
-		getMUEventAndVerify(testData, timestamp,transmitTimestamp, username);
+		getMUEventAndVerify(testData, timestamp,transmitTimestamp, username,token);
 		
 		Log4jUtil.log("mu2GetEventGuardian Step 10: Move to Account Activity page ");
 		

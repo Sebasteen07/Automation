@@ -2,6 +2,7 @@
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
@@ -45,11 +46,13 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.jdom.JDOMException;
@@ -719,7 +722,7 @@ public class RestUtils {
 							+ nlastName.getTextContent().toString());
 					assertEquals(nlastName.getTextContent(), lastName.get(j),
 							"Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
-
+					
 					Node ngender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
 					Log4jUtil.log("Searching: Patient Gender:" + testData.patientDetailList.get(j + 1).getGender()
 							+ ", and Actual Patient Gedner is:" + ngender.getTextContent().toString());
@@ -1159,15 +1162,22 @@ public class RestUtils {
 		HttpClient client = new DefaultHttpClient();
 		Log4jUtil.log("Post Request Url: " + strUrl);
 
-		HttpPost request = new HttpPost();
-		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
-				.setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		RequestConfig Default = RequestConfig.DEFAULT;
+
+	    RequestConfig requestConfig = RequestConfig.copy(Default)
+	    		  .setSocketTimeout(80000)
+	            .setConnectTimeout(20000)
+	            .setConnectionRequestTimeout(20000)
+	            .build();
+	    HttpPost request = new HttpPost();
+	   
 		request.setURI(new URI(strUrl));
 		request.setEntity(new StringEntity(payload));
 		request.setHeader("Connection", "keep-alive");
 		request.setHeader("Accept-Encoding", "gzip, deflate, br");
 		request.addHeader("Content-Type", "application/xml");
 		request.setHeader("Authorization", "Bearer " + token);
+		request.setConfig(requestConfig);
 		Log4jUtil.log("Post Request Url4: ");
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
@@ -1192,15 +1202,20 @@ public class RestUtils {
 		HttpClient client = new DefaultHttpClient();
 		Log4jUtil.log("Post Request Url: " + strUrl);
 
+		RequestConfig Default = RequestConfig.DEFAULT;
+
+	    RequestConfig requestConfig = RequestConfig.copy(Default)
+	            .setSocketTimeout(80000)
+	            .setConnectTimeout(50000)
+	            .setConnectionRequestTimeout(50000)
+	            .build();		
 		HttpPost request = new HttpPost();
-		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
-				.setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		request.setURI(new URI(strUrl));
 		request.setEntity(new StringEntity(payload));
 		request.addHeader("Authorization", "Basic " + token);
 		request.addHeader("Content-Type", "application/x-www-form-urlencoded");
 		request.setHeader("Accept", "application/json");
-
+		request.setConfig(requestConfig);
 		Log4jUtil.log("Post Request Url4: ");
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
@@ -1664,30 +1679,45 @@ public class RestUtils {
 		HttpClient client = new DefaultHttpClient();
 		Log4jUtil.log("GET call with Token.");
 		Log4jUtil.log("GET Request Url: " + strUrl);
+		RequestConfig Default = RequestConfig.DEFAULT;
 
+	    RequestConfig requestConfig = RequestConfig.copy(Default)
+	    		  .setSocketTimeout(80000)
+	            .setConnectTimeout(20000)
+	            .setConnectionRequestTimeout(20000)
+	            .build();
 		HttpGet httpGetReq = new HttpGet(strUrl);
-		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
-				.setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+
 		httpGetReq.setURI(new URI(strUrl));
 		httpGetReq.addHeader("Authorization", "Bearer " + token);
 		httpGetReq.addHeader("Content-Type", "application/xml");
+		httpGetReq.setConfig(requestConfig);
 		HttpResponse resp = client.execute(httpGetReq);
 		HttpEntity entity = resp.getEntity();
 		String sResp = "";
+		try {
 		if (entity != null) {
 			sResp = EntityUtils.toString(entity);
 			Log4jUtil.log("Check for http 200 response");
-		} else {
-			Log4jUtil.log("Check for http 204 response");
-		}
+			assertTrue(resp.getStatusLine().getStatusCode() == 200, "Get Request response is "
+					+ resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
+			
+				Thread.sleep(10000);
+			
+			Log4jUtil.log("GET sResp=" + sResp);
+			writeFile(responseFilePath, sResp);
 
-		assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
-				"Get Request response is " + resp.getStatusLine().getStatusCode()
-						+ " instead of 200. Response message received:\n" + sResp);
-		writeFile(responseFilePath, sResp);
-		if (resp.containsHeader("Next-URI")) {
-			Header[] h = resp.getHeaders("Next-URI");
-			headerUrl = h[0].getValue();
+			if (resp.containsHeader("Next-URI")) {
+				Header[] h = resp.getHeaders("Next-URI");
+				headerUrl = h[0].getValue();
+			}
+			
+		} else {
+			Log4jUtil.log("204 response found");
+
+		}
+		} catch (InterruptedException e) {
+			Log4jUtil.log("exception is  : "+e);
 		}
 	}
 
@@ -2916,6 +2946,41 @@ public class RestUtils {
 		return Integer.toString(resp.getStatusLine().getStatusCode());
 	}
 
+	public static String setupHttpGetRequestWithEmptyResponseWithToken(String strUrl, String responseFilePath, String token)
+			throws IOException, URISyntaxException {
+
+		IHGUtil.PrintMethodName();
+
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("GET Request Url: " + strUrl);
+
+		RequestConfig Default = RequestConfig.DEFAULT;
+
+	    RequestConfig requestConfig = RequestConfig.copy(Default)
+	    		  .setSocketTimeout(80000)
+	            .setConnectTimeout(20000)
+	            .setConnectionRequestTimeout(20000)
+	            .build();
+	    HttpGet request = new HttpGet();
+	   
+		request.setURI(new URI(strUrl));
+		request.setHeader("Connection", "keep-alive");
+		request.setHeader("Accept-Encoding", "gzip, deflate, br");
+		request.addHeader("Content-Type", "application/xml");
+		request.setHeader("Authorization", "Bearer " + token);
+		request.setConfig(requestConfig);
+		Log4jUtil.log("GET Request Url4: ");
+		HttpResponse response = client.execute(request);
+		HttpEntity entity = response.getEntity();
+		if (entity != null) {
+		String sResp = EntityUtils.toString(response.getEntity());
+		
+		Log4jUtil.log("Response Code is " + response.getStatusLine().getStatusCode());
+		writeFile(responseFilePath, sResp);
+		}
+		return response.getStatusLine().getStatusCode()+"";
+	}
+	
 	public static String setupHttpJSONPostRequest(String strUrl, String payload, String responseFilePath,
 			String accessToken) throws IOException, URISyntaxException {
 		IHGUtil.PrintMethodName();
@@ -2938,7 +3003,7 @@ public class RestUtils {
 		assertTrue(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
 				"Get Request response is " + response.getStatusLine().getStatusCode()
 						+ " instead of 200/202. Response message:\n" + sResp);
-		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
+		Log4jUtil.log("Response Code is" + response.getStatusLine().getStatusCode());
 		writeFile(responseFilePath, sResp);
 
 		if (response.containsHeader(IntegrationConstants.LOCATION_HEADER)) {
@@ -3186,23 +3251,39 @@ public class RestUtils {
 		}
 	}
 
-	public static void verifyEGQUpdatedValuesInCCDExchangeBatch(String responsepath, String EGQValue, char EGQType)
+	public static void verifyEGQUpdatedValuesInCCDExchangeBatch(String responsepath, String EGQValue, char EGQType, String version)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsepath);
 		if (EGQType == 'I') {
+			if(version.equalsIgnoreCase("v2")) {
 			Node GenderIdentity = doc.getElementsByTagName(IntegrationConstants.GENDERIDENTITY).item(0);
 			Element GenderIdentityEle = (Element) GenderIdentity;
 			Node EGQGINode = GenderIdentityEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
 			Log4jUtil.log("GI node value= " + EGQGINode.getTextContent() + "   EGQValue = " + EGQValue);
-			assertTrue(EGQGINode.getTextContent().trim().equalsIgnoreCase(EGQValue), "Value mismatched");
+
+			assertTrue(EGQGINode.getTextContent().trim().equalsIgnoreCase(EGQValue),
+					"Value mismatched");
+			}
+			else if(version.equalsIgnoreCase("v1")) {
+					Node GenderIdentity= doc.getElementsByTagName(IntegrationConstants.GENDERIDENTITY).item(0);
+					assertNull(GenderIdentity.getNodeValue());
+			}
 		}
 		if (EGQType == 'S') {
+			if(version.equalsIgnoreCase("v2")) {
 			Node SexualOrientation = doc.getElementsByTagName(IntegrationConstants.SEXUALORIENTATION).item(0);
 			Element SexualOrientationEle = (Element) SexualOrientation;
 			Node EGQSONode = SexualOrientationEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
 			Log4jUtil.log("SO node value = " + EGQSONode.getTextContent() + "   EGQValue = " + EGQValue);
-			assertTrue(EGQSONode.getTextContent().trim().equalsIgnoreCase(EGQValue), "Value mismatched");
+
+			assertTrue(EGQSONode.getTextContent().trim().equalsIgnoreCase(EGQValue),
+					"Value mismatched");
+			}
+			else if(version.equalsIgnoreCase("v1")) {
+					Node SexualOrientation = doc.getElementsByTagName(IntegrationConstants.SEXUALORIENTATION).item(0);
+					assertNull(SexualOrientation.getNodeValue());
+			}
 		}
 	}
 
@@ -3607,8 +3688,9 @@ public class RestUtils {
 			if (node.getChildNodes().item(0).getTextContent().contains(medicationName)) {
 				Element ele = (Element) nodes.item(i).getParentNode();
 				Node nDosage = ele.getElementsByTagName(IntegrationConstants.DOSAGE_TAG).item(0);
-				Node additionalCommentNode = ele.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
-				assertEquals(nDosage.getTextContent(), JalapenoConstants.DOSAGE,
+
+				Node additionalCommentNode =ele.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
+				assertEquals(nDosage.getTextContent().toUpperCase(), JalapenoConstants.DOSAGE,
 						"The actual value of dosage doesnt equal the expected value");
 				assertEquals(additionalCommentNode.getTextContent(), additionalComment,
 						"The actual value of Additional commnet doesnt equal the expected value");
@@ -3637,8 +3719,12 @@ public class RestUtils {
 
 		for (int i = 0; i < pnode.getLength(); i++) {
 			Element element = (Element) pnode.item(i);
-			String medicationId = element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent();
 
+				if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+					if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+					String medicationId = element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent();
+				}
+				}
 			String reaString = element.getElementsByTagName("MedicationName").item(0).getFirstChild().getNodeValue();
 			if (reaString.equalsIgnoreCase(medication)) {
 				Node node = element.getElementsByTagName("MedicationName").item(0).getParentNode();
@@ -3656,12 +3742,15 @@ public class RestUtils {
 						.add(element.getElementsByTagName("To").item(0).getFirstChild().getNodeValue().toString());
 				medication_details
 						.add(element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue().toString());
-				medication_details
-						.add(element.getElementsByTagName("AdditionalInformation").item(0).getTextContent().toString());
-				medication_details
-						.add(element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent().toString());
-				medication_details
-						.add(element.getElementsByTagName("ExternalSystemId").item(0).getTextContent().toString());
+				medication_details.add(element.getElementsByTagName("AdditionalInformation").item(0).getTextContent().toString());
+				
+				if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+					if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+						medication_details.add(element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent().toString());
+						medication_details.add(element.getElementsByTagName("ExternalSystemId").item(0).getTextContent().toString());
+				}
+				}
+				
 				node = node.getParentNode().getParentNode();
 
 				Log4jUtil.log("Node name for prescription:" + node.getNodeName());
@@ -3721,8 +3810,15 @@ public class RestUtils {
 		Node nRefillNumber = element.getElementsByTagName(IntegrationConstants.REFILL_NUMBER_TAG).item(0);
 		Node nPrescriptionNumber = element.getElementsByTagName(IntegrationConstants.PRESCRIPTION_NUMBER_TAG).item(0);
 		Node nAdditionalInformation = element.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
-		Node nExternalMedicationID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_MEDICATION_ID).item(0);
-		Node nExternalSystemID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_SYSTEM_ID).item(0);
+		
+		if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+			if(!IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("DEMO")) {
+				Node nExternalMedicationID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_MEDICATION_ID).item(0);
+				Node nExternalSystemID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_SYSTEM_ID).item(0);
+				nExternalMedicationID.setTextContent(medication_details.get(7));
+				nExternalSystemID.setTextContent(medication_details.get(8));
+		}
+		}
 
 		nPrescriptionNumber.setTextContent((String) IntegrationConstants.PRESCRIPTION_NO);
 		nRefillNumber.setTextContent((String) IntegrationConstants.NO_OF_REFILLS);
@@ -3730,10 +3826,8 @@ public class RestUtils {
 		nMedicationDosage.setTextContent(medication_details.get(1));
 		nMedicationName.setTextContent(medication_details.get(0));
 		nAdditionalInformation.setTextContent(medication_details.get(6));
-		nExternalMedicationID.setTextContent(medication_details.get(7));
-		nExternalSystemID.setTextContent(medication_details.get(8));
 
-		String SigCode = "IWVH";
+		String SigCode = "TICN";
 		Node nSigCodeAbbreviation = element.getElementsByTagName("SigCodeAbbreviation").item(0);
 		Node nSigCodeMeaning = element.getElementsByTagName("SigCodeMeaning").item(0);
 

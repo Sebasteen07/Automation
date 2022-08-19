@@ -79,7 +79,7 @@ public class SecureExchangeEmailPage {
 		Log4jUtil.log("Verify Subject if matched actual " + secureEmail.getText() + " expected " + subject);
 		assertEquals(secureEmail.getText(), subject);
 
-		Log4jUtil.log("Secure Exchange Step 1: Verfiy Secure Message ");
+		Log4jUtil.log("Secure Exchange Step 1: Verify Secure Message ");
 		secureEmail.click();
 		if (AttachmentType != null && !AttachmentType.isEmpty() && !AttachmentType.equalsIgnoreCase("none")) {
 			WebElement attachmentName = driver.findElement(By.xpath("//*[contains(text(),'" + fileName + "')]"));

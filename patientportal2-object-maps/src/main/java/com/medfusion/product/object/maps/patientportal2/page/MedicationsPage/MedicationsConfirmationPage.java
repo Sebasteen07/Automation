@@ -4,6 +4,7 @@ package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 import static org.testng.Assert.assertFalse;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -49,11 +50,13 @@ public class MedicationsConfirmationPage extends BasePageObject {
 	private WebElement txtPharamcyName;
 
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
-		scrollAndWait(0, 1500, 10);
-		Thread.sleep(5000);
+		Actions action=new Actions(driver);
+		action.moveToElement(btnConfirm).build().perform();
+		IHGUtil.waitForElement(driver, 20, btnConfirm);
 		javascriptClick(btnConfirm);
 		log("It Clicked on confirm button");
 		IHGUtil.waitForElement(driver, 20, confirmPopup);
+		IHGUtil.waitForElement(driver, 20, successMsg);
 		String successMsgOnPopup = successMsg.getText();
 		btnClose.click();
 		Thread.sleep(1000);
@@ -76,11 +79,13 @@ public class MedicationsConfirmationPage extends BasePageObject {
 	}
 
 	public String getMedicationdetails(WebDriver driver) throws InterruptedException {
+		IHGUtil.waitForElement(driver, 20, medicationdetails);
 		String confirmMedicationDetails = medicationdetails.getText();
 		return confirmMedicationDetails;
 	}
 
 	public String getpharamcyDetails(WebDriver driver) throws InterruptedException {
+		IHGUtil.waitForElement(driver, 20, pharamcyDetails);
 		String confirmPharamcyDetails = pharamcyDetails.getText();
 		return confirmPharamcyDetails;
 	}

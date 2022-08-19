@@ -145,7 +145,7 @@ public class PatientRegistrationUtils {
 
 
 
-	public static void pidcPatientRegistration(String ChannelVersion, WebDriver driver, String portalVersion) throws Exception {
+	public static void pidcPatientRegistration(String ChannelVersion, WebDriver driver, String portalVersion,String token) throws Exception {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		PIDCInfo testData = new PIDCInfo();
 		Long timestamp = System.currentTimeMillis();
@@ -175,9 +175,9 @@ public class PatientRegistrationUtils {
 					testData.getoAuthPassword());
 
 			Log4jUtil.log("Step 3: Do a POST call and get processing status URL");
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl_20(), patient, testData.getResponsePath());
+			String processingUrl = RestUtils.setupHttpPostRequestWithOauthToken(testData.getRestUrl_20(), patient, testData.getResponsePath(),token);
 
-			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
+			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath(),token);
 			assertTrue(completed, "Message processing was not completed in time");
 
 			YopMailUtils mail = new YopMailUtils(driver);
@@ -204,7 +204,7 @@ public class PatientRegistrationUtils {
 			Log4jUtil.log("Step 8: Do a GET on PIDC Url to get registered patient");
 			Long since = timestamp / 1000L - 60 * 24;
 			Log4jUtil.log("Getting patients since timestamp: " + since);
-			RestUtils.setupHttpGetRequest(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath(),token);
 			Thread.sleep(2000);
 
 			Log4jUtil.log("Step 9: Find the patient and check if he is registered");
@@ -223,9 +223,8 @@ public class PatientRegistrationUtils {
 					testData.getoAuthPassword());
 
 			Log4jUtil.log("Step 3: Do a POST call and get processing status URL");
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl_20(), patient, testData.getResponsePath());
-
-			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
+			String processingUrl = RestUtils.setupHttpPostRequestWithOauthToken(testData.getRestUrl_20(), patient, testData.getResponsePath(),token);
+			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath(),token);
 			assertTrue(completed, "Message processing was not completed in time");
 
 			YopMailUtils mail = new YopMailUtils(driver);
@@ -251,7 +250,7 @@ public class PatientRegistrationUtils {
 			Log4jUtil.log("Step 8: Do a GET on PIDC Url to get registered patient");
 			Long since = timestamp / 1000L - 60 * 24;
 			Log4jUtil.log("Getting patients since timestamp: " + since);
-			RestUtils.setupHttpGetRequest(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequestOauthToken(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath(),token);
 			Thread.sleep(2000);
 
 			Log4jUtil.log("Step 9: Find the patient and check if he is registered");
@@ -271,13 +270,13 @@ public class PatientRegistrationUtils {
 		}
 	}
 
-	public static Boolean checkMessageProcessingOntime(String processingUrl, String ResponsePath)
+	public static Boolean checkMessageProcessingOntime(String processingUrl, String ResponsePath, String token)
 			throws InterruptedException, ParserConfigurationException, SAXException, IOException, URISyntaxException {
 		boolean completed = false;
 		for (int i = 0; i < 1; i++) {
 			// wait 60 seconds so the message can be processed
 			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequestExceptOauth(processingUrl, ResponsePath);
+			RestUtils.setupHttpGetRequestOauthToken(processingUrl, ResponsePath,token);
 			if (RestUtils.isMessageProcessingCompleted(ResponsePath)) {
 				completed = true;
 				return completed;
@@ -287,7 +286,7 @@ public class PatientRegistrationUtils {
 
 	}
 	
-	public static void pidcPatientRegistrationJSONPayload(String ChannelVersion, WebDriver driver, String portalVersion) throws Exception {
+	public static void pidcPatientRegistrationJSONPayload(String ChannelVersion, WebDriver driver, String portalVersion, String token) throws Exception {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		PIDCInfo testData = new PIDCInfo();
 		
@@ -311,7 +310,7 @@ public class PatientRegistrationUtils {
 		Log4jUtil.log("Step 3: Do a POST call and get processing status URL");
 		String processingUrl = RestUtils.setupHttpJSONPostRequest(testData.getRestUrl_20(), patient, testData.getResponsePath(), testData.getToken());
 
-		Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
+		Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath(),token);
 		assertTrue(completed, "Message processing was not completed in time");
 
 		YopMailUtils mail = new YopMailUtils(driver);

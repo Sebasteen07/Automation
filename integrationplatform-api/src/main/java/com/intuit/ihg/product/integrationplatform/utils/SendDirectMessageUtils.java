@@ -8,12 +8,12 @@ import org.openqa.selenium.WebDriver;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 public class SendDirectMessageUtils {
-	public void sendSecureDirectMessage(WebDriver driver,String typeOfAttachmentUsed) throws Exception {
+	public void sendSecureDirectMessage(WebDriver driver,String typeOfAttachmentUsed,String token) throws Exception {
 		SendDirectMessage testData = new SendDirectMessage();
 	 	LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 	 	LoadPreTestDataObj.loadSendDirectMessageDataFromProperty(testData);
 	 	
-		postSecureMessage(driver, testData, typeOfAttachmentUsed);
+		postSecureMessage(driver, testData, typeOfAttachmentUsed,token);
 		
 		Log4jUtil.log("Login to Secure Exchange Services");
 		SecureExchangeLoginPage SecureLoginPageObject = new SecureExchangeLoginPage(driver,testData.SecureDirectMessageURL);
@@ -28,7 +28,7 @@ public class SendDirectMessageUtils {
 	}
 	
 	
-	public void postSecureMessage(WebDriver driver, SendDirectMessage testData,String typeOfAttachmentUsed) throws Exception {
+	public void postSecureMessage(WebDriver driver, SendDirectMessage testData,String typeOfAttachmentUsed ,String token) throws Exception {
 	 	
 	 	
 	 	String testSubject=testData.Subject;
@@ -50,7 +50,7 @@ public class SendDirectMessageUtils {
 	 	Thread.sleep(3000);
 	 	Log4jUtil.log("postSecureMessage Step 4: Do Send Direct Message Post Request");
 		
-		RestUtils.setupHttpPostRequest(testData.RestUrl, payload, testData.ResponsePath);
+		RestUtils.setupHttpPostRequestWithOauthToken(testData.RestUrl, payload, testData.ResponsePath,token);
 
 		Log4jUtil.log("postSecureMessage Step 5: Verify MFMessageId, PartnerMessageId and StatusCode");
 		String mfMsgID =RestUtils.verifyDirectMessageResponse(testData.ResponsePath,directMessagePayload.partnerMessageId);
