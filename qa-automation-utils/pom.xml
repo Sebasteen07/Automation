@@ -6,11 +6,11 @@
 	<!-- Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved. -->
 
 	<parent>
-		<groupId>com.nextgen.pxp.qa.automation</groupId>
-		<artifactId>qa-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-	</parent>
-
+        <groupId>com.intuit.ihg</groupId>
+        <artifactId>ihg-depot-parent-pom</artifactId>
+        <version>22.6.0-SNAPSHOT</version>
+    </parent>
+	
 	<artifactId>qa-automation-utils</artifactId>
 	<name>qa-automation-utils</name>
 	<packaging>jar</packaging>
@@ -105,6 +105,18 @@
 	  		<artifactId>eh-core-dto</artifactId>
 	  		<version>22.6.0-SNAPSHOT</version>
 	  	</dependency>
+	  	
+	  	<dependency>
+	  		<groupId>com.allscripts</groupId>
+	  		<artifactId>connecthub-schemas</artifactId>
+	  		<version>1.0.0</version>
+  		</dependency>
+
+		<dependency>
+			<groupId>com.intuit.eh.core</groupId>
+			<artifactId>eh-core-dto</artifactId>
+			<version>22.6.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>org.openhealthtools.mdht</groupId>
 			<artifactId>org.openhealthtools.mdht.uml.cda</artifactId>
