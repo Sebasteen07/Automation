@@ -227,4 +227,28 @@ public class PSS2AdminPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.appointmentDuration(driver, adminuser, testData, appType, providerName,appointmentDuration);		
 	}
+	
+	@Test(enabled = true, dataProvider = "staffPractice", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAccessRulesBookmarkUrlForExistingStaffAndPractice(String staffPracitceName) throws Exception {
+		log("Test To verify if existing staff and practice can Login" + staffPracitceName);
+		log("Step 1: set test data for existing patient ");	
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		AdminUser adminuser = pssadminutils.setPracticeAdminAccount(staffPracitceName);
+		log("Step 2: Login to Admin portal ");
+		PSS2AdminLogin pssadminlogin = new PSS2AdminLogin(driver, adminuser.getAdminUrl());
+		PSS2PracticeConfiguration psspracticeConfig = pssadminlogin.login(adminuser.getUser(), adminuser.getPassword());
+
+		AccessRules pssaccessrules = new AccessRules(driver);
+		var url = pssaccessrules.getLoginlessURL();
+
+		// Log4jUtil.log("refreshing admin page after login");
+		// pssadminutils.pageRefresh(driver);
+		// log("Theme Selected for the practice is = " + psspracticeConfig.getSelectedColor());
+		// log("Step 3 : Verify client logo link " + psspracticeConfig.checkLogoLink());
+		// assertTrue(psspracticeConfig.checkLogoLink().contains(adminuser.getPracticeId()));
+		// log("Step 4 : Verify client Practice ID= " + psspracticeConfig.practiceIDLinkText());
+		// assertTrue(psspracticeConfig.practiceIDLinkText().contains(adminuser.getPracticeId()), "Staff Practice ID not found");
+		// log("Step 5: Logout from PSS Admin Portal");
+		// psspracticeConfig.logout();
+	}
 }
